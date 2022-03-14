@@ -1,6 +1,10 @@
 package it.polimi.ingsw.Model;
 
 public class Board {
+    //private School schools[];
+    //private Archipelago archipelago[];
+    //private Cloud clouds[];
+    //private MotherNature mn;
     public void Board(int numberPlayers){
 
     }
