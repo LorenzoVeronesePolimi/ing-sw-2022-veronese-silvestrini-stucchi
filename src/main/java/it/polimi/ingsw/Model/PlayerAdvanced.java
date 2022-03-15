@@ -1,10 +1,13 @@
 package it.polimi.ingsw.Model;
 
+import it.polimi.ingsw.Model.Pawns.Coin;
+
 public class PlayerAdvanced extends Player{
-    private Player p;
-    private Coin c;
-    public PlayerAdvanced(Player p2){
-        p=p2;
+    private Player player;
+    private Coin coin;
+
+    public PlayerAdvanced(Player p){
+        player=p;
     }
     public void addCoin(){
 

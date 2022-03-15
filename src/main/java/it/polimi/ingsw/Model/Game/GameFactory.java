@@ -1,8 +1,10 @@
-package it.polimi.ingsw.Model;
+package it.polimi.ingsw.Model.Game;
+
+import it.polimi.ingsw.Model.Player;
 
 public class GameFactory {
 
-    public GameFactory(Player.. players){}
+    public GameFactory(Player .. players){}
     public Game createGame(Integer numPlayers){
         Game result;
         if (numPlayers == 2){

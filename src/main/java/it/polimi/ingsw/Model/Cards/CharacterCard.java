@@ -1,4 +1,4 @@
-package it.polimi.ingsw.Model;
+package it.polimi.ingsw.Model.Cards;
 
 public abstract class CharacterCard {
     private Integer price;

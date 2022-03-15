@@ -1,6 +1,9 @@
-package it.polimi.ingsw.Model;
+package it.polimi.ingsw.Model.Game;
 
-public class GameTwo implements Game{
+import it.polimi.ingsw.Model.Board;
+import it.polimi.ingsw.Model.Player;
+
+public class GameTwo implements Game {
     // This will have specific methods for a Game of 2 players
     private Player player1, player2;
 

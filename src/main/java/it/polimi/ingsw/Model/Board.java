@@ -1,5 +1,12 @@
 package it.polimi.ingsw.Model;
 
+import it.polimi.ingsw.Model.*;
+import it.polimi.ingsw.Model.Enumerations.SPColour;
+import it.polimi.ingsw.Model.Pawns.MotherNature;
+import it.polimi.ingsw.Model.Places.Archipelago;
+import it.polimi.ingsw.Model.Places.Cloud;
+import it.polimi.ingsw.Model.Places.School;
+
 public class Board {
     private School schools[];
     private Archipelago archipelago[];

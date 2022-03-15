@@ -1,4 +1,4 @@
-package it.polimi.ingsw.Model;
+package it.polimi.ingsw.Model.Cards;
 
 public interface AssistantCard {
     int value = 0;

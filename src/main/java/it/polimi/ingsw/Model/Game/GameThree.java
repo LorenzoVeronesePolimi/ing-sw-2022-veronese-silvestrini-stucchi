@@ -1,4 +1,7 @@
-package it.polimi.ingsw.Model;
+package it.polimi.ingsw.Model.Game;
+
+import it.polimi.ingsw.Model.Board;
+import it.polimi.ingsw.Model.Player;
 
 public class GameThree implements Game{
     // This will have specific methods for a Game of 3 players

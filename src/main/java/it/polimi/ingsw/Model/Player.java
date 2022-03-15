@@ -1,5 +1,8 @@
 package it.polimi.ingsw.Model;
 
+import it.polimi.ingsw.Model.Cards.AssistantCard;
+import it.polimi.ingsw.Model.Enumerations.PlayerColour;
+
 import java.util.List;
 
 public class Player {
@@ -7,6 +10,8 @@ public class Player {
     private List<AssistantCard> playerHand;
     private AssistantCard lastCard;
     private PlayerColour colour;
+
+    public Player() {}
 
     public Player(String nickname) {
         this.nickname = nickname;
