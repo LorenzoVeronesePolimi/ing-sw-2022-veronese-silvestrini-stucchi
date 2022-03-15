@@ -5,6 +5,7 @@ public class Board {
     private Archipelago archipelago[];
     private Cloud clouds[];
     private MotherNature mn;
+    private Bag bag;
 
     public void Board(int numberPlayers){
 
