@@ -2,6 +2,7 @@ package it.polimi.ingsw.Model.Places;
 
 import it.polimi.ingsw.Model.*;
 import it.polimi.ingsw.Model.Enumerations.SPColour;
+import it.polimi.ingsw.Model.Exceptions.*;
 import it.polimi.ingsw.Model.Pawns.Professor;
 import it.polimi.ingsw.Model.Pawns.Student;
 import it.polimi.ingsw.Model.Pawns.Tower;
@@ -47,10 +48,15 @@ public class School {
 
     public List<Professor> getProfessors(){ return professors; }
 
-    public void addTower(Tower tower) throws ExcededMaxTowersException{
+    public void addTower(Tower tower) throws ExceededMaxTowersException{
         try {
-            towers.add(tower);
-        } catch (ExcededMaxTowersException e) {
+            if(towers.size()< numMaxTowers){
+                towers.add(tower);
+            }
+            else{
+             throw new ExceededMaxTowersException();
+            }
+        } catch (ExceededMaxTowersException e) {
             e.printStackTrace();
         }
     }
@@ -73,15 +79,15 @@ public class School {
         throw new ProfessorNotFoundException();
     }
 
-    public void addStudentHall(Student student) throws ExcededMaxStudentsHallException{
+    public void addStudentHall(Student student) throws ExceededMaxStudentsHallException{
         if(studentsHall.size() < numMaxStudentsHall) {
             studentsHall.add(student);
         } else {
-            throw new ExcededMaxStudentsHallException();
+            throw new ExceededMaxStudentsHallException();
         }
     }
 
-    public Student removeStudentHall(SPColour colour){
+    public Student removeStudentHall(SPColour colour) throws StudentNotFoundException{
         for(Student st : studentsHall) {
             if(st.getColour().equals(colour)) {
                 return studentsHall.remove(studentsHall.indexOf(st));
@@ -91,52 +97,53 @@ public class School {
         throw new StudentNotFoundException();
     }
 
-    public void addStudentDiningRoom(Student student) throws ExcededMaxStudentsDiningRoomException{
+    public void addStudentDiningRoom(Student student) throws ExceededMaxStudentsDiningRoomException{
         if(student.getColour() == SPColour.RED) {
             if(studentsDiningRed.size() < 10) {
                 studentsDiningRed.add(student);
             } else {
-                throw new ExcededMaxStudentsDiningRoomException();
+                throw new ExceededMaxStudentsDiningRoomException();
             }
         }
         if(student.getColour() == SPColour.PINK) {
             if(studentsDiningPink.size() < 10) {
                 studentsDiningPink.add(student);
             } else {
-                throw new ExcededMaxStudentsDiningRoomException();
+                throw new ExceededMaxStudentsDiningRoomException();
             }
         }
         if(student.getColour() == SPColour.GREEN) {
             if(studentsDiningGreen.size() < 10) {
                 studentsDiningGreen.add(student);
             } else {
-                throw new ExcededMaxStudentsDiningRoomException();
+                throw new ExceededMaxStudentsDiningRoomException();
             }
         }
         if(student.getColour() == SPColour.BLUE) {
             if(studentsDiningBlue.size() < 10) {
                 studentsDiningBlue.add(student);
             } else {
-                throw new ExcededMaxStudentsDiningRoomException();
+                throw new ExceededMaxStudentsDiningRoomException();
             }
         }
         if(student.getColour() == SPColour.YELLOW) {
             if(studentsDiningYellow.size() < 10) {
                 studentsDiningYellow.add(student);
             } else {
-                throw new ExcededMaxStudentsDiningRoomException();
+                throw new ExceededMaxStudentsDiningRoomException();
             }
-        }
-
-        if(studentsDiningRoom.size() < ) {
-            studentsHall.add(student);
-        } else {
-            throw new ExcededMaxStudentsDiningRoomException();
         }
     }
 
     public void moveStudentHallToDiningRoom(SPColour colour) {
-        Student student = removeStudentHall(colour);
-        addStudentDiningRoom(student);
+        Student student = null;
+        try {
+            student = removeStudentHall(colour);
+            addStudentDiningRoom(student);
+        } catch (StudentNotFoundException e) {
+            e.printStackTrace();
+        } catch (ExceededMaxStudentsDiningRoomException e) {
+            e.printStackTrace();
+        }
     }
 }
