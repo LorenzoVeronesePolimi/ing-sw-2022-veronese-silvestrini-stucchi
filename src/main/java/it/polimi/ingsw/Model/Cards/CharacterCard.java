@@ -6,7 +6,7 @@ public abstract class CharacterCard {
 
     public CharacterCard(){}
 
-    public Integer getPrice(){}
+    public Integer getPrice(){ return price; }
 
     public void useEffect(){}
 }
