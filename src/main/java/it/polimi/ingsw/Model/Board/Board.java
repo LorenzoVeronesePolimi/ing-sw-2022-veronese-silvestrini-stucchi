@@ -1,13 +1,14 @@
-package it.polimi.ingsw.Model;
+package it.polimi.ingsw.Model.Board;
 
-import it.polimi.ingsw.Model.*;
+import it.polimi.ingsw.Model.Bag;
 import it.polimi.ingsw.Model.Enumerations.SPColour;
 import it.polimi.ingsw.Model.Pawns.MotherNature;
 import it.polimi.ingsw.Model.Places.Archipelago;
 import it.polimi.ingsw.Model.Places.Cloud;
 import it.polimi.ingsw.Model.Places.School;
+import it.polimi.ingsw.Model.Player;
 
-public class Board {
+public interface Board {
     private School schools[];
     private Archipelago archipelago[];
     private Cloud clouds[];
