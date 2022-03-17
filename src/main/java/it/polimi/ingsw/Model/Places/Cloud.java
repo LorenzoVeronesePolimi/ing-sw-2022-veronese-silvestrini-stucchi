@@ -37,6 +37,7 @@ public class Cloud {
         }
     }
 
+    //This method gives a list of students and deletes the current students in the cloud
     public List<Student> empty() {
         List<Student> removed = new ArrayList<Student>();
 

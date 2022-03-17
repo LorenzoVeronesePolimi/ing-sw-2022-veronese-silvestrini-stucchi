@@ -13,4 +13,14 @@ public class BoardThree extends Board {
     public BoardThree(List<Player> players) {
 
     }
+
+    @Override
+    public void moveStudentBagToCloud() {
+
+    }
+
+    @Override
+    public void moveStudentBagToSchool() {
+
+    }
 }

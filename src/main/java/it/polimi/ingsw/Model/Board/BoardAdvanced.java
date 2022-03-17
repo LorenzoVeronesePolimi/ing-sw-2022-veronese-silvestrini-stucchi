@@ -7,8 +7,15 @@ import it.polimi.ingsw.Model.Player;
 
 import java.util.List;
 
-public interface BoardAdvanced extends Board{
-    List<Coin> bank;
-    void moveStudentSchoolToBag(SPColour c);
+public class BoardAdvanced extends Board {
+    @Override
+    public void moveStudentBagToCloud() {
 
+    }
+
+    @Override
+    public void moveStudentBagToSchool() {
+
+    }
+    //void moveStudentSchoolToBag(SPColour c);
 }
