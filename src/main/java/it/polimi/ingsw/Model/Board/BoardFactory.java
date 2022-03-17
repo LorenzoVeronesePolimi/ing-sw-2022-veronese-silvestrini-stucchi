@@ -6,38 +6,27 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class BoardFactory {
-}
-package it.polimi.ingsw.Model.Game;
-
-        import it.polimi.ingsw.Model.Player;
-
-        import java.util.ArrayList;
-        import java.util.List;
-
-public class GameFactory {
-
     private List<Player> players;
 
-    public GameFactory(List<Player> param_players) {
+    public BoardFactory(List<Player> param_players) {
         this.players = new ArrayList<Player>();
         this.players.addAll(param_players);
-
-        createGame(players.size());
     }
 
     //TODO: check if return copy needed
-    public Game createGame(Integer numPlayers){
-        Game result;
+    public Board createBoard(){
         try {
-            if (numPlayers == 2) {
-                return result = new GameTwo(this.players);
-            } else if (numPlayers == 3) {
-                return result = new GameThree(this.players);
-            } else if (numPlayers == 4) {
-                return result = new GameFour(this.players);
+            if (players.size() == 2) {
+                return new BoardTwo(this.players);
+            } else if (players.size() == 3) {
+                return new BoardThree(this.players);
+            } else if (players.size() == 4) {
+                return new BoardFour(this.players);
             }
         } catch (Exception e) {
 
         }
+
+        return null;
     }
 }

@@ -12,22 +12,47 @@ import it.polimi.ingsw.Model.Player;
 import java.util.List;
 import java.util.Map;
 
-public interface Board {
-    List<School> schools=null;
-    List<Archipelago> archipelago=null;
-    List<Cloud> clouds=null;
-    MotherNature mn=null;
-    Bag bag=null;
+public abstract class Board {
+    List<School> schools;
+    List<Archipelago> archipelago;
+    List<Cloud> clouds;
+    MotherNature mn;
+    Bag bag;
+    Map<Player, School> playerSchool;
 
-    Map<Player, School> playerSchool=null;
-    void Board(List<Player> players);
-    void moveStudentSchoolToArchipelagos(Player p1, SPColour c, Archipelago a);
-    void moveStudentCloudToSchool(Player p1, Cloud cloud);
-    void moveStudentHallToDiningRoom(Player p1, SPColour c);
-    void moveStudentBagToCloud(Cloud cloud);
-    void moveStudentBagToSchool(Player p1);
-    int getMotherNaturePosition();
-    void moveMotherNature(int numPos);
-    void moveProfessor(SPColour c, Player dest);
-    School whereIsProfessor(SPColour c);
+    public void moveStudentSchoolToArchipelagos(Player p1, SPColour c, Archipelago a) {
+
+    };
+
+    public void moveStudentCloudToSchool(Player p1, Cloud cloud){
+
+    };
+
+    public void moveStudentHallToDiningRoom(Player p1, SPColour c){
+
+    };
+
+    public void moveStudentBagToCloud(Cloud cloud){
+
+    };
+
+    public void moveStudentBagToSchool(Player p1){
+
+    };
+
+    public int getMotherNaturePosition(){
+        return 0;
+    };
+
+    public void moveMotherNature(int numPos){
+
+    };
+
+    public void moveProfessor(SPColour c, Player dest){
+
+    };
+
+    public School whereIsProfessor(SPColour c){
+        return new School((new Player()), 2, 2);
+    };
 }
