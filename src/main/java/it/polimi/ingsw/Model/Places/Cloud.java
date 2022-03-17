@@ -32,6 +32,7 @@ public class Cloud {
         if (this.students.size() == 0){
             this.students.addAll(toAdd);
         } else {
+            //TODO: this needs to be a throw new Exception, and we need to create a new exception
             throw (ExceededMaxStudentException ex){
                 ex.printStackTrace();
             }
