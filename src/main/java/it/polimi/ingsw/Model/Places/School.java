@@ -3,6 +3,7 @@ package it.polimi.ingsw.Model.Places;
 import it.polimi.ingsw.Model.*;
 import it.polimi.ingsw.Model.Enumerations.SPColour;
 import it.polimi.ingsw.Model.Exceptions.*;
+import it.polimi.ingsw.Model.Pawns.Coin;
 import it.polimi.ingsw.Model.Pawns.Professor;
 import it.polimi.ingsw.Model.Pawns.Student;
 import it.polimi.ingsw.Model.Pawns.Tower;
@@ -14,6 +15,7 @@ import java.util.Set;
 
 public class School {
     private Player player;
+
     private final int numMaxStudentsHall;
     private final int numMaxTowers;
     private List<Student> studentsHall;
