@@ -23,7 +23,10 @@ public class App
     {
 
         System.out.println( "Hello World!" );
-        Bag bag = new Bag();
+
+        //This is accomplished in Board (abstract)
+        Bag bag = new Bag(); //Bag is now a singleton, so this should be replaced with [bag = Bag.instance();]
+
 
         Player player1 = new Player("Mario Rossi", PlayerColour.WHITE);
 

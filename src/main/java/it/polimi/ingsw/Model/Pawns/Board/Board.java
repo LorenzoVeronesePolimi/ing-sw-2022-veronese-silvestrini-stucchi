@@ -1,4 +1,4 @@
-package it.polimi.ingsw.Model.Board;
+package it.polimi.ingsw.Model.Pawns.Board;
 
 import it.polimi.ingsw.Model.Bag;
 import it.polimi.ingsw.Model.Enumerations.SPColour;
@@ -21,6 +21,17 @@ public abstract class Board {
     List<Cloud> clouds;     //list of all clouds in the game
     MotherNature mn;    //reference to MotherNature(Singleton)
     Bag bag;    //reference to the Bag
+
+    public Board() {
+        for(int i = 0; i < 12; i++) {
+            Archipelago a = new Archipelago();
+
+            archipelagos.add(a);
+        }
+
+        mn = MotherNature.instance();
+        bag = Bag.instance();
+    }
 
     public void moveStudentSchoolToArchipelagos(Player player, SPColour colour, Archipelago archi) {
         //school related to the player that made the move
@@ -76,6 +87,7 @@ public abstract class Board {
         return archipelagos.indexOf(mn.getCurrentPosition());
     };
 
+    //TODO: we need also to consider the initial placing of MN made by the players
     public void moveMotherNature(int numPos){
         //Archipelago newMNPosition = archipelagos.get(numPos);
         //mn.putInPosition(newMNPosition);
@@ -129,7 +141,7 @@ public abstract class Board {
             }
         }
 
-        //TODO: this case is an error and shuoulb be addressed
+        //TODO: this case is an error state and should be addressed (we don't want to arrive here)
         return null;
     };
 }

@@ -15,7 +15,16 @@ public class Bag {
     private List<Student> students; //remaining students
     private List<Professor> professors; //At the start of the game, all Professors are in the Bag
 
-    public Bag(){
+    private static Bag instance;
+
+    public static Bag instance() {
+        if(instance == null) {
+            instance = new Bag();
+        }
+
+        return instance;
+    }
+    private Bag(){
         SPColour[] availableColours = {SPColour.BLUE, SPColour.PINK, SPColour.RED, SPColour.GREEN, SPColour.YELLOW};
         this.initialStudents = new ArrayList<Student>();
         this.students = new ArrayList<Student>();

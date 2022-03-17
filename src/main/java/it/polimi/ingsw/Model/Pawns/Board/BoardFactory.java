@@ -1,4 +1,4 @@
-package it.polimi.ingsw.Model.Board;
+package it.polimi.ingsw.Model.Pawns.Board;
 
 import it.polimi.ingsw.Model.Player;
 
