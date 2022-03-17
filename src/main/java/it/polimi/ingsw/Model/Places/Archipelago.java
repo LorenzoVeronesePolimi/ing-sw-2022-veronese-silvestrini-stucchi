@@ -19,7 +19,9 @@ public class Archipelago {
     private boolean isTaken; //has this Archipelago been taken by any player?
 
     public Archipelago(){
+        this.islands = new ArrayList<Island>();
         this.islands.add(new Island());
+        this.isTaken = false;
     }
 
     public int getNumIslands(){
@@ -57,7 +59,7 @@ public class Archipelago {
             //1) nothing
             //2)
             if(this.isTaken == true){
-                this.removeTowers();
+                removed = this.removeTowers();
             }
             for(Island i : this.islands) {
                 try {

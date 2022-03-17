@@ -11,10 +11,9 @@ public class Player {
     private AssistantCard lastCard;
     private PlayerColour colour;
 
-    public Player() {}
-
-    public Player(String nickname) {
+    public Player(String nickname, PlayerColour colour) {
         this.nickname = nickname;
+        this.colour = colour;
     }
 
     public String getNickname() {

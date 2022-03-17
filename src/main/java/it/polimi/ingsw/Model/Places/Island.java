@@ -6,14 +6,16 @@ import it.polimi.ingsw.Model.Exceptions.NoStudentMatchColourException;
 import it.polimi.ingsw.Model.Pawns.Student;
 import it.polimi.ingsw.Model.Pawns.Tower;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 public class Island {
     private Set<Student> students;
     private Tower tower;
+
+    public Island(){
+        this.students = new HashSet<Student>();
+        this.tower = null;
+    }
 
     // return a Map like: RED -> 3 (Students of colour RED)
     public Map<SPColour, Integer> howManyStudents(){
@@ -50,7 +52,7 @@ public class Island {
     }
 
     public void addTower(Tower toAdd) throws AnotherTowerException {
-        if(this.tower == null){
+        if(this.tower == null){ // No tower has been added, yet
             this.tower = toAdd;
         }
         else{

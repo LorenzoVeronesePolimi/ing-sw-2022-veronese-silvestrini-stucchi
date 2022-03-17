@@ -7,7 +7,7 @@ public class PlayerAdvanced extends Player{
     private Coin coin;
 
     public PlayerAdvanced(Player p){
-        player=p;
+        super(p.getNickname(), p.getColour());
     }
     public void addCoin(){
 

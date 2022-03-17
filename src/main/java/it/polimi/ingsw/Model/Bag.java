@@ -17,6 +17,8 @@ public class Bag {
 
     public Bag(){
         SPColour[] availableColours = {SPColour.BLUE, SPColour.PINK, SPColour.RED, SPColour.GREEN, SPColour.YELLOW};
+        this.initialStudents = new ArrayList<Student>();
+        this.students = new ArrayList<Student>();
 
         // CREATE STUDENTS
         Student toAdd;
@@ -40,6 +42,7 @@ public class Bag {
         this.shuffle();
 
         // CREATE PROFESSORS
+        this.professors = new ArrayList<Professor>();
         for(SPColour c : availableColours){
             this.professors.add(new Professor(c));
         }
