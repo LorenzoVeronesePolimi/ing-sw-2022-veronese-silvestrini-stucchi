@@ -1,4 +1,4 @@
-package it.polimi.ingsw.Model.Pawns.Board;
+package it.polimi.ingsw.Model.Board;
 
 import it.polimi.ingsw.Model.Bag;
 import it.polimi.ingsw.Model.Enumerations.SPColour;

@@ -1,4 +1,4 @@
-package it.polimi.ingsw.Model.Pawns.Board;
+package it.polimi.ingsw.Model.Board;
 
 public class BoardAdvanced extends Board {
     @Override
