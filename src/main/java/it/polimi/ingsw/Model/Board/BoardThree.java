@@ -1,5 +1,9 @@
 package it.polimi.ingsw.Model.Board;
 
+import it.polimi.ingsw.Model.Exceptions.ExceededMaxStudentsCloudException;
+import it.polimi.ingsw.Model.Exceptions.ExceededMaxStudentsHallException;
+import it.polimi.ingsw.Model.Pawns.Student;
+import it.polimi.ingsw.Model.Places.Cloud;
 import it.polimi.ingsw.Model.Places.School;
 import it.polimi.ingsw.Model.Player;
 
@@ -15,15 +19,8 @@ public class BoardThree extends Board {
             schools.add(s);
             playerSchool.put(players.get(i), s);
         }
-    }
 
-    @Override
-    public void moveStudentBagToCloud() {
-
-    }
-
-    @Override
-    public void moveStudentBagToSchool() {
-
+        moveStudentBagToCloud(4);
+        moveStudentBagToSchool(9);
     }
 }

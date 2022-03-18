@@ -21,13 +21,5 @@ public class BoardFour extends Board {
         }
     }
 
-    @Override
-    public void moveStudentBagToCloud() {
 
-    }
-
-    @Override
-    public void moveStudentBagToSchool() {
-
-    }
 }

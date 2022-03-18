@@ -99,9 +99,30 @@ public abstract class Board {
 
     }
 
-    public abstract void moveStudentBagToCloud();
+    protected void moveStudentBagToCloud(int numStudents) {
+        for(Cloud c: clouds) {
+            List<Student> toBePlaced = bag.extractStudents(numStudents);
+            try {
+                c.fill(toBePlaced);
+            } catch (ExceededMaxStudentsCloudException e) {
+                e.printStackTrace();
+            }
+        }
+    }
 
-    public abstract void moveStudentBagToSchool();
+    protected void moveStudentBagToSchool(int numStudents) {
+        for(School s: schools) {
+            List<Student> toBePlaced = bag.extractStudents(numStudents);
+
+            for(Student st: toBePlaced) {
+                try {
+                    s.addStudentHall(st);
+                } catch (ExceededMaxStudentsHallException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
 
     //Mother Nature is put in the first archipelago
     private void placeMotherNatureInitialBoard() {

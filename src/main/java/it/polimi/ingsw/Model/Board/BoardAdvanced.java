@@ -9,14 +9,5 @@ public class BoardAdvanced extends Board {
         super(players);
     }
 
-    @Override
-    public void moveStudentBagToCloud() {
-
-    }
-
-    @Override
-    public void moveStudentBagToSchool() {
-
-    }
     //void moveStudentSchoolToBag(SPColour c);
 }
