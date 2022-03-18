@@ -22,9 +22,6 @@ public class BoardTwo extends Board{
         }
 
 
-
-
-
     }
 
     @Override

@@ -34,6 +34,9 @@ public abstract class Board {
         this.players.addAll(players);
         mn = MotherNature.instance();
         bag = Bag.instance();
+
+        placeMotherNatureInitialBoard();
+        placeStudentInitialBoard();
     }
 
     public void moveStudentSchoolToArchipelagos(Player player, SPColour colour, int archipelagoIndex) {
@@ -43,7 +46,7 @@ public abstract class Board {
         if(currentSchool != null) {
             try {
                 Student toBeMoved = currentSchool.removeStudentHall(colour);
-                archi.addStudent(toBeMoved);
+                archipelagos.get(archipelagoIndex).addStudent(toBeMoved);
             } catch (StudentNotFoundException e) {
                 e.printStackTrace();
             }
@@ -52,7 +55,7 @@ public abstract class Board {
 
     public void moveStudentCloudToSchool(Player player, int cloudIndex){
         //remove all the students from one particular cloud
-        List<Student> toBeMoved = cloud.empty();
+        List<Student> toBeMoved = clouds.get(cloudIndex).empty();
 
         //school related to the player that made the move
         School currentSchool = playerSchool.get(player);
@@ -82,32 +85,51 @@ public abstract class Board {
         }
     };
 
+    private void placeStudentInitialBoard() {
+        //get 10 initial students to be placed on the archipelagos (one each, except mn position and the opposite)
+        List<Student> initialStudents = bag.getInitialStudents();
+
+        for(int i = 1; i < archipelagos.size(); i++) {
+            if(i < 6) {
+                archipelagos.get(i).addStudent(initialStudents.get(i));
+            } else if(i > 6) {
+                archipelagos.get(i).addStudent(initialStudents.get(i-1));
+            }
+        }
+
+    }
+
     public abstract void moveStudentBagToCloud();
 
     public abstract void moveStudentBagToSchool();
+
+    //Mother Nature is put in the first archipelago
+    private void placeMotherNatureInitialBoard() {
+        mn.putInPosition(archipelagos.get(0));
+    }
+
+    public void moveMotherNature(int archipelagoIndex){
+        //TODO: check if the move is permitted (by the number of moves set in the AssistantCard)
+        //TODO: this check can be done before showing possible moves for MN
+
+        mn.putInPosition(archipelagos.get(archipelagoIndex));
+    };
 
     public int getMotherNaturePosition(){
         return archipelagos.indexOf(mn.getCurrentPosition());
     };
 
-    //TODO: we need also to consider the initial placing of MN made by the players
-    public void moveMotherNature(int numPos){
-        //Archipelago newMNPosition = archipelagos.get(numPos);
-        //mn.putInPosition(newMNPosition);
-
-    };
-
-    public void moveProfessor(Player destPlayer, SPColour colour){
+    public void moveProfessor(Player destinationPlayer, SPColour colour){
         //school related to the player that gets the professor
-        School destSchool = playerSchool.get(destPlayer);
-        School mittSchool = null;
+        School receiverSchool = playerSchool.get(destinationPlayer);
+        School senderSchool;
         Professor toBeMoved = null;
 
         if(isProfessorInSchool(colour)) {
-            mittSchool = whereIsProfessor(colour);
+            senderSchool = whereIsProfessor(colour);
 
             try {
-                toBeMoved = mittSchool.removeProfessor(colour);
+                toBeMoved = senderSchool.removeProfessor(colour);
             } catch (ProfessorNotFoundException e) {
                 e.printStackTrace();
             }
@@ -119,7 +141,7 @@ public abstract class Board {
             }
         }
 
-        destSchool.addProfessor(toBeMoved);
+        receiverSchool.addProfessor(toBeMoved);
     };
 
     private boolean isProfessorInSchool(SPColour colour) {
@@ -151,10 +173,10 @@ public abstract class Board {
     public void conquerArchipelago(Player player, int archipelagoIndex) {
         School currentSchool = playerSchool.get(player);
 
-        archipelagos.get(idArchi)
+        //archipelagos.get(idArchi)
 
         Tower toBeMoved = currentSchool.removeTower();
-        archipelagos.get(idArchi).addTower(toBeMoved);
+        //archipelagos.get(idArchi).addTower(toBeMoved);
 
     }
 }
