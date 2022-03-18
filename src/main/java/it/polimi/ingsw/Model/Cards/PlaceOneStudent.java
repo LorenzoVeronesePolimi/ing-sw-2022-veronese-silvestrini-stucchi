@@ -8,6 +8,7 @@ import it.polimi.ingsw.Model.Places.Archipelago;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 public class PlaceOneStudent extends AbstractCharacterCard{
     private List<Student> fourStudents;
@@ -17,20 +18,18 @@ public class PlaceOneStudent extends AbstractCharacterCard{
         super(1);
         Bag bag = Bag.instance();
         fourStudents = bag.extractStudents(4);
-        archi=archipelagos;
+        archi.addAll(archipelagos); // o assegnamento archi=archipelagos?????
     }
     public void useEffect(SPColour chosen, int archipelago) throws StudentNotFoundException{
-        /*Optional s= fourStudents.stream().filter(x -> x.getColour().equals(chosen)).findAny();
+        List<Student> s= fourStudents.stream().filter(x -> x.getColour().equals(chosen)).collect(Collectors.toList());
         if(!s.isEmpty()){
-            fourStudents.remove(s);
-            archi.get(archipelago).addStudent(s);
+            fourStudents.remove(s.get(0));
+            archi.get(archipelago).addStudent(s.get(0));
         }else {
             throw new StudentNotFoundException();
         }
-        }
-*/
         Bag bag = Bag.instance();
-        List<Student> s = bag.extractStudents(1);
+        s = bag.extractStudents(1);
         fourStudents.add(s.get(0));
     }
 }
