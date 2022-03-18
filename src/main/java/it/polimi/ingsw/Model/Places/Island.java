@@ -21,11 +21,10 @@ public class Island {
     public Map<SPColour, Integer> howManyStudents(){
         Map<SPColour, Integer> data = new HashMap<SPColour, Integer>();
 
-        data.put(SPColour.BLUE, 0);
-        data.put(SPColour.RED, 0);
-        data.put(SPColour.PINK, 0);
-        data.put(SPColour.GREEN, 0);
-        data.put(SPColour.YELLOW, 0);
+        SPColour[] availableColours = {SPColour.BLUE, SPColour.PINK, SPColour.RED, SPColour.GREEN, SPColour.YELLOW};
+        for(SPColour c : availableColours){
+            data.put(c, 0);
+        }
 
         for(Student student : this.students){
             data.replace(student.getColour(), data.get(student.getColour()) + 1); //add 1 for each Student of a certain SPColour you find
