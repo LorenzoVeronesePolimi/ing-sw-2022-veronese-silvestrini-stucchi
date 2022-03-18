@@ -6,6 +6,7 @@ import it.polimi.ingsw.Model.Exceptions.AnotherTowerException;
 import it.polimi.ingsw.Model.Exceptions.InvalidTowerNumberException;
 import it.polimi.ingsw.Model.Pawns.Student;
 import it.polimi.ingsw.Model.Pawns.Tower;
+import it.polimi.ingsw.Model.Player;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -32,7 +33,7 @@ import java.util.Map;
 // then update when a change is made
 public class Archipelago {
     private List<Island> islands;
-    private boolean isTaken; //has this Archipelago been taken by any player?
+    private Player owner; //has this Archipelago been taken by any player?
     // studentsData: is a Map which matches each SPColour with how many Students of that SPColour the Archipelago
     // contains. This is updated using updateStudentsData() each time a Student is added/removed
     private Map<SPColour, Integer> studentsData;
@@ -41,11 +42,16 @@ public class Archipelago {
     public Archipelago(){
         this.islands = new ArrayList<Island>();
         this.islands.add(new Island());
-        this.isTaken = false;
+        this.owner = null; // null as long as no one owns the Archipelago
     }
 
     public int getNumIslands(){
         return this.islands.size();
+    }
+
+
+    public Player getOwner(){
+        return this.owner;
     }
 
 
@@ -81,7 +87,7 @@ public class Archipelago {
         if (towersToAdd.size() == this.islands.size()) {
             //1) do nothing
             //2)
-            if(this.isTaken == true){
+            if(this.owner != null){
                 removed = this.removeTowers();
             }
             for(Island i : this.islands) {
@@ -101,13 +107,9 @@ public class Archipelago {
     // This make me loose the reference to archipelagoToMerge; no problem because I still have the
     // reference to each island
     public void mergeArchipelagos(Archipelago archipelagoToMerge) {
-        PlayerColour c1 = this.islands.get(0).getTower().getPlayer().getColour();
-        PlayerColour c2 = archipelagoToMerge.islands.get(0).getTower().getPlayer().getColour();
-
-        if(archipelagoToMerge.isTaken == true && this.isTaken == true) { // I can't merge not taken Archipelagos
-            if(c1.equals(c2)) { //check if the Tower color is the same
-                this.islands.addAll(archipelagoToMerge.getOriginalIslands());
-            }
+        // TODO: equals of Player
+        if(archipelagoToMerge.getOwner() == this.owner) { // I can't merge not taken Archipelago
+            this.islands.addAll(archipelagoToMerge.getOriginalIslands());
         }
     }
 

@@ -26,7 +26,7 @@ public abstract class Board {
 
     public Board(List<Player> players) {
         for(int i = 0; i < 12; i++) {
-            Archipelago a = new Archipelago(i);
+            Archipelago a = new Archipelago();
 
             archipelagos.add(a);
         }
@@ -169,7 +169,6 @@ public abstract class Board {
         return null;
     };
 
-    //TODO: archipelago parameter(?)
     public void conquerArchipelago(Player player, int archipelagoIndex) {
         School currentSchool = playerSchool.get(player);
 
@@ -178,5 +177,32 @@ public abstract class Board {
         Tower toBeMoved = currentSchool.removeTower();
         //archipelagos.get(idArchi).addTower(toBeMoved);
 
+    }
+
+
+    // Returns the Archipelago's index where MotherNature is positioned
+    private int whereIsMotherNature(){
+        Archipelago current = this.mn.getCurrentPosition();
+
+        int index = 0;
+        for(Archipelago a : this.archipelagos){
+            if(current == a){
+                return index;
+            }
+            index++;
+        }
+
+        //TODO: exception
+        return -1;
+    }
+
+
+
+    // MotherNature has been positioned: let's check if the Archipelago where she is, has to be conquered
+    // TODO
+    public void checkIfConquerable(Player currentPlayer){
+        Archipelago currentArchipelago = this.archipelagos.get(this.whereIsMotherNature());
+
+        //if(currentPlayer == currentArchipelago.get)
     }
 }
