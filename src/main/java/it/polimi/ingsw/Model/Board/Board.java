@@ -6,6 +6,7 @@ import it.polimi.ingsw.Model.Exceptions.*;
 import it.polimi.ingsw.Model.Pawns.MotherNature;
 import it.polimi.ingsw.Model.Pawns.Professor;
 import it.polimi.ingsw.Model.Pawns.Student;
+import it.polimi.ingsw.Model.Pawns.Tower;
 import it.polimi.ingsw.Model.Places.Archipelago;
 import it.polimi.ingsw.Model.Places.Cloud;
 import it.polimi.ingsw.Model.Places.School;
@@ -16,24 +17,26 @@ import java.util.Map;
 
 public abstract class Board {
     List<School> schools;   //list of all school in the game (one for each player)
+    List<Player> players;   //list of all players in the game (in order)
     Map<Player, School> playerSchool;   //map of players and their relative school
-    List<Archipelago> archipelagos;     //list of all the archipelagos in the game
+    List<Archipelago> archipelagos;     //list of all the archipelagos in the game (in order)
     List<Cloud> clouds;     //list of all clouds in the game
     MotherNature mn;    //reference to MotherNature(Singleton)
-    Bag bag;    //reference to the Bag
+    Bag bag;   //reference to the Bag
 
-    public Board() {
+    public Board(List<Player> players) {
         for(int i = 0; i < 12; i++) {
-            Archipelago a = new Archipelago();
+            Archipelago a = new Archipelago(i);
 
             archipelagos.add(a);
         }
 
+        this.players.addAll(players);
         mn = MotherNature.instance();
         bag = Bag.instance();
     }
 
-    public void moveStudentSchoolToArchipelagos(Player player, SPColour colour, Archipelago archi) {
+    public void moveStudentSchoolToArchipelagos(Player player, SPColour colour, int archipelagoIndex) {
         //school related to the player that made the move
         School currentSchool = playerSchool.get(player);
 
@@ -47,7 +50,7 @@ public abstract class Board {
         }
     };
 
-    public void moveStudentCloudToSchool(Player player, Cloud cloud){
+    public void moveStudentCloudToSchool(Player player, int cloudIndex){
         //remove all the students from one particular cloud
         List<Student> toBeMoved = cloud.empty();
 
@@ -91,7 +94,6 @@ public abstract class Board {
     public void moveMotherNature(int numPos){
         //Archipelago newMNPosition = archipelagos.get(numPos);
         //mn.putInPosition(newMNPosition);
-
 
     };
 
@@ -144,4 +146,15 @@ public abstract class Board {
         //TODO: this case is an error state and should be addressed (we don't want to arrive here)
         return null;
     };
+
+    //TODO: archipelago parameter(?)
+    public void conquerArchipelago(Player player, int archipelagoIndex) {
+        School currentSchool = playerSchool.get(player);
+
+        archipelagos.get(idArchi)
+
+        Tower toBeMoved = currentSchool.removeTower();
+        archipelagos.get(idArchi).addTower(toBeMoved);
+
+    }
 }

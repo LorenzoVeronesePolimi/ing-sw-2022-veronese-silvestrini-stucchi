@@ -68,4 +68,7 @@ public class Island {
         return removed;
     }
 
+    public Tower getTower() {
+        return tower;
+    }
 }

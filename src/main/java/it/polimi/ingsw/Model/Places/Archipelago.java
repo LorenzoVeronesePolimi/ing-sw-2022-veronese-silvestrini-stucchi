@@ -1,5 +1,7 @@
 package it.polimi.ingsw.Model.Places;
 
+import it.polimi.ingsw.Model.Enumerations.PlayerColour;
+import it.polimi.ingsw.Model.Enumerations.SPColour;
 import it.polimi.ingsw.Model.Exceptions.AnotherTowerException;
 import it.polimi.ingsw.Model.Exceptions.InvalidTowerNumberException;
 import it.polimi.ingsw.Model.Pawns.Student;
@@ -18,7 +20,7 @@ public class Archipelago {
     private List<Island> islands;
     private boolean isTaken; //has this Archipelago been taken by any player?
 
-    public Archipelago(){
+    public Archipelago(int id){
         this.islands = new ArrayList<Island>();
         this.islands.add(new Island());
         this.isTaken = false;
@@ -77,8 +79,13 @@ public class Archipelago {
     // This make me loose the reference to archipelagoToMerge; no problem because I still have the
     // reference to each island
     public void mergeArchipelagos(Archipelago archipelagoToMerge) {
+        PlayerColour c1 = this.islands.get(0).getTower().getPlayer().getColour();
+        PlayerColour c2 = archipelagoToMerge.islands.get(0).getTower().getPlayer().getColour();
+
         if(archipelagoToMerge.isTaken == true && this.isTaken == true) { // I can't merge not taken Archipelagos
-            this.islands.addAll(archipelagoToMerge.getOriginalIslands());
+            if(c1.equals(c2)) { //check if the Tower color is the same
+                this.islands.addAll(archipelagoToMerge.getOriginalIslands());
+            }
         }
     }
 

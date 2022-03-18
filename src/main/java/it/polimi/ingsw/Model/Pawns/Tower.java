@@ -10,6 +10,6 @@ public class Tower {
     }
 
     public Player getPlayer() {
-        return new Player();
+        return this.player;
     }
 }

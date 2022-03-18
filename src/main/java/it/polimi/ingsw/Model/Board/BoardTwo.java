@@ -8,16 +8,16 @@ import java.util.List;
 
 public class BoardTwo extends Board{
 
-    public BoardTwo(List<Player> players) {
-        super();
+    public BoardTwo(List<Player> playersParam) {
+        super(playersParam);
 
         //creation of schools, map player -> school, clouds.
         for(int i = 0; i < players.size(); i++) {
-            School s =  new School(players.get(i), 7, 8);
+            School s =  new School(this.players.get(i), 7, 8);
             Cloud c =  new Cloud(3);
 
             schools.add(s);
-            playerSchool.put(players.get(i), s);
+            playerSchool.put(this.players.get(i), s);
             clouds.add(c);
         }
 

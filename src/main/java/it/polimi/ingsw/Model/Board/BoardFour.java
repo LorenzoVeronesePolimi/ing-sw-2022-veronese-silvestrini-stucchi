@@ -8,6 +8,8 @@ import java.util.List;
 public class BoardFour extends Board {
 
     public BoardFour(List<Player> players) {
+        super(players);
+
         //creation of a map player -> school
         for(int i = 0; i < players.size(); i++) {
             //TODO: only one team member has to get all 8 towers, the other one gets only students. We need to consider the fact that
