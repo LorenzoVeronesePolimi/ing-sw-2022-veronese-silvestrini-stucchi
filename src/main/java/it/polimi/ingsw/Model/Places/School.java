@@ -148,4 +148,24 @@ public class School {
             e.printStackTrace();
         }
     }
+
+    public int getNumStudentColour(SPColour colour) throws WrongColourException {
+        if(colour == SPColour.RED) {
+           return studentsDiningRed.size();
+        }
+        if(colour == SPColour.BLUE) {
+            return studentsDiningBlue.size();
+        }
+        if(colour == SPColour.GREEN) {
+            return studentsDiningGreen.size();
+        }
+        if(colour == SPColour.PINK) {
+            return studentsDiningPink.size();
+        }
+        if(colour == SPColour.YELLOW) {
+            return studentsDiningYellow.size();
+        }
+
+        throw new WrongColourException();
+    }
 }

@@ -165,7 +165,8 @@ public abstract class Board {
         receiverSchool.addProfessor(toBeMoved);
     };
 
-    private boolean isProfessorInSchool(SPColour colour) {
+    //Check if professor is in onw of the schools or in the bag
+    public boolean isProfessorInSchool(SPColour colour) {
         for(School s: schools) {
             for(Professor p: s.getProfessors()) {
                 if(p.getColour().equals(colour)) {
@@ -177,6 +178,7 @@ public abstract class Board {
         return false;
     }
 
+    //che the school of the professor
     public School whereIsProfessor(SPColour colour){
         for(School s: schools) {
             for(Professor p: s.getProfessors()) {
@@ -225,5 +227,9 @@ public abstract class Board {
         Archipelago currentArchipelago = this.archipelagos.get(this.whereIsMotherNature());
 
         //if(currentPlayer == currentArchipelago.get)
+    }
+
+    public School getPlayerSchool(Player player) {
+        return playerSchool.get(player);
     }
 }

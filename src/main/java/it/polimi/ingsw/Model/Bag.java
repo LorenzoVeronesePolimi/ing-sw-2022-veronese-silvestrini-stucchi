@@ -86,6 +86,11 @@ public class Bag {
         throw new NoProfessorBagException();
     }
 
+    //called by TakeProfessorOnEquity
+    public void putProfessor(Professor professor) {
+        professors.add(professor);
+    }
+
     private void shuffleInitial(){
         Collections.shuffle(this.initialStudents, new Random());
     }

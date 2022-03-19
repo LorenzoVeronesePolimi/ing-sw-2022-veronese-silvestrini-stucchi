@@ -8,5 +8,5 @@ public abstract class CharacterCard {
 
     public Integer getPrice(){ return price; }
 
-    public void useEffect(){}
+
 }
