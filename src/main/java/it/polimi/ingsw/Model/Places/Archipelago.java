@@ -4,6 +4,7 @@ import it.polimi.ingsw.Model.Enumerations.PlayerColour;
 import it.polimi.ingsw.Model.Enumerations.SPColour;
 import it.polimi.ingsw.Model.Exceptions.AnotherTowerException;
 import it.polimi.ingsw.Model.Exceptions.InvalidTowerNumberException;
+import it.polimi.ingsw.Model.Exceptions.MergeDifferentOwnersException;
 import it.polimi.ingsw.Model.Pawns.Student;
 import it.polimi.ingsw.Model.Pawns.Tower;
 import it.polimi.ingsw.Model.Player;
@@ -46,6 +47,12 @@ public class Archipelago {
         this.islands = new ArrayList<Island>();
         this.islands.add(new Island());
         this.owner = null; // null as long as no one owns the Archipelago
+
+        this.studentsData = new HashMap<SPColour, Integer>();
+        SPColour[] availableColours = {SPColour.BLUE, SPColour.PINK, SPColour.RED, SPColour.GREEN, SPColour.YELLOW};
+        for(SPColour c : availableColours){
+            this.studentsData.put(c, 0);
+        }
     }
 
 
@@ -64,6 +71,21 @@ public class Archipelago {
         return this.islands;
     }
 
+    public boolean getForbidFlag(){
+        return this.forbidFlag;
+    }
+
+    public boolean getTowerNoValueFlag(){
+        return this.towerNoValueFlag;
+    };
+
+    public void setForbidFlag(boolean forbidFlag) {
+        this.forbidFlag = forbidFlag;
+    }
+
+    public void setTowerNoValueFlag(boolean towerNoValueFlag) {
+        this.towerNoValueFlag = towerNoValueFlag;
+    }
 
     public Map<SPColour, Integer> howManyStudents(){
         Map<SPColour, Integer> studentsDataCopy = new HashMap<SPColour, Integer>();
@@ -112,6 +134,7 @@ public class Archipelago {
                 try {
                     i.addTower(towersToAdd.remove(0)); // Always remove the first one because the List looses length
                 } catch (AnotherTowerException ex){ex.printStackTrace();}
+                this.owner = this.islands.get(0).getTower().getPlayer();
             }
         }
         else{
@@ -124,11 +147,15 @@ public class Archipelago {
 
     // This make me loose the reference to archipelagoToMerge; no problem because I still have the
     // reference to each island
-    public void mergeArchipelagos(Archipelago archipelagoToMerge) {
+    public void mergeArchipelagos(Archipelago archipelagoToMerge) throws MergeDifferentOwnersException{
         // TODO: equals of Player
         if(archipelagoToMerge.getOwner() == this.owner) { // I can't merge not taken Archipelago
             this.islands.addAll(archipelagoToMerge.getOriginalIslands());
         }
+        else{
+            throw new MergeDifferentOwnersException();
+        }
+        this.updateStudentsData();
     }
 
 
@@ -155,13 +182,15 @@ public class Archipelago {
 
     public void addStudent(Student studentToAdd) {
         this.islands.get(0).addStudent(studentToAdd);
+        this.updateStudentsData();
     }
 
-    public void setForbidFlag(boolean forbidFlag) {
-        this.forbidFlag = forbidFlag;
-    }
-
-    public void setTowerNoValueFlag(boolean towerNoValueFlag) {
-        this.towerNoValueFlag = towerNoValueFlag;
+    @Override
+    public String toString() {
+        return "Archipelago{" +
+                "studentsData=" + studentsData +
+                ", owner=" + owner +
+                ", numTowers=" + this.islands.size() +
+                '}';
     }
 }

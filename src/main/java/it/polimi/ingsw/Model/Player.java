@@ -27,4 +27,13 @@ public class Player {
     public PlayerColour getColour() {
         return colour;
     }
+
+
+    @Override
+    public String toString() {
+        return "Player{" +
+                "nickname='" + nickname + '\'' +
+                ", colour=" + colour +
+                '}';
+    }
 }

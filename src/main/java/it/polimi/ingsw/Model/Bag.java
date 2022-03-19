@@ -70,7 +70,6 @@ public class Bag {
             this.students.remove(removed);
             extracted.add(removed);
         }
-
         return extracted;
     }
 

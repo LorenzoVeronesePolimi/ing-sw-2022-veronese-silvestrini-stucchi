@@ -12,6 +12,7 @@ import it.polimi.ingsw.Model.Places.Cloud;
 import it.polimi.ingsw.Model.Places.School;
 import it.polimi.ingsw.Model.Player;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -27,12 +28,15 @@ public abstract class Board {
 
 
     public Board(List<Player> players) {
+        this.archipelagos = new ArrayList<Archipelago>();
+
         for(int i = 0; i < 12; i++) {
             Archipelago a = new Archipelago();
 
             archipelagos.add(a);
         }
 
+        this.players = new ArrayList<Player>();
         this.players.addAll(players);
         mn = MotherNature.instance();
         bag = Bag.instance();
@@ -91,11 +95,11 @@ public abstract class Board {
         //get 10 initial students to be placed on the archipelagos (one each, except mn position and the opposite)
         List<Student> initialStudents = bag.getInitialStudents();
 
-        for(int i = 1; i < archipelagos.size(); i++) {
+        for(int i = 1; i < this.archipelagos.size(); i++) {
             if(i < 6) {
-                archipelagos.get(i).addStudent(initialStudents.get(i));
+                this.archipelagos.get(i).addStudent(initialStudents.get(i-1));
             } else if(i > 6) {
-                archipelagos.get(i).addStudent(initialStudents.get(i-1));
+                this.archipelagos.get(i).addStudent(initialStudents.get(i-2));
             }
         }
 
@@ -112,13 +116,13 @@ public abstract class Board {
         }
     }
 
-    protected void moveStudentBagToSchool(int numStudents) {
-        for(School s: schools) {
+    public void moveStudentBagToSchool(int numStudents) {
+        for(School s: this.schools) {
             List<Student> toBePlaced = bag.extractStudents(numStudents);
 
-            for(Student st: toBePlaced) {
+            for(Student student: toBePlaced) {
                 try {
-                    s.addStudentHall(st);
+                    s.addStudentHall(student);
                 } catch (ExceededMaxStudentsHallException e) {
                     e.printStackTrace();
                 }
@@ -235,6 +239,7 @@ public abstract class Board {
     }
 
 
+    // This probably will be in the Controller
     public void makeTurn(){
         //TODO: the current Player moves students
 
@@ -263,13 +268,23 @@ public abstract class Board {
 
     }
 
-
+    // (*) The controller will call a specific method (ex. checkIfConquerableAdvance) only if we have BoardAdvanced
+    // (*) and we have ForbidIsland and/or TowerNoValue as CharacterCards
     // true if the current Player (who moved MotherNature) will conquer the Archipelago, false otherwise
     private boolean checkIfConquerable(int currPosMotherNature){
         Archipelago currentArchipelago = this.archipelagos.get(currPosMotherNature);
         //if the owner of the Archipelago is the current Player, he conquers nothing
         if(currentArchipelago.getOwner() == this.players.get(currentPlayer)){
             return false;
+        }
+        else if(currentArchipelago.getOwner() == null){ //archipelago never conquered before
+            return true;
+        }
+        else if(currentArchipelago.getForbidFlag()){ //TODO: this is an advanced function => see comment above(*)
+            currentArchipelago.setForbidFlag(false);
+        }
+        else if(currentArchipelago.getTowerNoValueFlag()){ //TODO: this is an advanced function => see comment above(*)
+            currentArchipelago.setTowerNoValueFlag(false);
         }
         //the current Player is not the owner: can he conquer the Archipelago?
         else{
@@ -282,7 +297,7 @@ public abstract class Board {
                 return false;
             }
         }
-
+        return false;
     }
 
 
@@ -332,8 +347,6 @@ public abstract class Board {
                 Player looser = looserTowers.get(0).getPlayer();
                 this.playerSchool.get(looser).addNumTower(looserTowers);
             }
-
-            //TODO: merge Archipelagos
         } catch(InvalidTowerNumberException ex){ex.printStackTrace();}
     }
 
@@ -344,14 +357,16 @@ public abstract class Board {
             Archipelago currentArchipelago = this.archipelagos.get(this.whereIsMotherNature());
             Archipelago rightArchipelago = this.archipelagos.get((this.whereIsMotherNature() - 1) % 12);
             this.archipelagos.remove(rightArchipelago);
-            currentArchipelago.mergeArchipelagos((rightArchipelago));
+            try{currentArchipelago.mergeArchipelagos((rightArchipelago));}
+            catch(MergeDifferentOwnersException ex){ex.printStackTrace();}
             this.mergeArchipelagos();
         }
         else if(this.isThereLeftMerge()){
             Archipelago currentArchipelago = this.archipelagos.get(this.whereIsMotherNature());
             Archipelago leftArchipelago = this.archipelagos.get((this.whereIsMotherNature() + 1) % 12);
             this.archipelagos.remove(leftArchipelago);
-            currentArchipelago.mergeArchipelagos((leftArchipelago));
+            try{currentArchipelago.mergeArchipelagos((leftArchipelago));}
+            catch(MergeDifferentOwnersException ex){ex.printStackTrace();}
             this.mergeArchipelagos();
         }
     }

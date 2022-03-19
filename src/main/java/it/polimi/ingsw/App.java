@@ -1,9 +1,13 @@
 package it.polimi.ingsw;
 
 import it.polimi.ingsw.Model.Bag;
+import it.polimi.ingsw.Model.Board.Board;
+import it.polimi.ingsw.Model.Board.BoardFactory;
 import it.polimi.ingsw.Model.Enumerations.PlayerColour;
+import it.polimi.ingsw.Model.Enumerations.SPColour;
 import it.polimi.ingsw.Model.Exceptions.AnotherTowerException;
 import it.polimi.ingsw.Model.Exceptions.InvalidTowerNumberException;
+import it.polimi.ingsw.Model.Exceptions.MergeDifferentOwnersException;
 import it.polimi.ingsw.Model.Pawns.Student;
 import it.polimi.ingsw.Model.Pawns.Tower;
 import it.polimi.ingsw.Model.Places.Archipelago;
@@ -41,22 +45,53 @@ public class App
         System.out.println( "Hello World!" );
 
         //This is accomplished in Board (abstract)
-        //Bag bag = new Bag(); //Bag is now a singleton, so this should be replaced with [bag = Bag.instance();]
+        //Bag bag = Bag.instance(); //Bag is a singleton
 
+        Player player1 = new Player("Mario Bianchi", PlayerColour.WHITE);
+        Player player2 = new Player("Luigi Neri", PlayerColour.BLACK);
+        /*
+        TEST ARCHIPELAGO
+        List<Student> initialStudents = bag.getInitialStudents();
+        Archipelago a1 = new Archipelago();
+        Archipelago a2 = new Archipelago();
 
-        Player player1 = new Player("Mario Rossi", PlayerColour.WHITE);
+        a1.addStudent(initialStudents.remove(0));
 
-        //List<Student> initialStudents = bag.getInitialStudents();
-        //Archipelago a1 = new Archipelago();
-        //Archipelago a2 = new Archipelago();
-
-        Tower t = new Tower(player1);
-
-        List<Tower> towerToAdd = new ArrayList<Tower>();
+        Tower t1 = new Tower(player1);
+        List<Tower> towerToAdd1 = new ArrayList<Tower>();
         //a1.getNumIslands to know how many Towers I have to add
-        towerToAdd.add(t);
-        /*try{
-            a1.conquerArchipelago(towerToAdd);
-        } catch(InvalidTowerNumberException ex){ex.printStackTrace();}*/
+        towerToAdd1.add(t1);
+        try{
+            a1.conquerArchipelago(towerToAdd1);
+        } catch(InvalidTowerNumberException ex){ex.printStackTrace();}
+
+        System.out.println(a1.toString());
+
+        a2.addStudent(initialStudents.remove(0));
+
+        Tower t2 = new Tower(player2);
+        List<Tower> towerToAdd2 = new ArrayList<Tower>();
+        //a1.getNumIslands to know how many Towers I have to add
+        towerToAdd2.add(t2);
+        try{
+            a2.conquerArchipelago(towerToAdd2);
+        } catch(InvalidTowerNumberException ex){ex.printStackTrace();}
+        System.out.println(a2.toString());
+
+        try{a1.mergeArchipelagos(a2);}
+        catch(MergeDifferentOwnersException ex){ex.printStackTrace();}
+        System.out.println(a1.toString());*/
+
+        List<Player> players = new ArrayList<Player>();
+        players.add(player1);
+        players.add(player2);
+
+        BoardFactory bf = new BoardFactory(players);
+        Board board = bf.createBoard(); // -> BoardTwo
+
+        //board.moveStudentBagToSchool(1);
+        board.moveStudentSchoolToArchipelagos(player1, SPColour.PINK, 2);
+        board.moveMotherNature(2);
+        board.makeTurn();
     }
 }

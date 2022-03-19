@@ -27,9 +27,9 @@ public class School {
     private List<Professor> professors;     //TODO: Set is better
     private List<Tower> towers;
 
-    public School(Player player, int numStudentsHall, int numTowers){
+    public School(Player player, int numMaxStudentsHall, int numTowers){
         this.player = player;
-        this.numMaxStudentsHall = numStudentsHall;
+        this.numMaxStudentsHall = numMaxStudentsHall;
         this.numMaxTowers = numTowers;
         this.studentsHall = new ArrayList<>();
         this.studentsDiningRed = new LinkedList<>();
@@ -72,7 +72,7 @@ public class School {
     }
 
     public Tower removeTower(){
-         return towers.remove(towers.indexOf(towers.size() - 1));
+         return towers.remove(0);
     }
 
     public List<Tower> removeNumTowers(int num){
