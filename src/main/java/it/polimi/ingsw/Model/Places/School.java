@@ -63,8 +63,25 @@ public class School {
         }
     }
 
+    public void addNumTower(List<Tower> toAdd){
+        for(Tower t : toAdd){
+            try{
+                this.addTower(t);
+            } catch(ExceededMaxTowersException ex){ex.printStackTrace();}
+        }
+    }
+
     public Tower removeTower(){
          return towers.remove(towers.indexOf(towers.size() - 1));
+    }
+
+    public List<Tower> removeNumTowers(int num){
+        List<Tower> removed = new ArrayList<Tower>();
+        for(int i = 0; i < num; i++){
+            removed.add(removeTower());
+        }
+
+        return removed;
     }
 
     public void addProfessor(Professor professor){

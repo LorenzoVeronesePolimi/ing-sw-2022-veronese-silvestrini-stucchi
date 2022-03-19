@@ -18,11 +18,13 @@ import java.util.Map;
 public abstract class Board {
     List<School> schools;   //list of all school in the game (one for each player)
     List<Player> players;   //list of all players in the game (in order)
+    int currentPlayer; //index of the current Player in the list players
     Map<Player, School> playerSchool;   //map of players and their relative school
     List<Archipelago> archipelagos;     //list of all the archipelagos in the game (in order)
     List<Cloud> clouds;     //list of all clouds in the game
     MotherNature mn;    //reference to MotherNature(Singleton)
     Bag bag;   //reference to the Bag
+
 
     public Board(List<Player> players) {
         for(int i = 0; i < 12; i++) {
@@ -222,7 +224,6 @@ public abstract class Board {
 
 
     // MotherNature has been positioned: let's check if the Archipelago where she is, has to be conquered
-    // TODO
     public void checkIfConquerable(Player currentPlayer){
         Archipelago currentArchipelago = this.archipelagos.get(this.whereIsMotherNature());
 
@@ -231,5 +232,138 @@ public abstract class Board {
 
     public School getPlayerSchool(Player player) {
         return playerSchool.get(player);
+    }
+
+
+    public void makeTurn(){
+        //TODO: the current Player moves students
+
+        //MOTHER NATURE HAS BEEN MOVED
+        //Is the Archipelago conquerable?
+        int currPosMotherNature = this.whereIsMotherNature();
+        boolean archipelagoConquerable = checkIfConquerable(currPosMotherNature);
+        if(archipelagoConquerable){
+            this.conquerArchipelago(this.players.get(this.currentPlayer), this.archipelagos.get(currPosMotherNature));
+
+            //let's merge Archipelagos
+            this.mergeArchipelagos();
+        }
+        else { //the Archipelago remains to the owner
+        }
+
+        //THE CURRENT PLAYER CHOOSES THE CLOUD TO EMPTY
+
+        //SET CURRENT PLAYER FOR THE NEXT TURN
+        if(this.currentPlayer < this.players.size() - 1){
+            this.currentPlayer++;
+        }
+        else{
+            this.currentPlayer = 0;
+        }
+
+    }
+
+
+    // true if the current Player (who moved MotherNature) will conquer the Archipelago, false otherwise
+    private boolean checkIfConquerable(int currPosMotherNature){
+        Archipelago currentArchipelago = this.archipelagos.get(currPosMotherNature);
+        //if the owner of the Archipelago is the current Player, he conquers nothing
+        if(currentArchipelago.getOwner() == this.players.get(currentPlayer)){
+            return false;
+        }
+        //the current Player is not the owner: can he conquer the Archipelago?
+        else{
+            //who has higher influence according to rules?
+            Player winner = this.computeWinner(currentArchipelago.getOwner(), this.players.get(currentPlayer), currentArchipelago);
+            if(winner == this.players.get(currentPlayer)){
+                return true;
+            }
+            else{
+                return false;
+            }
+        }
+
+    }
+
+
+    // Computes which of two players has most influence on a Archipelago
+    private Player computeWinner(Player owner, Player challenger, Archipelago archipelago){
+        int ownerInfluence = this.computeInfluenceOfPlayer(owner, archipelago);
+        int challengerInfluence = this.computeInfluenceOfPlayer(challenger, archipelago);
+
+        if(ownerInfluence > challengerInfluence){
+            return owner;
+        }
+        else{
+            return challenger;
+        }
+    }
+
+
+    // Returns the influence of a Player on a Archipelago
+    private int computeInfluenceOfPlayer(Player player, Archipelago archipelago){
+        int influence = 0;
+
+        //if the player owns the Archipelago, the number of Towers (= number of Islands) counts
+        if(player == archipelago.getOwner()){
+            influence += archipelago.getNumIslands();
+        }
+
+        Map<SPColour, Integer> archipelagoStudentsData = archipelago.howManyStudents(); //data about Students on the Archipelago
+        List<Professor> playerProfessors = this.playerSchool.get(player).getProfessors(); //Professors of the player
+        for(Professor p : playerProfessors){
+            influence += archipelagoStudentsData.get(p.getColour());
+        }
+
+        return influence;
+    }
+
+
+    // the Player conquers the Archipelago putting his own Towers and removing the previous ones (if present)
+    private void conquerArchipelago(Player conqueror, Archipelago toConquer){
+        // conqueror's Towers to put on the Archipelago
+        List<Tower> conquerorTowers = this.playerSchool.get(conqueror).removeNumTowers(toConquer.getNumIslands());
+
+        try{
+            List<Tower> looserTowers = toConquer.conquerArchipelago(conquerorTowers);
+            // == 0 would be the case in which the Archipelago is conquered for the first time => no Towers to reposition
+            // otherwise I replace the looser Towers
+            if(looserTowers.size() != 0){
+                Player looser = looserTowers.get(0).getPlayer();
+                this.playerSchool.get(looser).addNumTower(looserTowers);
+            }
+
+            //TODO: merge Archipelagos
+        } catch(InvalidTowerNumberException ex){ex.printStackTrace();}
+    }
+
+
+    // This merges as much adjacent Archipelagos as possible removing the old one from the this.archipelagos
+    private void mergeArchipelagos(){
+        if(this.isThereRightMerge()){
+            Archipelago currentArchipelago = this.archipelagos.get(this.whereIsMotherNature());
+            Archipelago rightArchipelago = this.archipelagos.get((this.whereIsMotherNature() - 1) % 12);
+            this.archipelagos.remove(rightArchipelago);
+            currentArchipelago.mergeArchipelagos((rightArchipelago));
+            this.mergeArchipelagos();
+        }
+        else if(this.isThereLeftMerge()){
+            Archipelago currentArchipelago = this.archipelagos.get(this.whereIsMotherNature());
+            Archipelago leftArchipelago = this.archipelagos.get((this.whereIsMotherNature() + 1) % 12);
+            this.archipelagos.remove(leftArchipelago);
+            currentArchipelago.mergeArchipelagos((leftArchipelago));
+            this.mergeArchipelagos();
+        }
+    }
+
+
+    // Check if you can merge the current Island (on which there is MotherNature) with the previous one
+    private boolean isThereRightMerge(){
+        return this.archipelagos.get(this.whereIsMotherNature()).getOwner() == this.archipelagos.get((this.whereIsMotherNature() - 1) % 12).getOwner();
+    }
+
+    // Check if you can merge the current Island (on which there is MotherNature) with the next one
+    private boolean isThereLeftMerge(){
+        return this.archipelagos.get(this.whereIsMotherNature()).getOwner() == this.archipelagos.get((this.whereIsMotherNature() + 1) % 12).getOwner();
     }
 }

@@ -26,7 +26,7 @@ import java.util.Map;
 *           Board.replaceTowers()
 *       Board.mergeArchipelagos()
 *           recursively:
-*               Archipelago.mergeArchipelagos()
+*           Archipelago.mergeArchipelagos()
 * */
 
 //TODO: create Map of SPColour -> numberOfStudentsOfThatColour in an intelligent way: calculate only one time, and
@@ -48,6 +48,7 @@ public class Archipelago {
         this.owner = null; // null as long as no one owns the Archipelago
     }
 
+
     public int getNumIslands(){
         return this.islands.size();
     }
@@ -64,6 +65,17 @@ public class Archipelago {
     }
 
 
+    public Map<SPColour, Integer> howManyStudents(){
+        Map<SPColour, Integer> studentsDataCopy = new HashMap<SPColour, Integer>();
+        SPColour[] availableColours = {SPColour.BLUE, SPColour.PINK, SPColour.RED, SPColour.GREEN, SPColour.YELLOW};
+        for(SPColour c : availableColours){
+            studentsDataCopy.put(c, this.studentsData.get(c));
+        }
+
+        return studentsDataCopy;
+    }
+
+
     // Remove the Tower from each of its Islands
     private List<Tower> removeTowers() {
         List<Tower> removed = new ArrayList<Tower>();
@@ -77,7 +89,8 @@ public class Archipelago {
     }
 
 
-    //TODO: archipelago not conquerale if forbidFlag = true, and if so, set it false; (MN is on this archipelago)
+    //TODO: the following two are for the function which gives the influence
+    //TODO: archipelago not conquerable if forbidFlag = true, and if so, set it false; (MN is on this archipelago)
     //TODO: check if tower has value (after character card played); if true, set false
     /*
      * Two chances:
