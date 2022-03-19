@@ -38,6 +38,9 @@ public class Archipelago {
     // contains. This is updated using updateStudentsData() each time a Student is added/removed
     private Map<SPColour, Integer> studentsData;
 
+    private boolean forbidFlag = false;
+    private boolean towerNoValueFlag = false;
+
 
     public Archipelago(){
         this.islands = new ArrayList<Island>();
@@ -74,6 +77,8 @@ public class Archipelago {
     }
 
 
+    //TODO: archipelago not conquerale if forbidFlag = true, and if so, set it false; (MN is on this archipelago)
+    //TODO: check if tower has value (after character card played); if true, set false
     /*
      * Two chances:
      * 1) No one conquered the Archipelago before: I have no Tower to remove => return void List
@@ -137,5 +142,13 @@ public class Archipelago {
 
     public void addStudent(Student studentToAdd) {
         this.islands.get(0).addStudent(studentToAdd);
+    }
+
+    public void setForbidFlag(boolean forbidFlag) {
+        this.forbidFlag = forbidFlag;
+    }
+
+    public void setTowerNoValueFlag(boolean towerNoValueFlag) {
+        this.towerNoValueFlag = towerNoValueFlag;
     }
 }
