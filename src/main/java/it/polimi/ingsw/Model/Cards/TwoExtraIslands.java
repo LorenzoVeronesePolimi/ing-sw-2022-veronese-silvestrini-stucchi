@@ -16,7 +16,7 @@ public class TwoExtraIslands extends AbstractCharacterCard{
 
     public void useEffect(Player player, int archipelago) throws ImpossibleMNMove {
         //MN initial position
-        int startingPoint = boardAdvanced.getMotherNaturePosition();
+        int startingPoint = boardAdvanced.whereIsMotherNature();
         boolean hasChanged = false;
 
         for(int i = 0; i <= 2; i++) {
@@ -30,7 +30,7 @@ public class TwoExtraIslands extends AbstractCharacterCard{
         }
 
         if(hasChanged)
-            boardAdvanced.checkIfConquerable(player);
+            boardAdvanced.tryToConquer();
         else
             throw new ImpossibleMNMove();
 

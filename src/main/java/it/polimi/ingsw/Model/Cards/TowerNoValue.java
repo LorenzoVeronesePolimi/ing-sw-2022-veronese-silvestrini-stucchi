@@ -13,9 +13,9 @@ public class TowerNoValue extends AbstractCharacterCard{
     }
 
     public void useEffect(Player player) {
-        boardAdvanced.getArchiList().get(boardAdvanced.getMotherNaturePosition()).setTowerNoValueFlag(true);
+        boardAdvanced.getArchiList().get(boardAdvanced.whereIsMotherNature()).setTowerNoValueFlag(true);
 
-        boardAdvanced.checkIfConquerable(player);
+        boardAdvanced.tryToConquer();
 
         updatePrice();
     }

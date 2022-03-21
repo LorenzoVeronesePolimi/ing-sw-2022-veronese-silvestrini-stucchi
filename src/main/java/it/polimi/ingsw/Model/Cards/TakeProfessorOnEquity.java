@@ -65,7 +65,7 @@ public class TakeProfessorOnEquity extends AbstractCharacterCard{
         }
 
         //flow after professor movement
-        boardAdvanced.checkIfConquerable(currentPlayer);
+        boardAdvanced.tryToConquer();
 
         for(int i = 0; i < changedColour.size(); i++) {
             boardAdvanced.moveProfessor(originPlayer.get(i), changedColour.get(i));

@@ -8,13 +8,44 @@ import java.util.Collections;
 import java.util.List;
 
 public class BoardAdvanced extends Board {
-    public BoardAdvanced(List<Player> players) {
-        super(players);
+    private Board board;
+    public BoardAdvanced(Board boardToExtend) {
+        this.board = boardToExtend;
     }
 
     public List<Archipelago> getArchiList(){
         return new ArrayList<Archipelago>(archipelagos);
     }
 
+
     //void moveStudentSchoolToBag(SPColour c);
+    public boolean checkIfConquerable(){
+        int currPosMotherNature = this.board.whereIsMotherNature();
+        Archipelago currentArchipelago = this.board.archipelagos.get(currPosMotherNature);
+        //if the owner of the Archipelago is the current Player, he conquers nothing
+        if(currentArchipelago.getOwner() == this.board.players.get(currentPlayer)){
+            return false;
+        }
+        else if(currentArchipelago.getOwner() == null){ //archipelago never conquered before
+            return true;
+        }
+        else if(currentArchipelago.getForbidFlag()){ //This is an advanced function => see comment above(*)
+            currentArchipelago.setForbidFlag(false);
+        }
+        else if(currentArchipelago.getTowerNoValueFlag()){ //This is an advanced function => see comment above(*)
+            currentArchipelago.setTowerNoValueFlag(false);
+        }
+        //the current Player is not the owner: can he conquer the Archipelago?
+        else{
+            //who has higher influence according to rules?
+            Player winner = this.board.computeWinner(currentArchipelago.getOwner(), this.board.players.get(currentPlayer), currentArchipelago);
+            if(winner == this.board.players.get(currentPlayer)){
+                return true;
+            }
+            else{
+                return false;
+            }
+        }
+        return false;
+    }
 }

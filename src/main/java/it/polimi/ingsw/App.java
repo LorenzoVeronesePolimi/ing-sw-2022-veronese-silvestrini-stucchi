@@ -90,8 +90,11 @@ public class App
         Board board = bf.createBoard(); // -> BoardTwo
 
         //board.moveStudentBagToSchool(1);
+        System.out.println(board.getArchipelago(2));
         board.moveStudentSchoolToArchipelagos(player1, SPColour.PINK, 2);
+        System.out.println(board.getArchipelago(2));
         board.moveMotherNature(2);
         board.makeTurn();
+        System.out.println(board.getArchipelago(2));
     }
 }

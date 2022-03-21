@@ -13,10 +13,10 @@ public class FakeMNMovement extends AbstractCharacterCard{
     }
 
     public void useEffect(Player currentPlayer, int fakeMNPosition) {
-        int mnRealPosition = boardAdvanced.getMotherNaturePosition();
+        int mnRealPosition = boardAdvanced.whereIsMotherNature();
 
         boardAdvanced.moveMotherNature(fakeMNPosition);
-        boardAdvanced.checkIfConquerable(currentPlayer); //if conquerable -> conquer
+        boardAdvanced.tryToConquer(); //if conquerable -> conquer
         boardAdvanced.moveMotherNature(mnRealPosition);  //TODO: assuming normal conquer condition (in mnRealPosition)
 
         updatePrice();

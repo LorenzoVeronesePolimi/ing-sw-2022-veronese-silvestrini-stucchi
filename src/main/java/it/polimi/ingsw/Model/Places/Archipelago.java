@@ -172,7 +172,7 @@ public class Archipelago {
         for(Island island : this.islands){
             singleIslandStudentsData = island.howManyStudents();
             for(SPColour c : singleIslandStudentsData.keySet()){
-                newStudentsData.replace(c, this.studentsData.get(c) + singleIslandStudentsData.get(c));
+                newStudentsData.replace(c, newStudentsData.get(c) + singleIslandStudentsData.get(c));
             }
         }
 
@@ -187,10 +187,14 @@ public class Archipelago {
 
     @Override
     public String toString() {
+        int numTowers;
+        if (this.islands.get(0).getTower() == null){
+            numTowers = 0;
+        } else{ numTowers = this.islands.size();}
         return "Archipelago{" +
                 "studentsData=" + studentsData +
                 ", owner=" + owner +
-                ", numTowers=" + this.islands.size() +
+                ", numTowers=" + numTowers +
                 '}';
     }
 }

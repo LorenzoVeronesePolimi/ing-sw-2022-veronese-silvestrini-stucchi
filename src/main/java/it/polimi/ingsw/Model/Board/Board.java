@@ -17,15 +17,16 @@ import java.util.List;
 import java.util.Map;
 
 public abstract class Board {
-    List<School> schools;   //list of all school in the game (one for each player)
-    List<Player> players;   //list of all players in the game (in order)
-    int currentPlayer; //index of the current Player in the list players
-    Map<Player, School> playerSchool;   //map of players and their relative school
-    List<Archipelago> archipelagos;     //list of all the archipelagos in the game (in order)
-    List<Cloud> clouds;     //list of all clouds in the game
-    MotherNature mn;    //reference to MotherNature(Singleton)
-    Bag bag;   //reference to the Bag
+    protected List<School> schools;   //list of all school in the game (one for each player)
+    protected List<Player> players;   //list of all players in the game (in order)
+    protected int currentPlayer; //index of the current Player in the list players
+    protected Map<Player, School> playerSchool;   //map of players and their relative school
+    protected List<Archipelago> archipelagos;     //list of all the archipelagos in the game (in order)
+    protected List<Cloud> clouds;     //list of all clouds in the game
+    protected MotherNature mn;    //reference to MotherNature(Singleton)
+    protected Bag bag;   //reference to the Bag
 
+    public Board(){}
 
     public Board(List<Player> players) {
         this.archipelagos = new ArrayList<Archipelago>();
@@ -44,6 +45,13 @@ public abstract class Board {
         placeMotherNatureInitialBoard();
         placeStudentInitialBoard();
     }
+
+
+    //Testing
+    public Archipelago getArchipelago(int archipelagoIndex){
+        return this.archipelagos.get(archipelagoIndex);
+    }
+
 
     public void moveStudentSchoolToArchipelagos(Player player, SPColour colour, int archipelagoIndex) {
         //school related to the player that made the move
@@ -142,10 +150,6 @@ public abstract class Board {
         mn.putInPosition(archipelagos.get(archipelagoIndex));
     };
 
-    public int getMotherNaturePosition(){
-        return archipelagos.indexOf(mn.getCurrentPosition());
-    };
-
     public void moveProfessor(Player destinationPlayer, SPColour colour){
         //school related to the player that gets the professor
         School receiverSchool = playerSchool.get(destinationPlayer);
@@ -198,41 +202,12 @@ public abstract class Board {
         return null;
     };
 
-    public void conquerArchipelago(Player player, int archipelagoIndex) {
-        School currentSchool = playerSchool.get(player);
-
-        //archipelagos.get(idArchi)
-
-        Tower toBeMoved = currentSchool.removeTower();
-        //archipelagos.get(idArchi).addTower(toBeMoved);
-
-    }
-
 
     // Returns the Archipelago's index where MotherNature is positioned
-    private int whereIsMotherNature(){
-        Archipelago current = this.mn.getCurrentPosition();
-
-        int index = 0;
-        for(Archipelago a : this.archipelagos){
-            if(current == a){
-                return index;
-            }
-            index++;
-        }
-
-        //TODO: exception
-        return -1;
+    public int whereIsMotherNature(){
+        return archipelagos.indexOf(mn.getCurrentPosition());
     }
 
-
-
-    // MotherNature has been positioned: let's check if the Archipelago where she is, has to be conquered
-    public void checkIfConquerable(Player currentPlayer){
-        Archipelago currentArchipelago = this.archipelagos.get(this.whereIsMotherNature());
-
-        //if(currentPlayer == currentArchipelago.get)
-    }
 
     public School getPlayerSchool(Player player) {
         return playerSchool.get(player);
@@ -245,17 +220,8 @@ public abstract class Board {
 
         //MOTHER NATURE HAS BEEN MOVED
         //Is the Archipelago conquerable?
-        int currPosMotherNature = this.whereIsMotherNature();
-        boolean archipelagoConquerable = checkIfConquerable(currPosMotherNature);
-        if(archipelagoConquerable){
-            this.conquerArchipelago(this.players.get(this.currentPlayer), this.archipelagos.get(currPosMotherNature));
 
-            //let's merge Archipelagos
-            this.mergeArchipelagos();
-        }
-        else { //the Archipelago remains to the owner
-        }
-
+        this.tryToConquer();
         //THE CURRENT PLAYER CHOOSES THE CLOUD TO EMPTY
 
         //SET CURRENT PLAYER FOR THE NEXT TURN
@@ -268,10 +234,24 @@ public abstract class Board {
 
     }
 
-    // (*) The controller will call a specific method (ex. checkIfConquerableAdvance) only if we have BoardAdvanced
-    // (*) and we have ForbidIsland and/or TowerNoValue as CharacterCards
+
+    public void tryToConquer(){
+        int currPosMotherNature = this.whereIsMotherNature();
+        boolean archipelagoConquerable = checkIfConquerable();
+        if(archipelagoConquerable){
+            this.conquerArchipelago(this.players.get(this.currentPlayer), this.archipelagos.get(currPosMotherNature));
+
+            //let's merge Archipelagos
+            this.mergeArchipelagos();
+        }
+        else { //the Archipelago remains to the owner
+        }
+    }
+
+
     // true if the current Player (who moved MotherNature) will conquer the Archipelago, false otherwise
-    private boolean checkIfConquerable(int currPosMotherNature){
+    public boolean checkIfConquerable(){
+        int currPosMotherNature = this.whereIsMotherNature();
         Archipelago currentArchipelago = this.archipelagos.get(currPosMotherNature);
         //if the owner of the Archipelago is the current Player, he conquers nothing
         if(currentArchipelago.getOwner() == this.players.get(currentPlayer)){
@@ -279,12 +259,6 @@ public abstract class Board {
         }
         else if(currentArchipelago.getOwner() == null){ //archipelago never conquered before
             return true;
-        }
-        else if(currentArchipelago.getForbidFlag()){ //TODO: this is an advanced function => see comment above(*)
-            currentArchipelago.setForbidFlag(false);
-        }
-        else if(currentArchipelago.getTowerNoValueFlag()){ //TODO: this is an advanced function => see comment above(*)
-            currentArchipelago.setTowerNoValueFlag(false);
         }
         //the current Player is not the owner: can he conquer the Archipelago?
         else{
@@ -297,12 +271,11 @@ public abstract class Board {
                 return false;
             }
         }
-        return false;
     }
 
 
     // Computes which of two players has most influence on a Archipelago
-    private Player computeWinner(Player owner, Player challenger, Archipelago archipelago){
+    protected Player computeWinner(Player owner, Player challenger, Archipelago archipelago){
         int ownerInfluence = this.computeInfluenceOfPlayer(owner, archipelago);
         int challengerInfluence = this.computeInfluenceOfPlayer(challenger, archipelago);
 
