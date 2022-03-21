@@ -185,4 +185,20 @@ public class School {
 
         throw new WrongColourException();
     }
+
+
+    @Override
+    public String toString() {
+        return "School{" +
+                "player=" + player +
+                ", studentsHall=" + studentsHall +
+                ", studentsDiningRed=" + studentsDiningRed +
+                ", studentsDiningPink=" + studentsDiningPink +
+                ", studentsDiningGreen=" + studentsDiningGreen +
+                ", studentsDiningYellow=" + studentsDiningYellow +
+                ", studentsDiningBlue=" + studentsDiningBlue +
+                ", professors=" + professors +
+                ", towers=" + towers +
+                '}';
+    }
 }

@@ -12,4 +12,11 @@ public class Tower {
     public Player getPlayer() {
         return this.player;
     }
+
+    @Override
+    public String toString() {
+        return "Tower{" +
+                "player=" + player +
+                '}';
+    }
 }

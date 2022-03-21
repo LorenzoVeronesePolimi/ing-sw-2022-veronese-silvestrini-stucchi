@@ -18,7 +18,20 @@ public class BoardAdvanced extends Board {
     }
 
 
-    //void moveStudentSchoolToBag(SPColour c);
+    public void tryToConquer(){
+        int currPosMotherNature = this.whereIsMotherNature();
+        boolean archipelagoConquerable = this.checkIfConquerable();
+        if(archipelagoConquerable){
+            this.board.conquerArchipelago(this.players.get(this.currentPlayer), this.archipelagos.get(currPosMotherNature));
+
+            //let's merge Archipelagos
+            this.board.mergeArchipelagos();
+        }
+        else { //the Archipelago remains to the owner
+        }
+    }
+
+
     public boolean checkIfConquerable(){
         int currPosMotherNature = this.board.whereIsMotherNature();
         Archipelago currentArchipelago = this.board.archipelagos.get(currPosMotherNature);

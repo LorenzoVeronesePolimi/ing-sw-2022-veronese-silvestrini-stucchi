@@ -61,6 +61,9 @@ public abstract class Board {
             try {
                 Student toBeMoved = currentSchool.removeStudentHall(colour);
                 archipelagos.get(archipelagoIndex).addStudent(toBeMoved);
+
+                //check if I have to move a professor
+
             } catch (StudentNotFoundException e) {
                 e.printStackTrace();
             }
@@ -92,6 +95,7 @@ public abstract class Board {
         try {
             Student toBeMoved = currentSchool.removeStudentHall(colour);
             currentSchool.addStudentDiningRoom(toBeMoved);
+            this.conquerProfessor(colour); //has the movement of the Student caused the conquering of the Professor?
         } catch (StudentNotFoundException e) {
             e.printStackTrace();
         } catch (ExceededMaxStudentsDiningRoomException e) {
@@ -188,7 +192,7 @@ public abstract class Board {
         return false;
     }
 
-    //che the school of the professor
+    // Find the School where the Professor is in
     public School whereIsProfessor(SPColour colour){
         for(School s: schools) {
             for(Professor p: s.getProfessors()) {
@@ -198,9 +202,42 @@ public abstract class Board {
             }
         }
 
-        //TODO: this case is an error state and should be addressed (we don't want to arrive here)
+        // This happens when the Professor I'm looking for is in the Bag
         return null;
     };
+
+
+
+    public void conquerProfessor(SPColour colour){
+        School currentSchool = this.whereIsProfessor(colour);
+        if(currentSchool == null){ //it's in the bag
+            try {
+                this.playerSchool.get(this.players.get(currentPlayer)).addProfessor(this.bag.takeProfessor(colour));
+                return;
+            } catch (NoProfessorBagException e) {
+                e.printStackTrace();
+            }
+        }
+        School challengerSchool = this.playerSchool.get(this.players.get(currentPlayer));
+        int numStudentsCurrentSchool = 0;
+        int numStudentsChallenger = 0;
+        try{
+            numStudentsCurrentSchool = currentSchool.getNumStudentColour(colour);
+            numStudentsChallenger = challengerSchool.getNumStudentColour(colour);
+        }
+        catch(WrongColourException ex){ex.printStackTrace();}
+
+        if(numStudentsChallenger > numStudentsCurrentSchool){ // can take the Professor
+            Professor removed;
+            try {
+                removed = currentSchool.removeProfessor(colour);
+            } catch (ProfessorNotFoundException e) {
+                e.printStackTrace();
+            }
+        }
+        else{return;} //can't take the Professor
+
+    }
 
 
     // Returns the Archipelago's index where MotherNature is positioned
@@ -216,7 +253,7 @@ public abstract class Board {
 
     // This probably will be in the Controller
     public void makeTurn(){
-        //TODO: the current Player moves students
+        //MOVE STUDENTS
 
         //MOTHER NATURE HAS BEEN MOVED
         //Is the Archipelago conquerable?
@@ -258,7 +295,14 @@ public abstract class Board {
             return false;
         }
         else if(currentArchipelago.getOwner() == null){ //archipelago never conquered before
-            return true;
+            List<Professor> conquerorProfessors = this.playerSchool.get(this.players.get(currentPlayer)).getProfessors();
+            for(Professor p : conquerorProfessors){
+                if(currentArchipelago.howManyStudents().get(p.getColour()) > 0){
+                    return true;
+                }
+                else{return false;} //can't conquer an Island without Students coloured without the Colour of a Professor of mine, even if no one has conquered it before
+            }
+            return false;
         }
         //the current Player is not the owner: can he conquer the Archipelago?
         else{
@@ -308,7 +352,7 @@ public abstract class Board {
 
 
     // the Player conquers the Archipelago putting his own Towers and removing the previous ones (if present)
-    private void conquerArchipelago(Player conqueror, Archipelago toConquer){
+    protected void conquerArchipelago(Player conqueror, Archipelago toConquer){
         // conqueror's Towers to put on the Archipelago
         List<Tower> conquerorTowers = this.playerSchool.get(conqueror).removeNumTowers(toConquer.getNumIslands());
 
@@ -325,7 +369,7 @@ public abstract class Board {
 
 
     // This merges as much adjacent Archipelagos as possible removing the old one from the this.archipelagos
-    private void mergeArchipelagos(){
+    protected void mergeArchipelagos(){
         if(this.isThereRightMerge()){
             Archipelago currentArchipelago = this.archipelagos.get(this.whereIsMotherNature());
             Archipelago rightArchipelago = this.archipelagos.get((this.whereIsMotherNature() - 1) % 12);

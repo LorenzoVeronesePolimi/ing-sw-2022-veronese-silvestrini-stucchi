@@ -12,4 +12,11 @@ public class Student {
     public SPColour getColour() {
         return colour;
     }
+
+    @Override
+    public String toString() {
+        return "Student{" +
+                "colour=" + colour +
+                '}';
+    }
 }

@@ -90,11 +90,26 @@ public class App
         Board board = bf.createBoard(); // -> BoardTwo
 
         //board.moveStudentBagToSchool(1);
+        //Turn of player1. He can't conquer the Archipelago because he has no Professor
+        System.out.println(board.getPlayerSchool(player1));
         System.out.println(board.getArchipelago(2));
         board.moveStudentSchoolToArchipelagos(player1, SPColour.PINK, 2);
         System.out.println(board.getArchipelago(2));
         board.moveMotherNature(2);
         board.makeTurn();
         System.out.println(board.getArchipelago(2));
+        System.out.println(board.getPlayerSchool(player1));
+
+        //Turn of player 2. He conquer Archipelago 4 with RED Professor
+        System.out.println(board.getPlayerSchool(player2));
+        board.moveStudentHallToDiningRoom(player2, SPColour.RED);
+        System.out.println(board.getPlayerSchool(player2));
+        board.moveStudentSchoolToArchipelagos(player1, SPColour.RED, 4);
+        System.out.println(board.getArchipelago(4));
+        board.moveStudentSchoolToArchipelagos(player2, SPColour.RED, 2);
+        System.out.println(board.getArchipelago(4));
+        board.moveMotherNature(4);
+        board.makeTurn();
+        System.out.println(board.getArchipelago(4));
     }
 }
