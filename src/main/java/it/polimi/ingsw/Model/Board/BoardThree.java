@@ -5,8 +5,7 @@ import it.polimi.ingsw.Model.Player;
 
 import java.util.List;
 
-public class BoardThree extends Board {
-
+public class BoardThree extends BoardConcrete{
     public BoardThree(List<Player> players) {
         super(players);
         //creation of a map player -> school

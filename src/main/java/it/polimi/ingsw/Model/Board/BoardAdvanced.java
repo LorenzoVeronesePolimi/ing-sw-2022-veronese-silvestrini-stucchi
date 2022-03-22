@@ -9,25 +9,25 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-public class BoardAdvanced extends Board {
-    private Board board;
+public class BoardAdvanced implements Board{
+    private BoardConcrete board;
     private boolean twoExtraPointsFlag = false;
     private SPColour colourToExclude=null;
 
-    public BoardAdvanced(Board boardToExtend) {
+    public BoardAdvanced(BoardConcrete boardToExtend) {
         this.board = boardToExtend;
     }
 
     public List<Archipelago> getArchiList(){
-        return new ArrayList<Archipelago>(archipelagos);
+        return new ArrayList<Archipelago>(this.board.archipelagos);
     }
 
 
     public void tryToConquer(){
-        int currPosMotherNature = this.whereIsMotherNature();
+        int currPosMotherNature = this.board.whereIsMotherNature();
         boolean archipelagoConquerable = this.checkIfConquerable();
         if(archipelagoConquerable){
-            this.board.conquerArchipelago(this.players.get(this.currentPlayer), this.archipelagos.get(currPosMotherNature));
+            this.board.conquerArchipelago(this.board.players.get(this.board.currentPlayer), this.board.archipelagos.get(currPosMotherNature));
 
             //let's merge Archipelagos
             this.board.mergeArchipelagos();
@@ -41,7 +41,7 @@ public class BoardAdvanced extends Board {
         int currPosMotherNature = this.board.whereIsMotherNature();
         Archipelago currentArchipelago = this.board.archipelagos.get(currPosMotherNature);
         //if the owner of the Archipelago is the current Player, he conquers nothing
-        if(currentArchipelago.getOwner() == this.board.players.get(currentPlayer)){
+        if(currentArchipelago.getOwner() == this.board.players.get(this.board.currentPlayer)){
             return false;
         }
         else if(currentArchipelago.getOwner() == null){ //archipelago never conquered before
@@ -56,10 +56,10 @@ public class BoardAdvanced extends Board {
         //the current Player is not the owner: can he conquer the Archipelago?
         else{
             //who has higher influence according to rules?
-            Player winner = this.computeWinner(currentArchipelago.getOwner(), this.board.players.get(currentPlayer), currentArchipelago, twoExtraPointsFlag, colourToExclude);
+            Player winner = this.computeWinner(currentArchipelago.getOwner(), this.board.players.get(this.board.currentPlayer), currentArchipelago, twoExtraPointsFlag, colourToExclude);
             twoExtraPointsFlag = false;
 
-            if(winner == this.board.players.get(currentPlayer)){
+            if(winner == this.board.players.get(this.board.currentPlayer)){
                 return true;
             }
             else{
@@ -96,7 +96,7 @@ public class BoardAdvanced extends Board {
         }
 
         Map<SPColour, Integer> archipelagoStudentsData = archipelago.howManyStudents(); //data about Students on the Archipelago
-        List<Professor> playerProfessors = this.playerSchool.get(player).getProfessors(); //Professors of the player
+        List<Professor> playerProfessors = this.board.playerSchool.get(player).getProfessors(); //Professors of the player
         for(Professor p : playerProfessors){
             if(colourToExclude==null || !p.getColour().equals(colourToExclude))
                 influence += archipelagoStudentsData.get(p.getColour());
@@ -112,4 +112,5 @@ public class BoardAdvanced extends Board {
     public void setTwoExtraPointsFlag(boolean twoExtraPointsFlag) {
         this.twoExtraPointsFlag = twoExtraPointsFlag;
     }
+
 }

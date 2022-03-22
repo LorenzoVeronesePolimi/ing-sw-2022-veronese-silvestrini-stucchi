@@ -5,8 +5,7 @@ import it.polimi.ingsw.Model.Player;
 
 import java.util.List;
 
-public class BoardFour extends Board {
-
+public class BoardFour extends BoardConcrete {
     public BoardFour(List<Player> players) {
         super(players);
 
@@ -20,6 +19,4 @@ public class BoardFour extends Board {
             playerSchool.put(players.get(i), s);
         }
     }
-
-
 }

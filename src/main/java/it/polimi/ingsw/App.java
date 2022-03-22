@@ -1,6 +1,7 @@
 package it.polimi.ingsw;
 
 import it.polimi.ingsw.Model.Board.Board;
+import it.polimi.ingsw.Model.Board.BoardConcrete;
 import it.polimi.ingsw.Model.Board.BoardFactory;
 import it.polimi.ingsw.Model.Enumerations.PlayerColour;
 import it.polimi.ingsw.Model.Enumerations.SPColour;
@@ -83,7 +84,7 @@ public class App
 
         //board.moveStudentBagToSchool(1);
         //Turn of player1. He can't conquer the Archipelago because he has no Professor
-        System.out.println(board.getPlayerSchool(player1));
+        System.out.println(((BoardConcrete)board).getPlayerSchool(player1));
         System.out.println(board.getArchipelago(2));
         board.moveStudentSchoolToArchipelagos(player1, SPColour.PINK, 2);
         System.out.println(board.getArchipelago(2));
