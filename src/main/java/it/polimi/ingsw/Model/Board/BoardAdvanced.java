@@ -3,6 +3,7 @@ package it.polimi.ingsw.Model.Board;
 import it.polimi.ingsw.Model.Enumerations.SPColour;
 import it.polimi.ingsw.Model.Pawns.Professor;
 import it.polimi.ingsw.Model.Places.Archipelago;
+import it.polimi.ingsw.Model.Places.School;
 import it.polimi.ingsw.Model.Player;
 
 import java.util.ArrayList;
@@ -22,6 +23,71 @@ public class BoardAdvanced implements Board{
         return new ArrayList<Archipelago>(this.board.archipelagos);
     }
 
+
+    @Override
+    public Archipelago getArchipelago(int archipelagoIndex) {
+        return this.board.getArchipelago(archipelagoIndex);
+    }
+
+    @Override
+    public void moveStudentSchoolToArchipelagos(Player player, SPColour colour, int archipelagoIndex) {
+        this.board.moveStudentSchoolToArchipelagos(player, colour, archipelagoIndex);
+    }
+
+    @Override
+    public void moveStudentCloudToSchool(Player player, int cloudIndex) {
+        this.board.moveStudentCloudToSchool(player, cloudIndex);
+    }
+
+    @Override
+    public void moveStudentHallToDiningRoom(Player player, SPColour colour) {
+        this.board.moveStudentHallToDiningRoom(player, colour);
+    }
+
+    @Override
+    public void moveStudentBagToSchool(int numStudents) {
+        this.board.moveStudentBagToSchool(numStudents);
+    }
+
+    @Override
+    public void moveMotherNature(int archipelagoIndex) {
+        this.board.moveMotherNature(archipelagoIndex);
+    }
+
+    @Override
+    public void moveProfessor(Player destinationPlayer, SPColour colour) {
+        this.board.moveProfessor(destinationPlayer, colour);
+    }
+
+    @Override
+    public boolean isProfessorInSchool(SPColour colour) {
+        return this.board.isProfessorInSchool(colour);
+    }
+
+    @Override
+    public School whereIsProfessor(SPColour colour) {
+        return this.board.whereIsProfessor(colour);
+    }
+
+    @Override
+    public void conquerProfessor(SPColour colour) {
+        this.board.conquerProfessor(colour);
+    }
+
+    @Override
+    public int whereIsMotherNature() {
+        return this.board.whereIsMotherNature();
+    }
+
+    @Override
+    public School getPlayerSchool(Player player) {
+        return this.board.getPlayerSchool(player);
+    }
+
+    @Override
+    public void makeTurn() {
+        this.board.makeTurn();
+    }
 
     public void tryToConquer(){
         int currPosMotherNature = this.board.whereIsMotherNature();
@@ -67,6 +133,16 @@ public class BoardAdvanced implements Board{
             }
         }
         return false;
+    }
+
+    @Override
+    public Player computeWinner(Player owner, Player challenger, Archipelago archipelago) {
+        return null;
+    }
+
+    @Override
+    public int computeInfluenceOfPlayer(Player player, Archipelago archipelago) {
+        return 0;
     }
 
     protected Player computeWinner(Player owner, Player challenger, Archipelago archipelago, boolean twoExtraPointsFlag, SPColour colourToExclude){

@@ -42,6 +42,4 @@ public interface Board {
     public boolean checkIfConquerable();
     public Player computeWinner(Player owner, Player challenger, Archipelago archipelago);
     public int computeInfluenceOfPlayer(Player player, Archipelago archipelago);
-    private void conquerArchipelago(Player conqueror, Archipelago toConquer){}
-    private void mergeArchipelagos(){}
 }
