@@ -1,6 +1,5 @@
 package it.polimi.ingsw.Model.Cards;
 
-import it.polimi.ingsw.Model.Board.Board;
 import it.polimi.ingsw.Model.Board.BoardAdvanced;
 import it.polimi.ingsw.Model.Exceptions.ImpossibleMNMove;
 import it.polimi.ingsw.Model.Player;

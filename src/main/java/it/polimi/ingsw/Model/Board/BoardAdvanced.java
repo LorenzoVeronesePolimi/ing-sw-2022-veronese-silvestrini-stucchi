@@ -4,11 +4,12 @@ import it.polimi.ingsw.Model.Places.Archipelago;
 import it.polimi.ingsw.Model.Player;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 public class BoardAdvanced extends Board {
     private Board board;
+    private boolean twoExtraPointsFlag = false;
+
     public BoardAdvanced(Board boardToExtend) {
         this.board = boardToExtend;
     }
@@ -51,7 +52,9 @@ public class BoardAdvanced extends Board {
         //the current Player is not the owner: can he conquer the Archipelago?
         else{
             //who has higher influence according to rules?
-            Player winner = this.board.computeWinner(currentArchipelago.getOwner(), this.board.players.get(currentPlayer), currentArchipelago);
+            Player winner = this.board.computeWinner(currentArchipelago.getOwner(), this.board.players.get(currentPlayer), currentArchipelago, twoExtraPointsFlag);
+            twoExtraPointsFlag = false;
+
             if(winner == this.board.players.get(currentPlayer)){
                 return true;
             }
@@ -60,5 +63,9 @@ public class BoardAdvanced extends Board {
             }
         }
         return false;
+    }
+
+    public void setTwoExtraPointsFlag(boolean twoExtraPointsFlag) {
+        this.twoExtraPointsFlag = twoExtraPointsFlag;
     }
 }
