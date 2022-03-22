@@ -153,6 +153,45 @@ public class School {
             }
         }
     }
+    public Student removeStudentDiningRoom(SPColour colour) throws StudentNotFoundException{
+        if(colour.equals(SPColour.RED)) {
+            if(studentsDiningRed.size() >0) {
+                return studentsDiningRed.remove(studentsDiningRed.indexOf(studentsDiningRed.size()-1));
+            } else {
+                throw new StudentNotFoundException();
+            }
+        }
+        if(colour.equals(SPColour.PINK)) {
+            if(studentsDiningPink.size() > 0) {
+                return studentsDiningPink.remove(studentsDiningPink.indexOf(studentsDiningPink.size()-1));
+            } else {
+                throw new StudentNotFoundException();
+            }
+        }
+        if(colour.equals(SPColour.GREEN)) {
+            if(studentsDiningGreen.size() > 0) {
+                return studentsDiningGreen.remove(studentsDiningGreen.indexOf(studentsDiningGreen.size()-1));
+            } else {
+                throw new StudentNotFoundException();
+            }
+        }
+        if(colour.equals(SPColour.BLUE)) {
+            if(studentsDiningBlue.size() > 0) {
+                return studentsDiningBlue.remove(studentsDiningBlue.indexOf(studentsDiningBlue.size()-1));
+            } else {
+                throw new StudentNotFoundException();
+            }
+        }
+        if(colour.equals(SPColour.YELLOW)) {
+            if(studentsDiningYellow.size() > 0) {
+                return studentsDiningYellow.remove(studentsDiningYellow.indexOf(studentsDiningYellow.size()-1));
+            } else {
+                throw new StudentNotFoundException();
+            }
+        }
+
+        return null;
+    }
 
     public void moveStudentHallToDiningRoom(SPColour colour) {
         Student student = null;
