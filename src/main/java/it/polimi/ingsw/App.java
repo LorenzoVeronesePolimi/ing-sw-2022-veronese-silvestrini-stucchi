@@ -1,17 +1,9 @@
 package it.polimi.ingsw;
 
-import it.polimi.ingsw.Model.Bag;
 import it.polimi.ingsw.Model.Board.Board;
 import it.polimi.ingsw.Model.Board.BoardFactory;
 import it.polimi.ingsw.Model.Enumerations.PlayerColour;
 import it.polimi.ingsw.Model.Enumerations.SPColour;
-import it.polimi.ingsw.Model.Exceptions.AnotherTowerException;
-import it.polimi.ingsw.Model.Exceptions.InvalidTowerNumberException;
-import it.polimi.ingsw.Model.Exceptions.MergeDifferentOwnersException;
-import it.polimi.ingsw.Model.Pawns.Student;
-import it.polimi.ingsw.Model.Pawns.Tower;
-import it.polimi.ingsw.Model.Places.Archipelago;
-import it.polimi.ingsw.Model.Places.Island;
 import it.polimi.ingsw.Model.Player;
 
 import java.util.ArrayList;

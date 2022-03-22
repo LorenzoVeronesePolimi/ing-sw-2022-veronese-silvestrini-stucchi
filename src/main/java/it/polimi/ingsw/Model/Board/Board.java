@@ -307,7 +307,7 @@ public abstract class Board {
         //the current Player is not the owner: can he conquer the Archipelago?
         else{
             //who has higher influence according to rules?
-            Player winner = this.computeWinner(currentArchipelago.getOwner(), this.players.get(currentPlayer), currentArchipelago);
+            Player winner = this.computeWinner(currentArchipelago.getOwner(), this.players.get(currentPlayer), currentArchipelago, false);
             if(winner == this.players.get(currentPlayer)){
                 return true;
             }
@@ -319,9 +319,13 @@ public abstract class Board {
 
 
     // Computes which of two players has most influence on a Archipelago
-    protected Player computeWinner(Player owner, Player challenger, Archipelago archipelago){
+    protected Player computeWinner(Player owner, Player challenger, Archipelago archipelago, boolean twoExtraPointsFlag){
         int ownerInfluence = this.computeInfluenceOfPlayer(owner, archipelago);
         int challengerInfluence = this.computeInfluenceOfPlayer(challenger, archipelago);
+
+        if(twoExtraPointsFlag) {
+            challengerInfluence += 2;
+        }
 
         if(ownerInfluence > challengerInfluence){
             return owner;

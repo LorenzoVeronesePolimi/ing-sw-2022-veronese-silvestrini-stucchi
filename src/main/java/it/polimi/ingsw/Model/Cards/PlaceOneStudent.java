@@ -8,7 +8,6 @@ import it.polimi.ingsw.Model.Pawns.Student;
 import it.polimi.ingsw.Model.Places.Archipelago;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class PlaceOneStudent extends AbstractCharacterCard{
