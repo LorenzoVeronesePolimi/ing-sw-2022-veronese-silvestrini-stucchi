@@ -85,9 +85,9 @@ public class Bag {
         throw new NoProfessorBagException();
     }
 
-    //called by TakeProfessorOnEquity
-    public void putProfessor(Professor professor) {
-        professors.add(professor);
+    //called by reduceColourInDining
+    public void putStudent(Student student) {
+        students.add(student);
     }
 
     private void shuffleInitial(){

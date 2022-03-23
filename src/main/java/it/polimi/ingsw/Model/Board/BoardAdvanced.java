@@ -23,6 +23,7 @@ public class BoardAdvanced implements Board{
         return new ArrayList<Archipelago>(this.board.archipelagos);
     }
 
+    public List<School> getSchools(){return new ArrayList<School>(this.board.schools);}
 
     @Override
     public Archipelago getArchipelago(int archipelagoIndex) {
