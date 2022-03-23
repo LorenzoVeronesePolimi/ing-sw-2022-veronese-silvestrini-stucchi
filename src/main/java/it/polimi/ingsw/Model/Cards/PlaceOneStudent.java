@@ -22,9 +22,10 @@ public class PlaceOneStudent extends AbstractCharacterCard{
     }
     public void useEffect(SPColour chosen, int archipelago) throws StudentNotFoundException{
         List<Student> s= fourStudents.stream().filter(x -> x.getColour().equals(chosen)).collect(Collectors.toList());
+        Student student;
         if(!s.isEmpty()){
-            fourStudents.remove(s.get(0));
-            archi.get(archipelago).addStudent(s.get(0));
+            student= fourStudents.remove(fourStudents.indexOf(s.get(0)));
+            archi.get(archipelago).addStudent(student);
         }else {
             throw new StudentNotFoundException();
         }
