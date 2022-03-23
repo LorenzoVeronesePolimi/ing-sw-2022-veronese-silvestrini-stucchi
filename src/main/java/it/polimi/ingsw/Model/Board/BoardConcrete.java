@@ -1,6 +1,7 @@
 package it.polimi.ingsw.Model.Board;
 
 import it.polimi.ingsw.Model.Bag;
+import it.polimi.ingsw.Model.Cards.AssistantCard;
 import it.polimi.ingsw.Model.Enumerations.SPColour;
 import it.polimi.ingsw.Model.Exceptions.*;
 import it.polimi.ingsw.Model.Pawns.MotherNature;
@@ -13,6 +14,7 @@ import it.polimi.ingsw.Model.Places.School;
 import it.polimi.ingsw.Model.Player;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -25,9 +27,12 @@ public abstract class BoardConcrete implements Board{
     protected List<Cloud> clouds;     //list of all clouds in the game
     protected MotherNature mn;    //reference to MotherNature(Singleton)
     protected Bag bag;   //reference to the Bag
+    private final static int playerHandLength = 10;
 
-    public BoardConcrete(){}
 
+
+
+    //--------------------------------------------------INITIALIZATION OF BOARD
     public BoardConcrete(List<Player> players) {
         this.archipelagos = new ArrayList<Archipelago>();
 
@@ -47,11 +52,111 @@ public abstract class BoardConcrete implements Board{
     }
 
 
-    //Testing
+    public void initializeBoard(){
+        this.initializePlayersHands();
+        this.placeMotherNatureInitialBoard();
+        this.placeStudentInitialBoard();
+    }
+
+    private void initializePlayersHands(){
+        // Create all needed AssistantCards
+        List<AssistantCard> cardsCreated = new ArrayList<AssistantCard>();
+        int[] cardsMotherNatureMoves= {1, 1, 2, 2, 3, 3, 4, 4, 5, 5}; //TODO: check if these values ar correct
+        for(int i = 0; i < this.playerHandLength; i++){
+            cardsCreated.add(new AssistantCard(i + 1, cardsMotherNatureMoves[i]));
+        }
+
+        // give them to Players
+        for(Player p : this.players){
+            for(AssistantCard c : cardsCreated){
+                p.addAssistantCard(c);
+            }
+        }
+    }
+
+    private void placeStudentInitialBoard() {
+        //get 10 initial students to be placed on the archipelagos (one each, except mn position and the opposite)
+        List<Student> initialStudents = bag.getInitialStudents();
+
+        for(int i = 1; i < this.archipelagos.size(); i++) {
+            if(i < 6) {
+                this.archipelagos.get(i).addStudent(initialStudents.get(i-1));
+            } else if(i > 6) {
+                this.archipelagos.get(i).addStudent(initialStudents.get(i-2));
+            }
+        }
+    }
+
+    //Mother Nature is put in the first archipelago
+    private void placeMotherNatureInitialBoard() {
+        mn.putInPosition(archipelagos.get(0));
+    }
+
+    // changes order of Players in the this.players list according to turnPriority in the AssistantCard they played
+    public void changeTurnOrder(){
+        Map<Player, Integer> values = new HashMap<>();
+
+        for(Player p : this.players){
+            values.put(p, p.getLastCard().getTurnPriority());
+        }
+
+        List<Player> orderedPlayerList = new ArrayList<>();
+        while (values.size() > 0) {
+            Map.Entry<Player, Integer> min = null;
+            for (Map.Entry<Player, Integer> e : values.entrySet()) {
+                if (min == null || min.getValue() > e.getValue()) {
+                    min = e;
+                }
+            }
+            Player minPlayer = min.getKey();
+            orderedPlayerList.add(minPlayer);
+            values.remove(minPlayer);
+        }
+
+        this.players = orderedPlayerList;
+    }
+
+
+
+
+    //--------------------------------------------------GETTER AND SETTER
     public Archipelago getArchipelago(int archipelagoIndex){
         return this.archipelagos.get(archipelagoIndex);
     }
 
+    // Find the School where the Professor is in
+    public School whereIsProfessor(SPColour colour){
+        for(School s: schools) {
+            for(Professor p: s.getProfessors()) {
+                if(p.getColour().equals(colour)) {
+                    return s;
+                }
+            }
+        }
+
+        // This happens when the Professor I'm looking for is in the Bag
+        return null;
+    };
+
+    // Returns the Archipelago's index where MotherNature is positioned
+    public int whereIsMotherNature(){
+        return archipelagos.indexOf(mn.getCurrentPosition());
+    }
+
+    public School getPlayerSchool(Player player) {
+        return playerSchool.get(player);
+    }
+
+
+
+
+    //--------------------------------------------------PAWNS MOVEMENTS
+    public void moveMotherNature(int archipelagoIndex){
+        //TODO: check if the move is permitted (by the number of moves set in the AssistantCard)
+        //TODO: this check can be done before showing possible moves for MN
+
+        mn.putInPosition(archipelagos.get(archipelagoIndex));
+    }
 
     public void moveStudentSchoolToArchipelagos(Player player, SPColour colour, int archipelagoIndex) {
         //school related to the player that made the move
@@ -103,20 +208,6 @@ public abstract class BoardConcrete implements Board{
         }
     };
 
-    private void placeStudentInitialBoard() {
-        //get 10 initial students to be placed on the archipelagos (one each, except mn position and the opposite)
-        List<Student> initialStudents = bag.getInitialStudents();
-
-        for(int i = 1; i < this.archipelagos.size(); i++) {
-            if(i < 6) {
-                this.archipelagos.get(i).addStudent(initialStudents.get(i-1));
-            } else if(i > 6) {
-                this.archipelagos.get(i).addStudent(initialStudents.get(i-2));
-            }
-        }
-
-    }
-
     protected void moveStudentBagToCloud(int numStudents) {
         for(Cloud c: clouds) {
             List<Student> toBePlaced = bag.extractStudents(numStudents);
@@ -141,18 +232,6 @@ public abstract class BoardConcrete implements Board{
             }
         }
     }
-
-    //Mother Nature is put in the first archipelago
-    private void placeMotherNatureInitialBoard() {
-        mn.putInPosition(archipelagos.get(0));
-    }
-
-    public void moveMotherNature(int archipelagoIndex){
-        //TODO: check if the move is permitted (by the number of moves set in the AssistantCard)
-        //TODO: this check can be done before showing possible moves for MN
-
-        mn.putInPosition(archipelagos.get(archipelagoIndex));
-    };
 
     public void moveProfessor(Player destinationPlayer, SPColour colour){
         //school related to the player that gets the professor
@@ -179,6 +258,10 @@ public abstract class BoardConcrete implements Board{
         receiverSchool.addProfessor(toBeMoved);
     };
 
+
+
+
+    //--------------------------------------------------PROFESSORS
     //Check if professor is in onw of the schools or in the bag
     public boolean isProfessorInSchool(SPColour colour) {
         for(School s: schools) {
@@ -191,22 +274,6 @@ public abstract class BoardConcrete implements Board{
 
         return false;
     }
-
-    // Find the School where the Professor is in
-    public School whereIsProfessor(SPColour colour){
-        for(School s: schools) {
-            for(Professor p: s.getProfessors()) {
-                if(p.getColour().equals(colour)) {
-                    return s;
-                }
-            }
-        }
-
-        // This happens when the Professor I'm looking for is in the Bag
-        return null;
-    };
-
-
 
     public void conquerProfessor(SPColour colour){
         School currentSchool = this.whereIsProfessor(colour);
@@ -240,17 +307,9 @@ public abstract class BoardConcrete implements Board{
     }
 
 
-    // Returns the Archipelago's index where MotherNature is positioned
-    public int whereIsMotherNature(){
-        return archipelagos.indexOf(mn.getCurrentPosition());
-    }
 
 
-    public School getPlayerSchool(Player player) {
-        return playerSchool.get(player);
-    }
-
-
+    //--------------------------------------------------CONQUERING ISLANDS
     // This probably will be in the Controller
     public void makeTurn(){
         //MOVE STUDENTS
@@ -271,7 +330,6 @@ public abstract class BoardConcrete implements Board{
 
     }
 
-
     public void tryToConquer(){
         int currPosMotherNature = this.whereIsMotherNature();
         boolean archipelagoConquerable = checkIfConquerable();
@@ -284,7 +342,6 @@ public abstract class BoardConcrete implements Board{
         else { //the Archipelago remains to the owner
         }
     }
-
 
     // true if the current Player (who moved MotherNature) will conquer the Archipelago, false otherwise
     public boolean checkIfConquerable(){
@@ -317,7 +374,6 @@ public abstract class BoardConcrete implements Board{
         }
     }
 
-
     // Computes which of two players has most influence on a Archipelago
     public Player computeWinner(Player owner, Player challenger, Archipelago archipelago){
         int ownerInfluence = this.computeInfluenceOfPlayer(owner, archipelago);
@@ -330,7 +386,6 @@ public abstract class BoardConcrete implements Board{
             return challenger;
         }
     }
-
 
     // Returns the influence of a Player on a Archipelago
     public int computeInfluenceOfPlayer(Player player, Archipelago archipelago){
@@ -350,7 +405,6 @@ public abstract class BoardConcrete implements Board{
         return influence;
     }
 
-
     // the Player conquers the Archipelago putting his own Towers and removing the previous ones (if present)
     protected void conquerArchipelago(Player conqueror, Archipelago toConquer){
         // conqueror's Towers to put on the Archipelago
@@ -366,7 +420,6 @@ public abstract class BoardConcrete implements Board{
             }
         } catch(InvalidTowerNumberException ex){ex.printStackTrace();}
     }
-
 
     // This merges as much adjacent Archipelagos as possible removing the old one from the this.archipelagos
     protected void mergeArchipelagos(){
@@ -388,7 +441,6 @@ public abstract class BoardConcrete implements Board{
         }
     }
 
-
     // Check if you can merge the current Island (on which there is MotherNature) with the previous one
     private boolean isThereRightMerge(){
         return this.archipelagos.get(this.whereIsMotherNature()).getOwner() == this.archipelagos.get((this.whereIsMotherNature() - 1) % 12).getOwner();
@@ -399,4 +451,20 @@ public abstract class BoardConcrete implements Board{
         return this.archipelagos.get(this.whereIsMotherNature()).getOwner() == this.archipelagos.get((this.whereIsMotherNature() + 1) % 12).getOwner();
     }
 
+
+
+
+    //--------------------------------------------------ASSISTANT CARDS
+    private void useAssistantCard(Player player, int turnPriority) throws AssistantCardAlreadyPlayedTurnException{
+        // control that no previous Player used that (but if it's his last card, let him use it)
+        int currentPlayerIndex = this.players.indexOf(player);
+        for(int i = 0; i < currentPlayerIndex; i++){
+            if(players.get(i).getLastCard().getTurnPriority() == turnPriority && player.getHandLength() > 1){
+                throw new AssistantCardAlreadyPlayedTurnException();
+            }
+        }
+        try{
+            player.useAssistantCard(turnPriority);
+        } catch(NoAssistantCardException ex){ex.printStackTrace();}
+    }
 }

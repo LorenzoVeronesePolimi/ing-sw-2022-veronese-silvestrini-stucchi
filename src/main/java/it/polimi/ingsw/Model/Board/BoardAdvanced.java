@@ -25,67 +25,58 @@ public class BoardAdvanced implements Board{
 
     public List<School> getSchools(){return new ArrayList<School>(this.board.schools);}
 
-    @Override
     public Archipelago getArchipelago(int archipelagoIndex) {
         return this.board.getArchipelago(archipelagoIndex);
     }
 
-    @Override
+    public void initializeBoard() {
+        this.board.initializeBoard();
+    }
+
     public void moveStudentSchoolToArchipelagos(Player player, SPColour colour, int archipelagoIndex) {
         this.board.moveStudentSchoolToArchipelagos(player, colour, archipelagoIndex);
     }
 
-    @Override
     public void moveStudentCloudToSchool(Player player, int cloudIndex) {
         this.board.moveStudentCloudToSchool(player, cloudIndex);
     }
 
-    @Override
     public void moveStudentHallToDiningRoom(Player player, SPColour colour) {
         this.board.moveStudentHallToDiningRoom(player, colour);
     }
 
-    @Override
     public void moveStudentBagToSchool(int numStudents) {
         this.board.moveStudentBagToSchool(numStudents);
     }
 
-    @Override
     public void moveMotherNature(int archipelagoIndex) {
         this.board.moveMotherNature(archipelagoIndex);
     }
 
-    @Override
     public void moveProfessor(Player destinationPlayer, SPColour colour) {
         this.board.moveProfessor(destinationPlayer, colour);
     }
 
-    @Override
     public boolean isProfessorInSchool(SPColour colour) {
         return this.board.isProfessorInSchool(colour);
     }
 
-    @Override
     public School whereIsProfessor(SPColour colour) {
         return this.board.whereIsProfessor(colour);
     }
 
-    @Override
     public void conquerProfessor(SPColour colour) {
         this.board.conquerProfessor(colour);
     }
 
-    @Override
     public int whereIsMotherNature() {
         return this.board.whereIsMotherNature();
     }
 
-    @Override
     public School getPlayerSchool(Player player) {
         return this.board.getPlayerSchool(player);
     }
 
-    @Override
     public void makeTurn() {
         this.board.makeTurn();
     }
