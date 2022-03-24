@@ -15,12 +15,12 @@ import java.util.stream.Collectors;
 
 public class ExtraStudentInDining extends AbstractCharacterCard{
     BoardAdvanced boardAdvanced;
-    Bag bag = Bag.instance();
+    Bag bag;
     private List<Student> students;
 
     public ExtraStudentInDining(BoardAdvanced boardAdvanced){
         super(2);
-
+        bag=boardAdvanced.getBag();
         students = new ArrayList<>(bag.extractStudents(4));
         this.boardAdvanced = boardAdvanced;
     }

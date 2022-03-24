@@ -13,10 +13,10 @@ import java.util.stream.Collectors;
 public class PlaceOneStudent extends AbstractCharacterCard{
     private List<Student> fourStudents;
     List<Archipelago> archi;
-
+    Bag bag;
     public PlaceOneStudent(BoardAdvanced boardAdvanced) {
         super(1);
-        Bag bag = Bag.instance();
+        bag=boardAdvanced.getBag();
         fourStudents = bag.extractStudents(4);
         archi.addAll(boardAdvanced.getArchiList()); // o assegnamento archi=archipelagos?????
     }
@@ -29,7 +29,6 @@ public class PlaceOneStudent extends AbstractCharacterCard{
         }else {
             throw new StudentNotFoundException();
         }
-        Bag bag = Bag.instance();
         s = bag.extractStudents(1);
         fourStudents.add(s.get(0));
         updatePrice();

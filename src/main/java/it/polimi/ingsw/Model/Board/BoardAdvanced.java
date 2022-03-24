@@ -1,5 +1,6 @@
 package it.polimi.ingsw.Model.Board;
 
+import it.polimi.ingsw.Model.Bag;
 import it.polimi.ingsw.Model.Enumerations.SPColour;
 import it.polimi.ingsw.Model.Pawns.Professor;
 import it.polimi.ingsw.Model.Places.Archipelago;
@@ -18,6 +19,8 @@ public class BoardAdvanced implements Board{
     public BoardAdvanced(BoardAbstract boardToExtend) {
         this.board = boardToExtend;
     }
+
+    public Bag getBag(){return this.board.bag;}
 
     public List<Archipelago> getArchiList(){
         return new ArrayList<Archipelago>(this.board.archipelagos);

@@ -8,9 +8,10 @@ import it.polimi.ingsw.Model.Places.School;
 
 public class ReduceColourInDining extends AbstractCharacterCard{
     BoardAdvanced boardAdvanced;
-    Bag bag=Bag.instance();
+    Bag bag;
     public ReduceColourInDining(BoardAdvanced boardAdvanced){
         super(3);
+        bag=boardAdvanced.getBag();
         this.boardAdvanced=boardAdvanced;
     }
     public void useEffect(SPColour colour){

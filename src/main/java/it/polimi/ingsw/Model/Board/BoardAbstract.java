@@ -44,8 +44,8 @@ public abstract class BoardAbstract implements Board{
 
         this.players = new ArrayList<Player>();
         this.players.addAll(players);
-        mn = MotherNature.instance();
-        bag = Bag.instance();
+        mn = new MotherNature();
+        bag = new Bag();
 
         placeMotherNatureInitialBoard();
         placeStudentInitialBoard();
