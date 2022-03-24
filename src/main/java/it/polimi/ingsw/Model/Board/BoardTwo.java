@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class BoardTwo extends BoardConcrete{
+public class BoardTwo extends BoardAbstract {
     public BoardTwo(List<Player> playersParam) {
         super(playersParam);
 

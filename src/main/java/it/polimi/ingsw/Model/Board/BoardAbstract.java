@@ -18,7 +18,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public abstract class BoardConcrete implements Board{
+public abstract class BoardAbstract implements Board{
     protected List<School> schools;   //list of all school in the game (one for each player)
     protected List<Player> players;   //list of all players in the game (in order)
     protected int currentPlayer; //index of the current Player in the list players
@@ -33,7 +33,7 @@ public abstract class BoardConcrete implements Board{
 
 
     //--------------------------------------------------INITIALIZATION OF BOARD
-    public BoardConcrete(List<Player> players) {
+    public BoardAbstract(List<Player> players) {
         this.archipelagos = new ArrayList<Archipelago>();
 
         for(int i = 0; i < 12; i++) {

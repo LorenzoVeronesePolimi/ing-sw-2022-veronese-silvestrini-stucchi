@@ -11,11 +11,11 @@ import java.util.List;
 import java.util.Map;
 
 public class BoardAdvanced implements Board{
-    private BoardConcrete board;
+    private BoardAbstract board;
     private boolean twoExtraPointsFlag = false;
     private SPColour colourToExclude=null;
 
-    public BoardAdvanced(BoardConcrete boardToExtend) {
+    public BoardAdvanced(BoardAbstract boardToExtend) {
         this.board = boardToExtend;
     }
 
