@@ -76,7 +76,12 @@ public abstract class BoardAbstract implements Board{
 
     private void placeStudentInitialBoard() {
         //get 10 initial students to be placed on the archipelagos (one each, except mn position and the opposite)
-        List<Student> initialStudents = bag.getInitialStudents();
+        List<Student> initialStudents = null;
+        try {
+            initialStudents = bag.getInitialStudents();
+        } catch (NullContentException e) {
+            e.printStackTrace();
+        }
 
         for(int i = 1; i < this.archipelagos.size(); i++) {
             if(i < 6) {
