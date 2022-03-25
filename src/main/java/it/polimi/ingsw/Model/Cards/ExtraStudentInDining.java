@@ -21,7 +21,11 @@ public class ExtraStudentInDining extends AbstractCharacterCard{
     public ExtraStudentInDining(BoardAdvanced boardAdvanced){
         super(2);
         bag=boardAdvanced.getBag();
-        students = new ArrayList<>(bag.extractStudents(4));
+        try {
+            students = new ArrayList<>(bag.extractStudents(4));
+        } catch (StudentNotFoundException e) {
+            e.printStackTrace();
+        }
         this.boardAdvanced = boardAdvanced;
     }
     public void useEffect(Player currentPlayer, SPColour cardToDining) throws StudentNotFoundException{

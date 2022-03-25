@@ -22,7 +22,11 @@ public class ExchangeThreeStudents extends AbstractCharacterCard{
     public ExchangeThreeStudents(BoardAdvanced boardAdvanced){
         super(1);
         bag=boardAdvanced.getBag();
-        students = new ArrayList<>(bag.extractStudents(6));
+        try {
+            students = new ArrayList<>(bag.extractStudents(6));
+        } catch (StudentNotFoundException e) {
+            e.printStackTrace();
+        }
         this.boardAdvanced = boardAdvanced;
     }
 

@@ -215,7 +215,12 @@ public abstract class BoardAbstract implements Board{
 
     protected void moveStudentBagToCloud(int numStudents) {
         for(Cloud c: clouds) {
-            List<Student> toBePlaced = bag.extractStudents(numStudents);
+            List<Student> toBePlaced = null;
+            try {
+                toBePlaced = bag.extractStudents(numStudents);
+            } catch (StudentNotFoundException e) {
+                e.printStackTrace();
+            }
             try {
                 c.fill(toBePlaced);
             } catch (ExceededMaxStudentsCloudException e) {
@@ -226,7 +231,12 @@ public abstract class BoardAbstract implements Board{
 
     public void moveStudentBagToSchool(int numStudents) {
         for(School s: this.schools) {
-            List<Student> toBePlaced = bag.extractStudents(numStudents);
+            List<Student> toBePlaced = null;
+            try {
+                toBePlaced = bag.extractStudents(numStudents);
+            } catch (StudentNotFoundException e) {
+                e.printStackTrace();
+            }
 
             for(Student student: toBePlaced) {
                 try {

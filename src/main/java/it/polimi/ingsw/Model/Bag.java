@@ -3,6 +3,7 @@ package it.polimi.ingsw.Model;
 import it.polimi.ingsw.Model.Enumerations.SPColour;
 import it.polimi.ingsw.Model.Exceptions.NoProfessorBagException;
 import it.polimi.ingsw.Model.Exceptions.NullContentException;
+import it.polimi.ingsw.Model.Exceptions.StudentNotFoundException;
 import it.polimi.ingsw.Model.Pawns.Professor;
 import it.polimi.ingsw.Model.Pawns.Student;
 
@@ -66,7 +67,11 @@ public class Bag {
         throw new NullContentException();
     }
 
-    public List<Student> extractStudents(int num){
+    public List<Student> extractStudents(int num) throws StudentNotFoundException {
+        if(num > students.size()) {
+            throw new StudentNotFoundException();
+        }
+
         List<Student> extracted = new ArrayList<Student>();
 
         for(int i = 0; i < num; i++){
@@ -75,6 +80,12 @@ public class Bag {
             extracted.add(removed);
         }
         return extracted;
+    }
+
+
+    //called by reduceColourInDining
+    public void putStudent(Student student) {
+        students.add(student);
     }
 
     //---------------PROFESSORS
@@ -87,11 +98,6 @@ public class Bag {
         }
 
         throw new NoProfessorBagException();
-    }
-
-    //called by reduceColourInDining
-    public void putStudent(Student student) {
-        students.add(student);
     }
 
     private void shuffleInitial(){

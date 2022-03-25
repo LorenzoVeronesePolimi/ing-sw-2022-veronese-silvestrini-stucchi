@@ -5,12 +5,14 @@ import static org.junit.Assert.*;
 import it.polimi.ingsw.Model.Enumerations.SPColour;
 import it.polimi.ingsw.Model.Exceptions.NoProfessorBagException;
 import it.polimi.ingsw.Model.Exceptions.NullContentException;
+import it.polimi.ingsw.Model.Exceptions.StudentNotFoundException;
 import it.polimi.ingsw.Model.Pawns.Professor;
 import it.polimi.ingsw.Model.Pawns.Student;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class BagTest {
@@ -40,7 +42,49 @@ public class BagTest {
         }
     }
 
+    @Test
+    public void extractStudents() {
+        List<Student> students = null;
 
+        //extract all students
+        try {
+            students = bag.extractStudents(120);
+        } catch (StudentNotFoundException e) {
+            e.printStackTrace();
+        }
+        assertEquals(students.size(), 120);
+
+        //check if no student remaining
+        assertThrows(StudentNotFoundException.class, () -> bag.extractStudents(1));
+    }
+
+    @Test
+    public void putStudent() {
+        Student s = new Student(SPColour.RED);
+        List<Student> students = null;
+
+        //extract all students
+        try {
+            students = bag.extractStudents(120);
+        } catch (StudentNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        //add student to the bag
+        bag.putStudent(s);
+
+        //extract only student
+        try {
+            students = bag.extractStudents(1);
+        } catch (StudentNotFoundException e) {
+            e.printStackTrace();
+        }
+        //check if it's the same students that was put in the bag
+        assertEquals(s, students.get(0));
+
+        //check if no other student left
+        assertThrows(StudentNotFoundException.class, () -> bag.extractStudents(1));
+    }
     //---------------PROFESSORS
     @Test
     void takeProfessor() {
