@@ -44,7 +44,7 @@ public class Archipelago {
 
 
     public Archipelago(){
-        this.islands = new ArrayList<Island>();
+        this.islands = new ArrayList<>();
         this.islands.add(new Island());
         this.owner = null; // null as long as no one owns the Archipelago
 
@@ -77,7 +77,7 @@ public class Archipelago {
 
     public boolean getTowerNoValueFlag(){
         return this.towerNoValueFlag;
-    };
+    }
 
     public void setForbidFlag(boolean forbidFlag) {
         this.forbidFlag = forbidFlag;
