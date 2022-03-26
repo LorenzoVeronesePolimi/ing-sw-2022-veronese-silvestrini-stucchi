@@ -45,5 +45,4 @@ public class ExtraStudentInDining extends AbstractCharacterCard{
         students.add(student.get(0));
         updatePrice();
     }
-    public void update(BoardAdvanced boardAdvanced){};
 }

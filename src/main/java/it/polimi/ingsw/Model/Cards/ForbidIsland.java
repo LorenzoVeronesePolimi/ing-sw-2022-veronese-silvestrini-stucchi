@@ -15,9 +15,4 @@ public class ForbidIsland extends AbstractCharacterCard{
 
         updatePrice();
     }
-
-    @Override
-    public void update(BoardAdvanced boardAdvanced) {
-        this.boardAdvanced = boardAdvanced;
-    }
 }

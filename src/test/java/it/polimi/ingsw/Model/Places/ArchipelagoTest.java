@@ -150,12 +150,12 @@ public class ArchipelagoTest {
         Archipelago tested = new Archipelago();
         Student s = new Student(SPColour.BLUE);
         tested.addStudent(s);
-        assertEquals(1, Optional.ofNullable(tested.howManyStudents().get(SPColour.BLUE)));
+        assertEquals("1", tested.howManyStudents().get(SPColour.BLUE).toString());
         s = new Student(SPColour.BLUE);
         tested.addStudent(s);
         s = new Student(SPColour.BLUE);
         tested.addStudent(s);
-        assertEquals(3, Optional.ofNullable(tested.howManyStudents().get(SPColour.BLUE)));
+        assertEquals("3", tested.howManyStudents().get(SPColour.BLUE).toString());
     }
     @Test
     public void toStringTest() {

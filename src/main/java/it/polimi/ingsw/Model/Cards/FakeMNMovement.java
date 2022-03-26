@@ -21,9 +21,4 @@ public class FakeMNMovement extends AbstractCharacterCard{
 
         updatePrice();
     }
-
-    @Override
-    public void update(BoardAdvanced boardAdvanced) {
-        this.boardAdvanced = boardAdvanced;
-    }
 }

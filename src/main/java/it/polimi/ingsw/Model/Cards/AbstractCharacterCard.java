@@ -18,8 +18,6 @@ public abstract class AbstractCharacterCard {
         numUsed++;
     }
 
-    public abstract void update(BoardAdvanced boardAdvanced);
-
     public int getCurrentPrice(){
         return basePrice + numUsed;
     }

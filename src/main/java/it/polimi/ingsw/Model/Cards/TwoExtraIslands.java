@@ -43,9 +43,4 @@ public class TwoExtraIslands extends AbstractCharacterCard{
 
         return startingPoint;
     }
-
-    @Override
-    public void update(BoardAdvanced boardAdvanced) {
-
-    }
 }
