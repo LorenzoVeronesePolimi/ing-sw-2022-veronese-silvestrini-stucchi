@@ -67,8 +67,5 @@ public class ExchangeTwoHallDining extends AbstractCharacterCard{
             }
         }
         updatePrice();
-
     }
-
-    public void update(BoardAdvanced boardAdvanced){};
 }

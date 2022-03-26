@@ -16,6 +16,4 @@ public class ExcludeColourFromCounting extends AbstractCharacterCard{
         boardAdvanced.tryToConquer();
         updatePrice();
     }
-
-    public void update(BoardAdvanced boardAdvanced){};
 }

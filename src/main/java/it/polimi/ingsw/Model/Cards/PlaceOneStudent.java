@@ -37,9 +37,4 @@ public class PlaceOneStudent extends AbstractCharacterCard{
         fourStudents.add(s.get(0));
         updatePrice();
     }
-
-    @Override
-    public void update(BoardAdvanced boardAdvanced) {
-        archi.addAll(boardAdvanced.getArchiList());
-    }
 }

@@ -2,10 +2,10 @@ package it.polimi.ingsw.Model.Cards;
 
 import it.polimi.ingsw.Model.Board.BoardAdvanced;
 
-public class TowerNoValue extends AbstractCharacterCard{
+public class TowerNoValue extends AbstractCharacterCard {
     private BoardAdvanced boardAdvanced;
 
-    public TowerNoValue(BoardAdvanced boardAdvanced){
+    public TowerNoValue(BoardAdvanced boardAdvanced) {
         super(3);
 
         this.boardAdvanced = boardAdvanced;
@@ -17,10 +17,5 @@ public class TowerNoValue extends AbstractCharacterCard{
         boardAdvanced.tryToConquer();
 
         updatePrice();
-    }
-
-    @Override
-    public void update(BoardAdvanced boardAdvanced) {
-        this.boardAdvanced = boardAdvanced;
     }
 }

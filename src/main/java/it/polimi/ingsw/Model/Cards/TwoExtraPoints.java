@@ -17,6 +17,4 @@ public class TwoExtraPoints extends AbstractCharacterCard{
 
         updatePrice();
     }
-
-    public void update(BoardAdvanced boardAdvanced){};
 }
