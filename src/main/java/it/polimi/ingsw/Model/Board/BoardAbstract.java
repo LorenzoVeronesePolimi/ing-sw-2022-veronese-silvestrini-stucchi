@@ -69,7 +69,11 @@ public abstract class BoardAbstract implements Board{
         // give them to Players
         for(Player p : this.players){
             for(AssistantCard c : cardsCreated){
-                p.addAssistantCard(c);
+                try {
+                    p.addAssistantCard(c);
+                } catch (ExceedingAssistantCardNumberException e) {
+                    e.printStackTrace();
+                }
             }
         }
     }
@@ -474,7 +478,7 @@ public abstract class BoardAbstract implements Board{
         // control that no previous Player used that (but if it's his last card, let him use it)
         int currentPlayerIndex = this.players.indexOf(player);
         for(int i = 0; i < currentPlayerIndex; i++){
-            if(players.get(i).getLastCard().getTurnPriority() == turnPriority && player.getHandLength() > 1){
+            if(players.get(i).getLastCard().getTurnPriority() == turnPriority && player.getHandLength() > 1) {
                 throw new AssistantCardAlreadyPlayedTurnException();
             }
         }

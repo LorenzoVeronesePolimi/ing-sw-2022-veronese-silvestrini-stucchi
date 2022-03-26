@@ -2,12 +2,15 @@ package it.polimi.ingsw.Model;
 
 import it.polimi.ingsw.Model.Cards.AssistantCard;
 import it.polimi.ingsw.Model.Enumerations.PlayerColour;
+import it.polimi.ingsw.Model.Exceptions.ExceedingAssistantCardNumberException;
 import it.polimi.ingsw.Model.Exceptions.NoAssistantCardException;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Player {
     private String nickname;
+    private final int MAXCARDNUM = 10;
     private List<AssistantCard> playerHand;
     private AssistantCard lastCard;
     private PlayerColour colour;
@@ -15,6 +18,7 @@ public class Player {
     public Player(String nickname, PlayerColour colour) {
         this.nickname = nickname;
         this.colour = colour;
+        playerHand = new ArrayList<>();
     }
 
     public String getNickname() {
@@ -34,21 +38,32 @@ public class Player {
         return this.playerHand.size();
     }
 
-    public void addAssistantCard(AssistantCard toAdd){
-        this.playerHand.add(toAdd);
+    public void addAssistantCard(AssistantCard toAdd) throws ExceedingAssistantCardNumberException {
+        if(playerHand.size() < MAXCARDNUM)
+            this.playerHand.add(toAdd);
+        else
+            throw new ExceedingAssistantCardNumberException();
     }
 
     // Player uses the AssistantCard. Remove it from the playerHand, and put in lastCard
     public void useAssistantCard(int turnPriority) throws NoAssistantCardException {
+        boolean cardCorrectlyPlayed = false;
+        AssistantCard removed = null;
+
         for(AssistantCard c : this.playerHand){
             if(c.getTurnPriority() == turnPriority){
                 this.lastCard = c;
-                playerHand.remove(c);
-                break;
+                removed = c;
+                cardCorrectlyPlayed = true;
             }
         }
 
-        throw new NoAssistantCardException();
+        //if no card was found
+        if(!cardCorrectlyPlayed)
+            throw new NoAssistantCardException();
+
+        //if it is found and played
+        playerHand.remove(removed);
     }
 
 
