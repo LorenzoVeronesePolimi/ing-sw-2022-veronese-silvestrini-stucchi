@@ -50,6 +50,15 @@ public class School {
 
     public List<Professor> getProfessors(){ return professors; }
 
+    public List<Student> getStudentsHall() {
+        List<Student> newStudentsHall = new ArrayList<>();
+
+        for(Student s : this.studentsHall){
+            newStudentsHall.add(s);
+        }
+        return newStudentsHall;
+    }
+
     public void addTower(Tower tower) throws ExceededMaxTowersException{
         try {
             if(towers.size()< numMaxTowers){

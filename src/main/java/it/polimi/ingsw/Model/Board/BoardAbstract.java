@@ -156,6 +156,16 @@ public abstract class BoardAbstract implements Board{
         return playerSchool.get(player);
     }
 
+    //The following, were introduced because useful for the Controller
+    public boolean isStudentInSchoolHall(Player player, SPColour c){
+        for(Student s : this.playerSchool.get(player).getStudentsHall()){
+            if(s.getColour() == c){
+                return true;
+            }
+        }
+        return false;
+    }
+
 
 
 

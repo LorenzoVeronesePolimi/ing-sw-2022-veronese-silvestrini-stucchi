@@ -9,6 +9,8 @@ import it.polimi.ingsw.Model.Player;
 public interface Board {
     public Archipelago getArchipelago(int archipelagoIndex);
 
+    public boolean isStudentInSchoolHall(Player player, SPColour c);
+
     public void moveStudentSchoolToArchipelagos(Player player, SPColour colour, int archipelagoIndex);
 
     public void moveStudentCloudToSchool(Player player, int cloudIndex);
