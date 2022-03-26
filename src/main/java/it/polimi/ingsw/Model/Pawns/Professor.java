@@ -3,7 +3,7 @@ package it.polimi.ingsw.Model.Pawns;
 import it.polimi.ingsw.Model.Enumerations.SPColour;
 
 public class Professor {
-    private SPColour colour;
+    private final SPColour colour;
 
     public Professor(SPColour colour) {
         this.colour = colour;
