@@ -28,19 +28,23 @@ public class SchoolTest {
     }
 
     @Test
+    //TODO: find the error in School.java and correct it
     void getProfessors(){
         Player p = new Player("owner", PlayerColour.WHITE);
         School school = new School(p,7,8);
         assertTrue(school.getProfessors().isEmpty());
 
-        /*Player p2 = new Player("other", PlayerColour.BLACK);
+        Player p2 = new Player("other", PlayerColour.BLACK);
         List<Player> players = new ArrayList<>();
         players.add(p);
         players.add(p2);
         BoardTwo boardTwo = new BoardTwo(players);
         boardTwo.moveProfessor(p, SPColour.BLUE);
         boardTwo.moveProfessor(p, SPColour.RED);
-        assertEquals(2, school.getProfessors().size());*/
+        assertEquals(2, school.getProfessors().size());
+        assertEquals(SPColour.BLUE, school.getProfessors().get(0).getColour());
+        assertEquals(SPColour.RED, school.getProfessors().get(1).getColour());
+
     }
 
     @Test
@@ -241,6 +245,7 @@ public class SchoolTest {
     }
 
     @Test
+    //TODO: find the error in School.java and correct it
     void removeStudentDiningRoom(){
         Player p = new Player("owner", PlayerColour.WHITE);
         School school = new School(p,7,8);
@@ -365,6 +370,7 @@ public class SchoolTest {
     }
 
     @Test
+    //TODO: there is a syntactic  error in this test
     void toStringTest(){
         /*
         Player p = new Player("owner", PlayerColour.WHITE);
