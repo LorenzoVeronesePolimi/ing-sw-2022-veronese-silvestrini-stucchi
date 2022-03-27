@@ -13,7 +13,6 @@ import org.junit.jupiter.api.Test;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.*;
 
 
@@ -28,22 +27,19 @@ public class SchoolTest {
     }
 
     @Test
-    //TODO: find the error in School.java and correct it
     void getProfessors(){
         Player p = new Player("owner", PlayerColour.WHITE);
-        School school = new School(p,7,8);
-        assertTrue(school.getProfessors().isEmpty());
 
         Player p2 = new Player("other", PlayerColour.BLACK);
         List<Player> players = new ArrayList<>();
         players.add(p);
         players.add(p2);
         BoardTwo boardTwo = new BoardTwo(players);
-        boardTwo.moveProfessor(p, SPColour.BLUE);
+        boardTwo.moveProfessor(p, SPColour.BLUE); //this method calls school method getProfessor and addProfessor
         boardTwo.moveProfessor(p, SPColour.RED);
-        assertEquals(2, school.getProfessors().size());
-        assertEquals(SPColour.BLUE, school.getProfessors().get(0).getColour());
-        assertEquals(SPColour.RED, school.getProfessors().get(1).getColour());
+        assertEquals(2, boardTwo.getPlayerSchool(p).getProfessors().size());
+        assertEquals(SPColour.BLUE, boardTwo.getPlayerSchool(p).getProfessors().get(0).getColour());
+        assertEquals(SPColour.RED, boardTwo.getPlayerSchool(p).getProfessors().get(1).getColour());
 
     }
 
@@ -151,11 +147,7 @@ public class SchoolTest {
             e.printStackTrace();
         }
         assertTrue(school.getProfessors().isEmpty());
-        try {
-            school.removeProfessor(SPColour.RED);
-        } catch (ProfessorNotFoundException e) {
-            e.printStackTrace();
-        }
+        assertThrows(ProfessorNotFoundException.class, () -> school.removeProfessor(SPColour.RED));
     }
 
     @Test
@@ -185,29 +177,30 @@ public class SchoolTest {
         Player p = new Player("owner", PlayerColour.WHITE);
         School school = new School(p,7,8);
         Student s = new Student(SPColour.BLUE);
+
         try {
             school.addStudentHall(s);
         } catch (ExceededMaxStudentsHallException e) {
             e.printStackTrace();
         }
+
         s = new Student(SPColour.RED);
         try {
             school.addStudentHall(s);
         } catch (ExceededMaxStudentsHallException e) {
             e.printStackTrace();
         }
+
         try {
             school.removeStudentHall(SPColour.BLUE);
         } catch (StudentNotFoundException e) {
             e.printStackTrace();
         }
+
         assertEquals(1, school.getStudentsHall().size());
         assertEquals(SPColour.RED, school.getStudentsHall().get(0).getColour());
-        try {
-            school.removeStudentHall(SPColour.YELLOW);
-        } catch (StudentNotFoundException e) {
-            e.printStackTrace();
-        }
+
+        assertThrows(StudentNotFoundException.class, () -> school.removeStudentHall(SPColour.YELLOW));
     }
 
     @Test
@@ -245,7 +238,6 @@ public class SchoolTest {
     }
 
     @Test
-    //TODO: find the error in School.java and correct it
     void removeStudentDiningRoom(){
         Player p = new Player("owner", PlayerColour.WHITE);
         School school = new School(p,7,8);
@@ -256,33 +248,40 @@ public class SchoolTest {
         } catch (ExceededMaxStudentsDiningRoomException e) {
             e.printStackTrace();
         }
+
         s = new Student(SPColour.BLUE);
+
         try {
             school.addStudentDiningRoom(s);
         } catch (ExceededMaxStudentsDiningRoomException e) {
             e.printStackTrace();
         }
+
         try {
-            assertEquals(2,school.getNumStudentColour(SPColour.BLUE));
+            assertEquals(2, school.getNumStudentColour(SPColour.BLUE));
         } catch (WrongColourException e) {
             e.printStackTrace();
         }
+
         try {
             returned = school.removeStudentDiningRoom(SPColour.BLUE);
         } catch (StudentNotFoundException e) {
             e.printStackTrace();
         }
+
         try {
             assertEquals(1,school.getNumStudentColour(SPColour.BLUE));
             assertEquals(SPColour.BLUE, returned.getColour());
         } catch (WrongColourException e) {
             e.printStackTrace();
         }
+
         try {
             school.removeStudentDiningRoom(SPColour.BLUE);
         } catch (StudentNotFoundException e) {
             e.printStackTrace();
         }
+
         try {
             assertEquals(0,school.getNumStudentColour(SPColour.BLUE));
         } catch (WrongColourException e) {
@@ -295,19 +294,42 @@ public class SchoolTest {
         Player p = new Player("owner", PlayerColour.WHITE);
         School school = new School(p,7,8);
         Student s = new Student(SPColour.BLUE);
+
         try {
             school.addStudentHall(s);
         } catch (ExceededMaxStudentsHallException e) {
             e.printStackTrace();
         }
-        school.moveStudentHallToDiningRoom(SPColour.BLUE);
+
+        try {
+            school.moveStudentHallToDiningRoom(SPColour.BLUE);
+        } catch (StudentNotFoundException e) {
+            e.printStackTrace();
+        } catch (ExceededMaxStudentsDiningRoomException e) {
+            e.printStackTrace();
+        }
         assertTrue(school.getStudentsHall().isEmpty());
+
         try {
             assertEquals(1,school.getNumStudentColour(SPColour.BLUE));
+            assertThrows(StudentNotFoundException.class, () -> school.moveStudentHallToDiningRoom(SPColour.BLUE));
         } catch (WrongColourException e) {
             e.printStackTrace();
         }
-        school.moveStudentHallToDiningRoom(SPColour.BLUE);
+
+        for(int i = 0; i < 9; i++) {
+            s = new Student(SPColour.BLUE);
+            try {
+                school.addStudentDiningRoom(s);
+            } catch (ExceededMaxStudentsDiningRoomException e) {
+                e.printStackTrace();
+            }
+        }
+
+        s = new Student(SPColour.BLUE);
+
+        Student finalS = s;
+        assertThrows(ExceededMaxStudentsDiningRoomException.class, () -> school.addStudentDiningRoom(finalS));
     }
 
     @Test
@@ -370,21 +392,24 @@ public class SchoolTest {
     }
 
     @Test
-    //TODO: there is a syntactic  error in this test
     void toStringTest(){
-        /*
+
         Player p = new Player("owner", PlayerColour.WHITE);
         School school = new School(p,7,8);
-        assertEquals("School{" +
-                "player=" + getPlayer() +
-                ", studentsHall=" + school.getStudentsHall() +
-                ", studentsDiningRed=" + null +
-                ", studentsDiningPink=" + null +
-                ", studentsDiningGreen=" + null +
-                ", studentsDiningYellow=" + null +
-                ", studentsDiningBlue=" + null +
-                ", professors=" + school.getProfessors() +
-                ", towers=" + school.getTowers() +
-                '}', school.toString());*/
+        try {
+            assertEquals("School{" +
+                    "player=" + school.getPlayer() +
+                    ", studentsHall=" + school.getStudentsHall() +
+                    ", studentsDiningRed=" + school.getListStudentColour(SPColour.RED) +
+                    ", studentsDiningPink=" + school.getListStudentColour(SPColour.PINK) +
+                    ", studentsDiningGreen=" + school.getListStudentColour(SPColour.GREEN) +
+                    ", studentsDiningYellow=" + school.getListStudentColour(SPColour.YELLOW) +
+                    ", studentsDiningBlue=" + school.getListStudentColour(SPColour.BLUE) +
+                    ", professors=" + school.getProfessors() +
+                    //", towers=" + school.getTowers() +
+                    '}', school.toString());
+        } catch (WrongColourException e) {
+            e.printStackTrace();
+        }
     }
 }

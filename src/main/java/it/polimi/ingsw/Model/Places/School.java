@@ -124,10 +124,19 @@ public class School {
     }
 
     public Student removeStudentHall(SPColour colour) throws StudentNotFoundException{
+        boolean found = false;
+        Student removed = null;
+
         for(Student st : studentsHall) {
-            if(st.getColour().equals(colour)) {
-                return studentsHall.remove(studentsHall.indexOf(st));
+            if(st.getColour().equals(colour) && !found) {
+                removed = st;
+                found = true;
             }
+        }
+
+        if(found) {
+            studentsHall.remove(removed);
+            return removed;
         }
 
         throw new StudentNotFoundException();
@@ -170,56 +179,52 @@ public class School {
             }
         }
     }
+
     public Student removeStudentDiningRoom(SPColour colour) throws StudentNotFoundException{
         if(colour.equals(SPColour.RED)) {
             if(studentsDiningRed.size() >0) {
-                return studentsDiningRed.remove(studentsDiningRed.indexOf(studentsDiningRed.size()-1));
+                return studentsDiningRed.remove(studentsDiningRed.size()-1);
             } else {
                 throw new StudentNotFoundException();
             }
         }
         if(colour.equals(SPColour.PINK)) {
             if(studentsDiningPink.size() > 0) {
-                return studentsDiningPink.remove(studentsDiningPink.indexOf(studentsDiningPink.size()-1));
+                return studentsDiningPink.remove(studentsDiningPink.size()-1);
             } else {
                 throw new StudentNotFoundException();
             }
         }
         if(colour.equals(SPColour.GREEN)) {
             if(studentsDiningGreen.size() > 0) {
-                return studentsDiningGreen.remove(studentsDiningGreen.indexOf(studentsDiningGreen.size()-1));
+                return studentsDiningGreen.remove(studentsDiningGreen.size()-1);
             } else {
                 throw new StudentNotFoundException();
             }
         }
         if(colour.equals(SPColour.BLUE)) {
             if(studentsDiningBlue.size() > 0) {
-                return studentsDiningBlue.remove(studentsDiningBlue.indexOf(studentsDiningBlue.size()-1));
+                return studentsDiningBlue.remove(studentsDiningBlue.size()-1);
             } else {
                 throw new StudentNotFoundException();
             }
         }
         if(colour.equals(SPColour.YELLOW)) {
             if(studentsDiningYellow.size() > 0) {
-                return studentsDiningYellow.remove(studentsDiningYellow.indexOf(studentsDiningYellow.size()-1));
+                return studentsDiningYellow.remove(studentsDiningYellow.size()-1);
             } else {
                 throw new StudentNotFoundException();
             }
         }
 
-        return null;
+        throw new StudentNotFoundException();
     }
 
-    public void moveStudentHallToDiningRoom(SPColour colour) {
+    public void moveStudentHallToDiningRoom(SPColour colour) throws StudentNotFoundException, ExceededMaxStudentsDiningRoomException {
         Student student = null;
-        try {
-            student = removeStudentHall(colour);
-            addStudentDiningRoom(student);
-        } catch (StudentNotFoundException e) {
-            e.printStackTrace();
-        } catch (ExceededMaxStudentsDiningRoomException e) {
-            e.printStackTrace();
-        }
+
+        student = removeStudentHall(colour);
+        addStudentDiningRoom(student);
     }
 
     public int getNumStudentColour(SPColour colour) throws WrongColourException {
@@ -237,6 +242,26 @@ public class School {
         }
         if(colour == SPColour.YELLOW) {
             return studentsDiningYellow.size();
+        }
+
+        throw new WrongColourException();
+    }
+
+    public List<Student> getListStudentColour(SPColour colour) throws WrongColourException {
+        if(colour == SPColour.RED) {
+            return studentsDiningRed;
+        }
+        if(colour == SPColour.BLUE) {
+            return studentsDiningBlue;
+        }
+        if(colour == SPColour.GREEN) {
+            return studentsDiningGreen;
+        }
+        if(colour == SPColour.PINK) {
+            return studentsDiningPink;
+        }
+        if(colour == SPColour.YELLOW) {
+            return studentsDiningYellow;
         }
 
         throw new WrongColourException();
