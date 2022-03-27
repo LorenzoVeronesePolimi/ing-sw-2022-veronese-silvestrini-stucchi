@@ -50,9 +50,13 @@ public class School {
 
     public List<Professor> getProfessors(){ return professors; }
 
+    public int getNumTowers(){
+        return towers.size();
+    }
+
     public void addTower(Tower tower) throws ExceededMaxTowersException{
         try {
-            if(towers.size()< numMaxTowers){
+            if(this.getNumTowers()< numMaxTowers){
                 towers.add(tower);
             }
             else{
@@ -98,8 +102,12 @@ public class School {
         throw new ProfessorNotFoundException();
     }
 
+    public int getNumStudentsHall(){
+        return studentsHall.size();
+    }
+
     public void addStudentHall(Student student) throws ExceededMaxStudentsHallException{
-        if(studentsHall.size() < numMaxStudentsHall) {
+        if(getNumStudentsHall() < numMaxStudentsHall) {
             studentsHall.add(student);
         } else {
             throw new ExceededMaxStudentsHallException();
