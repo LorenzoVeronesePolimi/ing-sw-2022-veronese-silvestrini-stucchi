@@ -21,7 +21,7 @@ import java.util.List;
  *
  *
  * Action:
- * 1. move student (1.1. dining, 1.2. archi)
+ * 1. move student (1.1. dining, 1.2. archipelago)
  *      1.1. check coin, check professors
  *      1.2. check update of archipelago (Student colour)
  * 2. move MN

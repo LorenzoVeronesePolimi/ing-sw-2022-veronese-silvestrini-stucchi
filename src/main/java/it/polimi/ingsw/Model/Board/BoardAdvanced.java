@@ -32,6 +32,10 @@ public class BoardAdvanced implements Board{
         return this.board.getArchipelago(archipelagoIndex);
     }
 
+    public boolean isStudentInSchoolHall(Player player, SPColour c){
+        return this.board.isStudentInSchoolHall(player, c);
+    }
+
     public void initializeBoard() {
         this.board.initializeBoard();
     }

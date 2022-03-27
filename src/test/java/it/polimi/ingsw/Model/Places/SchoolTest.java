@@ -158,14 +158,14 @@ public class SchoolTest {
     void addStudentHall(){
         Player p = new Player("owner", PlayerColour.WHITE);
         School school = new School(p,7,8);
-        assertEquals(0,school.getNumStudentsHall());
+        assertEquals(0,school.getStudentsHall().size());
         Student s = new Student(SPColour.BLUE);
         try {
             school.addStudentHall(s);
         } catch (ExceededMaxStudentsHallException e) {
             e.printStackTrace();
         }
-        assertEquals(1,school.getNumStudentsHall());
+        assertEquals(1,school.getStudentsHall().size());
 
         s = new Student(SPColour.RED);
         try {
@@ -173,7 +173,7 @@ public class SchoolTest {
         } catch (ExceededMaxStudentsHallException e) {
             e.printStackTrace();
         }
-        assertEquals(2, school.getNumStudentsHall());
+        assertEquals(2, school.getStudentsHall().size());
     }
 
     @Test
@@ -197,7 +197,8 @@ public class SchoolTest {
         } catch (StudentNotFoundException e) {
             e.printStackTrace();
         }
-        assertEquals(1, school.getNumStudentsHall());
+        assertEquals(1, school.getStudentsHall().size());
+        assertEquals(SPColour.RED, school.getStudentsHall().get(0).getColour());
         try {
             school.removeStudentHall(SPColour.YELLOW);
         } catch (StudentNotFoundException e) {
@@ -256,7 +257,6 @@ public class SchoolTest {
         } catch (ExceededMaxStudentsDiningRoomException e) {
             e.printStackTrace();
         }
-        s = new Student(SPColour.BLUE);
         try {
             assertEquals(2,school.getNumStudentColour(SPColour.BLUE));
         } catch (WrongColourException e) {
@@ -272,7 +272,7 @@ public class SchoolTest {
             assertEquals(SPColour.BLUE, returned.getColour());
         } catch (WrongColourException e) {
             e.printStackTrace();
-        }/*
+        }
         try {
             school.removeStudentDiningRoom(SPColour.BLUE);
         } catch (StudentNotFoundException e) {
@@ -282,7 +282,7 @@ public class SchoolTest {
             assertEquals(0,school.getNumStudentColour(SPColour.BLUE));
         } catch (WrongColourException e) {
             e.printStackTrace();
-        }*/
+        }
     }
 
     @Test

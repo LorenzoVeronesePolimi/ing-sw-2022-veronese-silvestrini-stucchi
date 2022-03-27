@@ -50,6 +50,15 @@ public class School {
 
     public List<Professor> getProfessors(){ return professors; }
 
+    public List<Student> getStudentsHall() {
+        List<Student> newStudentsHall = new ArrayList<>();
+
+        for(Student s : this.studentsHall){
+            newStudentsHall.add(s);
+        }
+        return newStudentsHall;
+    }
+
     public int getNumTowers(){
         return towers.size();
     }
@@ -102,12 +111,8 @@ public class School {
         throw new ProfessorNotFoundException();
     }
 
-    public int getNumStudentsHall(){
-        return studentsHall.size();
-    }
-
     public void addStudentHall(Student student) throws ExceededMaxStudentsHallException{
-        if(getNumStudentsHall() < numMaxStudentsHall) {
+        if(studentsHall.size() < numMaxStudentsHall) {
             studentsHall.add(student);
         } else {
             throw new ExceededMaxStudentsHallException();
