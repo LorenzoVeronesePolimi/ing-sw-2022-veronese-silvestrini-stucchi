@@ -63,6 +63,10 @@ public class School {
         return towers.size();
     }
 
+    public List<Tower> getTowers(){
+        return towers;
+    }
+
     public void addTower(Tower tower) throws ExceededMaxTowersException{
         try {
             if(this.getNumTowers()< numMaxTowers){
@@ -250,7 +254,7 @@ public class School {
                 ", studentsDiningYellow=" + studentsDiningYellow +
                 ", studentsDiningBlue=" + studentsDiningBlue +
                 ", professors=" + professors +
-                ", towers=" + towers +
+                //", towers=" + towers +
                 '}';
     }
 }
