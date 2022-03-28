@@ -10,7 +10,7 @@ import it.polimi.ingsw.Model.Pawns.Student;
 import it.polimi.ingsw.Model.Pawns.Tower;
 import it.polimi.ingsw.Model.Places.Archipelago;
 import it.polimi.ingsw.Model.Places.Cloud;
-import it.polimi.ingsw.Model.Places.School;
+import it.polimi.ingsw.Model.Places.School.School;
 import it.polimi.ingsw.Model.Player;
 
 import java.util.ArrayList;

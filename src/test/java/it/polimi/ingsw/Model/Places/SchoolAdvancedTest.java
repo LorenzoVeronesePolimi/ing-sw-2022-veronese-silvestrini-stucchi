@@ -2,6 +2,7 @@ package it.polimi.ingsw.Model.Places;
 
 import it.polimi.ingsw.Model.Enumerations.PlayerColour;
 import it.polimi.ingsw.Model.Pawns.Coin;
+import it.polimi.ingsw.Model.Places.School.SchoolAdvanced;
 import it.polimi.ingsw.Model.Player;
 import org.junit.jupiter.api.Test;
 import static org.junit.Assert.*;

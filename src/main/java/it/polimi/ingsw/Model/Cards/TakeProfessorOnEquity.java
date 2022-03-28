@@ -3,7 +3,7 @@ package it.polimi.ingsw.Model.Cards;
 import it.polimi.ingsw.Model.Board.BoardAdvanced;
 import it.polimi.ingsw.Model.Enumerations.SPColour;
 import it.polimi.ingsw.Model.Exceptions.WrongColourException;
-import it.polimi.ingsw.Model.Places.School;
+import it.polimi.ingsw.Model.Places.School.School;
 import it.polimi.ingsw.Model.Player;
 
 public class TakeProfessorOnEquity extends AbstractCharacterCard{

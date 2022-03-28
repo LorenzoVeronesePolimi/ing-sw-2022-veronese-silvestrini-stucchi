@@ -6,7 +6,7 @@ import it.polimi.ingsw.Model.Enumerations.SPColour;
 import it.polimi.ingsw.Model.Exceptions.ExceededMaxStudentsDiningRoomException;
 import it.polimi.ingsw.Model.Exceptions.StudentNotFoundException;
 import it.polimi.ingsw.Model.Pawns.Student;
-import it.polimi.ingsw.Model.Places.School;
+import it.polimi.ingsw.Model.Places.School.School;
 import it.polimi.ingsw.Model.Player;
 
 import java.util.ArrayList;
