@@ -279,7 +279,7 @@ public class School {
                 ", studentsDiningYellow=" + studentsDiningYellow +
                 ", studentsDiningBlue=" + studentsDiningBlue +
                 ", professors=" + professors +
-                //", towers=" + towers +
+                ", towers=" + towers +
                 '}';
     }
 }

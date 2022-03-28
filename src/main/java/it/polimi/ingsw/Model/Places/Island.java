@@ -25,11 +25,9 @@ public class Island {
         for(SPColour c : availableColours){
             data.put(c, 0);
         }
-
         for(Student student : this.students){
             data.replace(student.getColour(), data.get(student.getColour()) + 1); //add 1 for each Student of a certain SPColour you find
         }
-
         return data;
     }
 
@@ -37,7 +35,7 @@ public class Island {
         this.students.add(studentToAdd);
     }
 
-    public Student removeStudent(SPColour colourToRemove) throws NoStudentMatchColourException {
+   /* public Student removeStudent(SPColour colourToRemove) throws NoStudentMatchColourException {
         for(Student student : this.students){
             if (student.getColour().equals(colourToRemove)){
                 Student removed;
@@ -48,7 +46,7 @@ public class Island {
             }
         }
         throw new NoStudentMatchColourException();
-    }
+    }*/
 
     public void addTower(Tower toAdd) throws AnotherTowerException {
         if(this.tower == null){ // No tower has been added, yet
@@ -63,6 +61,8 @@ public class Island {
         Tower removed;
 
         removed = this.tower;
+
+        this.tower = null;
 
         return removed;
     }

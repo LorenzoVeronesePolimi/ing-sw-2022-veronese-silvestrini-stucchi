@@ -16,7 +16,6 @@ import java.util.List;
 import static org.junit.Assert.*;
 
 
-
 public class SchoolTest {
     @Test
     void getPlayer(){
@@ -99,7 +98,6 @@ public class SchoolTest {
     void removeTower(){
         Player p = new Player("owner", PlayerColour.WHITE);
         School school = new School(p,7,8);
-        Tower tower = new Tower(p);
         school.removeTower();
         school.removeTower();
         assertEquals(6, school.getNumTowers());
@@ -406,7 +404,7 @@ public class SchoolTest {
                     ", studentsDiningYellow=" + school.getListStudentColour(SPColour.YELLOW) +
                     ", studentsDiningBlue=" + school.getListStudentColour(SPColour.BLUE) +
                     ", professors=" + school.getProfessors() +
-                    //", towers=" + school.getTowers() +
+                    ", towers=" + school.getTowers() +
                     '}', school.toString());
         } catch (WrongColourException e) {
             e.printStackTrace();
