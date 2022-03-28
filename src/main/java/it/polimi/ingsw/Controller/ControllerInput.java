@@ -1,9 +1,6 @@
 package it.polimi.ingsw.Controller;
 
-import it.polimi.ingsw.Controller.Messages.Message;
-import it.polimi.ingsw.Controller.Messages.MessageAddPlayer;
-import it.polimi.ingsw.Controller.Messages.MessageCreateMatch;
-import it.polimi.ingsw.Controller.Messages.MessageStudentToArchipelago;
+import it.polimi.ingsw.Controller.Messages.*;
 import it.polimi.ingsw.Model.Enumerations.PlayerColour;
 
 import java.util.Locale;
@@ -32,6 +29,11 @@ public class ControllerInput {
                 String colour = ((MessageAddPlayer)message).getColour();
                 return (this.checkNickname(nickname) &&
                         this.checkPlayerColour(colour));
+            case ASSISTANT_CARD:
+                int motherNatureMovement = ((MessageAssistantCard)message).getMotherNatureMovement();
+                int turnPriority = ((MessageAssistantCard)message).getTurnPriority();
+                return(this.checkMotherNatureMovement(motherNatureMovement) &&
+                        this.checkTurnPriority(turnPriority));
             case STUDENT_TO_ARCHIPELAGO:
                 String studentColour = ((MessageStudentToArchipelago)message).getColour();
                 int destArchipelagoIndex = ((MessageStudentToArchipelago)message).getDestArchipelagoIndex();
@@ -54,6 +56,14 @@ public class ControllerInput {
             if(c.toLowerCase() == s){return true;}
         }
         return false;
+    }
+
+    private boolean checkMotherNatureMovement(int m){
+        return (m > 1 && m <= 6);
+    }
+
+    private boolean checkTurnPriority(int p){
+        return (p >= 1 && p <= 10);
     }
 
     // Check if the colour in the message (a String) is possible

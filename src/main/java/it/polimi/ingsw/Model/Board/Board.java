@@ -1,6 +1,7 @@
 package it.polimi.ingsw.Model.Board;
 
 import it.polimi.ingsw.Model.Enumerations.SPColour;
+import it.polimi.ingsw.Model.Exceptions.AssistantCardAlreadyPlayedTurnException;
 import it.polimi.ingsw.Model.Places.Archipelago;
 import it.polimi.ingsw.Model.Places.School.School;
 import it.polimi.ingsw.Model.Player;
@@ -19,7 +20,7 @@ public interface Board {
 
     public void initializeBoard();
 
-    private void moveStudentBagToCloud(int numStudents){};
+    default void moveStudentBagToCloud(){};
 
     public void moveStudentBagToSchool(int numStudents);
 
@@ -44,4 +45,6 @@ public interface Board {
     public boolean checkIfConquerable();
     public Player computeWinner(Player owner, Player challenger, Archipelago archipelago);
     public int computeInfluenceOfPlayer(Player player, Archipelago archipelago);
+
+    public void useAssistantCard(Player player, int turnPriority) throws AssistantCardAlreadyPlayedTurnException;
 }

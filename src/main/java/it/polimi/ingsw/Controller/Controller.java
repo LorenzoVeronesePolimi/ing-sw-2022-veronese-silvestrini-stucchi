@@ -1,23 +1,19 @@
 package it.polimi.ingsw.Controller;
 
 import it.polimi.ingsw.Controller.Enumerations.State;
-import it.polimi.ingsw.Controller.Messages.Message;
-import it.polimi.ingsw.Controller.Messages.MessageAddPlayer;
-import it.polimi.ingsw.Controller.Messages.MessageCreateMatch;
-import it.polimi.ingsw.Controller.Messages.MessageStudentToArchipelago;
+import it.polimi.ingsw.Controller.Messages.*;
 import it.polimi.ingsw.Model.Board.Board;
 import it.polimi.ingsw.Model.Board.BoardAbstract;
 import it.polimi.ingsw.Model.Board.BoardAdvanced;
 import it.polimi.ingsw.Model.Board.BoardFactory;
 import it.polimi.ingsw.Model.Enumerations.PlayerColour;
 import it.polimi.ingsw.Model.Enumerations.SPColour;
+import it.polimi.ingsw.Model.Exceptions.AssistantCardAlreadyPlayedTurnException;
+import it.polimi.ingsw.Model.Exceptions.NoAssistantCardException;
 import it.polimi.ingsw.Model.Player;
 import it.polimi.ingsw.View.View;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Observable;
-import java.util.Observer;
+import java.util.*;
 
 // This is the main Controller: it coordinates all the others
 public class Controller implements Observer {
@@ -27,7 +23,7 @@ public class Controller implements Observer {
     private BoardAdvanced boardAdvanced; //null if advanced=0
     private List<Player> players;
 
-    private Player currentPlayer;
+    private int currentPlayerIndex = 0;
 
     private ControllerInput controllerInput;
     private ControllerState controllerState;
@@ -72,12 +68,19 @@ public class Controller implements Observer {
                 if(!this.manageAddPlayer((MessageAddPlayer)message)){
                     System.out.println("Impossible to add this player");
                 }
-
+            case ASSISTANT_CARD:
+                if(!this.manageAssistantCard((MessageAssistantCard)message)){
+                    System.out.println("Impossible to play this AssistantCard");
+                }
             case STUDENT_TO_ARCHIPELAGO:
                 if(!this.manageStudentToArchipelago((MessageStudentToArchipelago)message)){
                     System.out.println("You can't move a Student in that way");
                 }
+        }
 
+        //check if I have to make some automatic action (=>PIANIFICATION1)
+        if(controllerState.getState() == State.PLANNING1){
+            this.board.moveStudentBagToCloud();
         }
     }
 
@@ -122,6 +125,29 @@ public class Controller implements Observer {
         this.board.initializeBoard();
     }
 
+    private void changeTurnOrder(){
+        Map<Player, Integer> values = new HashMap<>();
+
+        for(Player p : this.players){
+            values.put(p, p.getLastCard().getTurnPriority());
+        }
+
+        List<Player> orderedPlayerList = new ArrayList<>();
+        while (values.size() > 0) {
+            Map.Entry<Player, Integer> min = null;
+            for (Map.Entry<Player, Integer> e : values.entrySet()) {
+                if (min == null || min.getValue() > e.getValue()) {
+                    min = e;
+                }
+            }
+            Player minPlayer = min.getKey();
+            orderedPlayerList.add(minPlayer);
+            values.remove(minPlayer);
+        }
+
+        this.players = orderedPlayerList;
+    }
+
     private boolean manageCreateMatch(MessageCreateMatch message){ //TODO: manage GameFour
         int numPlayers = message.getNumPlayers();
         PlayerColour colourFirstPlayer = mapStringToPlayerColour(message.getColourFirstPlayer());
@@ -139,6 +165,22 @@ public class Controller implements Observer {
         return true;
     }
 
+    private boolean manageAssistantCard(MessageAssistantCard message){
+        int motherNatureMoves = message.getMotherNatureMovement();
+        int turnPriority = message.getTurnPriority();
+
+        // remove the card from his hand
+        try{ //TODO: manage the other Exception
+            board.useAssistantCard(this.players.get(this.currentPlayerIndex), turnPriority); //TODO: correct the function in BoardAbstract
+        } catch(AssistantCardAlreadyPlayedTurnException ex){return false;} // card already used
+
+        if(this.currentPlayerIndex == this.players.size()-1){ //last player: all players has played their AssistantCard. No I can set the order
+            this.changeTurnOrder(); // reset the order of the Players according to the values of the AssistantCards
+            this.currentPlayerIndex = 0; // the new turn will start
+        }
+        return true;
+    }
+
     private boolean manageAddPlayer(MessageAddPlayer message){ // TODO: manage GameFour
         String nickname = message.getNickname();
         PlayerColour colour = mapStringToPlayerColour(message.getColour());
@@ -153,7 +195,7 @@ public class Controller implements Observer {
         this.players.add(player);
 
         if(this.players.size() == numPlayers){ // The requested number of players has been reached: let's go on
-            controllerState.setState(State.PIANIFICATION2);
+            controllerState.setState(State.PLANNING1);
             //TODO: start game
         }
 
@@ -164,8 +206,8 @@ public class Controller implements Observer {
         SPColour studentColour = mapStringToSPColour(message.getColour());
         int destArchipelagoIndex = message.getDestArchipelagoIndex();
 
-        if(controllerIntegrity.checkStudentToArchipelago(this.currentPlayer, studentColour, destArchipelagoIndex)){
-            board.moveStudentSchoolToArchipelagos(this.currentPlayer, studentColour, destArchipelagoIndex);
+        if(controllerIntegrity.checkStudentToArchipelago(this.players.get(this.currentPlayerIndex), studentColour, destArchipelagoIndex)){
+            board.moveStudentSchoolToArchipelagos(this.players.get(this.currentPlayerIndex), studentColour, destArchipelagoIndex);
             return true;
         }
         return false;

@@ -20,10 +20,16 @@ public class ControllerState {
                 return (this.state == State.CONNECTING);
             case ADD_PLAYER:
                 return (this.state == State.WAITING_PLAYERS);
+            case ASSISTANT_CARD:
+                return (this.state == State.PLANNING2);
             case STUDENT_TO_ARCHIPELAGO:
                 return (this.state == State.ACTION1);
         }
         return false;
+    }
+
+    public State getState(){
+        return this.state;
     }
 
     public void setState(State newState){

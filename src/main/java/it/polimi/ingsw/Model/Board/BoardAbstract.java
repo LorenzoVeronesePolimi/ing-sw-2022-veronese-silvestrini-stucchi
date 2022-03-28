@@ -101,30 +101,6 @@ public abstract class BoardAbstract implements Board{
         mn.putInPosition(archipelagos.get(0));
     }
 
-    // changes order of Players in the this.players list according to turnPriority in the AssistantCard they played
-    public void changeTurnOrder(){
-        Map<Player, Integer> values = new HashMap<>();
-
-        for(Player p : this.players){
-            values.put(p, p.getLastCard().getTurnPriority());
-        }
-
-        List<Player> orderedPlayerList = new ArrayList<>();
-        while (values.size() > 0) {
-            Map.Entry<Player, Integer> min = null;
-            for (Map.Entry<Player, Integer> e : values.entrySet()) {
-                if (min == null || min.getValue() > e.getValue()) {
-                    min = e;
-                }
-            }
-            Player minPlayer = min.getKey();
-            orderedPlayerList.add(minPlayer);
-            values.remove(minPlayer);
-        }
-
-        this.players = orderedPlayerList;
-    }
-
 
 
 
@@ -227,7 +203,7 @@ public abstract class BoardAbstract implements Board{
         }
     };
 
-    protected void moveStudentBagToCloud() {
+    public void moveStudentBagToCloud() {
         int numStudents = this.clouds.get(0).getNumMaxStudents();
         for(Cloud c: clouds) {
             List<Student> toBePlaced = null;
@@ -485,7 +461,7 @@ public abstract class BoardAbstract implements Board{
 
 
     //--------------------------------------------------ASSISTANT CARDS
-    private void useAssistantCard(Player player, int turnPriority) throws AssistantCardAlreadyPlayedTurnException{
+    public void useAssistantCard(Player player, int turnPriority) throws AssistantCardAlreadyPlayedTurnException{
         // control that no previous Player used that (but if it's his last card, let him use it)
         int currentPlayerIndex = this.players.indexOf(player);
         for(int i = 0; i < currentPlayerIndex; i++){

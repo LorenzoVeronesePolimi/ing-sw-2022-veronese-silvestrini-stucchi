@@ -79,6 +79,11 @@ public class BoardAdvanced implements Board{
         this.board.initializeBoard();
     }
 
+    @Override
+    public void moveStudentBagToCloud() {
+        this.board.moveStudentBagToCloud();
+    }
+
     public void moveStudentSchoolToArchipelagos(Player player, SPColour colour, int archipelagoIndex) {
         this.board.moveStudentSchoolToArchipelagos(player, colour, archipelagoIndex);
     }
@@ -252,14 +257,16 @@ public class BoardAdvanced implements Board{
         return false;
     }
 
-    @Override
     public Player computeWinner(Player owner, Player challenger, Archipelago archipelago) {
         return null;
     }
 
-    @Override
     public int computeInfluenceOfPlayer(Player player, Archipelago archipelago) {
         return 0;
+    }
+
+    public void useAssistantCard(Player player, int turnPriority) throws AssistantCardAlreadyPlayedTurnException {
+        this.board.useAssistantCard(player, turnPriority);
     }
 
     protected Player computeWinner(Player owner, Player challenger, Archipelago archipelago, boolean twoExtraPointsFlag, SPColour colourToExclude){

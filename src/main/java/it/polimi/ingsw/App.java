@@ -6,8 +6,8 @@ import it.polimi.ingsw.Model.Board.BoardFactory;
 import it.polimi.ingsw.Model.Enumerations.PlayerColour;
 import it.polimi.ingsw.Model.Enumerations.SPColour;
 import it.polimi.ingsw.Model.Pawns.Coin;
-import it.polimi.ingsw.Model.Places.School;
-import it.polimi.ingsw.Model.Places.SchoolAdvanced;
+import it.polimi.ingsw.Model.Places.School.School;
+import it.polimi.ingsw.Model.Places.School.SchoolAdvanced;
 import it.polimi.ingsw.Model.Player;
 
 import java.util.ArrayList;
