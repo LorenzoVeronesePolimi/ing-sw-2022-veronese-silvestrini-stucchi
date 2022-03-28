@@ -5,6 +5,9 @@ import it.polimi.ingsw.Model.Board.BoardAbstract;
 import it.polimi.ingsw.Model.Board.BoardFactory;
 import it.polimi.ingsw.Model.Enumerations.PlayerColour;
 import it.polimi.ingsw.Model.Enumerations.SPColour;
+import it.polimi.ingsw.Model.Pawns.Coin;
+import it.polimi.ingsw.Model.Places.School;
+import it.polimi.ingsw.Model.Places.SchoolAdvanced;
 import it.polimi.ingsw.Model.Player;
 
 import java.util.ArrayList;
@@ -74,7 +77,7 @@ public class App
         try{a1.mergeArchipelagos(a2);}
         catch(MergeDifferentOwnersException ex){ex.printStackTrace();}
         System.out.println(a1.toString());*/
-
+        /*
         List<Player> players = new ArrayList<Player>();
         players.add(player1);
         players.add(player2);
@@ -104,5 +107,15 @@ public class App
         board.moveMotherNature(4);
         board.makeTurn();
         System.out.println(board.getArchipelago(4));
+        */
+
+
+        Coin coin = new Coin();
+        List<School> schools = new ArrayList<>();
+        SchoolAdvanced schoolAdvanced = new SchoolAdvanced(player1, 2, 2);
+        schools.add(schoolAdvanced);
+        System.out.println(((SchoolAdvanced)schools.get(0)).getNumCoins());
+        ((SchoolAdvanced)schools.get(0)).addCoin(coin);
+        System.out.println(((SchoolAdvanced)schools.get(0)).getNumCoins());
     }
 }

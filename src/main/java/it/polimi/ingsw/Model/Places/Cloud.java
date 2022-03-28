@@ -12,11 +12,11 @@ import java.util.List;
 * Always remove all Students
 * */
 public class Cloud {
-    private final int NUMMAXSTUDENTS;
+    private final int numMaxStudents;
     private List<Student> students;
 
     public Cloud(int numMaxStudents) {
-        this.NUMMAXSTUDENTS = numMaxStudents;
+        this.numMaxStudents = numMaxStudents;
         this.students = new ArrayList<Student>();
     }
 
@@ -30,6 +30,10 @@ public class Cloud {
         return got;
     }
 
+    public int getNumMaxStudents() {
+        return numMaxStudents;
+    }
+
     @Override
     public String toString() {
         return "Cloud{" +
@@ -39,7 +43,7 @@ public class Cloud {
 
     // If we want to pass all 3 or 4 students in one step. We may decide to pass one per time
     public void fill(List<Student> toAdd) throws ExceededMaxStudentsCloudException {
-        if ((this.students.size() + toAdd.size()) <= NUMMAXSTUDENTS){
+        if ((this.students.size() + toAdd.size()) <= this.numMaxStudents){
             this.students.addAll(toAdd);
         } else {
             throw new ExceededMaxStudentsCloudException();

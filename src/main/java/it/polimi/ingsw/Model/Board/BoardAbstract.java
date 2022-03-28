@@ -227,7 +227,8 @@ public abstract class BoardAbstract implements Board{
         }
     };
 
-    protected void moveStudentBagToCloud(int numStudents) {
+    protected void moveStudentBagToCloud() {
+        int numStudents = this.clouds.get(0).getNumMaxStudents();
         for(Cloud c: clouds) {
             List<Student> toBePlaced = null;
             try {

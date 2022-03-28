@@ -19,6 +19,10 @@ public class ControllerIntegrity {
         this.advanced = advanced;
     }
 
+    public boolean checkCreateMatch(int numPlayers){
+        return (numPlayers >= 2 && numPlayers <= 4);
+    }
+
     public boolean checkStudentToArchipelago(Player player, SPColour studentColour, int destArchipelagoIndex){
         if(!this.board.isStudentInSchoolHall(player, studentColour)){return false;}
         if(this.board.getArchipelago(destArchipelagoIndex) != null){return false;}

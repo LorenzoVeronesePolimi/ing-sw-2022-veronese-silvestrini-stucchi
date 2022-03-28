@@ -26,7 +26,7 @@ public class BoardTwo extends BoardAbstract {
             clouds.add(c);
         }
 
-        super.moveStudentBagToCloud(3);
+        super.moveStudentBagToCloud();
         super.moveStudentBagToSchool(7);
     }
 }

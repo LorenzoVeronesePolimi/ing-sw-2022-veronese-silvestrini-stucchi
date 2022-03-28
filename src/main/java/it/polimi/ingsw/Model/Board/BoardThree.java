@@ -15,7 +15,7 @@ public class BoardThree extends BoardAbstract {
             playerSchool.put(players.get(i), s);
         }
 
-        moveStudentBagToCloud(4);
+        moveStudentBagToCloud();
         moveStudentBagToSchool(9);
     }
 }

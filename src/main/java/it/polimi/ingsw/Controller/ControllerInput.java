@@ -1,25 +1,15 @@
 package it.polimi.ingsw.Controller;
 
 import it.polimi.ingsw.Controller.Messages.Message;
+import it.polimi.ingsw.Controller.Messages.MessageAddPlayer;
+import it.polimi.ingsw.Controller.Messages.MessageCreateMatch;
 import it.polimi.ingsw.Controller.Messages.MessageStudentToArchipelago;
+import it.polimi.ingsw.Model.Enumerations.PlayerColour;
 
 import java.util.Locale;
 
 
 public class ControllerInput {
-    /*
-    private Board model;
-    private boolean boardAdvanced;
-    private int numPlayers;
-    private View view;
-
-    private ControllerState controllerState;
-
-    public ControllerInput(Board model, View view){
-        this.model = model;
-        this.view = view;
-        this.controllerState = new ControllerState();
-    }*/
     private static final int MAX_NUM_ARCHIPELAGOS = 12;
 
 
@@ -32,19 +22,38 @@ public class ControllerInput {
 
         Message message = (Message)arg;
         switch(message.getType()){
+            case CREATE_MATCH:
+                String nicknameFirstPlayer = ((MessageCreateMatch)message).getNicknameFirstPlayer();
+                String colourFirstPlayer = ((MessageCreateMatch)message).getColourFirstPlayer();
+                return (this.checkNickname(nicknameFirstPlayer) &&
+                        this.checkPlayerColour(colourFirstPlayer));
+            case ADD_PLAYER:
+                String nickname = ((MessageAddPlayer)message).getNickname();
+                String colour = ((MessageAddPlayer)message).getColour();
+                return (this.checkNickname(nickname) &&
+                        this.checkPlayerColour(colour));
             case STUDENT_TO_ARCHIPELAGO:
-                if(!(message instanceof MessageStudentToArchipelago)){
-                    return false;
-                }
-
-                String studentColour = ((MessageStudentToArchipelago) message).getColour();
-                int destArchipelagoIndex = ((MessageStudentToArchipelago) message).getDestArchipelagoIndex();
+                String studentColour = ((MessageStudentToArchipelago)message).getColour();
+                int destArchipelagoIndex = ((MessageStudentToArchipelago)message).getDestArchipelagoIndex();
                 return (this.checkStudentColours(studentColour) &&
                         this.checkDestArchipelagoIndex(destArchipelagoIndex));
         }
 
         return false;
 
+    }
+
+    private boolean checkNickname(String nickname){
+        return !(nickname == "");
+    }
+
+    //This checks ONLY the format of the word
+    private boolean checkPlayerColour(String c){
+        String[] possibleColours = {"white", "black", "gray"};
+        for(String s : possibleColours){
+            if(c.toLowerCase() == s){return true;}
+        }
+        return false;
     }
 
     // Check if the colour in the message (a String) is possible
@@ -60,4 +69,5 @@ public class ControllerInput {
     private boolean checkDestArchipelagoIndex(int i){
         return i <= MAX_NUM_ARCHIPELAGOS;
     }
+
 }

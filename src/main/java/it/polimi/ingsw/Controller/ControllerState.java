@@ -16,10 +16,18 @@ public class ControllerState {
 
     public boolean checkState(MessageType type){
         switch(type){
+            case CREATE_MATCH:
+                return (this.state == State.CONNECTING);
+            case ADD_PLAYER:
+                return (this.state == State.WAITING_PLAYERS);
             case STUDENT_TO_ARCHIPELAGO:
-                return (this.state == State.TURN);
+                return (this.state == State.ACTION1);
         }
         return false;
+    }
+
+    public void setState(State newState){
+        this.state = newState;
     }
 
 }

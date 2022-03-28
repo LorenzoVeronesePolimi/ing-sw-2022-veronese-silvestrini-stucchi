@@ -1,5 +1,5 @@
 package it.polimi.ingsw.Controller.Enumerations;
 
 public enum MessageType {
-    STUDENT_TO_ARCHIPELAGO
+    CREATE_MATCH, ADD_PLAYER, STUDENT_TO_ARCHIPELAGO
 }
