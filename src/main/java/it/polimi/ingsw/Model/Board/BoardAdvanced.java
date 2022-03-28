@@ -1,10 +1,17 @@
 package it.polimi.ingsw.Model.Board;
 
 import it.polimi.ingsw.Model.Bag;
+import it.polimi.ingsw.Model.Bank;
 import it.polimi.ingsw.Model.Enumerations.SPColour;
+import it.polimi.ingsw.Model.Exceptions.EmptyCaveauExcepion;
+import it.polimi.ingsw.Model.Exceptions.ExceededMaxStudentsDiningRoomException;
+import it.polimi.ingsw.Model.Exceptions.StudentNotFoundException;
+import it.polimi.ingsw.Model.Exceptions.WrongColourException;
 import it.polimi.ingsw.Model.Pawns.Professor;
+import it.polimi.ingsw.Model.Pawns.Student;
 import it.polimi.ingsw.Model.Places.Archipelago;
-import it.polimi.ingsw.Model.Places.School;
+import it.polimi.ingsw.Model.Places.School.School;
+import it.polimi.ingsw.Model.Places.School.SchoolAdvanced;
 import it.polimi.ingsw.Model.Player;
 
 import java.util.ArrayList;
@@ -15,9 +22,23 @@ public class BoardAdvanced implements Board{
     private BoardAbstract board;
     private boolean twoExtraPointsFlag = false;
     private SPColour colourToExclude=null;
+    private Bank bank = new Bank();
+
 
     public BoardAdvanced(BoardAbstract boardToExtend) {
         this.board = boardToExtend;
+        List<School> schoolsAdvanced = new ArrayList<>();
+        for(School s: this.board.schools){
+            schoolsAdvanced.add(new SchoolAdvanced(s.getPlayer(),s.getNumMaxStudentsHall(),s.getNumMaxTowers()));
+        }
+        this.board.schools=schoolsAdvanced;
+        for(School s: this.board.schools){
+            try {
+                ((SchoolAdvanced)s).addCoin(bank.getCoin());
+            } catch (EmptyCaveauExcepion e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     public Bag getBag(){return this.board.bag;}
@@ -49,7 +70,86 @@ public class BoardAdvanced implements Board{
     }
 
     public void moveStudentHallToDiningRoom(Player player, SPColour colour) {
-        this.board.moveStudentHallToDiningRoom(player, colour);
+        //school related to the player that made the move
+        School currentSchool = this.board.playerSchool.get(player);
+        int numRed=0;
+        int numBlue=0;
+        int numGreen=0;
+        int numPink=0;
+        int numYellow=0;
+
+        try {
+            Student toBeMoved = currentSchool.removeStudentHall(colour);
+            try {
+                numRed=currentSchool.getNumStudentColour(SPColour.RED);
+                numBlue=currentSchool.getNumStudentColour(SPColour.BLUE);
+                numGreen=currentSchool.getNumStudentColour(SPColour.GREEN);
+                numPink=currentSchool.getNumStudentColour(SPColour.PINK);
+                numYellow=currentSchool.getNumStudentColour(SPColour.YELLOW);
+            } catch (WrongColourException e) {
+                e.printStackTrace();
+            }
+
+            currentSchool.addStudentDiningRoom(toBeMoved);
+            checkCoinNeed(currentSchool, numRed,numBlue, numGreen,numPink,numYellow);
+            this.conquerProfessor(colour); //has the movement of the Student caused the conquering of the Professor?
+        } catch (StudentNotFoundException e) {
+            e.printStackTrace();
+        } catch (ExceededMaxStudentsDiningRoomException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void checkCoinNeed(School currentSchool, int numRed, int numBlue, int numGreen, int numPink,int numYellow){
+        try {
+            if(numRed!=currentSchool.getNumStudentColour(SPColour.RED)){
+                if(currentSchool.getNumStudentColour(SPColour.RED)==3 || currentSchool.getNumStudentColour(SPColour.RED)==6 || currentSchool.getNumStudentColour(SPColour.RED)==9){
+                    try {
+                        ((SchoolAdvanced)currentSchool).addCoin(bank.getCoin());
+                    } catch (EmptyCaveauExcepion e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+            else if(numBlue!=currentSchool.getNumStudentColour(SPColour.BLUE)){
+                if(currentSchool.getNumStudentColour(SPColour.BLUE)==3 || currentSchool.getNumStudentColour(SPColour.BLUE)==6 || currentSchool.getNumStudentColour(SPColour.BLUE)==9){
+                    try {
+                        ((SchoolAdvanced)currentSchool).addCoin(bank.getCoin());
+                    } catch (EmptyCaveauExcepion e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+            else if(numGreen!=currentSchool.getNumStudentColour(SPColour.GREEN)){
+                if(currentSchool.getNumStudentColour(SPColour.GREEN)==3 || currentSchool.getNumStudentColour(SPColour.GREEN)==6 || currentSchool.getNumStudentColour(SPColour.GREEN)==9){
+                    try {
+                        ((SchoolAdvanced)currentSchool).addCoin(bank.getCoin());
+                    } catch (EmptyCaveauExcepion e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+            else if(numPink!=currentSchool.getNumStudentColour(SPColour.PINK)){
+                if(currentSchool.getNumStudentColour(SPColour.PINK)==3 || currentSchool.getNumStudentColour(SPColour.PINK)==6 || currentSchool.getNumStudentColour(SPColour.PINK)==9){
+                    try {
+                        ((SchoolAdvanced)currentSchool).addCoin(bank.getCoin());
+                    } catch (EmptyCaveauExcepion e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+            else if(numYellow!=currentSchool.getNumStudentColour(SPColour.YELLOW)){
+                if(currentSchool.getNumStudentColour(SPColour.YELLOW)==3 || currentSchool.getNumStudentColour(SPColour.YELLOW)==6 || currentSchool.getNumStudentColour(SPColour.YELLOW)==9){
+                    try {
+                        ((SchoolAdvanced)currentSchool).addCoin(bank.getCoin());
+                    } catch (EmptyCaveauExcepion e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        } catch (WrongColourException e) {
+            e.printStackTrace();
+        }
     }
 
     public void moveStudentBagToSchool(int numStudents) {

@@ -4,7 +4,7 @@ import it.polimi.ingsw.Model.Bag;
 import it.polimi.ingsw.Model.Board.BoardAdvanced;
 import it.polimi.ingsw.Model.Enumerations.SPColour;
 import it.polimi.ingsw.Model.Exceptions.StudentNotFoundException;
-import it.polimi.ingsw.Model.Places.School;
+import it.polimi.ingsw.Model.Places.School.School;
 
 public class ReduceColourInDining extends AbstractCharacterCard{
     BoardAdvanced boardAdvanced;

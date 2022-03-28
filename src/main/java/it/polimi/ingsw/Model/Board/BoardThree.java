@@ -1,6 +1,6 @@
 package it.polimi.ingsw.Model.Board;
 
-import it.polimi.ingsw.Model.Places.School;
+import it.polimi.ingsw.Model.Places.School.School;
 import it.polimi.ingsw.Model.Player;
 
 import java.util.List;

@@ -1,4 +1,4 @@
-package it.polimi.ingsw.Model.Places;
+package it.polimi.ingsw.Model.Places.School;
 
 import it.polimi.ingsw.Model.*;
 import it.polimi.ingsw.Model.Enumerations.SPColour;
@@ -14,18 +14,18 @@ import java.util.List;
 import java.util.Set;
 
 public class School {
-    private Player player;
+    protected Player player;
 
-    private final int numMaxStudentsHall;
-    private final int numMaxTowers;
-    private List<Student> studentsHall;
-    private List<Student> studentsDiningRed;
-    private List<Student> studentsDiningPink;
-    private List<Student> studentsDiningGreen;
-    private List<Student> studentsDiningYellow;
-    private List<Student> studentsDiningBlue;
-    private List<Professor> professors;     //TODO: Set is better
-    private List<Tower> towers;
+    protected final int numMaxStudentsHall;
+    protected final int numMaxTowers;
+    protected List<Student> studentsHall;
+    protected List<Student> studentsDiningRed;
+    protected List<Student> studentsDiningPink;
+    protected List<Student> studentsDiningGreen;
+    protected List<Student> studentsDiningYellow;
+    protected List<Student> studentsDiningBlue;
+    protected List<Professor> professors;
+    protected List<Tower> towers;
 
     public School(Player player, int numMaxStudentsHall, int numTowers){
         this.player = player;
@@ -267,6 +267,13 @@ public class School {
         throw new WrongColourException();
     }
 
+    public int getNumMaxTowers(){
+        return numMaxTowers;
+    }
+
+    public int getNumMaxStudentsHall(){
+        return numMaxStudentsHall;
+    }
 
     @Override
     public String toString() {
