@@ -2,26 +2,24 @@ package it.polimi.ingsw.Model.Board;
 
 import it.polimi.ingsw.Model.Bag;
 import it.polimi.ingsw.Model.Bank;
+import it.polimi.ingsw.Model.Cards.*;
 import it.polimi.ingsw.Model.Enumerations.SPColour;
-import it.polimi.ingsw.Model.Exceptions.EmptyCaveauExcepion;
-import it.polimi.ingsw.Model.Exceptions.ExceededMaxStudentsDiningRoomException;
-import it.polimi.ingsw.Model.Exceptions.StudentNotFoundException;
-import it.polimi.ingsw.Model.Exceptions.WrongColourException;
+import it.polimi.ingsw.Model.Exceptions.*;
 import it.polimi.ingsw.Model.Pawns.Professor;
 import it.polimi.ingsw.Model.Pawns.Student;
+import it.polimi.ingsw.Model.Pawns.Tower;
 import it.polimi.ingsw.Model.Places.Archipelago;
 import it.polimi.ingsw.Model.Places.School.School;
 import it.polimi.ingsw.Model.Places.School.SchoolAdvanced;
 import it.polimi.ingsw.Model.Player;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class BoardAdvanced implements Board{
     private BoardAbstract board;
     private boolean twoExtraPointsFlag = false;
     private SPColour colourToExclude=null;
+    private List<AbstractCharacterCard> extractedCards;
     private Bank bank = new Bank();
 
 
@@ -39,6 +37,26 @@ public class BoardAdvanced implements Board{
                 e.printStackTrace();
             }
         }
+
+        List<AbstractCharacterCard> cards = new ArrayList<>();
+        cards.add(new PlaceOneStudent(this));
+        cards.add(new TakeProfessorOnEquity(this));
+        cards.add(new FakeMNMovement(this));
+        cards.add(new TwoExtraIslands(this));
+        cards.add(new ForbidIsland(this));
+        cards.add(new TowerNoValue(this));
+        cards.add(new ExchangeThreeStudents(this));
+        cards.add(new TwoExtraPoints(this));
+        cards.add(new ExcludeColourFromCounting(this));
+        cards.add(new ExchangeTwoHallDining(this));
+        cards.add(new ExtraStudentInDining(this));
+        cards.add(new ReduceColourInDining(this));
+
+        Collections.shuffle(cards, new Random());
+
+        extractedCards.add(cards.get(0));
+        extractedCards.add(cards.get(1));
+        extractedCards.add(cards.get(2));
     }
 
     public Bag getBag(){return this.board.bag;}
@@ -286,6 +304,222 @@ public class BoardAdvanced implements Board{
 
     public void setTwoExtraPointsFlag(boolean twoExtraPointsFlag) {
         this.twoExtraPointsFlag = twoExtraPointsFlag;
+    }
+
+    public void usePlaceOneStudent(Player player, SPColour chosen, int archipelago) {
+        for(AbstractCharacterCard card: extractedCards) {
+            if(card instanceof PlaceOneStudent) {
+                try {
+                    School currentSchool = this.board.getPlayerSchool(player);
+                    for(int i = 0; i < card.getCurrentPrice(); i++) {
+                        bank.addCoin(((SchoolAdvanced)currentSchool).removeCoin());
+                    }
+
+                    ((PlaceOneStudent)card).useEffect(chosen, archipelago);
+                    card.updatePrice(this.bank.getCoin());
+                } catch (StudentNotFoundException | EmptyCaveauExcepion | ExceededMaxNumCoinException | CoinNotFoundException e ) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+
+    public void useTakeProfessorOnEquity(Player player) {
+        for(AbstractCharacterCard card: extractedCards) {
+            if(card instanceof TakeProfessorOnEquity) {
+                try {
+                    School currentSchool = this.board.getPlayerSchool(player);
+                    for(int i = 0; i < card.getCurrentPrice(); i++) {
+                        bank.addCoin(((SchoolAdvanced)currentSchool).removeCoin());
+                    }
+
+                    ((TakeProfessorOnEquity)card).useEffect(player);
+                    card.updatePrice(this.bank.getCoin());
+                } catch (EmptyCaveauExcepion | ExceededMaxNumCoinException | CoinNotFoundException e ) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+
+    public void useFakeMNMovement(Player player, int fakeMNPosition) {
+        for(AbstractCharacterCard card: extractedCards) {
+            if(card instanceof FakeMNMovement) {
+                try {
+                    School currentSchool = this.board.getPlayerSchool(player);
+                    for(int i = 0; i < card.getCurrentPrice(); i++) {
+                        bank.addCoin(((SchoolAdvanced)currentSchool).removeCoin());
+                    }
+
+                    ((FakeMNMovement)card).useEffect(player, fakeMNPosition);
+                    card.updatePrice(this.bank.getCoin());
+                } catch (EmptyCaveauExcepion | ExceededMaxNumCoinException | CoinNotFoundException e ) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+
+    public void useTwoExtraIslands(Player player, int archipelago) {
+        for(AbstractCharacterCard card: extractedCards) {
+            if(card instanceof TwoExtraIslands) {
+                try {
+                    School currentSchool = this.board.getPlayerSchool(player);
+                    for(int i = 0; i < card.getCurrentPrice(); i++) {
+                        bank.addCoin(((SchoolAdvanced)currentSchool).removeCoin());
+                    }
+
+                    ((TwoExtraIslands)card).useEffect(player, archipelago);
+                    card.updatePrice(this.bank.getCoin());
+                } catch (EmptyCaveauExcepion | ExceededMaxNumCoinException | CoinNotFoundException | ImpossibleMNMove e ) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+
+    public void useForbidIsland(Player player, int archipelago) {
+        for(AbstractCharacterCard card: extractedCards) {
+            if(card instanceof ForbidIsland) {
+                try {
+                    School currentSchool = this.board.getPlayerSchool(player);
+                    for(int i = 0; i < card.getCurrentPrice(); i++) {
+                        bank.addCoin(((SchoolAdvanced)currentSchool).removeCoin());
+                    }
+
+                    ((ForbidIsland)card).useEffect(archipelago);
+                    card.updatePrice(this.bank.getCoin());
+                } catch (EmptyCaveauExcepion | ExceededMaxNumCoinException | CoinNotFoundException e ) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+
+    public void useTowerNoValue(Player player) {
+        for(AbstractCharacterCard card: extractedCards) {
+            if(card instanceof TowerNoValue) {
+                try {
+                    School currentSchool = this.board.getPlayerSchool(player);
+                    for(int i = 0; i < card.getCurrentPrice(); i++) {
+                        bank.addCoin(((SchoolAdvanced)currentSchool).removeCoin());
+                    }
+
+                    ((TowerNoValue)card).useEffect();
+                    card.updatePrice(this.bank.getCoin());
+                } catch (EmptyCaveauExcepion | ExceededMaxNumCoinException | CoinNotFoundException e ) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+
+    public void useExchangeThreeStudents(Player player, List<SPColour> hallStudents, List<SPColour> exchangeStudents) {
+        for(AbstractCharacterCard card: extractedCards) {
+            if(card instanceof ExchangeThreeStudents) {
+                try {
+                    School currentSchool = this.board.getPlayerSchool(player);
+                    for(int i = 0; i < card.getCurrentPrice(); i++) {
+                        bank.addCoin(((SchoolAdvanced)currentSchool).removeCoin());
+                    }
+
+                    ((ExchangeThreeStudents)card).useEffect(player, hallStudents, exchangeStudents);
+                    card.updatePrice(this.bank.getCoin());
+                } catch (EmptyCaveauExcepion | ExceededMaxNumCoinException | CoinNotFoundException | WrongNumberOfStudentsTransferExcpetion e ) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+
+    public void useTwoExtraPoints(Player player) {
+        for(AbstractCharacterCard card: extractedCards) {
+            if(card instanceof TwoExtraIslands) {
+                try {
+                    School currentSchool = this.board.getPlayerSchool(player);
+                    for(int i = 0; i < card.getCurrentPrice(); i++) {
+                        bank.addCoin(((SchoolAdvanced)currentSchool).removeCoin());
+                    }
+
+                    ((TwoExtraPoints)card).useEffect();
+                    card.updatePrice(this.bank.getCoin());
+                } catch (EmptyCaveauExcepion | ExceededMaxNumCoinException | CoinNotFoundException e ) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+
+    public void useExcludeColourFromCounting(Player player, SPColour colourToExclude) {
+        for(AbstractCharacterCard card: extractedCards) {
+            if(card instanceof ExcludeColourFromCounting) {
+                try {
+                    School currentSchool = this.board.getPlayerSchool(player);
+                    for(int i = 0; i < card.getCurrentPrice(); i++) {
+                        bank.addCoin(((SchoolAdvanced)currentSchool).removeCoin());
+                    }
+
+                    ((ExcludeColourFromCounting)card).useEffect(colourToExclude);
+                    card.updatePrice(this.bank.getCoin());
+                } catch (EmptyCaveauExcepion | ExceededMaxNumCoinException | CoinNotFoundException e ) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+
+    public void useExchangeTwoHallDining(Player player, List<SPColour> hallStudents, List<SPColour> diningStudents) {
+        for(AbstractCharacterCard card: extractedCards) {
+            if(card instanceof ExchangeTwoHallDining) {
+                try {
+                    School currentSchool = this.board.getPlayerSchool(player);
+                    for(int i = 0; i < card.getCurrentPrice(); i++) {
+                        bank.addCoin(((SchoolAdvanced)currentSchool).removeCoin());
+                    }
+
+                    ((ExchangeTwoHallDining)card).useEffect(player, hallStudents, diningStudents);
+                    card.updatePrice(this.bank.getCoin());
+                } catch (EmptyCaveauExcepion | ExceededMaxNumCoinException | CoinNotFoundException | WrongNumberOfStudentsTransferExcpetion e ) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+
+    public void useExtraStudentInDining(Player player, SPColour cardToDining) {
+        for(AbstractCharacterCard card: extractedCards) {
+            if(card instanceof ExtraStudentInDining) {
+                try {
+                    School currentSchool = this.board.getPlayerSchool(player);
+                    for(int i = 0; i < card.getCurrentPrice(); i++) {
+                        bank.addCoin(((SchoolAdvanced)currentSchool).removeCoin());
+                    }
+
+                    ((ExtraStudentInDining)card).useEffect(player, cardToDining);
+                    card.updatePrice(this.bank.getCoin());
+                } catch (EmptyCaveauExcepion | ExceededMaxNumCoinException | CoinNotFoundException | StudentNotFoundException e ) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+
+    public void useReduceColourInDining(Player player, SPColour colour) {
+        for(AbstractCharacterCard card: extractedCards) {
+            if(card instanceof ReduceColourInDining) {
+                try {
+                    School currentSchool = this.board.getPlayerSchool(player);
+                    for(int i = 0; i < card.getCurrentPrice(); i++) {
+                        bank.addCoin(((SchoolAdvanced)currentSchool).removeCoin());
+                    }
+
+                    ((ReduceColourInDining)card).useEffect(colour);
+                    card.updatePrice(this.bank.getCoin());
+                } catch (EmptyCaveauExcepion | ExceededMaxNumCoinException | CoinNotFoundException e ) {
+                    e.printStackTrace();
+                }
+            }
+        }
     }
 
 }

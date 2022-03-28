@@ -12,7 +12,5 @@ public class ForbidIsland extends AbstractCharacterCard{
 
     public void useEffect(int archipelago) {
         boardAdvanced.getArchiList().get(archipelago).setForbidFlag(true);
-
-        updatePrice();
     }
 }

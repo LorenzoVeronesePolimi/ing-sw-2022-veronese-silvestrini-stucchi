@@ -32,8 +32,6 @@ public class TwoExtraIslands extends AbstractCharacterCard{
             boardAdvanced.tryToConquer();
         else
             throw new ImpossibleMNMove();
-
-        updatePrice();
     }
 
     private int checkMovement(int startingPoint) {

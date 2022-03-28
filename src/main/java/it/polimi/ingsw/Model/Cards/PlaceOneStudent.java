@@ -11,11 +11,14 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class PlaceOneStudent extends AbstractCharacterCard{
+    private BoardAdvanced boardAdvanced;
     private List<Student> fourStudents;
-    List<Archipelago> archi;
-    Bag bag;
+    private List<Archipelago> archi;
+    private Bag bag;
+
     public PlaceOneStudent(BoardAdvanced boardAdvanced) {
         super(1);
+        this.boardAdvanced = boardAdvanced;
         bag=boardAdvanced.getBag();
         try {
             fourStudents = bag.extractStudents(4);
@@ -24,6 +27,7 @@ public class PlaceOneStudent extends AbstractCharacterCard{
         }
         archi.addAll(boardAdvanced.getArchiList()); // o assegnamento archi=archipelagos?????
     }
+
     public void useEffect(SPColour chosen, int archipelago) throws StudentNotFoundException{
         List<Student> s= fourStudents.stream().filter(x -> x.getColour().equals(chosen)).collect(Collectors.toList());
         Student student;
@@ -34,7 +38,5 @@ public class PlaceOneStudent extends AbstractCharacterCard{
             throw new StudentNotFoundException();
         }
         s = bag.extractStudents(1);
-        fourStudents.add(s.get(0));
-        updatePrice();
-    }
+        fourStudents.add(s.get(0));    }
 }

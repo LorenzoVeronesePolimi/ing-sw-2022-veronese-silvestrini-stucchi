@@ -65,6 +65,5 @@ public class ExchangeTwoHallDining extends AbstractCharacterCard{
                 e.printStackTrace();
             }
         }
-        updatePrice();
     }
 }

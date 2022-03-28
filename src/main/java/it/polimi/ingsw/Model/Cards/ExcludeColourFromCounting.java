@@ -14,6 +14,5 @@ public class ExcludeColourFromCounting extends AbstractCharacterCard{
     public void useEffect(SPColour colourToExclude){
         boardAdvanced.setColourToExclude(colourToExclude);
         boardAdvanced.tryToConquer();
-        updatePrice();
     }
 }

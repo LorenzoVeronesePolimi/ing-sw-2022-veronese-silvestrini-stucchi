@@ -51,7 +51,5 @@ public class TakeProfessorOnEquity extends AbstractCharacterCard{
 
         //flow after professor movement
         boardAdvanced.tryToConquer();
-
-        updatePrice();
     }
 }

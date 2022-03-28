@@ -15,7 +15,5 @@ public class TowerNoValue extends AbstractCharacterCard {
         boardAdvanced.getArchiList().get(boardAdvanced.whereIsMotherNature()).setTowerNoValueFlag(true);
 
         boardAdvanced.tryToConquer();
-
-        updatePrice();
     }
 }

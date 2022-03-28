@@ -10,6 +10,7 @@ import java.util.List;
 public class Bank {
     private List<Coin> caveau;
     private final int MAXNUMCOIN=20;
+
     public Bank(){
         caveau = new ArrayList<>();
         for(int i=0; i<MAXNUMCOIN ;i++){

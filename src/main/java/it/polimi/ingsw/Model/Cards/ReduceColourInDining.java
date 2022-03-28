@@ -24,7 +24,6 @@ public class ReduceColourInDining extends AbstractCharacterCard{
                 }
             }
         }
-        updatePrice();
     }
     public void update(BoardAdvanced boardAdvanced){};
 }

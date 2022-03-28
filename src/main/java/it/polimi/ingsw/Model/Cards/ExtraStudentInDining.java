@@ -43,6 +43,5 @@ public class ExtraStudentInDining extends AbstractCharacterCard{
         }
         student=bag.extractStudents(1);
         students.add(student.get(0));
-        updatePrice();
     }
 }

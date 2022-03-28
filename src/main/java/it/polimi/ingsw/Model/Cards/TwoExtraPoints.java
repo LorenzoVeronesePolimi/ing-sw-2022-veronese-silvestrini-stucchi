@@ -14,7 +14,5 @@ public class TwoExtraPoints extends AbstractCharacterCard{
         boardAdvanced.setTwoExtraPointsFlag(true);
 
         boardAdvanced.tryToConquer();
-
-        updatePrice();
     }
 }

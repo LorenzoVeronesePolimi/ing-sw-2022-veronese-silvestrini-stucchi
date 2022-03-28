@@ -36,7 +36,7 @@ public class BagTest {
 
         //check if initial students are removed from the list in bag after one call of getInitialStudents
         try {
-            assertEquals(bag.getInitialStudents().size(), 0);
+            assertEquals(0, bag.getInitialStudents().size());
         } catch (NullContentException e) {
             e.printStackTrace();
         }
