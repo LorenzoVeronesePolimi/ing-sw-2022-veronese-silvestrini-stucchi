@@ -54,14 +54,6 @@ public abstract class BoardAbstract implements Board{
 
     }
 
-    /*
-    public void initializeBoard(){
-        this.initializePlayersHands();
-        this.placeMotherNatureInitialBoard();
-        this.placeStudentInitialBoard();
-    }
-    */
-
     private void initializePlayersHands(){
         // Create all needed AssistantCards
         List<AssistantCard> cardsCreated = new ArrayList<AssistantCard>();

@@ -18,8 +18,6 @@ public interface Board {
 
     public void moveStudentHallToDiningRoom(Player player, SPColour colour);
 
-    //public void initializeBoard();
-
     default void moveStudentBagToCloud(){};
 
     public void moveStudentBagToSchool(int numStudents);

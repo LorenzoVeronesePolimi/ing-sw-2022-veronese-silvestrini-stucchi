@@ -294,6 +294,7 @@ public class SchoolTest {
         Player p = new Player("owner", PlayerColour.WHITE);
         School school = new School(p,7,8);
         Student s = new Student(SPColour.BLUE);
+        Assertions.assertEquals(0, school.getStudentsHall().size());
 
         try {
             school.addStudentHall(s);

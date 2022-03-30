@@ -30,6 +30,7 @@ public class BoardAdvanced implements Board{
             schoolsAdvanced.add(new SchoolAdvanced(s.getPlayer(),s.getNumMaxStudentsHall(),s.getNumMaxTowers()));
         }
         this.board.schools=schoolsAdvanced;
+        //TODO: transfer hall students and towers from school to schoolAdvanced
         for(School s: this.board.schools){
             try {
                 ((SchoolAdvanced)s).addCoin(bank.getCoin());
@@ -75,12 +76,6 @@ public class BoardAdvanced implements Board{
     public boolean isStudentInSchoolHall(Player player, SPColour c){
         return this.board.isStudentInSchoolHall(player, c);
     }
-
-    /*
-    public void initializeBoard() {
-        this.board.initializeBoard();
-    }
-     */
 
     @Override
     public void moveStudentBagToCloud() {

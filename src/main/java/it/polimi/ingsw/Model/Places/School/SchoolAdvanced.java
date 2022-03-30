@@ -15,8 +15,6 @@ public class SchoolAdvanced extends School{
 
     public SchoolAdvanced(Player player, int numStudentsHall, int numTowers) {
         super(player, numStudentsHall, numTowers);
-        Coin coin = new Coin();
-        coins.add(coin);
     }
 
     public void addCoin(Coin coin){
