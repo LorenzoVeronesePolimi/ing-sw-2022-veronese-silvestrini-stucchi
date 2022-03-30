@@ -21,7 +21,7 @@ import java.util.Map;
 public abstract class BoardAbstract implements Board{
     protected List<School> schools;   //list of all school in the game (one for each player)
     protected List<Player> players;   //list of all players in the game (in order)
-    protected int currentPlayer; //index of the current Player in the list players
+    //protected int currentPlayer; //index of the current Player in the list players
     protected Map<Player, School> playerSchool;   //map of players and their relative school
     protected List<Archipelago> archipelagos;     //list of all the archipelagos in the game (in order)
     protected List<Cloud> clouds;     //list of all clouds in the game
@@ -195,7 +195,7 @@ public abstract class BoardAbstract implements Board{
         try {
             Student toBeMoved = currentSchool.removeStudentHall(colour);
             currentSchool.addStudentDiningRoom(toBeMoved);
-            this.conquerProfessor(colour); //has the movement of the Student caused the conquering of the Professor?
+            this.conquerProfessor(player, colour); //has the movement of the Student caused the conquering of the Professor?
         } catch (StudentNotFoundException e) {
             e.printStackTrace();
         } catch (ExceededMaxStudentsDiningRoomException e) {
@@ -281,17 +281,17 @@ public abstract class BoardAbstract implements Board{
         return false;
     }
 
-    public void conquerProfessor(SPColour colour){
+    public void conquerProfessor(Player currentPlayer, SPColour colour){
         School currentSchool = this.whereIsProfessor(colour);
         if(currentSchool == null){ //it's in the bag
             try {
-                this.playerSchool.get(this.players.get(currentPlayer)).addProfessor(this.bag.takeProfessor(colour));
+                this.playerSchool.get(currentPlayer).addProfessor(this.bag.takeProfessor(colour));
                 return;
             } catch (NoProfessorBagException e) {
                 e.printStackTrace();
             }
         }
-        School challengerSchool = this.playerSchool.get(this.players.get(currentPlayer));
+        School challengerSchool = this.playerSchool.get(currentPlayer);
         int numStudentsCurrentSchool = 0;
         int numStudentsChallenger = 0;
         try{
@@ -316,31 +316,11 @@ public abstract class BoardAbstract implements Board{
 
 
     //--------------------------------------------------CONQUERING ISLANDS
-    // This probably will be in the Controller
-    public void makeTurn(){
-        //MOVE STUDENTS
-
-        //MOTHER NATURE HAS BEEN MOVED
-        //Is the Archipelago conquerable?
-
-        this.tryToConquer();
-        //THE CURRENT PLAYER CHOOSES THE CLOUD TO EMPTY
-
-        //SET CURRENT PLAYER FOR THE NEXT TURN
-        if(this.currentPlayer < this.players.size() - 1){
-            this.currentPlayer++;
-        }
-        else{
-            this.currentPlayer = 0;
-        }
-
-    }
-
-    public void tryToConquer(){
+    public void tryToConquer(Player currentPlayer){
         int currPosMotherNature = this.whereIsMotherNature();
-        boolean archipelagoConquerable = checkIfConquerable();
+        boolean archipelagoConquerable = checkIfConquerable(currentPlayer);
         if(archipelagoConquerable){
-            this.conquerArchipelago(this.players.get(this.currentPlayer), this.archipelagos.get(currPosMotherNature));
+            this.conquerArchipelago(currentPlayer, this.archipelagos.get(currPosMotherNature));
 
             //let's merge Archipelagos
             this.mergeArchipelagos();
@@ -350,15 +330,15 @@ public abstract class BoardAbstract implements Board{
     }
 
     // true if the current Player (who moved MotherNature) will conquer the Archipelago, false otherwise
-    public boolean checkIfConquerable(){
+    public boolean checkIfConquerable(Player currentPlayer){
         int currPosMotherNature = this.whereIsMotherNature();
         Archipelago currentArchipelago = this.archipelagos.get(currPosMotherNature);
         //if the owner of the Archipelago is the current Player, he conquers nothing
-        if(currentArchipelago.getOwner() == this.players.get(currentPlayer)){
+        if(currentArchipelago.getOwner() == currentPlayer){
             return false;
         }
         else if(currentArchipelago.getOwner() == null){ //archipelago never conquered before
-            List<Professor> conquerorProfessors = this.playerSchool.get(this.players.get(currentPlayer)).getProfessors();
+            List<Professor> conquerorProfessors = this.playerSchool.get(currentPlayer).getProfessors();
             for(Professor p : conquerorProfessors){
                 if(currentArchipelago.howManyStudents().get(p.getColour()) > 0){
                     return true;
@@ -370,8 +350,8 @@ public abstract class BoardAbstract implements Board{
         //the current Player is not the owner: can he conquer the Archipelago?
         else{
             //who has higher influence according to rules?
-            Player winner = this.computeWinner(currentArchipelago.getOwner(), this.players.get(currentPlayer), currentArchipelago);
-            if(winner == this.players.get(currentPlayer)){
+            Player winner = this.computeWinner(currentArchipelago.getOwner(), currentPlayer, currentArchipelago);
+            if(winner == currentPlayer){
                 return true;
             }
             else{

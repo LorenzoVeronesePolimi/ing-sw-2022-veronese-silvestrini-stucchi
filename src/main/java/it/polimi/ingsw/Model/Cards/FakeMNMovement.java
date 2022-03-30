@@ -16,7 +16,7 @@ public class FakeMNMovement extends AbstractCharacterCard{
         int mnRealPosition = boardAdvanced.whereIsMotherNature();
 
         boardAdvanced.moveMotherNature(fakeMNPosition);
-        boardAdvanced.tryToConquer(); //if conquerable -> conquer
+        boardAdvanced.tryToConquer(currentPlayer); //if conquerable -> conquer //TODO: added Player parameter
         boardAdvanced.moveMotherNature(mnRealPosition);  //TODO: assuming normal conquer condition (in mnRealPosition)
     }
 }

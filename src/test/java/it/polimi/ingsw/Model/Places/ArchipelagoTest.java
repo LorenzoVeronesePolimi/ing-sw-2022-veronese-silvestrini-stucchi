@@ -77,7 +77,7 @@ public class ArchipelagoTest {
         BoardAdvanced boardAdvanced = new BoardAdvanced(board);
         TowerNoValue card= new TowerNoValue(boardAdvanced);
         board.moveMotherNature(4);
-        card.useEffect();
+        card.useEffect(p1);
         assertTrue(boardAdvanced.getArchiList().get(4).getTowerNoValueFlag());
     }
     @Test

@@ -34,15 +34,14 @@ public interface Board {
 
     public School whereIsProfessor(SPColour colour);
 
-    public void conquerProfessor(SPColour colour);
+    public void conquerProfessor(Player currentPlayer, SPColour colour);
 
     public int whereIsMotherNature();
 
     public School getPlayerSchool(Player player);
 
-    public void makeTurn();
-    public void tryToConquer();
-    public boolean checkIfConquerable();
+    public void tryToConquer(Player currentPlayer);
+    public boolean checkIfConquerable(Player currentPlayer);
     public Player computeWinner(Player owner, Player challenger, Archipelago archipelago);
     public int computeInfluenceOfPlayer(Player player, Archipelago archipelago);
 

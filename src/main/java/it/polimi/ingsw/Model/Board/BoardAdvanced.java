@@ -115,7 +115,7 @@ public class BoardAdvanced implements Board{
 
             currentSchool.addStudentDiningRoom(toBeMoved);
             checkCoinNeed(currentSchool, numRed,numBlue, numGreen,numPink,numYellow);
-            this.conquerProfessor(colour); //has the movement of the Student caused the conquering of the Professor?
+            this.conquerProfessor(player, colour); //has the movement of the Student caused the conquering of the Professor?
         } catch (StudentNotFoundException e) {
             e.printStackTrace();
         } catch (ExceededMaxStudentsDiningRoomException e) {
@@ -195,8 +195,8 @@ public class BoardAdvanced implements Board{
         return this.board.whereIsProfessor(colour);
     }
 
-    public void conquerProfessor(SPColour colour) {
-        this.board.conquerProfessor(colour);
+    public void conquerProfessor(Player currentPlayer, SPColour colour) {
+        this.board.conquerProfessor(currentPlayer, colour);
     }
 
     public int whereIsMotherNature() {
@@ -207,15 +207,11 @@ public class BoardAdvanced implements Board{
         return this.board.getPlayerSchool(player);
     }
 
-    public void makeTurn() {
-        this.board.makeTurn();
-    }
-
-    public void tryToConquer(){
+    public void tryToConquer(Player currentPlayer){
         int currPosMotherNature = this.board.whereIsMotherNature();
-        boolean archipelagoConquerable = this.checkIfConquerable();
+        boolean archipelagoConquerable = this.checkIfConquerable(currentPlayer);
         if(archipelagoConquerable){
-            this.board.conquerArchipelago(this.board.players.get(this.board.currentPlayer), this.board.archipelagos.get(currPosMotherNature));
+            this.board.conquerArchipelago(currentPlayer, this.board.archipelagos.get(currPosMotherNature));
 
             //let's merge Archipelagos
             this.board.mergeArchipelagos();
@@ -225,11 +221,11 @@ public class BoardAdvanced implements Board{
     }
 
 
-    public boolean checkIfConquerable(){
+    public boolean checkIfConquerable(Player currentPlayer){
         int currPosMotherNature = this.board.whereIsMotherNature();
         Archipelago currentArchipelago = this.board.archipelagos.get(currPosMotherNature);
         //if the owner of the Archipelago is the current Player, he conquers nothing
-        if(currentArchipelago.getOwner() == this.board.players.get(this.board.currentPlayer)){
+        if(currentArchipelago.getOwner() == currentPlayer){
             return false;
         }
         else if(currentArchipelago.getOwner() == null){ //archipelago never conquered before
@@ -244,10 +240,10 @@ public class BoardAdvanced implements Board{
         //the current Player is not the owner: can he conquer the Archipelago?
         else{
             //who has higher influence according to rules?
-            Player winner = this.computeWinner(currentArchipelago.getOwner(), this.board.players.get(this.board.currentPlayer), currentArchipelago, twoExtraPointsFlag, colourToExclude);
+            Player winner = this.computeWinner(currentArchipelago.getOwner(), currentPlayer, currentArchipelago, twoExtraPointsFlag, colourToExclude);
             twoExtraPointsFlag = false;
 
-            if(winner == this.board.players.get(this.board.currentPlayer)){
+            if(winner == currentPlayer){
                 return true;
             }
             else{
@@ -412,7 +408,7 @@ public class BoardAdvanced implements Board{
                         bank.addCoin(((SchoolAdvanced)currentSchool).removeCoin());
                     }
 
-                    ((TowerNoValue)card).useEffect();
+                    ((TowerNoValue)card).useEffect(player);
                     card.updatePrice(this.bank.getCoin());
                 } catch (EmptyCaveauExcepion | ExceededMaxNumCoinException | CoinNotFoundException e ) {
                     e.printStackTrace();
@@ -448,7 +444,7 @@ public class BoardAdvanced implements Board{
                         bank.addCoin(((SchoolAdvanced)currentSchool).removeCoin());
                     }
 
-                    ((TwoExtraPoints)card).useEffect();
+                    ((TwoExtraPoints)card).useEffect(player);
                     card.updatePrice(this.bank.getCoin());
                 } catch (EmptyCaveauExcepion | ExceededMaxNumCoinException | CoinNotFoundException e ) {
                     e.printStackTrace();
@@ -466,7 +462,7 @@ public class BoardAdvanced implements Board{
                         bank.addCoin(((SchoolAdvanced)currentSchool).removeCoin());
                     }
 
-                    ((ExcludeColourFromCounting)card).useEffect(colourToExclude);
+                    ((ExcludeColourFromCounting)card).useEffect(player, colourToExclude);
                     card.updatePrice(this.bank.getCoin());
                 } catch (EmptyCaveauExcepion | ExceededMaxNumCoinException | CoinNotFoundException e ) {
                     e.printStackTrace();

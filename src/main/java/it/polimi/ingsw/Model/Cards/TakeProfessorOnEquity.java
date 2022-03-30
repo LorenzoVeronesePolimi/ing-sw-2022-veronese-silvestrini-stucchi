@@ -50,6 +50,6 @@ public class TakeProfessorOnEquity extends AbstractCharacterCard{
         }
 
         //flow after professor movement
-        boardAdvanced.tryToConquer();
+        boardAdvanced.tryToConquer(currentPlayer);//TODO: added Player parameter
     }
 }
