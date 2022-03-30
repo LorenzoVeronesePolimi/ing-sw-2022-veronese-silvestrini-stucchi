@@ -6,6 +6,7 @@ import it.polimi.ingsw.Model.Exceptions.AnotherTowerException;
 import it.polimi.ingsw.Model.Pawns.Student;
 import it.polimi.ingsw.Model.Pawns.Tower;
 import it.polimi.ingsw.Model.Player;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -34,7 +35,7 @@ public class IslandTest {
         assertEquals(0,tested.howManyStudents().get(SPColour.YELLOW));
     }
     @Test
-    void addTower(){
+    void addTower() {
         Island tested = new Island();
         assertNull(tested.getTower());
 
@@ -47,11 +48,7 @@ public class IslandTest {
         }
         assertEquals(p, tested.getTower().getPlayer());
 
-        try {
-            tested.addTower(t);
-        } catch (AnotherTowerException e) {
-            e.printStackTrace();
-        }
+        assertThrows(AnotherTowerException.class, () -> tested.addTower(t));
     }
     @Test
     void removeTower(){

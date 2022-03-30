@@ -54,6 +54,7 @@ public class BoardAdvanced implements Board{
 
         Collections.shuffle(cards, new Random());
 
+        extractedCards = new ArrayList<>();
         extractedCards.add(cards.get(0));
         extractedCards.add(cards.get(1));
         extractedCards.add(cards.get(2));
@@ -75,9 +76,11 @@ public class BoardAdvanced implements Board{
         return this.board.isStudentInSchoolHall(player, c);
     }
 
+    /*
     public void initializeBoard() {
         this.board.initializeBoard();
     }
+     */
 
     @Override
     public void moveStudentBagToCloud() {

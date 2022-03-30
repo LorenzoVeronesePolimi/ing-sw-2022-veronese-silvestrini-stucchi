@@ -7,16 +7,17 @@ import it.polimi.ingsw.Model.Player;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class BoardTwo extends BoardAbstract {
     public BoardTwo(List<Player> playersParam) {
-        super(playersParam);
+        super(playersParam.stream().filter(x -> ((playersParam.indexOf(x) == 0) || (playersParam.indexOf(x) == 1))).collect(Collectors.toList()));
 
         this.schools = new ArrayList<School>();
         this.playerSchool = new HashMap<Player, School>();
         this.clouds = new ArrayList<Cloud>();
         //creation of schools, map player -> school, clouds.
-        for(int i = 0; i < playersParam.size(); i++) {
+        for(int i = 0; i < 2; i++) {
             School s =  new School(playersParam.get(i), 7, 8);
             Cloud c =  new Cloud(3);
 

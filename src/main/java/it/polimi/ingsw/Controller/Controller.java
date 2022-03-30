@@ -137,7 +137,7 @@ public class Controller implements Observer {
             this.boardAdvanced = new BoardAdvanced((BoardAbstract) this.board);
         }
 
-        this.board.initializeBoard();
+        //this.board.initializeBoard();
     }
 
     private void changeTurnOrder(){

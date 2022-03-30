@@ -47,16 +47,20 @@ public abstract class BoardAbstract implements Board{
         mn = new MotherNature();
         bag = new Bag();
 
-        placeMotherNatureInitialBoard();
-        placeStudentInitialBoard();
+
+        this.initializePlayersHands();
+        this.placeMotherNatureInitialBoard();
+        this.placeStudentInitialBoard();
+
     }
 
-
+    /*
     public void initializeBoard(){
         this.initializePlayersHands();
         this.placeMotherNatureInitialBoard();
         this.placeStudentInitialBoard();
     }
+    */
 
     private void initializePlayersHands(){
         // Create all needed AssistantCards
@@ -301,12 +305,14 @@ public abstract class BoardAbstract implements Board{
         catch(WrongColourException ex){ex.printStackTrace();}
 
         if(numStudentsChallenger > numStudentsCurrentSchool){ // can take the Professor
-            Professor removed;
+            Professor removed = null;
             try {
                 removed = currentSchool.removeProfessor(colour);
             } catch (ProfessorNotFoundException e) {
                 e.printStackTrace();
             }
+
+            challengerSchool.addProfessor(removed);
         }
         else{return;} //can't take the Professor
 
@@ -419,7 +425,7 @@ public abstract class BoardAbstract implements Board{
         }
         else if(this.isThereLeftMerge()){
             Archipelago currentArchipelago = this.archipelagos.get(this.whereIsMotherNature());
-            Archipelago leftArchipelago = this.archipelagos.get((this.whereIsMotherNature() + 1) % 12);
+            Archipelago leftArchipelago = this.archipelagos.get((this.whereIsMotherNature() + 1) % archipelagos.size());
             this.archipelagos.remove(leftArchipelago);
             try{currentArchipelago.mergeArchipelagos((leftArchipelago));}
             catch(MergeDifferentOwnersException ex){ex.printStackTrace();}
@@ -429,15 +435,30 @@ public abstract class BoardAbstract implements Board{
 
     // Check if you can merge the current Island (on which there is MotherNature) with the previous one
     private boolean isThereRightMerge(){
-        return this.archipelagos.get(this.whereIsMotherNature()).getOwner() == this.archipelagos.get((this.whereIsMotherNature() - 1) % 12).getOwner();
+        return this.archipelagos.get(this.whereIsMotherNature()).getOwner() == this.archipelagos.get(this.getPreviousArchipelagoIndex(this.whereIsMotherNature())).getOwner();
     }
 
     // Check if you can merge the current Island (on which there is MotherNature) with the next one
     private boolean isThereLeftMerge(){
-        return this.archipelagos.get(this.whereIsMotherNature()).getOwner() == this.archipelagos.get((this.whereIsMotherNature() + 1) % 12).getOwner();
+        return this.archipelagos.get(this.whereIsMotherNature()).getOwner() == this.archipelagos.get((this.whereIsMotherNature() + 1) % archipelagos.size()).getOwner();
     }
 
+    private int getPreviousArchipelagoIndex(int index) {
+        if(index == 0) return this.archipelagos.size() - 1;
+        if(index == 1) return 0;
+        if(index == 2) return 1;
+        if(index == 3) return 2;
+        if(index == 4) return 3;
+        if(index == 5) return 4;
+        if(index == 6) return 5;
+        if(index == 7) return 6;
+        if(index == 8) return 7;
+        if(index == 9) return 8;
+        if(index == 10) return 9;
+        if(index == 11) return 10;
 
+        return -1;
+    }
 
 
     //--------------------------------------------------ASSISTANT CARDS
