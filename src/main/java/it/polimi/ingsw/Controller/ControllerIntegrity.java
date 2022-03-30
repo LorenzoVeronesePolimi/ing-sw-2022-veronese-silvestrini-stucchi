@@ -3,6 +3,7 @@ package it.polimi.ingsw.Controller;
 import it.polimi.ingsw.Model.Board.Board;
 import it.polimi.ingsw.Model.Enumerations.SPColour;
 import it.polimi.ingsw.Model.Exceptions.AssistantCardAlreadyPlayedTurnException;
+import it.polimi.ingsw.Model.Exceptions.WrongColourException;
 import it.polimi.ingsw.Model.Player;
 
 import java.util.List;
@@ -44,9 +45,24 @@ public class ControllerIntegrity {
         }
     }
 
+    public boolean checkStudentHallToDiningRoom(Player player, SPColour colour){
+        try{
+            if(this.board.getPlayerSchool(player).getNumStudentColour(colour) == 10){return false;}
+        }catch(WrongColourException ex){ex.printStackTrace(); return false;}
+        return true;
+    }
+
     public boolean checkStudentToArchipelago(Player player, SPColour studentColour, int destArchipelagoIndex){
         if(!this.board.isStudentInSchoolHall(player, studentColour)){return false;}
         if(this.board.getArchipelago(destArchipelagoIndex) != null){return false;}
         return true;
     }
+
+    public boolean checkMoveMotherNature(Player player, int moves){
+        return (player.getLastCard().getMotherNatureMovement() >= moves);
+    }
+    /*
+    public boolean checkStudentCloudToSchool(Player player, int indexCloud){
+
+    }*/
 }
