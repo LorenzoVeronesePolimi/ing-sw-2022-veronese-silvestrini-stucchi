@@ -30,6 +30,11 @@ public class Controller implements Observer {
     private ControllerState controllerState;
     private ControllerIntegrity controllerIntegrity;
 
+    private int numStudentsToMove;
+    private int numStudentsToMoveCurrent;
+    private static final int NUM_STUDENTS_TO_MOVE_TWO = 3;
+    private static final int NUM_STUDENTS_TO_MOVE_THREE = 3;
+
 
     public Controller(){
         this.players = new ArrayList<>();
@@ -77,9 +82,17 @@ public class Controller implements Observer {
                 if(!this.manageAssistantCard((MessageAssistantCard)message)){
                     System.out.println("Impossible to play this AssistantCard");
                 }
+            case STUDENT_HALL_TO_DINING_ROOM:
+                if(!this.manageStudentHallToDiningRoom((MessageStudentHallToDiningRoom)message)){
+                    System.out.println("You can't move a Student in that way");
+                }
             case STUDENT_TO_ARCHIPELAGO:
                 if(!this.manageStudentToArchipelago((MessageStudentToArchipelago)message)){
                     System.out.println("You can't move a Student in that way");
+                }
+            case MOVE_MOTHER_NATURE:
+                if(!this.manageMoveMotherNature((MessageMoveMotherNature)message)){
+                    System.out.println("You can't move the Mother Nature in that way");
                 }
         }
 
@@ -129,6 +142,15 @@ public class Controller implements Observer {
         throw new NoPlayerException();
     }
 
+    // checks if nickname is the current Player
+    private boolean isCurrentPlayer(String nickname){
+        try{
+            Player player = this.mapStringToPlayer(nickname);
+            if(!(this.players.get(currentPlayerIndex) == player)){return false;}
+        } catch(NoPlayerException ex){return false;}
+        return true;
+    }
+
     private void initMatch(){
         BoardFactory factory = new BoardFactory(this.players);
         this.board = factory.createBoard();
@@ -137,7 +159,17 @@ public class Controller implements Observer {
             this.boardAdvanced = new BoardAdvanced((BoardAbstract) this.board);
         }
 
-        //this.board.initializeBoard();
+        controllerIntegrity.setBoard(this.board);
+        controllerIntegrity.setAdvanced(this.advanced);
+
+        //set number of Students to move at each ACTION1
+        if(this.players.size() == 3){
+            this.numStudentsToMove = NUM_STUDENTS_TO_MOVE_THREE;
+            this.numStudentsToMoveCurrent = NUM_STUDENTS_TO_MOVE_THREE;
+        } else{
+            this.numStudentsToMove = NUM_STUDENTS_TO_MOVE_TWO;
+            this.numStudentsToMoveCurrent = NUM_STUDENTS_TO_MOVE_TWO;
+        }
     }
 
     private void changeTurnOrder(){
@@ -206,11 +238,8 @@ public class Controller implements Observer {
         int turnPriority = message.getTurnPriority();
 
         // Is him the currentPlayer? Can he use that AssistantCard?
-        try{
-            Player playerMessage = this.mapStringToPlayer(nicknamePlayer);
-            if(!(this.players.get(currentPlayerIndex) == playerMessage)){return false;}
-            controllerIntegrity.checkAssistantCard(this.players, this.currentPlayerIndex, playerMessage, turnPriority);
-        } catch(NoPlayerException ex){return false;}
+        if(!isCurrentPlayer(nicknamePlayer)){return false;}
+        controllerIntegrity.checkAssistantCard(this.players, this.currentPlayerIndex, this.players.get(this.currentPlayerIndex), turnPriority);
 
         // Remove the card from his hand
         try{
@@ -227,12 +256,53 @@ public class Controller implements Observer {
         return true;
     }
 
+    private boolean manageStudentHallToDiningRoom(MessageStudentHallToDiningRoom message){
+        String nicknamePlayer = message.getNicknamePlayer();
+        SPColour studentColour = mapStringToSPColour(message.getColour());
+
+        if(!isCurrentPlayer(nicknamePlayer)){return false;}
+
+        if(controllerIntegrity.checkStudentHallToDiningRoom(this.players.get(this.currentPlayerIndex), studentColour)){
+            if(this.advanced){
+                boardAdvanced.moveStudentHallToDiningRoom(this.players.get(this.currentPlayerIndex), studentColour);
+            } else{
+                board.moveStudentHallToDiningRoom(this.players.get(this.currentPlayerIndex), studentColour);
+            }
+            this.numStudentsToMoveCurrent--;
+            if(this.numStudentsToMoveCurrent == 0 || // all possible Students moved
+                    this.board.getPlayerSchool(this.players.get(this.currentPlayerIndex)).getStudentsHall().size() == 0){ // no Students remained
+                this.numStudentsToMoveCurrent = this.numStudentsToMove;
+                controllerState.setState(State.ACTION2);
+            }
+            return true;
+        }
+        return false;
+    }
+
     private boolean manageStudentToArchipelago(MessageStudentToArchipelago message){
+        String nicknamePlayer = message.getNicknamePlayer();
         SPColour studentColour = mapStringToSPColour(message.getColour());
         int destArchipelagoIndex = message.getDestArchipelagoIndex();
 
+        if(!isCurrentPlayer(nicknamePlayer)){return false;}
+
         if(controllerIntegrity.checkStudentToArchipelago(this.players.get(this.currentPlayerIndex), studentColour, destArchipelagoIndex)){
             board.moveStudentSchoolToArchipelagos(this.players.get(this.currentPlayerIndex), studentColour, destArchipelagoIndex);
+            return true;
+        }
+        return false;
+    }
+
+    private boolean manageMoveMotherNature(MessageMoveMotherNature message){
+        String nicknamePlayer = message.getNicknamePlayer();
+        int moves = message.getMoves();
+
+        if(!isCurrentPlayer(nicknamePlayer)){return false;}
+
+        if(controllerIntegrity.checkMoveMotherNature(this.players.get(this.currentPlayerIndex), moves)){
+            board.moveMotherNature(moves);
+            board.tryToConquer(this.players.get(this.currentPlayerIndex));
+            controllerState.setState(State.ACTION3);
             return true;
         }
         return false;

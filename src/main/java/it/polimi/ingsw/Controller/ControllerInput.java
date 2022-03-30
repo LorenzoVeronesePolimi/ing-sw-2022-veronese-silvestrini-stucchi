@@ -26,10 +26,19 @@ public class ControllerInput {
                 return(this.checkNickname(((MessageAssistantCard)message).getNicknamePlayer()) &&
                         this.checkMotherNatureMovement(((MessageAssistantCard)message).getMotherNatureMovement()) &&
                         this.checkTurnPriority(((MessageAssistantCard)message).getTurnPriority()));
+            case STUDENT_HALL_TO_DINING_ROOM:
+                return(this.checkNickname(((MessageStudentHallToDiningRoom)message).getNicknamePlayer())) &&
+                        this.checkStudentColour(((MessageStudentHallToDiningRoom)message).getColour());
             case STUDENT_TO_ARCHIPELAGO:
                 return (this.checkNickname(((MessageStudentToArchipelago)message).getNicknamePlayer()) &&
-                        this.checkStudentColours(((MessageStudentToArchipelago)message).getColour()) &&
+                        this.checkStudentColour(((MessageStudentToArchipelago)message).getColour()) &&
                         this.checkDestArchipelagoIndex(((MessageStudentToArchipelago)message).getDestArchipelagoIndex()));
+            case MOVE_MOTHER_NATURE:
+                return (this.checkNickname(((MessageMoveMotherNature)message).getNicknamePlayer()) &&
+                        this.checkMotherNatureMovement(((MessageMoveMotherNature)message).getMoves()));
+            case STUDENT_CLOUD_TO_SCHOOL:
+                return (this.checkNickname(((MessageStudentCloudToSchool)message).getNicknamePlayer()) &&
+                        this.checkCloudIndex(((MessageStudentCloudToSchool)message).getIndexCloud()));
         }
 
         return false;
@@ -58,7 +67,7 @@ public class ControllerInput {
     }
 
     // Check if the colour in the message (a String) is possible
-    private boolean checkStudentColours(String c){
+    private boolean checkStudentColour(String c){
         String[] possibleColours = {"red", "pink", "blue", "yellow", "green"};
         for(String s : possibleColours){
             if(c.toLowerCase().equals(s)){return true;}
@@ -71,4 +80,7 @@ public class ControllerInput {
         return i <= MAX_NUM_ARCHIPELAGOS;
     }
 
+    private boolean checkCloudIndex(int i){
+        return (i >= 0 && i <=4);
+    }
 }

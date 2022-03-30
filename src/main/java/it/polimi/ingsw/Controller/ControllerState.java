@@ -22,8 +22,11 @@ public class ControllerState {
                 return (this.state == State.WAITING_PLAYERS);
             case ASSISTANT_CARD:
                 return (this.state == State.PLANNING2);
+            case STUDENT_HALL_TO_DINING_ROOM:
             case STUDENT_TO_ARCHIPELAGO:
                 return (this.state == State.ACTION1);
+            case MOVE_MOTHER_NATURE:
+                return (this.state == State.ACTION2);
         }
         return false;
     }
