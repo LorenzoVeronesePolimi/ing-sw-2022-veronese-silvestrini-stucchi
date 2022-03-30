@@ -2,7 +2,10 @@ package it.polimi.ingsw.Controller;
 
 import it.polimi.ingsw.Model.Board.Board;
 import it.polimi.ingsw.Model.Enumerations.SPColour;
+import it.polimi.ingsw.Model.Exceptions.AssistantCardAlreadyPlayedTurnException;
 import it.polimi.ingsw.Model.Player;
+
+import java.util.List;
 
 public class ControllerIntegrity {
     private Board board;
@@ -21,6 +24,24 @@ public class ControllerIntegrity {
 
     public boolean checkCreateMatch(int numPlayers){
         return (numPlayers >= 2 && numPlayers <= 4);
+    }
+
+    public boolean checkAssistantCard(List<Player> players, int currentPlayerIndex, Player player, int turnPriority){
+        //no other player used it or I have no choice
+        if(player.getHandLength() == 1){ // only one AssistantCard in hand: he has no alternative
+            return true;
+        }
+        else{
+            if(currentPlayerIndex == 0){ // Base case: every Player controlled. No other Player used that AssistantCard
+                return true;
+            }
+            if(players.get(0).getLastCard().getTurnPriority() != turnPriority){ // the first Player didn't use that card: let's check the others
+                return this.checkAssistantCard(players.subList(1, players.size()), currentPlayerIndex - 1, player, turnPriority);
+            }
+            else{ // another Player used that card
+                return false;
+            }
+        }
     }
 
     public boolean checkStudentToArchipelago(Player player, SPColour studentColour, int destArchipelagoIndex){

@@ -1,6 +1,7 @@
 package it.polimi.ingsw.Controller;
 
 import it.polimi.ingsw.Controller.Enumerations.State;
+import it.polimi.ingsw.Controller.Exceptions.NoPlayerException;
 import it.polimi.ingsw.Controller.Messages.*;
 import it.polimi.ingsw.Model.Board.Board;
 import it.polimi.ingsw.Model.Board.BoardAbstract;
@@ -21,7 +22,7 @@ public class Controller implements Observer {
     private boolean advanced;
     private Board board;
     private BoardAdvanced boardAdvanced; //null if advanced=0
-    private List<Player> players;
+    private List<Player> players; //ordered
 
     private int currentPlayerIndex = 0;
 
@@ -35,6 +36,10 @@ public class Controller implements Observer {
         this.controllerInput = new ControllerInput();
         this.controllerState = new ControllerState();
         this.controllerIntegrity = new ControllerIntegrity();
+    }
+
+    public Player getCurrentPlayer(){
+        return this.players.get(this.currentPlayerIndex);
     }
 
     /*I RECEIVED A MESSAGE => I need to:
@@ -114,6 +119,16 @@ public class Controller implements Observer {
         return null; //impossible
     }
 
+    private Player mapStringToPlayer(String s) throws NoPlayerException{
+        for(Player p : this.players){
+            if(p.getNickname() == s){
+                return p;
+            }
+        }
+
+        throw new NoPlayerException();
+    }
+
     private void initMatch(){
         BoardFactory factory = new BoardFactory(this.players);
         this.board = factory.createBoard();
@@ -165,22 +180,6 @@ public class Controller implements Observer {
         return true;
     }
 
-    private boolean manageAssistantCard(MessageAssistantCard message){
-        int motherNatureMoves = message.getMotherNatureMovement();
-        int turnPriority = message.getTurnPriority();
-
-        // remove the card from his hand
-        try{ //TODO: manage the other Exception
-            board.useAssistantCard(this.players.get(this.currentPlayerIndex), turnPriority); //TODO: correct the function in BoardAbstract
-        } catch(AssistantCardAlreadyPlayedTurnException ex){return false;} // card already used
-
-        if(this.currentPlayerIndex == this.players.size()-1){ //last player: all players has played their AssistantCard. No I can set the order
-            this.changeTurnOrder(); // reset the order of the Players according to the values of the AssistantCards
-            this.currentPlayerIndex = 0; // the new turn will start
-        }
-        return true;
-    }
-
     private boolean manageAddPlayer(MessageAddPlayer message){ // TODO: manage GameFour
         String nickname = message.getNickname();
         PlayerColour colour = mapStringToPlayerColour(message.getColour());
@@ -189,16 +188,42 @@ public class Controller implements Observer {
             if(p.getNickname() == nickname){return false;}
         }
 
-        // no integrity to check
+        // No integrity to check
 
         Player player = new Player(nickname, colour);
         this.players.add(player);
 
         if(this.players.size() == numPlayers){ // The requested number of players has been reached: let's go on
+            this.initMatch();
             controllerState.setState(State.PLANNING1);
-            //TODO: start game
         }
 
+        return true;
+    }
+
+    private boolean manageAssistantCard(MessageAssistantCard message){
+        String nicknamePlayer = message.getNicknamePlayer();
+        int turnPriority = message.getTurnPriority();
+
+        // Is him the currentPlayer? Can he use that AssistantCard?
+        try{
+            Player playerMessage = this.mapStringToPlayer(nicknamePlayer);
+            if(!(this.players.get(currentPlayerIndex) == playerMessage)){return false;}
+            controllerIntegrity.checkAssistantCard(this.players, this.currentPlayerIndex, playerMessage, turnPriority);
+        } catch(NoPlayerException ex){return false;}
+
+        // Remove the card from his hand
+        try{
+            board.useAssistantCard(this.players.get(this.currentPlayerIndex), turnPriority);
+        } catch(AssistantCardAlreadyPlayedTurnException ex){return false;} // card already used
+
+        // Go on within the turn
+        this.currentPlayerIndex++;
+
+        if(this.currentPlayerIndex == this.players.size()-1){ //last player: all players has played their AssistantCard. No I can set the order
+            this.changeTurnOrder(); // reset the order of the Players according to the values of the AssistantCards
+            this.currentPlayerIndex = 0; // the new turn will start
+        }
         return true;
     }
 

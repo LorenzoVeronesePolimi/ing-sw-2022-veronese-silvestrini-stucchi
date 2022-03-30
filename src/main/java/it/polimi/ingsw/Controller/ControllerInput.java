@@ -1,9 +1,6 @@
 package it.polimi.ingsw.Controller;
 
 import it.polimi.ingsw.Controller.Messages.*;
-import it.polimi.ingsw.Model.Enumerations.PlayerColour;
-
-import java.util.Locale;
 
 
 public class ControllerInput {
@@ -20,25 +17,19 @@ public class ControllerInput {
         Message message = (Message)arg;
         switch(message.getType()){
             case CREATE_MATCH:
-                String nicknameFirstPlayer = ((MessageCreateMatch)message).getNicknameFirstPlayer();
-                String colourFirstPlayer = ((MessageCreateMatch)message).getColourFirstPlayer();
-                return (this.checkNickname(nicknameFirstPlayer) &&
-                        this.checkPlayerColour(colourFirstPlayer));
+                return (this.checkNickname(((MessageCreateMatch)message).getNicknameFirstPlayer()) &&
+                        this.checkPlayerColour(((MessageCreateMatch)message).getColourFirstPlayer()));
             case ADD_PLAYER:
-                String nickname = ((MessageAddPlayer)message).getNickname();
-                String colour = ((MessageAddPlayer)message).getColour();
-                return (this.checkNickname(nickname) &&
-                        this.checkPlayerColour(colour));
+                return (this.checkNickname(((MessageAddPlayer)message).getNickname()) &&
+                        this.checkPlayerColour(((MessageAddPlayer)message).getColour()));
             case ASSISTANT_CARD:
-                int motherNatureMovement = ((MessageAssistantCard)message).getMotherNatureMovement();
-                int turnPriority = ((MessageAssistantCard)message).getTurnPriority();
-                return(this.checkMotherNatureMovement(motherNatureMovement) &&
-                        this.checkTurnPriority(turnPriority));
+                return(this.checkNickname(((MessageAssistantCard)message).getNicknamePlayer()) &&
+                        this.checkMotherNatureMovement(((MessageAssistantCard)message).getMotherNatureMovement()) &&
+                        this.checkTurnPriority(((MessageAssistantCard)message).getTurnPriority()));
             case STUDENT_TO_ARCHIPELAGO:
-                String studentColour = ((MessageStudentToArchipelago)message).getColour();
-                int destArchipelagoIndex = ((MessageStudentToArchipelago)message).getDestArchipelagoIndex();
-                return (this.checkStudentColours(studentColour) &&
-                        this.checkDestArchipelagoIndex(destArchipelagoIndex));
+                return (this.checkNickname(((MessageStudentToArchipelago)message).getNicknamePlayer()) &&
+                        this.checkStudentColours(((MessageStudentToArchipelago)message).getColour()) &&
+                        this.checkDestArchipelagoIndex(((MessageStudentToArchipelago)message).getDestArchipelagoIndex()));
         }
 
         return false;
@@ -46,14 +37,14 @@ public class ControllerInput {
     }
 
     private boolean checkNickname(String nickname){
-        return !(nickname == "");
+        return !(nickname.equals(""));
     }
 
     //This checks ONLY the format of the word
     private boolean checkPlayerColour(String c){
         String[] possibleColours = {"white", "black", "gray"};
         for(String s : possibleColours){
-            if(c.toLowerCase() == s){return true;}
+            if(c.toLowerCase().equals(s)){return true;}
         }
         return false;
     }
@@ -70,7 +61,7 @@ public class ControllerInput {
     private boolean checkStudentColours(String c){
         String[] possibleColours = {"red", "pink", "blue", "yellow", "green"};
         for(String s : possibleColours){
-            if(c.toLowerCase() == s){return true;}
+            if(c.toLowerCase().equals(s)){return true;}
         }
         return false;
     }
