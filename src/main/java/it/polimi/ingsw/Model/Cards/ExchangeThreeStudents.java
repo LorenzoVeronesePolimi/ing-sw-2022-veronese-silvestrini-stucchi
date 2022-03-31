@@ -15,13 +15,13 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class ExchangeThreeStudents extends AbstractCharacterCard{
-    private BoardAdvanced boardAdvanced;
-    Bag bag;
+    private final BoardAdvanced boardAdvanced;
     private List<Student> students;
 
     public ExchangeThreeStudents(BoardAdvanced boardAdvanced){
         super(1);
-        bag=boardAdvanced.getBag();
+
+        Bag bag = boardAdvanced.getBag();
         try {
             students = new ArrayList<>(bag.extractStudents(6));
         } catch (StudentNotFoundException e) {
@@ -30,18 +30,16 @@ public class ExchangeThreeStudents extends AbstractCharacterCard{
         this.boardAdvanced = boardAdvanced;
     }
 
-    public void useEffect(Player player, List<SPColour> hallStudents, List<SPColour> exchangeStudents) throws WrongNumberOfStudentsTransferExcpetion {
+    public void useEffect(Player player, List<SPColour> hallStudents, List<SPColour> exchangeStudents) throws
+            WrongNumberOfStudentsTransferExcpetion, StudentNotFoundException, ExceededMaxStudentsHallException {
+
         if(hallStudents.size() != 3 || exchangeStudents.size() != 3) {
             throw new WrongNumberOfStudentsTransferExcpetion();
         }
 
         List<Student> hallToCard = new ArrayList<>();
         for(SPColour colour: hallStudents) {
-            try {
-                hallToCard.add(boardAdvanced.getPlayerSchool(player).removeStudentHall(colour));
-            } catch (StudentNotFoundException e) {
-                e.printStackTrace();
-            }
+            hallToCard.add(boardAdvanced.getPlayerSchool(player).removeStudentHall(colour));
         }
 
         List<Student> cardToHall = new ArrayList<>();
@@ -60,11 +58,7 @@ public class ExchangeThreeStudents extends AbstractCharacterCard{
         School currentPlayerSchool = boardAdvanced.getPlayerSchool(player);
 
         for(Student s: cardToHall) {
-            try {
-                currentPlayerSchool.addStudentHall(s);
-            } catch (ExceededMaxStudentsHallException e) {
-                e.printStackTrace();
-            }
+            currentPlayerSchool.addStudentHall(s);
         }
 
         students.addAll(hallToCard);

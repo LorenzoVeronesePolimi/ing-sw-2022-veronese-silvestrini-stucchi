@@ -3,7 +3,6 @@ package it.polimi.ingsw.Model.Places.School;
 import it.polimi.ingsw.Model.*;
 import it.polimi.ingsw.Model.Enumerations.SPColour;
 import it.polimi.ingsw.Model.Exceptions.*;
-import it.polimi.ingsw.Model.Pawns.Coin;
 import it.polimi.ingsw.Model.Pawns.Professor;
 import it.polimi.ingsw.Model.Pawns.Student;
 import it.polimi.ingsw.Model.Pawns.Tower;
@@ -11,7 +10,6 @@ import it.polimi.ingsw.Model.Pawns.Tower;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Set;
 
 public class School {
     protected Player player;
@@ -51,12 +49,7 @@ public class School {
     public List<Professor> getProfessors(){ return professors; }
 
     public List<Student> getStudentsHall() {
-        List<Student> newStudentsHall = new ArrayList<>();
-
-        for(Student s : this.studentsHall){
-            newStudentsHall.add(s);
-        }
-        return newStudentsHall;
+        return new ArrayList<>(this.studentsHall);
     }
 
     public int getNumTowers(){
@@ -68,23 +61,16 @@ public class School {
     }
 
     public void addTower(Tower tower) throws ExceededMaxTowersException{
-        try {
-            if(this.getNumTowers()< numMaxTowers){
-                towers.add(tower);
-            }
-            else{
-             throw new ExceededMaxTowersException();
-            }
-        } catch (ExceededMaxTowersException e) {
-            e.printStackTrace();
+        if(this.getNumTowers() < numMaxTowers){
+            towers.add(tower);
+        } else {
+         throw new ExceededMaxTowersException();
         }
     }
 
-    public void addNumTower(List<Tower> toAdd){
+    public void addNumTower(List<Tower> toAdd) throws ExceededMaxTowersException {
         for(Tower t : toAdd){
-            try{
-                this.addTower(t);
-            } catch(ExceededMaxTowersException ex){ex.printStackTrace();}
+            this.addTower(t);
         }
     }
 
@@ -96,7 +82,7 @@ public class School {
     }
 
     public List<Tower> removeNumTowers(int num) throws TowerNotFoundException {
-        List<Tower> removed = new ArrayList<Tower>();
+        List<Tower> removed = new ArrayList<>();
         for(int i = 0; i < num; i++){
             removed.add(removeTower());
         }
@@ -224,13 +210,13 @@ public class School {
     }
 
     public void moveStudentHallToDiningRoom(SPColour colour) throws StudentNotFoundException, ExceededMaxStudentsDiningRoomException {
-        Student student = null;
+        Student student;
 
         student = removeStudentHall(colour);
         addStudentDiningRoom(student);
     }
 
-    public int getNumStudentColour(SPColour colour) throws WrongColourException {
+    public int getNumStudentColour(SPColour colour) {
         if(colour == SPColour.RED) {
            return studentsDiningRed.size();
         }
@@ -247,10 +233,10 @@ public class School {
             return studentsDiningYellow.size();
         }
 
-        throw new WrongColourException();
+        return 0;
     }
 
-    public List<Student> getListStudentColour(SPColour colour) throws WrongColourException {
+    public List<Student> getListStudentColour(SPColour colour) {
         if(colour == SPColour.RED) {
             return studentsDiningRed;
         }
@@ -267,7 +253,7 @@ public class School {
             return studentsDiningYellow;
         }
 
-        throw new WrongColourException();
+        return null;
     }
 
     public int getNumMaxTowers(){

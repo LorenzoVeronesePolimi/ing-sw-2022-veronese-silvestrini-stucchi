@@ -1,11 +1,14 @@
 package it.polimi.ingsw.Model.Cards;
 
 import it.polimi.ingsw.Model.Board.BoardAdvanced;
+import it.polimi.ingsw.Model.Exceptions.AnotherTowerException;
+import it.polimi.ingsw.Model.Exceptions.ExceededMaxTowersException;
 import it.polimi.ingsw.Model.Exceptions.ImpossibleMNMove;
+import it.polimi.ingsw.Model.Exceptions.InvalidTowerNumberException;
 import it.polimi.ingsw.Model.Player;
 
 public class TwoExtraIslands extends AbstractCharacterCard{
-    private BoardAdvanced boardAdvanced;
+    private final BoardAdvanced boardAdvanced;
 
     public TwoExtraIslands(BoardAdvanced boardAdvanced){
         super(1);
@@ -13,7 +16,7 @@ public class TwoExtraIslands extends AbstractCharacterCard{
         this.boardAdvanced = boardAdvanced;
     }
 
-    public void useEffect(Player currentPlayer, int archipelago) throws ImpossibleMNMove {
+    public void useEffect(Player currentPlayer, int archipelago) throws ImpossibleMNMove, InvalidTowerNumberException, AnotherTowerException, ExceededMaxTowersException {
         //MN initial position
         int startingPoint = boardAdvanced.whereIsMotherNature();
         boolean hasChanged = false;
@@ -29,7 +32,7 @@ public class TwoExtraIslands extends AbstractCharacterCard{
         }
 
         if(hasChanged)
-            boardAdvanced.tryToConquer(currentPlayer); //TODO: added Player parameter
+            boardAdvanced.tryToConquer(currentPlayer);
         else
             throw new ImpossibleMNMove();
     }

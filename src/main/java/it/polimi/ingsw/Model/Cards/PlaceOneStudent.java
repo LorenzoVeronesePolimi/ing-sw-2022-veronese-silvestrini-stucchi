@@ -5,20 +5,19 @@ import it.polimi.ingsw.Model.Board.BoardAdvanced;
 import it.polimi.ingsw.Model.Enumerations.SPColour;
 import it.polimi.ingsw.Model.Exceptions.StudentNotFoundException;
 import it.polimi.ingsw.Model.Pawns.Student;
-import it.polimi.ingsw.Model.Places.Archipelago;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 public class PlaceOneStudent extends AbstractCharacterCard{
-    private BoardAdvanced boardAdvanced;
+    private final BoardAdvanced boardAdvanced;
     private List<Student> fourStudents;
-    private Bag bag;
+    private final Bag bag;
 
     public PlaceOneStudent(BoardAdvanced boardAdvanced) {
         super(1);
         this.boardAdvanced = boardAdvanced;
-        bag=boardAdvanced.getBag();
+        bag = boardAdvanced.getBag();
         try {
             fourStudents = bag.extractStudents(4);
         } catch (StudentNotFoundException e) {
@@ -27,14 +26,15 @@ public class PlaceOneStudent extends AbstractCharacterCard{
     }
 
     public void useEffect(SPColour chosen, int archipelago) throws StudentNotFoundException{
-        List<Student> s= fourStudents.stream().filter(x -> x.getColour().equals(chosen)).collect(Collectors.toList());
+        List<Student> s = fourStudents.stream().filter(x -> x.getColour().equals(chosen)).collect(Collectors.toList());
         Student student;
         if(!s.isEmpty()){
-            student= fourStudents.remove(fourStudents.indexOf(s.get(0)));
+            student = fourStudents.remove(fourStudents.indexOf(s.get(0)));
             this.boardAdvanced.getArchiList().get(archipelago).addStudent(student);
         }else {
             throw new StudentNotFoundException();
         }
         s = bag.extractStudents(1);
-        fourStudents.add(s.get(0));    }
+        fourStudents.add(s.get(0));
+    }
 }

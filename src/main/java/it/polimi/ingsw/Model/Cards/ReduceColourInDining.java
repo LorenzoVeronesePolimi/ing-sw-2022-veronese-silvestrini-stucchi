@@ -14,16 +14,11 @@ public class ReduceColourInDining extends AbstractCharacterCard{
         bag=boardAdvanced.getBag();
         this.boardAdvanced=boardAdvanced;
     }
-    public void useEffect(SPColour colour){
+    public void useEffect(SPColour colour) throws StudentNotFoundException {
         for(School s: boardAdvanced.getSchools()){
             for(int i=0; i<3; i++){
-                try {
-                    bag.putStudent(s.removeStudentDiningRoom(colour));
-                } catch (StudentNotFoundException e) {
-                    e.printStackTrace();
-                }
+                bag.putStudent(s.removeStudentDiningRoom(colour));
             }
         }
     }
-    public void update(BoardAdvanced boardAdvanced){};
 }

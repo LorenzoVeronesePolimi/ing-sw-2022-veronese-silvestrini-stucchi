@@ -2,13 +2,13 @@ package it.polimi.ingsw.Model.Cards;
 
 import it.polimi.ingsw.Model.Board.BoardAdvanced;
 import it.polimi.ingsw.Model.Enumerations.SPColour;
-import it.polimi.ingsw.Model.Exceptions.WrongColourException;
+import it.polimi.ingsw.Model.Exceptions.*;
 import it.polimi.ingsw.Model.Places.School.School;
 import it.polimi.ingsw.Model.Player;
 
 public class TakeProfessorOnEquity extends AbstractCharacterCard{
     SPColour[] availableColours = {SPColour.BLUE, SPColour.PINK, SPColour.RED, SPColour.GREEN, SPColour.YELLOW};
-    private BoardAdvanced boardAdvanced;
+    private final BoardAdvanced boardAdvanced;
 
     public  TakeProfessorOnEquity(BoardAdvanced boardAdvanced){
         super(2);
@@ -16,7 +16,7 @@ public class TakeProfessorOnEquity extends AbstractCharacterCard{
         this.boardAdvanced = boardAdvanced;
     }
 
-    public void useEffect(Player currentPlayer){
+    public void useEffect(Player currentPlayer) throws ProfessorNotFoundException, NoProfessorBagException, InvalidTowerNumberException, AnotherTowerException, ExceededMaxTowersException {
         School currentSchoolPlayer = boardAdvanced.getPlayerSchool(currentPlayer);
 
         for(SPColour colour: availableColours) {
@@ -25,20 +25,12 @@ public class TakeProfessorOnEquity extends AbstractCharacterCard{
 
                 if(!professorSchool.getPlayer().equals(currentPlayer)) {
                     //number of currentPlayer's students of that particular colour
-                    int numStudentsColorPlayer = 0;
-                    try {
-                        numStudentsColorPlayer = currentSchoolPlayer.getNumStudentColour(colour);
-                    } catch (WrongColourException e) {
-                        e.printStackTrace();
-                    }
+                    int numStudentsColorPlayer;
+                    numStudentsColorPlayer = currentSchoolPlayer.getNumStudentColour(colour);
 
                     //number of enemyPlayer's students of that particular colour
-                    int numStudentColourEnemy = 0;
-                    try {
-                        numStudentColourEnemy = professorSchool.getNumStudentColour(colour);
-                    } catch (WrongColourException e) {
-                        e.printStackTrace();
-                    }
+                    int numStudentColourEnemy;
+                    numStudentColourEnemy = professorSchool.getNumStudentColour(colour);
 
                     if(numStudentsColorPlayer == numStudentColourEnemy) {
                         boardAdvanced.moveProfessor(currentPlayer, colour);
@@ -50,6 +42,6 @@ public class TakeProfessorOnEquity extends AbstractCharacterCard{
         }
 
         //flow after professor movement
-        boardAdvanced.tryToConquer(currentPlayer);//TODO: added Player parameter
+        boardAdvanced.tryToConquer(currentPlayer);
     }
 }

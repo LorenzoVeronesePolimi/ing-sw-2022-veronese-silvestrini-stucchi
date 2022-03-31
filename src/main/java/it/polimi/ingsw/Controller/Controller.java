@@ -9,8 +9,7 @@ import it.polimi.ingsw.Model.Board.BoardAdvanced;
 import it.polimi.ingsw.Model.Board.BoardFactory;
 import it.polimi.ingsw.Model.Enumerations.PlayerColour;
 import it.polimi.ingsw.Model.Enumerations.SPColour;
-import it.polimi.ingsw.Model.Exceptions.AssistantCardAlreadyPlayedTurnException;
-import it.polimi.ingsw.Model.Exceptions.NoAssistantCardException;
+import it.polimi.ingsw.Model.Exceptions.*;
 import it.polimi.ingsw.Model.Player;
 import it.polimi.ingsw.View.View;
 
@@ -98,7 +97,14 @@ public class Controller implements Observer {
 
         //check if I have to make some automatic action (=>PIANIFICATION1)
         if(controllerState.getState() == State.PLANNING1){
-            this.board.moveStudentBagToCloud();
+            //TODO: surrounded with try catch just to remove errors. It needs to be checked before leaving it like that
+            try {
+                this.board.moveStudentBagToCloud();
+            } catch (ExceededMaxStudentsCloudException e) {
+                e.printStackTrace();
+            } catch (StudentNotFoundException e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -156,7 +162,18 @@ public class Controller implements Observer {
         this.board = factory.createBoard();
 
         if(this.advanced){
-            this.boardAdvanced = new BoardAdvanced((BoardAbstract) this.board);
+            //TODO: surrounded with try catch just to remove errors. It needs to be checked before leaving it like that
+            try {
+                this.boardAdvanced = new BoardAdvanced((BoardAbstract) this.board);
+            } catch (ExceededMaxStudentsHallException e) {
+                e.printStackTrace();
+            } catch (StudentNotFoundException e) {
+                e.printStackTrace();
+            } catch (TowerNotFoundException e) {
+                e.printStackTrace();
+            } catch (EmptyCaveauExcepion e) {
+                e.printStackTrace();
+            }
         }
 
         controllerIntegrity.setBoard(this.board);
@@ -242,9 +259,10 @@ public class Controller implements Observer {
         controllerIntegrity.checkAssistantCard(this.players, this.currentPlayerIndex, this.players.get(this.currentPlayerIndex), turnPriority);
 
         // Remove the card from his hand
+        //TODO: surrounded with try catch just to remove errors. It needs to be checked before leaving it like that
         try{
             board.useAssistantCard(this.players.get(this.currentPlayerIndex), turnPriority);
-        } catch(AssistantCardAlreadyPlayedTurnException ex){return false;} // card already used
+        } catch(AssistantCardAlreadyPlayedTurnException | NoAssistantCardException ex){return false;} // card already used
 
         // Go on within the turn
         this.currentPlayerIndex++;
@@ -264,9 +282,35 @@ public class Controller implements Observer {
 
         if(controllerIntegrity.checkStudentHallToDiningRoom(this.players.get(this.currentPlayerIndex), studentColour)){
             if(this.advanced){
-                boardAdvanced.moveStudentHallToDiningRoom(this.players.get(this.currentPlayerIndex), studentColour);
+                //TODO: surrounded with try catch just to remove errors. It needs to be checked before leaving it like that
+                try {
+                    boardAdvanced.moveStudentHallToDiningRoom(this.players.get(this.currentPlayerIndex), studentColour);
+                } catch (StudentNotFoundException e) {
+                    e.printStackTrace();
+                } catch (ExceededMaxStudentsDiningRoomException e) {
+                    e.printStackTrace();
+                } catch (EmptyCaveauExcepion e) {
+                    e.printStackTrace();
+                } catch (ProfessorNotFoundException e) {
+                    e.printStackTrace();
+                } catch (NoProfessorBagException e) {
+                    e.printStackTrace();
+                }
             } else{
-                board.moveStudentHallToDiningRoom(this.players.get(this.currentPlayerIndex), studentColour);
+                //TODO: surrounded with try catch just to remove errors. It needs to be checked before leaving it like that
+                try {
+                    board.moveStudentHallToDiningRoom(this.players.get(this.currentPlayerIndex), studentColour);
+                } catch (StudentNotFoundException e) {
+                    e.printStackTrace();
+                } catch (ExceededMaxStudentsDiningRoomException e) {
+                    e.printStackTrace();
+                } catch (EmptyCaveauExcepion e) {
+                    e.printStackTrace();
+                } catch (ProfessorNotFoundException e) {
+                    e.printStackTrace();
+                } catch (NoProfessorBagException e) {
+                    e.printStackTrace();
+                }
             }
             this.numStudentsToMoveCurrent--;
             if(this.numStudentsToMoveCurrent == 0 || // all possible Students moved
@@ -287,7 +331,12 @@ public class Controller implements Observer {
         if(!isCurrentPlayer(nicknamePlayer)){return false;}
 
         if(controllerIntegrity.checkStudentToArchipelago(this.players.get(this.currentPlayerIndex), studentColour, destArchipelagoIndex)){
-            board.moveStudentSchoolToArchipelagos(this.players.get(this.currentPlayerIndex), studentColour, destArchipelagoIndex);
+            //TODO: surrounded with try catch just to remove errors. It needs to be checked before leaving it like that
+            try {
+                board.moveStudentSchoolToArchipelagos(this.players.get(this.currentPlayerIndex), studentColour, destArchipelagoIndex);
+            } catch (StudentNotFoundException e) {
+                e.printStackTrace();
+            }
             return true;
         }
         return false;
@@ -301,7 +350,16 @@ public class Controller implements Observer {
 
         if(controllerIntegrity.checkMoveMotherNature(this.players.get(this.currentPlayerIndex), moves)){
             board.moveMotherNature(moves);
-            board.tryToConquer(this.players.get(this.currentPlayerIndex));
+            //TODO: surrounded with try catch just to remove errors. It needs to be checked before leaving it like that
+            try {
+                board.tryToConquer(this.players.get(this.currentPlayerIndex));
+            } catch (InvalidTowerNumberException e) {
+                e.printStackTrace();
+            } catch (AnotherTowerException e) {
+                e.printStackTrace();
+            } catch (ExceededMaxTowersException e) {
+                e.printStackTrace();
+            }
             controllerState.setState(State.ACTION3);
             return true;
         }

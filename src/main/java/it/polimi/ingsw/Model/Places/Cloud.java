@@ -1,6 +1,5 @@
 package it.polimi.ingsw.Model.Places;
 
-import it.polimi.ingsw.Model.Enumerations.SPColour;
 import it.polimi.ingsw.Model.Exceptions.ExceededMaxStudentsCloudException;
 import it.polimi.ingsw.Model.Pawns.Student;
 
@@ -13,21 +12,17 @@ import java.util.List;
 * */
 public class Cloud {
     private final int numMaxStudents;
-    private List<Student> students;
+    private final List<Student> students;
 
     public Cloud(int numMaxStudents) {
         this.numMaxStudents = numMaxStudents;
-        this.students = new ArrayList<Student>();
+        this.students = new ArrayList<>();
     }
 
     //TODO: maybe in this case is better to use the toString instead of passing the exact objects
     //this method is to show the elements inside the cloud
     public List<Student> getStudents(){
-        List<Student> got = new ArrayList<Student>();
-
-        got.addAll(this.students);
-
-        return got;
+        return new ArrayList<>(this.students);
     }
 
     public int getNumMaxStudents() {
@@ -52,9 +47,8 @@ public class Cloud {
 
     //This method gives a list of students and deletes the current students in the cloud
     public List<Student> empty() {
-        List<Student> removed = new ArrayList<Student>();
+        List<Student> removed = new ArrayList<>(this.students);
 
-        removed.addAll(this.students);
         this.students.clear();
 
         return removed;

@@ -3,7 +3,7 @@ package it.polimi.ingsw.Model.Cards;
 import it.polimi.ingsw.Model.Board.BoardAdvanced;
 
 public class ForbidIsland extends AbstractCharacterCard{
-    private BoardAdvanced boardAdvanced;
+    private final BoardAdvanced boardAdvanced;
 
     public ForbidIsland(BoardAdvanced boardAdvanced){
         super(2);

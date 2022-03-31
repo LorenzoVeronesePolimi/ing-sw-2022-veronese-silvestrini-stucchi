@@ -2,24 +2,23 @@ package it.polimi.ingsw.Model.Places;
 
 import it.polimi.ingsw.Model.Enumerations.SPColour;
 import it.polimi.ingsw.Model.Exceptions.AnotherTowerException;
-import it.polimi.ingsw.Model.Exceptions.NoStudentMatchColourException;
 import it.polimi.ingsw.Model.Pawns.Student;
 import it.polimi.ingsw.Model.Pawns.Tower;
 
 import java.util.*;
 
 public class Island {
-    private Set<Student> students;
+    private final Set<Student> students;
     private Tower tower;
 
     public Island(){
-        this.students = new HashSet<Student>();
+        this.students = new HashSet<>();
         this.tower = null;
     }
 
     // return a Map like: RED -> 3 (Students of colour RED)
     public Map<SPColour, Integer> howManyStudents(){
-        Map<SPColour, Integer> data = new HashMap<SPColour, Integer>();
+        Map<SPColour, Integer> data = new HashMap<>();
 
         SPColour[] availableColours = {SPColour.BLUE, SPColour.PINK, SPColour.RED, SPColour.GREEN, SPColour.YELLOW};
         for(SPColour c : availableColours){
@@ -34,19 +33,6 @@ public class Island {
     public void addStudent(Student studentToAdd) {
         this.students.add(studentToAdd);
     }
-
-   /* public Student removeStudent(SPColour colourToRemove) throws NoStudentMatchColourException {
-        for(Student student : this.students){
-            if (student.getColour().equals(colourToRemove)){
-                Student removed;
-                removed = student;
-                this.students.remove(student);
-
-                return removed;
-            }
-        }
-        throw new NoStudentMatchColourException();
-    }*/
 
     public void addTower(Tower toAdd) throws AnotherTowerException {
         if(this.tower == null){ // No tower has been added, yet

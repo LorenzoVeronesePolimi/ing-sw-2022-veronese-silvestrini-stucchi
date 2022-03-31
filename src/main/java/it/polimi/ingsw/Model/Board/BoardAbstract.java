@@ -14,7 +14,6 @@ import it.polimi.ingsw.Model.Places.School.School;
 import it.polimi.ingsw.Model.Player;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -32,8 +31,8 @@ public abstract class BoardAbstract implements Board{
 
 
     //--------------------------------------------------INITIALIZATION OF BOARD
-    public BoardAbstract(List<Player> players) {
-        this.archipelagos = new ArrayList<Archipelago>();
+    public BoardAbstract(List<Player> players) throws ExceedingAssistantCardNumberException, NullContentException {
+        this.archipelagos = new ArrayList<>();
 
         for(int i = 0; i < 12; i++) {
             Archipelago a = new Archipelago();
@@ -41,7 +40,7 @@ public abstract class BoardAbstract implements Board{
             archipelagos.add(a);
         }
 
-        this.players = new ArrayList<Player>();
+        this.players = new ArrayList<>();
         this.players.addAll(players);
         mn = new MotherNature();
         bag = new Bag();
@@ -53,34 +52,26 @@ public abstract class BoardAbstract implements Board{
 
     }
 
-    private void initializePlayersHands(){
+    private void initializePlayersHands() throws ExceedingAssistantCardNumberException {
         // Create all needed AssistantCards
-        List<AssistantCard> cardsCreated = new ArrayList<AssistantCard>();
+        List<AssistantCard> cardsCreated = new ArrayList<>();
         int[] cardsMotherNatureMoves= {1, 1, 2, 2, 3, 3, 4, 4, 5, 5}; //TODO: check if these values ar correct
-        for(int i = 0; i < this.playerHandLength; i++){
+        for(int i = 0; i < playerHandLength; i++){
             cardsCreated.add(new AssistantCard(i + 1, cardsMotherNatureMoves[i]));
         }
 
         // give them to Players
         for(Player p : this.players){
             for(AssistantCard c : cardsCreated){
-                try {
-                    p.addAssistantCard(c);
-                } catch (ExceedingAssistantCardNumberException e) {
-                    e.printStackTrace();
-                }
+                p.addAssistantCard(c);
             }
         }
     }
 
-    private void placeStudentInitialBoard() {
+    private void placeStudentInitialBoard() throws NullContentException{
         //get 10 initial students to be placed on the archipelagos (one each, except mn position and the opposite)
-        List<Student> initialStudents = null;
-        try {
-            initialStudents = bag.getInitialStudents();
-        } catch (NullContentException e) {
-            e.printStackTrace();
-        }
+        List<Student> initialStudents;
+        initialStudents = bag.getInitialStudents();
 
         for(int i = 1; i < this.archipelagos.size(); i++) {
             if(i < 6) {
@@ -92,7 +83,7 @@ public abstract class BoardAbstract implements Board{
     }
 
     //Mother Nature is put in the first archipelago
-    private void placeMotherNatureInitialBoard() {
+    public void placeMotherNatureInitialBoard() {
         mn.putInPosition(archipelagos.get(0));
     }
 
@@ -116,7 +107,7 @@ public abstract class BoardAbstract implements Board{
 
         // This happens when the Professor I'm looking for is in the Bag
         return null;
-    };
+    }
 
     // Returns the Archipelago's index where MotherNature is positioned
     public int whereIsMotherNature(){
@@ -145,24 +136,20 @@ public abstract class BoardAbstract implements Board{
             mn.putInPosition(archipelagos.get((whereIsMotherNature()+mnMoves)%archipelagos.size()));
     }
 
-    public void moveStudentSchoolToArchipelagos(Player player, SPColour colour, int archipelagoIndex) {
+    public void moveStudentSchoolToArchipelagos(Player player, SPColour colour, int archipelagoIndex) throws StudentNotFoundException {
         //school related to the player that made the move
         School currentSchool = playerSchool.get(player);
 
         if(currentSchool != null) {
-            try {
-                Student toBeMoved = currentSchool.removeStudentHall(colour);
-                archipelagos.get(archipelagoIndex).addStudent(toBeMoved);
+            Student toBeMoved = currentSchool.removeStudentHall(colour);
+            archipelagos.get(archipelagoIndex).addStudent(toBeMoved);
 
-                //check if I have to move a professor
+            //TODO: check if I have to move a professor (Why?)
 
-            } catch (StudentNotFoundException e) {
-                e.printStackTrace();
-            }
         }
-    };
+    }
 
-    public void moveStudentCloudToSchool(Player player, int cloudIndex){
+    public void moveStudentCloudToSchool(Player player, int cloudIndex) throws ExceededMaxStudentsHallException {
         //remove all the students from one particular cloud
         List<Student> toBeMoved = clouds.get(cloudIndex).empty();
 
@@ -171,90 +158,58 @@ public abstract class BoardAbstract implements Board{
 
         if(!toBeMoved.isEmpty()) {
             for(Student s: toBeMoved) {
-                try {
-                    currentSchool.addStudentHall(s);
-                } catch (ExceededMaxStudentsHallException e) {
-                    e.printStackTrace();
-                }
+                currentSchool.addStudentHall(s);
             }
         }
-    };
+    }
 
-    public void moveStudentHallToDiningRoom(Player player, SPColour colour){
+    public void moveStudentHallToDiningRoom(Player player, SPColour colour) throws
+            StudentNotFoundException, ExceededMaxStudentsDiningRoomException, ProfessorNotFoundException, NoProfessorBagException {
+
         //school related to the player that made the move
         School currentSchool = playerSchool.get(player);
 
-        try {
-            Student toBeMoved = currentSchool.removeStudentHall(colour);
-            currentSchool.addStudentDiningRoom(toBeMoved);
-            this.conquerProfessor(player, colour); //has the movement of the Student caused the conquering of the Professor?
-        } catch (StudentNotFoundException e) {
-            e.printStackTrace();
-        } catch (ExceededMaxStudentsDiningRoomException e) {
-            e.printStackTrace();
-        }
-    };
+        Student toBeMoved = currentSchool.removeStudentHall(colour);
+        currentSchool.addStudentDiningRoom(toBeMoved);
+        this.conquerProfessor(player, colour); //has the movement of the Student caused the conquering of the Professor?
+    }
 
-    public void moveStudentBagToCloud() {
+    public void moveStudentBagToCloud() throws ExceededMaxStudentsCloudException, StudentNotFoundException {
         int numStudents = this.clouds.get(0).getNumMaxStudents();
         for(Cloud c: clouds) {
-            List<Student> toBePlaced = null;
-            try {
-                toBePlaced = bag.extractStudents(numStudents);
-            } catch (StudentNotFoundException e) {
-                e.printStackTrace();
-            }
-            try {
-                c.fill(toBePlaced);
-            } catch (ExceededMaxStudentsCloudException e) {
-                e.printStackTrace();
-            }
+            List<Student> toBePlaced;
+            toBePlaced = bag.extractStudents(numStudents);
+            c.fill(toBePlaced);
         }
     }
 
-    public void moveStudentBagToSchool(int numStudents) {
+    public void moveStudentBagToSchool(int numStudents) throws StudentNotFoundException, ExceededMaxStudentsHallException {
         for(School s: this.schools) {
-            List<Student> toBePlaced = null;
-            try {
-                toBePlaced = bag.extractStudents(numStudents);
-            } catch (StudentNotFoundException e) {
-                e.printStackTrace();
-            }
+            List<Student> toBePlaced;
+            toBePlaced = bag.extractStudents(numStudents);
 
             for(Student student: toBePlaced) {
-                try {
-                    s.addStudentHall(student);
-                } catch (ExceededMaxStudentsHallException e) {
-                    e.printStackTrace();
-                }
+                s.addStudentHall(student);
             }
         }
     }
 
-    public void moveProfessor(Player destinationPlayer, SPColour colour){
+    public void moveProfessor(Player destinationPlayer, SPColour colour) throws NoProfessorBagException, ProfessorNotFoundException {
         //school related to the player that gets the professor
         School receiverSchool = playerSchool.get(destinationPlayer);
         School senderSchool;
-        Professor toBeMoved = null;
+        Professor toBeMoved;
 
         if(isProfessorInSchool(colour)) {
             senderSchool = whereIsProfessor(colour);
 
-            try {
-                toBeMoved = senderSchool.removeProfessor(colour);
-            } catch (ProfessorNotFoundException e) {
-                e.printStackTrace();
-            }
+            toBeMoved = senderSchool.removeProfessor(colour);
         } else {
-            try {
-                toBeMoved = bag.takeProfessor(colour);
-            } catch (NoProfessorBagException e) {
-                e.printStackTrace();
-            }
+            toBeMoved = bag.takeProfessor(colour);
         }
 
         receiverSchool.addProfessor(toBeMoved);
-    };
+    }
 
 
 
@@ -273,44 +228,36 @@ public abstract class BoardAbstract implements Board{
         return false;
     }
 
-    public void conquerProfessor(Player currentPlayer, SPColour colour){
+    public void conquerProfessor(Player currentPlayer, SPColour colour) throws NoProfessorBagException, ProfessorNotFoundException {
         School currentSchool = this.whereIsProfessor(colour);
         if(currentSchool == null){ //it's in the bag
-            try {
-                this.playerSchool.get(currentPlayer).addProfessor(this.bag.takeProfessor(colour));
-                return;
-            } catch (NoProfessorBagException e) {
-                e.printStackTrace();
-            }
+            this.playerSchool.get(currentPlayer).addProfessor(this.bag.takeProfessor(colour));
+            return;
         }
         School challengerSchool = this.playerSchool.get(currentPlayer);
-        int numStudentsCurrentSchool = 0;
-        int numStudentsChallenger = 0;
-        try{
-            numStudentsCurrentSchool = currentSchool.getNumStudentColour(colour);
-            numStudentsChallenger = challengerSchool.getNumStudentColour(colour);
-        }
-        catch(WrongColourException ex){ex.printStackTrace();}
+        int numStudentsCurrentSchool;
+        int numStudentsChallenger;
+
+        numStudentsCurrentSchool = currentSchool.getNumStudentColour(colour);
+        numStudentsChallenger = challengerSchool.getNumStudentColour(colour);
+
 
         if(numStudentsChallenger > numStudentsCurrentSchool){ // can take the Professor
-            Professor removed = null;
-            try {
-                removed = currentSchool.removeProfessor(colour);
-            } catch (ProfessorNotFoundException e) {
-                e.printStackTrace();
-            }
+            Professor removed;
+
+            removed = currentSchool.removeProfessor(colour);
 
             challengerSchool.addProfessor(removed);
         }
-        else{return;} //can't take the Professor
-
     }
 
 
 
 
     //--------------------------------------------------CONQUERING ISLANDS
-    public void tryToConquer(Player currentPlayer){
+    public void tryToConquer(Player currentPlayer) throws
+            InvalidTowerNumberException, AnotherTowerException, ExceededMaxTowersException {
+
         int currPosMotherNature = this.whereIsMotherNature();
         boolean archipelagoConquerable = checkIfConquerable(currentPlayer);
         if(archipelagoConquerable){
@@ -319,7 +266,7 @@ public abstract class BoardAbstract implements Board{
             //let's merge Archipelagos
             this.mergeArchipelagos();
         }
-        else { //the Archipelago remains to the owner
+        else { //TODO: the Archipelago remains to the owner
         }
     }
 
@@ -334,10 +281,8 @@ public abstract class BoardAbstract implements Board{
         else if(currentArchipelago.getOwner() == null){ //archipelago never conquered before
             List<Professor> conquerorProfessors = this.playerSchool.get(currentPlayer).getProfessors();
             for(Professor p : conquerorProfessors){
-                if(currentArchipelago.howManyStudents().get(p.getColour()) > 0){
-                    return true;
-                }
-                else{return false;} //can't conquer an Island without Students coloured without the Colour of a Professor of mine, even if no one has conquered it before
+                //can't conquer an Island without Students coloured without the Colour of a Professor of mine, even if no one has conquered it before
+                return currentArchipelago.howManyStudents().get(p.getColour()) > 0;
             }
             return false;
         }
@@ -345,16 +290,11 @@ public abstract class BoardAbstract implements Board{
         else{
             //who has higher influence according to rules?
             Player winner = this.computeWinner(currentArchipelago.getOwner(), currentPlayer, currentArchipelago);
-            if(winner == currentPlayer){
-                return true;
-            }
-            else{
-                return false;
-            }
+            return winner == currentPlayer;
         }
     }
 
-    // Computes which of two players has most influence on a Archipelago
+    // Computes which of two players has most influence on an Archipelago
     public Player computeWinner(Player owner, Player challenger, Archipelago archipelago){
         int ownerInfluence = this.computeInfluenceOfPlayer(owner, archipelago);
         int challengerInfluence = this.computeInfluenceOfPlayer(challenger, archipelago);
@@ -367,7 +307,7 @@ public abstract class BoardAbstract implements Board{
         }
     }
 
-    // Returns the influence of a Player on a Archipelago
+    // Returns the influence of a Player on an Archipelago
     public int computeInfluenceOfPlayer(Player player, Archipelago archipelago){
         int influence = 0;
 
@@ -386,7 +326,7 @@ public abstract class BoardAbstract implements Board{
     }
 
     // the Player conquers the Archipelago putting his own Towers and removing the previous ones (if present)
-    protected void conquerArchipelago(Player conqueror, Archipelago toConquer){
+    protected void conquerArchipelago(Player conqueror, Archipelago toConquer) throws InvalidTowerNumberException, AnotherTowerException, ExceededMaxTowersException {
         // conqueror's Towers to put on the Archipelago
         List<Tower> conquerorTowers = null;
         try {
@@ -395,15 +335,17 @@ public abstract class BoardAbstract implements Board{
             e.printStackTrace();
         }
 
-        try{
-            List<Tower> looserTowers = toConquer.conquerArchipelago(conquerorTowers);
-            // == 0 would be the case in which the Archipelago is conquered for the first time => no Towers to reposition
-            // otherwise I replace the looser Towers
-            if(looserTowers.size() != 0){
-                Player looser = looserTowers.get(0).getPlayer();
-                this.playerSchool.get(looser).addNumTower(looserTowers);
-            }
-        } catch(InvalidTowerNumberException ex){ex.printStackTrace();}
+        List<Tower> looserTowers = null;
+        if (conquerorTowers != null) {
+            looserTowers = toConquer.conquerArchipelago(conquerorTowers);
+        }
+        // == 0 would be the case in which the Archipelago is conquered for the first time => no Towers to reposition
+        // otherwise I replace the looser Towers
+        if (looserTowers != null && looserTowers.size() != 0) {
+            Player looser = looserTowers.get(0).getPlayer();
+            this.playerSchool.get(looser).addNumTower(looserTowers);
+        }
+
     }
 
     // This merges as much adjacent Archipelagos as possible removing the old one from the this.archipelagos
@@ -455,7 +397,9 @@ public abstract class BoardAbstract implements Board{
 
 
     //--------------------------------------------------ASSISTANT CARDS
-    public void useAssistantCard(Player player, int turnPriority) throws AssistantCardAlreadyPlayedTurnException{
+    public void useAssistantCard(Player player, int turnPriority) throws
+            AssistantCardAlreadyPlayedTurnException, NoAssistantCardException {
+
         // control that no previous Player used that (but if it's his last card, let him use it)
         int currentPlayerIndex = this.players.indexOf(player);
         for(int i = 0; i < currentPlayerIndex; i++){
@@ -463,8 +407,7 @@ public abstract class BoardAbstract implements Board{
                 throw new AssistantCardAlreadyPlayedTurnException();
             }
         }
-        try{
-            player.useAssistantCard(turnPriority);
-        } catch(NoAssistantCardException ex){ex.printStackTrace();}
+
+        player.useAssistantCard(turnPriority);
     }
 }

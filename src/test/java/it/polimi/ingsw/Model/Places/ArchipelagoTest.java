@@ -9,8 +9,7 @@ import it.polimi.ingsw.Model.Cards.ForbidIsland;
 import it.polimi.ingsw.Model.Cards.TowerNoValue;
 import it.polimi.ingsw.Model.Enumerations.PlayerColour;
 import it.polimi.ingsw.Model.Enumerations.SPColour;
-import it.polimi.ingsw.Model.Exceptions.InvalidTowerNumberException;
-import it.polimi.ingsw.Model.Exceptions.MergeDifferentOwnersException;
+import it.polimi.ingsw.Model.Exceptions.*;
 import it.polimi.ingsw.Model.Pawns.Student;
 import it.polimi.ingsw.Model.Pawns.Tower;
 import it.polimi.ingsw.Model.Player;
@@ -42,7 +41,7 @@ public class ArchipelagoTest {
         toAdd.add(t);
         try {
             tested.conquerArchipelago(toAdd);
-        } catch (InvalidTowerNumberException e) {
+        } catch (InvalidTowerNumberException | AnotherTowerException e) {
             e.printStackTrace();
         }
         assertEquals(p, tested.getOwner());
@@ -57,8 +56,26 @@ public class ArchipelagoTest {
         List<Player> players = new ArrayList<>();
         players.add(p1);
         players.add(p2);
-        BoardTwo board =  new BoardTwo(players);
-        BoardAdvanced boardAdvanced = new BoardAdvanced(board);
+        BoardTwo board = null;
+        try {
+            board = new BoardTwo(players);
+        } catch (StudentNotFoundException e) {
+            e.printStackTrace();
+        } catch (ExceededMaxStudentsCloudException e) {
+            e.printStackTrace();
+        } catch (ExceededMaxStudentsHallException e) {
+            e.printStackTrace();
+        } catch (ExceedingAssistantCardNumberException e) {
+            e.printStackTrace();
+        } catch (NullContentException e) {
+            e.printStackTrace();
+        }
+        BoardAdvanced boardAdvanced = null;
+        try {
+            boardAdvanced = new BoardAdvanced(board);
+        } catch (ExceededMaxStudentsHallException | StudentNotFoundException | TowerNotFoundException | EmptyCaveauExcepion e) {
+            e.printStackTrace();
+        }
         ForbidIsland card= new ForbidIsland(boardAdvanced);
         card.useEffect(6);
         assertTrue(boardAdvanced.getArchiList().get(6).getForbidFlag());
@@ -73,11 +90,37 @@ public class ArchipelagoTest {
         List<Player> players = new ArrayList<>();
         players.add(p1);
         players.add(p2);
-        BoardTwo board =  new BoardTwo(players);
-        BoardAdvanced boardAdvanced = new BoardAdvanced(board);
+        BoardTwo board = null;
+        try {
+            board = new BoardTwo(players);
+        } catch (StudentNotFoundException e) {
+            e.printStackTrace();
+        } catch (ExceededMaxStudentsCloudException e) {
+            e.printStackTrace();
+        } catch (ExceededMaxStudentsHallException e) {
+            e.printStackTrace();
+        } catch (ExceedingAssistantCardNumberException e) {
+            e.printStackTrace();
+        } catch (NullContentException e) {
+            e.printStackTrace();
+        }
+        BoardAdvanced boardAdvanced = null;
+        try {
+            boardAdvanced = new BoardAdvanced(board);
+        } catch (ExceededMaxStudentsHallException | StudentNotFoundException | TowerNotFoundException | EmptyCaveauExcepion e) {
+            e.printStackTrace();
+        }
         TowerNoValue card= new TowerNoValue(boardAdvanced);
         board.moveMotherNature(4);
-        card.useEffect(p1);
+        try {
+            card.useEffect(p1);
+        } catch (InvalidTowerNumberException e) {
+            e.printStackTrace();
+        } catch (AnotherTowerException e) {
+            e.printStackTrace();
+        } catch (ExceededMaxTowersException e) {
+            e.printStackTrace();
+        }
         assertTrue(boardAdvanced.getArchiList().get(4).getTowerNoValueFlag());
     }
     @Test
@@ -121,7 +164,11 @@ public class ArchipelagoTest {
         List<Tower> towersToAdd = new ArrayList<>();
         towersToAdd.add(towerToAdd);
         try {
-            assertTrue(tested.conquerArchipelago(towersToAdd).isEmpty());
+            try {
+                assertTrue(tested.conquerArchipelago(towersToAdd).isEmpty());
+            } catch (AnotherTowerException e) {
+                e.printStackTrace();
+            }
             assertEquals(p,tested.getOwner());
         } catch (InvalidTowerNumberException e) {
             e.printStackTrace();
@@ -172,7 +219,7 @@ public class ArchipelagoTest {
         towers.add(tower);
         try {
             tested.conquerArchipelago(towers);
-        } catch (InvalidTowerNumberException e) {
+        } catch (InvalidTowerNumberException | AnotherTowerException e) {
             e.printStackTrace();
         }
         assertEquals("Archipelago{" +

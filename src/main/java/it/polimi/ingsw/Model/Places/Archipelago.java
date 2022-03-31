@@ -1,6 +1,5 @@
 package it.polimi.ingsw.Model.Places;
 
-import it.polimi.ingsw.Model.Enumerations.PlayerColour;
 import it.polimi.ingsw.Model.Enumerations.SPColour;
 import it.polimi.ingsw.Model.Exceptions.AnotherTowerException;
 import it.polimi.ingsw.Model.Exceptions.InvalidTowerNumberException;
@@ -33,7 +32,7 @@ import java.util.Map;
 //TODO: create Map of SPColour -> numberOfStudentsOfThatColour in an intelligent way: calculate only one time, and
 // then update when a change is made
 public class Archipelago {
-    private List<Island> islands;
+    private final List<Island> islands;
     private Player owner; //has this Archipelago been taken by any player?
     // studentsData: is a Map which matches each SPColour with how many Students of that SPColour the Archipelago
     // contains. This is updated using updateStudentsData() each time a Student is added/removed
@@ -48,7 +47,7 @@ public class Archipelago {
         this.islands.add(new Island());
         this.owner = null; // null as long as no one owns the Archipelago
 
-        this.studentsData = new HashMap<SPColour, Integer>();
+        this.studentsData = new HashMap<>();
         SPColour[] availableColours = {SPColour.BLUE, SPColour.PINK, SPColour.RED, SPColour.GREEN, SPColour.YELLOW};
         for(SPColour c : availableColours){
             this.studentsData.put(c, 0);
@@ -88,7 +87,7 @@ public class Archipelago {
     }
 
     public Map<SPColour, Integer> howManyStudents(){
-        Map<SPColour, Integer> studentsDataCopy = new HashMap<SPColour, Integer>();
+        Map<SPColour, Integer> studentsDataCopy = new HashMap<>();
         SPColour[] availableColours = {SPColour.BLUE, SPColour.PINK, SPColour.RED, SPColour.GREEN, SPColour.YELLOW};
         for(SPColour c : availableColours){
             studentsDataCopy.put(c, this.studentsData.get(c));
@@ -100,7 +99,7 @@ public class Archipelago {
 
     // Remove the Tower from each of its Islands
     private List<Tower> removeTowers() {
-        List<Tower> removed = new ArrayList<Tower>();
+        List<Tower> removed = new ArrayList<>();
 
         for(Island i : this.islands){
             removed.add(i.removeTower());
@@ -122,8 +121,8 @@ public class Archipelago {
      * EXCEPTION when the number of input Towers is different from the number of Archipelago's Islands
      *      To let Board know this number, getNumIslands() is needed
      */
-    public List<Tower> conquerArchipelago(List<Tower> towersToAdd) throws InvalidTowerNumberException{
-        List<Tower> removed = new ArrayList<Tower>();
+    public List<Tower> conquerArchipelago(List<Tower> towersToAdd) throws InvalidTowerNumberException, AnotherTowerException {
+        List<Tower> removed = new ArrayList<>();
         if (towersToAdd.size() == this.islands.size()) {
             //1) do nothing
             //2)
@@ -131,9 +130,7 @@ public class Archipelago {
                 removed = this.removeTowers();
             }
             for(Island i : this.islands) {
-                try {
-                    i.addTower(towersToAdd.remove(0)); // Always remove the first one because the List looses length
-                } catch (AnotherTowerException ex){ex.printStackTrace();}
+                i.addTower(towersToAdd.remove(0)); // Always remove the first one because the List looses length
                 this.owner = this.islands.get(0).getTower().getPlayer();
             }
         }
@@ -161,14 +158,14 @@ public class Archipelago {
 
     // This updates this.studentsData
     private void updateStudentsData(){
-        Map<SPColour, Integer> newStudentsData = new HashMap<SPColour, Integer>();
+        Map<SPColour, Integer> newStudentsData = new HashMap<>();
         SPColour[] availableColours = {SPColour.BLUE, SPColour.PINK, SPColour.RED, SPColour.GREEN, SPColour.YELLOW};
         for(SPColour c : availableColours){
             newStudentsData.put(c, 0);
         }
 
         //TODO: use functional approach
-        Map<SPColour, Integer> singleIslandStudentsData = new HashMap<SPColour, Integer>();
+        Map<SPColour, Integer> singleIslandStudentsData;
         for(Island island : this.islands){
             singleIslandStudentsData = island.howManyStudents();
             for(SPColour c : singleIslandStudentsData.keySet()){

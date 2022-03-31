@@ -1,47 +1,47 @@
 package it.polimi.ingsw.Model.Board;
 
 import it.polimi.ingsw.Model.Enumerations.SPColour;
-import it.polimi.ingsw.Model.Exceptions.AssistantCardAlreadyPlayedTurnException;
+import it.polimi.ingsw.Model.Exceptions.*;
 import it.polimi.ingsw.Model.Places.Archipelago;
 import it.polimi.ingsw.Model.Places.School.School;
 import it.polimi.ingsw.Model.Player;
 
 /*TODO: Understand what to do with private methods*/
 public interface Board {
-    public Archipelago getArchipelago(int archipelagoIndex);
+    Archipelago getArchipelago(int archipelagoIndex);
 
-    public boolean isStudentInSchoolHall(Player player, SPColour c);
+    boolean isStudentInSchoolHall(Player player, SPColour c);
 
-    public void moveStudentSchoolToArchipelagos(Player player, SPColour colour, int archipelagoIndex);
+    void moveStudentSchoolToArchipelagos(Player player, SPColour colour, int archipelagoIndex) throws StudentNotFoundException;
 
-    public void moveStudentCloudToSchool(Player player, int cloudIndex);
+    void moveStudentCloudToSchool(Player player, int cloudIndex) throws ExceededMaxStudentsHallException;
 
-    public void moveStudentHallToDiningRoom(Player player, SPColour colour);
+    void moveStudentHallToDiningRoom(Player player, SPColour colour) throws StudentNotFoundException, ExceededMaxStudentsDiningRoomException, EmptyCaveauExcepion, ProfessorNotFoundException, NoProfessorBagException;
 
-    default void moveStudentBagToCloud(){};
+    void moveStudentBagToCloud() throws ExceededMaxStudentsCloudException, StudentNotFoundException;
 
-    public void moveStudentBagToSchool(int numStudents);
+    void moveStudentBagToSchool(int numStudents) throws StudentNotFoundException, ExceededMaxStudentsHallException;
 
-    private void placeMotherNatureInitialBoard(){}
+    void placeMotherNatureInitialBoard();
 
-    public void moveMotherNature(int archipelagoIndex);
+    void moveMotherNature(int archipelagoIndex);
 
-    public void moveProfessor(Player destinationPlayer, SPColour colour);
+    void moveProfessor(Player destinationPlayer, SPColour colour) throws NoProfessorBagException, ProfessorNotFoundException;
 
-    public boolean isProfessorInSchool(SPColour colour);
+    boolean isProfessorInSchool(SPColour colour);
 
-    public School whereIsProfessor(SPColour colour);
+    School whereIsProfessor(SPColour colour);
 
-    public void conquerProfessor(Player currentPlayer, SPColour colour);
+    void conquerProfessor(Player currentPlayer, SPColour colour) throws NoProfessorBagException, ProfessorNotFoundException;
 
-    public int whereIsMotherNature();
+    int whereIsMotherNature();
 
-    public School getPlayerSchool(Player player);
+    School getPlayerSchool(Player player);
 
-    public void tryToConquer(Player currentPlayer);
-    public boolean checkIfConquerable(Player currentPlayer);
-    public Player computeWinner(Player owner, Player challenger, Archipelago archipelago);
-    public int computeInfluenceOfPlayer(Player player, Archipelago archipelago);
+    void tryToConquer(Player currentPlayer) throws InvalidTowerNumberException, AnotherTowerException, ExceededMaxTowersException;
+    boolean checkIfConquerable(Player currentPlayer);
+    Player computeWinner(Player owner, Player challenger, Archipelago archipelago);
+    int computeInfluenceOfPlayer(Player player, Archipelago archipelago);
 
-    public void useAssistantCard(Player player, int turnPriority) throws AssistantCardAlreadyPlayedTurnException;
+    void useAssistantCard(Player player, int turnPriority) throws AssistantCardAlreadyPlayedTurnException, NoAssistantCardException;
 }

@@ -13,14 +13,14 @@ import java.util.List;
 import java.util.Random;
 
 public class Bag {
-    private List<Student> initialStudents; //Students we have at the start, to distribute among all Islands
-    private List<Student> students; //remaining students
-    private List<Professor> professors; //At the start of the game, all Professors are in the Bag
+    private final List<Student> initialStudents; //Students we have at the start, to distribute among all Islands
+    private final List<Student> students; //remaining students
+    private final List<Professor> professors; //At the start of the game, all Professors are in the Bag
 
     public Bag(){
         SPColour[] availableColours = {SPColour.BLUE, SPColour.PINK, SPColour.RED, SPColour.GREEN, SPColour.YELLOW};
-        this.initialStudents = new ArrayList<Student>();
-        this.students = new ArrayList<Student>();
+        this.initialStudents = new ArrayList<>();
+        this.students = new ArrayList<>();
 
         // CREATE STUDENTS
         Student toAdd;
@@ -44,7 +44,7 @@ public class Bag {
         this.shuffle();
 
         // CREATE PROFESSORS
-        this.professors = new ArrayList<Professor>();
+        this.professors = new ArrayList<>();
         for(SPColour c : availableColours){
             this.professors.add(new Professor(c));
         }
@@ -53,13 +53,13 @@ public class Bag {
     // ---------------STUDENTS
     public List<Student> getInitialStudents() throws NullContentException {
         //new list to return
-        List<Student> removedStudents = new ArrayList<Student>(initialStudents);
+        List<Student> removedStudents = new ArrayList<>(initialStudents);
 
         //remove all students from the list of initial students
-        initialStudents.removeAll(initialStudents);
+        initialStudents.clear();
 
         //return the removed students only if there is no null element
-        if(!this.initialStudents.contains(null)) {
+        if(!removedStudents.contains(null)) {
             return removedStudents; // I want to modify it directly: no clone needed
         }
 
@@ -72,7 +72,7 @@ public class Bag {
             throw new StudentNotFoundException();
         }
 
-        List<Student> extracted = new ArrayList<Student>();
+        List<Student> extracted = new ArrayList<>();
 
         for(int i = 0; i < num; i++){
             Student removed = this.students.get(0);

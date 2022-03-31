@@ -6,10 +6,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class BoardFactory {
-    private List<Player> players;
+    private final List<Player> players;
 
     public BoardFactory(List<Player> players) {
-        this.players = new ArrayList<Player>();
+        this.players = new ArrayList<>();
         this.players.addAll(players);
     }
 

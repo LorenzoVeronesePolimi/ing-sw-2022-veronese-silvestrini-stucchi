@@ -1,8 +1,8 @@
 package it.polimi.ingsw.Model.Cards;
 
 public class AssistantCard {
-    private int motherNatureMovement = 0;
-    private int turnPriority = 0;
+    private final int motherNatureMovement;
+    private final int turnPriority;
 
     public AssistantCard(int MNMovement, int turnPriority) {
         this.motherNatureMovement = MNMovement;

@@ -9,11 +9,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Player {
-    private String nickname;
-    private final int MAXCARDNUM = 10;
-    private List<AssistantCard> playerHand;
+    private final String nickname;
+    private final List<AssistantCard> playerHand;
     private AssistantCard lastCard;
-    private PlayerColour colour;
+    private final PlayerColour colour;
 
     public Player(String nickname, PlayerColour colour) {
         this.nickname = nickname;
@@ -39,6 +38,7 @@ public class Player {
     }
 
     public void addAssistantCard(AssistantCard toAdd) throws ExceedingAssistantCardNumberException {
+        int MAXCARDNUM = 10;
         if(playerHand.size() < MAXCARDNUM)
             this.playerHand.add(toAdd);
         else

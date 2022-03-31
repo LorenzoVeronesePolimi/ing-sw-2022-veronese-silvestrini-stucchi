@@ -35,9 +35,31 @@ public class SchoolTest {
         List<Player> players = new ArrayList<>();
         players.add(p);
         players.add(p2);
-        BoardTwo boardTwo = new BoardTwo(players);
-        boardTwo.moveProfessor(p, SPColour.BLUE); //this method calls school method getProfessor and addProfessor
-        boardTwo.moveProfessor(p, SPColour.RED);
+        BoardTwo boardTwo = null;
+        try {
+            boardTwo = new BoardTwo(players);
+        } catch (StudentNotFoundException e) {
+            e.printStackTrace();
+        } catch (ExceededMaxStudentsCloudException e) {
+            e.printStackTrace();
+        } catch (ExceededMaxStudentsHallException e) {
+            e.printStackTrace();
+        } catch (ExceedingAssistantCardNumberException e) {
+            e.printStackTrace();
+        } catch (NullContentException e) {
+            e.printStackTrace();
+        }
+        try {
+            boardTwo.moveProfessor(p, SPColour.BLUE); //this method calls school method getProfessor and addProfessor
+        } catch (NoProfessorBagException | ProfessorNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        try {
+            boardTwo.moveProfessor(p, SPColour.RED);
+        } catch (NoProfessorBagException | ProfessorNotFoundException e) {
+            e.printStackTrace();
+        }
         Assertions.assertEquals(2, boardTwo.getPlayerSchool(p).getProfessors().size());
         Assertions.assertEquals(SPColour.BLUE, boardTwo.getPlayerSchool(p).getProfessors().get(0).getColour());
         Assertions.assertEquals(SPColour.RED, boardTwo.getPlayerSchool(p).getProfessors().get(1).getColour());
@@ -96,12 +118,20 @@ public class SchoolTest {
         } catch (TowerNotFoundException e) {
             e.printStackTrace();
         }
-        school.addNumTower(towersToAdd);
+        try {
+            school.addNumTower(towersToAdd);
+        } catch (ExceededMaxTowersException e) {
+            e.printStackTrace();
+        }
         Assertions.assertEquals(6, school.getNumTowers());
 
         towersToAdd.clear();
         towersToAdd.add(tower1);
-        school.addNumTower(towersToAdd);
+        try {
+            school.addNumTower(towersToAdd);
+        } catch (ExceededMaxTowersException e) {
+            e.printStackTrace();
+        }
         Assertions.assertEquals(7, school.getNumTowers());
     }
 
@@ -230,21 +260,15 @@ public class SchoolTest {
         Player p = new Player("owner", PlayerColour.WHITE);
         School school = new School(p,7,8);
         Student s = new Student(SPColour.BLUE);
-        try {
-            Assertions.assertEquals(0,school.getNumStudentColour(SPColour.BLUE));
-        } catch (WrongColourException e) {
-            e.printStackTrace();
-        }
+
+        Assertions.assertEquals(0,school.getNumStudentColour(SPColour.BLUE));
         try {
             school.addStudentDiningRoom(s);
         } catch (ExceededMaxStudentsDiningRoomException e) {
             e.printStackTrace();
         }
-        try {
-            Assertions.assertEquals(1,school.getNumStudentColour(SPColour.BLUE));
-        } catch (WrongColourException e) {
-            e.printStackTrace();
-        }
+
+        Assertions.assertEquals(1,school.getNumStudentColour(SPColour.BLUE));
 
         s = new Student(SPColour.BLUE);
         try {
@@ -252,11 +276,8 @@ public class SchoolTest {
         } catch (ExceededMaxStudentsDiningRoomException e) {
             e.printStackTrace();
         }
-        try {
-            Assertions.assertEquals(2,school.getNumStudentColour(SPColour.BLUE));
-        } catch (WrongColourException e) {
-            e.printStackTrace();
-        }
+
+        Assertions.assertEquals(2,school.getNumStudentColour(SPColour.BLUE));
     }
 
     @Test
@@ -279,11 +300,7 @@ public class SchoolTest {
             e.printStackTrace();
         }
 
-        try {
-            Assertions.assertEquals(2, school.getNumStudentColour(SPColour.BLUE));
-        } catch (WrongColourException e) {
-            e.printStackTrace();
-        }
+        Assertions.assertEquals(2, school.getNumStudentColour(SPColour.BLUE));
 
         try {
             returned = school.removeStudentDiningRoom(SPColour.BLUE);
@@ -291,12 +308,9 @@ public class SchoolTest {
             e.printStackTrace();
         }
 
-        try {
-            Assertions.assertEquals(1,school.getNumStudentColour(SPColour.BLUE));
-            Assertions.assertEquals(SPColour.BLUE, returned.getColour());
-        } catch (WrongColourException e) {
-            e.printStackTrace();
-        }
+        Assertions.assertEquals(1,school.getNumStudentColour(SPColour.BLUE));
+        assert returned != null;
+        Assertions.assertEquals(SPColour.BLUE, returned.getColour());
 
         try {
             school.removeStudentDiningRoom(SPColour.BLUE);
@@ -304,11 +318,7 @@ public class SchoolTest {
             e.printStackTrace();
         }
 
-        try {
-            Assertions.assertEquals(0,school.getNumStudentColour(SPColour.BLUE));
-        } catch (WrongColourException e) {
-            e.printStackTrace();
-        }
+        Assertions.assertEquals(0,school.getNumStudentColour(SPColour.BLUE));
     }
 
     @Test
@@ -331,12 +341,8 @@ public class SchoolTest {
         }
         Assertions.assertTrue(school.getStudentsHall().isEmpty());
 
-        try {
-            Assertions.assertEquals(1,school.getNumStudentColour(SPColour.BLUE));
-            Assertions.assertThrows(StudentNotFoundException.class, () -> school.moveStudentHallToDiningRoom(SPColour.BLUE));
-        } catch (WrongColourException e) {
-            e.printStackTrace();
-        }
+        Assertions.assertEquals(1,school.getNumStudentColour(SPColour.BLUE));
+        Assertions.assertThrows(StudentNotFoundException.class, () -> school.moveStudentHallToDiningRoom(SPColour.BLUE));
 
         for(int i = 0; i < 9; i++) {
             s = new Student(SPColour.BLUE);
@@ -385,31 +391,16 @@ public class SchoolTest {
         } catch (ExceededMaxStudentsDiningRoomException e) {
             e.printStackTrace();
         }
-        try {
-            Assertions.assertEquals(1, school.getNumStudentColour(SPColour.BLUE));
-        } catch (WrongColourException e) {
-            e.printStackTrace();
-        }
-        try {
-            Assertions.assertEquals(1, school.getNumStudentColour(SPColour.RED));
-        } catch (WrongColourException e) {
-            e.printStackTrace();
-        }
-        try {
-            Assertions.assertEquals(1, school.getNumStudentColour(SPColour.GREEN));
-        } catch (WrongColourException e) {
-            e.printStackTrace();
-        }
-        try {
-            Assertions.assertEquals(1, school.getNumStudentColour(SPColour.YELLOW));
-        } catch (WrongColourException e) {
-            e.printStackTrace();
-        }
-        try {
-            Assertions.assertEquals(1, school.getNumStudentColour(SPColour.PINK));
-        } catch (WrongColourException e) {
-            e.printStackTrace();
-        }
+
+        Assertions.assertEquals(1, school.getNumStudentColour(SPColour.BLUE));
+
+        Assertions.assertEquals(1, school.getNumStudentColour(SPColour.RED));
+
+        Assertions.assertEquals(1, school.getNumStudentColour(SPColour.GREEN));
+
+        Assertions.assertEquals(1, school.getNumStudentColour(SPColour.YELLOW));
+
+        Assertions.assertEquals(1, school.getNumStudentColour(SPColour.PINK));
     }
 
     @Test
@@ -417,20 +408,18 @@ public class SchoolTest {
 
         Player p = new Player("owner", PlayerColour.WHITE);
         School school = new School(p,7,8);
-        try {
-            Assertions.assertEquals("School{" +
-                    "player=" + school.getPlayer() +
-                    ", studentsHall=" + school.getStudentsHall() +
-                    ", studentsDiningRed=" + school.getListStudentColour(SPColour.RED) +
-                    ", studentsDiningPink=" + school.getListStudentColour(SPColour.PINK) +
-                    ", studentsDiningGreen=" + school.getListStudentColour(SPColour.GREEN) +
-                    ", studentsDiningYellow=" + school.getListStudentColour(SPColour.YELLOW) +
-                    ", studentsDiningBlue=" + school.getListStudentColour(SPColour.BLUE) +
-                    ", professors=" + school.getProfessors() +
-                    ", towers=" + school.getTowers() +
-                    '}', school.toString());
-        } catch (WrongColourException e) {
-            e.printStackTrace();
-        }
+
+        Assertions.assertEquals("School{" +
+                "player=" + school.getPlayer() +
+                ", studentsHall=" + school.getStudentsHall() +
+                ", studentsDiningRed=" + school.getListStudentColour(SPColour.RED) +
+                ", studentsDiningPink=" + school.getListStudentColour(SPColour.PINK) +
+                ", studentsDiningGreen=" + school.getListStudentColour(SPColour.GREEN) +
+                ", studentsDiningYellow=" + school.getListStudentColour(SPColour.YELLOW) +
+                ", studentsDiningBlue=" + school.getListStudentColour(SPColour.BLUE) +
+                ", professors=" + school.getProfessors() +
+                ", towers=" + school.getTowers() +
+                '}', school.toString());
+
     }
 }

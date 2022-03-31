@@ -4,9 +4,7 @@ import static org.junit.Assert.*;
 
 import it.polimi.ingsw.Model.Enumerations.PlayerColour;
 import it.polimi.ingsw.Model.Enumerations.SPColour;
-import it.polimi.ingsw.Model.Exceptions.ExceededMaxStudentsDiningRoomException;
-import it.polimi.ingsw.Model.Exceptions.ExceededMaxStudentsHallException;
-import it.polimi.ingsw.Model.Exceptions.MergeDifferentOwnersException;
+import it.polimi.ingsw.Model.Exceptions.*;
 import it.polimi.ingsw.Model.Pawns.Professor;
 import it.polimi.ingsw.Model.Pawns.Student;
 import it.polimi.ingsw.Model.Player;
@@ -35,7 +33,19 @@ class BoardAbstractTest {
         playerList.add(p3);
 
         //test for BoardTwo
-        b2 = new BoardTwo(playerList);
+        try {
+            b2 = new BoardTwo(playerList);
+        } catch (StudentNotFoundException e) {
+            e.printStackTrace();
+        } catch (ExceededMaxStudentsCloudException e) {
+            e.printStackTrace();
+        } catch (ExceededMaxStudentsHallException e) {
+            e.printStackTrace();
+        } catch (ExceedingAssistantCardNumberException e) {
+            e.printStackTrace();
+        } catch (NullContentException e) {
+            e.printStackTrace();
+        }
         //b3 = new BoardThree(playerList);
 
     }
@@ -69,7 +79,7 @@ class BoardAbstractTest {
         try {
             this.b2.getPlayerSchool(playerList.get(0)).addStudentDiningRoom(s4);
             this.b2.conquerProfessor(playerList.get(0), SPColour.RED);
-        } catch (ExceededMaxStudentsDiningRoomException e) {
+        } catch (ExceededMaxStudentsDiningRoomException | NoProfessorBagException | ProfessorNotFoundException e) {
             e.printStackTrace();
         }
         //TODO:check try to conquer
@@ -77,11 +87,27 @@ class BoardAbstractTest {
         this.b2.archipelagos.get(1).addStudent(s2);
         this.b2.archipelagos.get(1).addStudent(s3);
         //conquer
-        this.b2.tryToConquer(playerList.get(0));
+        try {
+            this.b2.tryToConquer(playerList.get(0));
+        } catch (InvalidTowerNumberException e) {
+            e.printStackTrace();
+        } catch (AnotherTowerException e) {
+            e.printStackTrace();
+        } catch (ExceededMaxTowersException e) {
+            e.printStackTrace();
+        }
         //check correct conquer
         Assertions.assertEquals(playerList.get(0), this.b2.getArchipelago(0).getOwner());
         this.b2.moveMotherNature(1);
-        this.b2.tryToConquer(playerList.get(0));
+        try {
+            this.b2.tryToConquer(playerList.get(0));
+        } catch (InvalidTowerNumberException e) {
+            e.printStackTrace();
+        } catch (AnotherTowerException e) {
+            e.printStackTrace();
+        } catch (ExceededMaxTowersException e) {
+            e.printStackTrace();
+        }
         //check correct conquer
         Assertions.assertEquals(playerList.get(0), this.b2.getArchipelago(0).getOwner());
         //check if there are 11 archipelagos
@@ -93,7 +119,15 @@ class BoardAbstractTest {
         this.b2.archipelagos.get(10).addStudent(s5);
         this.b2.archipelagos.get(10).addStudent(s6);
         this.b2.moveMotherNature(10);
-        this.b2.tryToConquer(playerList.get(0));
+        try {
+            this.b2.tryToConquer(playerList.get(0));
+        } catch (InvalidTowerNumberException e) {
+            e.printStackTrace();
+        } catch (AnotherTowerException e) {
+            e.printStackTrace();
+        } catch (ExceededMaxTowersException e) {
+            e.printStackTrace();
+        }
         //check correct conquer
         Assertions.assertEquals(playerList.get(0), this.b2.getArchipelago(9).getOwner());
         //check if there are 10 archipelagos
@@ -116,10 +150,14 @@ class BoardAbstractTest {
         Assertions.assertEquals(this.b2.getPlayerSchool(playerList.get(0)), this.b2.whereIsProfessor(SPColour.RED));
 
         //move students from hall to archipelago
-        this.b2.moveStudentSchoolToArchipelagos(playerList.get(0), this.b2.getPlayerSchool(playerList.get(0)).getStudentsHall().get(0).getColour(), 4);
-        this.b2.moveStudentSchoolToArchipelagos(playerList.get(0), this.b2.getPlayerSchool(playerList.get(0)).getStudentsHall().get(0).getColour(), 5);
-        this.b2.moveStudentSchoolToArchipelagos(playerList.get(1), this.b2.getPlayerSchool(playerList.get(1)).getStudentsHall().get(0).getColour(), 3);
-        this.b2.moveStudentSchoolToArchipelagos(playerList.get(1), this.b2.getPlayerSchool(playerList.get(1)).getStudentsHall().get(0).getColour(), 4);
+        try {
+            this.b2.moveStudentSchoolToArchipelagos(playerList.get(0), this.b2.getPlayerSchool(playerList.get(0)).getStudentsHall().get(0).getColour(), 4);
+            this.b2.moveStudentSchoolToArchipelagos(playerList.get(0), this.b2.getPlayerSchool(playerList.get(0)).getStudentsHall().get(0).getColour(), 5);
+            this.b2.moveStudentSchoolToArchipelagos(playerList.get(1), this.b2.getPlayerSchool(playerList.get(1)).getStudentsHall().get(0).getColour(), 3);
+            this.b2.moveStudentSchoolToArchipelagos(playerList.get(1), this.b2.getPlayerSchool(playerList.get(1)).getStudentsHall().get(0).getColour(), 4);
+        } catch (StudentNotFoundException e) {
+            e.printStackTrace();
+        }
 
         Student s7 = new Student(SPColour.GREEN);
         Student s8 = new Student(SPColour.GREEN);
@@ -134,10 +172,20 @@ class BoardAbstractTest {
             //assert the presence of PINK students in hall
             Assertions.assertTrue(this.b2.isStudentInSchoolHall(playerList.get(0), SPColour.PINK));
             //if needed, take professor from bag
-            this.b2.moveStudentHallToDiningRoom(playerList.get(1), SPColour.GREEN);
-            this.b2.moveStudentHallToDiningRoom(playerList.get(1), SPColour.GREEN);
-            this.b2.moveStudentHallToDiningRoom(playerList.get(0), SPColour.PINK);
-            this.b2.moveStudentHallToDiningRoom(playerList.get(0), SPColour.PINK);
+            try {
+                this.b2.moveStudentHallToDiningRoom(playerList.get(1), SPColour.GREEN);
+                this.b2.moveStudentHallToDiningRoom(playerList.get(1), SPColour.GREEN);
+                this.b2.moveStudentHallToDiningRoom(playerList.get(0), SPColour.PINK);
+                this.b2.moveStudentHallToDiningRoom(playerList.get(0), SPColour.PINK);
+            } catch (StudentNotFoundException e) {
+                e.printStackTrace();
+            } catch (ExceededMaxStudentsDiningRoomException e) {
+                e.printStackTrace();
+            } catch (ProfessorNotFoundException e) {
+                e.printStackTrace();
+            } catch (NoProfessorBagException e) {
+                e.printStackTrace();
+            }
         } catch (ExceededMaxStudentsHallException e) {
             e.printStackTrace();
         }
@@ -156,8 +204,18 @@ class BoardAbstractTest {
             this.b2.getPlayerSchool(playerList.get(1)).addStudentHall(s12);
             //assert the presence of PINK students in hall
             Assertions.assertTrue(this.b2.isStudentInSchoolHall(playerList.get(1), SPColour.PINK));
-            this.b2.moveStudentHallToDiningRoom(playerList.get(1), SPColour.PINK);
-            this.b2.moveStudentHallToDiningRoom(playerList.get(1), SPColour.PINK);
+            try {
+                this.b2.moveStudentHallToDiningRoom(playerList.get(1), SPColour.PINK);
+                this.b2.moveStudentHallToDiningRoom(playerList.get(1), SPColour.PINK);
+            } catch (StudentNotFoundException e) {
+                e.printStackTrace();
+            } catch (ExceededMaxStudentsDiningRoomException e) {
+                e.printStackTrace();
+            } catch (ProfessorNotFoundException e) {
+                e.printStackTrace();
+            } catch (NoProfessorBagException e) {
+                e.printStackTrace();
+            }
         } catch (ExceededMaxStudentsHallException e) {
             e.printStackTrace();
         }
@@ -171,7 +229,7 @@ class BoardAbstractTest {
         try {
             this.b2.getPlayerSchool(playerList.get(1)).addStudentHall(s13);
             this.b2.moveStudentHallToDiningRoom(playerList.get(1), SPColour.PINK);
-        } catch (ExceededMaxStudentsHallException e) {
+        } catch (ExceededMaxStudentsHallException | StudentNotFoundException | ExceededMaxStudentsDiningRoomException | ProfessorNotFoundException | NoProfessorBagException e) {
             e.printStackTrace();
         }
 
@@ -179,9 +237,13 @@ class BoardAbstractTest {
         Assertions.assertEquals(this.b2.getPlayerSchool(playerList.get(1)), this.b2.whereIsProfessor(SPColour.PINK));
 
         //move students from hall to archi in order to free the space for students from cloud
-        this.b2.moveStudentSchoolToArchipelagos(playerList.get(0), this.b2.getPlayerSchool(playerList.get(0)).getStudentsHall().get(0).getColour(), 4);
-        this.b2.moveStudentSchoolToArchipelagos(playerList.get(0), this.b2.getPlayerSchool(playerList.get(0)).getStudentsHall().get(0).getColour(), 5);
-        this.b2.moveStudentSchoolToArchipelagos(playerList.get(0), this.b2.getPlayerSchool(playerList.get(0)).getStudentsHall().get(0).getColour(), 3);
+        try {
+            this.b2.moveStudentSchoolToArchipelagos(playerList.get(0), this.b2.getPlayerSchool(playerList.get(0)).getStudentsHall().get(0).getColour(), 4);
+            this.b2.moveStudentSchoolToArchipelagos(playerList.get(0), this.b2.getPlayerSchool(playerList.get(0)).getStudentsHall().get(0).getColour(), 5);
+            this.b2.moveStudentSchoolToArchipelagos(playerList.get(0), this.b2.getPlayerSchool(playerList.get(0)).getStudentsHall().get(0).getColour(), 3);
+        } catch (StudentNotFoundException e) {
+            e.printStackTrace();
+        }
 
         List<Student> coloursHallBefore = new ArrayList<>();
         List<Student> coloursCloud = new ArrayList<>();
@@ -192,7 +254,11 @@ class BoardAbstractTest {
 
         Assertions.assertEquals(2, this.b2.getPlayerSchool(playerList.get(0)).getStudentsHall().size());
         //students from cloud to hall
-        this.b2.moveStudentCloudToSchool(playerList.get(0), 0);
+        try {
+            this.b2.moveStudentCloudToSchool(playerList.get(0), 0);
+        } catch (ExceededMaxStudentsHallException e) {
+            e.printStackTrace();
+        }
 
         for(SPColour c: availableColours) {
             Assertions.assertEquals(coloursHallBefore.stream().filter(x -> x.getColour().equals(c)).count() + coloursCloud.stream().filter(x -> x.getColour().equals(c)).count(),

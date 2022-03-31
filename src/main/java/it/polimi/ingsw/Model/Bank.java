@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Bank {
-    private List<Coin> caveau;
+    private final List<Coin> caveau;
     private final int MAXNUMCOIN=20;
 
     public Bank(){

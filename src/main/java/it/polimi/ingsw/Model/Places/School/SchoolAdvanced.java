@@ -1,17 +1,14 @@
 package it.polimi.ingsw.Model.Places.School;
 
-import it.polimi.ingsw.Model.Enumerations.SPColour;
 import it.polimi.ingsw.Model.Exceptions.CoinNotFoundException;
-import it.polimi.ingsw.Model.Exceptions.ExceededMaxStudentsDiningRoomException;
 import it.polimi.ingsw.Model.Pawns.Coin;
-import it.polimi.ingsw.Model.Pawns.Student;
 import it.polimi.ingsw.Model.Player;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class SchoolAdvanced extends School{
-    private List<Coin> coins = new ArrayList<>();
+    private final List<Coin> coins = new ArrayList<>();
 
     public SchoolAdvanced(Player player, int numStudentsHall, int numTowers) {
         super(player, numStudentsHall, numTowers);

@@ -14,56 +14,43 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ExchangeTwoHallDining extends AbstractCharacterCard{
-    private BoardAdvanced boardAdvanced;
-    public ExchangeTwoHallDining(BoardAdvanced boardAdvanced){
+    private final BoardAdvanced boardAdvanced;
 
+    public ExchangeTwoHallDining(BoardAdvanced boardAdvanced){
         super(1);
         this.boardAdvanced=boardAdvanced;
     }
 
-    public void useEffect(Player player, List<SPColour> hallStudents, List<SPColour> diningStudents) throws WrongNumberOfStudentsTransferExcpetion {
-        if(hallStudents.size()<=2 && 0<=hallStudents.size() || diningStudents.size()<=2 && 0<=diningStudents.size()) {
+    public void useEffect(Player player, List<SPColour> hallStudents, List<SPColour> diningStudents) throws
+            WrongNumberOfStudentsTransferExcpetion, StudentNotFoundException, ExceededMaxStudentsHallException,
+            ExceededMaxStudentsDiningRoomException {
+
+        if(hallStudents.size()<=2 || diningStudents.size()<=2) {
             throw new WrongNumberOfStudentsTransferExcpetion();
         }
 
         List<Student> hallToDining = new ArrayList<>();
         for(SPColour colour: hallStudents) {
-            try {
-                hallToDining.add(boardAdvanced.getPlayerSchool(player).removeStudentHall(colour));
-            } catch (StudentNotFoundException e) {
-                e.printStackTrace();
-            }
+            hallToDining.add(boardAdvanced.getPlayerSchool(player).removeStudentHall(colour));
         }
 
         List<Student> diningToHall = new ArrayList<>();
         for(SPColour colour: diningStudents) {
-            try {
-                diningToHall.add(boardAdvanced.getPlayerSchool(player).removeStudentDiningRoom(colour));
-            } catch (StudentNotFoundException e) {
-                e.printStackTrace();
-            }
+            diningToHall.add(boardAdvanced.getPlayerSchool(player).removeStudentDiningRoom(colour));
         }
 
-        if((hallStudents.size()<=2 && 0<=hallStudents.size()) || (diningStudents.size()<=2 && 0<=diningStudents.size())) {
+        if((hallStudents.size()<=2) || (diningStudents.size()<=2)) {
             throw new WrongNumberOfStudentsTransferExcpetion();
         }
 
         School currentPlayerSchool = boardAdvanced.getPlayerSchool(player);
 
         for(Student s: diningToHall) {
-            try {
-                currentPlayerSchool.addStudentHall(s);
-            } catch (ExceededMaxStudentsHallException e) {
-                e.printStackTrace();
-            }
+            currentPlayerSchool.addStudentHall(s);
         }
 
         for(Student s: hallToDining) {
-            try {
-                currentPlayerSchool.addStudentDiningRoom(s);
-            } catch (ExceededMaxStudentsDiningRoomException e) {
-                e.printStackTrace();
-            }
+            currentPlayerSchool.addStudentDiningRoom(s);
         }
     }
 }
