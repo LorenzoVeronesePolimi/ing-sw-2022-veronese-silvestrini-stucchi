@@ -19,4 +19,7 @@ public class BoardFour extends BoardAbstract {
             playerSchool.put(players.get(i), s);
         }
     }
+
+    //TODO: redefine tryToConquer method (and check if other methods need a redefinition) in order to manage
+    // the presence of two players with the same tower colour and the same professor influence
 }

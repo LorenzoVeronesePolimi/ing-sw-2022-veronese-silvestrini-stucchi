@@ -3,6 +3,7 @@ package it.polimi.ingsw.Model.Board;
 import it.polimi.ingsw.Model.Bag;
 import it.polimi.ingsw.Model.Bank;
 import it.polimi.ingsw.Model.Cards.*;
+import it.polimi.ingsw.Model.Enumerations.PlayerColour;
 import it.polimi.ingsw.Model.Enumerations.SPColour;
 import it.polimi.ingsw.Model.Exceptions.*;
 import it.polimi.ingsw.Model.Pawns.Professor;
@@ -29,8 +30,42 @@ public class BoardAdvanced implements Board{
         for(School s: this.board.schools){
             schoolsAdvanced.add(new SchoolAdvanced(s.getPlayer(),s.getNumMaxStudentsHall(),s.getNumMaxTowers()));
         }
+
+        SPColour[] availableColours = {SPColour.BLUE, SPColour.PINK, SPColour.RED, SPColour.GREEN, SPColour.YELLOW};
+
+        for(int i = 0; i < this.board.schools.size(); i++) {
+            for(int j = 0; j < this.board.schools.get(i).getStudentsHall().size(); j++) {
+                try {
+                    schoolsAdvanced.get(i).addStudentHall(this.board.schools.get(i).getStudentsHall().get(j));
+                } catch (ExceededMaxStudentsHallException e) {
+                    e.printStackTrace();
+                }
+            }
+            while(!this.board.schools.get(i).getStudentsHall().isEmpty()) {
+                for(SPColour c : availableColours) {
+                    try {
+                        if(this.board.schools.get(i).getStudentsHall().stream().filter(x -> x.getColour().equals(c)).count() > 0)
+                            this.board.schools.get(i).removeStudentHall(c);
+                    } catch (StudentNotFoundException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+
+            try {
+                this.board.schools.get(i).removeNumTowers(this.board.schools.get(i).getNumTowers());
+            } catch (TowerNotFoundException e) {
+                e.printStackTrace();
+            }
+        }
         this.board.schools=schoolsAdvanced;
-        //TODO: transfer hall students and towers from school to schoolAdvanced
+
+        Map<Player, School> playerSchoolAdvancedMap = new HashMap<>();
+        for(int i = 0; i < this.board.schools.size(); i++)
+            playerSchoolAdvancedMap.put(this.board.players.get(i), this.board.schools.get(i));
+
+        this.board.playerSchool = playerSchoolAdvancedMap;
+
         for(School s: this.board.schools){
             try {
                 ((SchoolAdvanced)s).addCoin(bank.getCoin());
@@ -107,7 +142,7 @@ public class BoardAdvanced implements Board{
                 numGreen=currentSchool.getNumStudentColour(SPColour.GREEN);
                 numPink=currentSchool.getNumStudentColour(SPColour.PINK);
                 numYellow=currentSchool.getNumStudentColour(SPColour.YELLOW);
-            } catch (WrongColourException e) {
+            } catch (WrongColourException e) { //TODO: needed?
                 e.printStackTrace();
             }
 
@@ -117,58 +152,6 @@ public class BoardAdvanced implements Board{
         } catch (StudentNotFoundException e) {
             e.printStackTrace();
         } catch (ExceededMaxStudentsDiningRoomException e) {
-            e.printStackTrace();
-        }
-    }
-
-    private void checkCoinNeed(School currentSchool, int numRed, int numBlue, int numGreen, int numPink,int numYellow){
-        try {
-            if(numRed!=currentSchool.getNumStudentColour(SPColour.RED)){
-                if(currentSchool.getNumStudentColour(SPColour.RED)==3 || currentSchool.getNumStudentColour(SPColour.RED)==6 || currentSchool.getNumStudentColour(SPColour.RED)==9){
-                    try {
-                        ((SchoolAdvanced)currentSchool).addCoin(bank.getCoin());
-                    } catch (EmptyCaveauExcepion e) {
-                        e.printStackTrace();
-                    }
-                }
-            }
-            else if(numBlue!=currentSchool.getNumStudentColour(SPColour.BLUE)){
-                if(currentSchool.getNumStudentColour(SPColour.BLUE)==3 || currentSchool.getNumStudentColour(SPColour.BLUE)==6 || currentSchool.getNumStudentColour(SPColour.BLUE)==9){
-                    try {
-                        ((SchoolAdvanced)currentSchool).addCoin(bank.getCoin());
-                    } catch (EmptyCaveauExcepion e) {
-                        e.printStackTrace();
-                    }
-                }
-            }
-            else if(numGreen!=currentSchool.getNumStudentColour(SPColour.GREEN)){
-                if(currentSchool.getNumStudentColour(SPColour.GREEN)==3 || currentSchool.getNumStudentColour(SPColour.GREEN)==6 || currentSchool.getNumStudentColour(SPColour.GREEN)==9){
-                    try {
-                        ((SchoolAdvanced)currentSchool).addCoin(bank.getCoin());
-                    } catch (EmptyCaveauExcepion e) {
-                        e.printStackTrace();
-                    }
-                }
-            }
-            else if(numPink!=currentSchool.getNumStudentColour(SPColour.PINK)){
-                if(currentSchool.getNumStudentColour(SPColour.PINK)==3 || currentSchool.getNumStudentColour(SPColour.PINK)==6 || currentSchool.getNumStudentColour(SPColour.PINK)==9){
-                    try {
-                        ((SchoolAdvanced)currentSchool).addCoin(bank.getCoin());
-                    } catch (EmptyCaveauExcepion e) {
-                        e.printStackTrace();
-                    }
-                }
-            }
-            else if(numYellow!=currentSchool.getNumStudentColour(SPColour.YELLOW)){
-                if(currentSchool.getNumStudentColour(SPColour.YELLOW)==3 || currentSchool.getNumStudentColour(SPColour.YELLOW)==6 || currentSchool.getNumStudentColour(SPColour.YELLOW)==9){
-                    try {
-                        ((SchoolAdvanced)currentSchool).addCoin(bank.getCoin());
-                    } catch (EmptyCaveauExcepion e) {
-                        e.printStackTrace();
-                    }
-                }
-            }
-        } catch (WrongColourException e) {
             e.printStackTrace();
         }
     }
@@ -297,6 +280,58 @@ public class BoardAdvanced implements Board{
         }
 
         return influence;
+    }
+
+    private void checkCoinNeed(School currentSchool, int numRed, int numBlue, int numGreen, int numPink,int numYellow){
+        try {
+            if(numRed!=currentSchool.getNumStudentColour(SPColour.RED)){
+                if(currentSchool.getNumStudentColour(SPColour.RED)==3 || currentSchool.getNumStudentColour(SPColour.RED)==6 || currentSchool.getNumStudentColour(SPColour.RED)==9){
+                    try {
+                        ((SchoolAdvanced)currentSchool).addCoin(bank.getCoin());
+                    } catch (EmptyCaveauExcepion e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+            else if(numBlue!=currentSchool.getNumStudentColour(SPColour.BLUE)){
+                if(currentSchool.getNumStudentColour(SPColour.BLUE)==3 || currentSchool.getNumStudentColour(SPColour.BLUE)==6 || currentSchool.getNumStudentColour(SPColour.BLUE)==9){
+                    try {
+                        ((SchoolAdvanced)currentSchool).addCoin(bank.getCoin());
+                    } catch (EmptyCaveauExcepion e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+            else if(numGreen!=currentSchool.getNumStudentColour(SPColour.GREEN)){
+                if(currentSchool.getNumStudentColour(SPColour.GREEN)==3 || currentSchool.getNumStudentColour(SPColour.GREEN)==6 || currentSchool.getNumStudentColour(SPColour.GREEN)==9){
+                    try {
+                        ((SchoolAdvanced)currentSchool).addCoin(bank.getCoin());
+                    } catch (EmptyCaveauExcepion e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+            else if(numPink!=currentSchool.getNumStudentColour(SPColour.PINK)){
+                if(currentSchool.getNumStudentColour(SPColour.PINK)==3 || currentSchool.getNumStudentColour(SPColour.PINK)==6 || currentSchool.getNumStudentColour(SPColour.PINK)==9){
+                    try {
+                        ((SchoolAdvanced)currentSchool).addCoin(bank.getCoin());
+                    } catch (EmptyCaveauExcepion e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+            else if(numYellow!=currentSchool.getNumStudentColour(SPColour.YELLOW)){
+                if(currentSchool.getNumStudentColour(SPColour.YELLOW)==3 || currentSchool.getNumStudentColour(SPColour.YELLOW)==6 || currentSchool.getNumStudentColour(SPColour.YELLOW)==9){
+                    try {
+                        ((SchoolAdvanced)currentSchool).addCoin(bank.getCoin());
+                    } catch (EmptyCaveauExcepion e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        } catch (WrongColourException e) {
+            e.printStackTrace();
+        }
     }
 
     public void setColourToExclude(SPColour colourToExclude){

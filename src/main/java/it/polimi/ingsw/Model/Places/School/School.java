@@ -88,11 +88,14 @@ public class School {
         }
     }
 
-    public Tower removeTower(){
-         return towers.remove(0);
+    public Tower removeTower() throws TowerNotFoundException {
+        if(towers.size() > 0)
+            return towers.remove(0);
+
+        throw new TowerNotFoundException();
     }
 
-    public List<Tower> removeNumTowers(int num){
+    public List<Tower> removeNumTowers(int num) throws TowerNotFoundException {
         List<Tower> removed = new ArrayList<Tower>();
         for(int i = 0; i < num; i++){
             removed.add(removeTower());

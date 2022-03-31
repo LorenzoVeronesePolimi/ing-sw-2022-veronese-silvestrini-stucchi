@@ -14,10 +14,10 @@ public class SchoolAdvancedTest {
     void getNumCoins(){
         Player p = new Player("owner", PlayerColour.WHITE);
         SchoolAdvanced schoolAdvanced = new SchoolAdvanced(p,7,8);
-        assertEquals(1,schoolAdvanced.getNumCoins());
+        assertEquals(0,schoolAdvanced.getNumCoins());
 
         Coin coin = new Coin();
         schoolAdvanced.addCoin(coin);
-        assertEquals(2, schoolAdvanced.getNumCoins());
+        assertEquals(1, schoolAdvanced.getNumCoins());
     }
 }

@@ -35,7 +35,7 @@ public class TwoExtraIslands extends AbstractCharacterCard{
     }
 
     private int checkMovement(int startingPoint) {
-        if(startingPoint > 11) {
+        if(startingPoint > this.boardAdvanced.getArchiList().size() - 1) {
             startingPoint = startingPoint % this.boardAdvanced.getArchiList().size() - 1;
         }
 

@@ -21,7 +21,6 @@ import java.util.Map;
 public abstract class BoardAbstract implements Board{
     protected List<School> schools;   //list of all school in the game (one for each player)
     protected List<Player> players;   //list of all players in the game (in order)
-    //protected int currentPlayer; //index of the current Player in the list players
     protected Map<Player, School> playerSchool;   //map of players and their relative school
     protected List<Archipelago> archipelagos;     //list of all the archipelagos in the game (in order)
     protected List<Cloud> clouds;     //list of all clouds in the game
@@ -142,11 +141,8 @@ public abstract class BoardAbstract implements Board{
 
 
     //--------------------------------------------------PAWNS MOVEMENTS
-    public void moveMotherNature(int archipelagoIndex){
-        //TODO: check if the move is permitted (by the number of moves set in the AssistantCard)
-        //TODO: this check can be done before showing possible moves for MN
-
-        mn.putInPosition(archipelagos.get(archipelagoIndex));
+    public void moveMotherNature(int mnMoves){
+            mn.putInPosition(archipelagos.get((whereIsMotherNature()+mnMoves)%archipelagos.size()));
     }
 
     public void moveStudentSchoolToArchipelagos(Player player, SPColour colour, int archipelagoIndex) {
@@ -392,7 +388,12 @@ public abstract class BoardAbstract implements Board{
     // the Player conquers the Archipelago putting his own Towers and removing the previous ones (if present)
     protected void conquerArchipelago(Player conqueror, Archipelago toConquer){
         // conqueror's Towers to put on the Archipelago
-        List<Tower> conquerorTowers = this.playerSchool.get(conqueror).removeNumTowers(toConquer.getNumIslands());
+        List<Tower> conquerorTowers = null;
+        try {
+            conquerorTowers = this.playerSchool.get(conqueror).removeNumTowers(toConquer.getNumIslands());
+        } catch (TowerNotFoundException e) {
+            e.printStackTrace();
+        }
 
         try{
             List<Tower> looserTowers = toConquer.conquerArchipelago(conquerorTowers);

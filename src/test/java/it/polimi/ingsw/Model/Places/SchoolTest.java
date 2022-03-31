@@ -56,8 +56,13 @@ public class SchoolTest {
         Player p = new Player("owner", PlayerColour.WHITE);
         School school = new School(p,7,8);
         Tower tower = new Tower(p);
-        school.removeTower();
-        school.removeTower();
+        try {
+            school.removeTower();
+            school.removeTower();
+        } catch (TowerNotFoundException e) {
+            e.printStackTrace();
+        }
+
         try {
             school.addTower(tower);
         } catch (ExceededMaxTowersException e) {
@@ -86,7 +91,11 @@ public class SchoolTest {
         towersToAdd.add(tower2);
         towersToAdd.add(tower3);
         towersToAdd.add(tower4);
-        school.removeNumTowers(6);
+        try {
+            school.removeNumTowers(6);
+        } catch (TowerNotFoundException e) {
+            e.printStackTrace();
+        }
         school.addNumTower(towersToAdd);
         Assertions.assertEquals(6, school.getNumTowers());
 
@@ -100,8 +109,13 @@ public class SchoolTest {
     void removeTower(){
         Player p = new Player("owner", PlayerColour.WHITE);
         School school = new School(p,7,8);
-        school.removeTower();
-        school.removeTower();
+        try {
+            school.removeTower();
+            school.removeTower();
+        } catch (TowerNotFoundException e) {
+            e.printStackTrace();
+        }
+
         Assertions.assertEquals(6, school.getNumTowers());
     }
 
@@ -109,10 +123,18 @@ public class SchoolTest {
     void removeNumTowers(){
         Player p = new Player("owner", PlayerColour.WHITE);
         School school = new School(p,7,8);
-        school.removeNumTowers(3);
+        try {
+            school.removeNumTowers(3);
+        } catch (TowerNotFoundException e) {
+            e.printStackTrace();
+        }
         Assertions.assertEquals(5, school.getNumTowers());
 
-        school.removeNumTowers(4);
+        try {
+            school.removeNumTowers(4);
+        } catch (TowerNotFoundException e) {
+            e.printStackTrace();
+        }
         Assertions.assertEquals(1, school.getNumTowers());
     }
 
