@@ -38,7 +38,7 @@ public class Archipelago {
     // contains. This is updated using updateStudentsData() each time a Student is added/removed
     private Map<SPColour, Integer> studentsData;
 
-    private boolean forbidFlag = false;
+    private int forbidFlag = 0;
     private boolean towerNoValueFlag = false;
 
 
@@ -70,16 +70,21 @@ public class Archipelago {
         return this.islands;
     }
 
-    public boolean getForbidFlag(){
+    public int getForbidFlag(){
         return this.forbidFlag;
+    }
+
+    public void addForbidFlag(){
+         this.forbidFlag++;
     }
 
     public boolean getTowerNoValueFlag(){
         return this.towerNoValueFlag;
     }
 
-    public void setForbidFlag(boolean forbidFlag) {
-        this.forbidFlag = forbidFlag;
+    public void removeForbidFlag() {
+        if(this.forbidFlag>0)
+            this.forbidFlag --;
     }
 
     public void setTowerNoValueFlag(boolean towerNoValueFlag) {

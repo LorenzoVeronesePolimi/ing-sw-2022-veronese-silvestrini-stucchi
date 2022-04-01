@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.Map;
 
 public class BoardFour extends BoardAbstract {
-    private final Map<Player, Player> teammates;
+    protected final Map<Player, Player> teammates;
 
     public BoardFour(List<Player> players) throws
             ExceedingAssistantCardNumberException, NullContentException, StudentNotFoundException, ExceededMaxStudentsCloudException, ExceededMaxStudentsHallException {

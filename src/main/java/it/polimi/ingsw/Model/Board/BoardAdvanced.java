@@ -183,28 +183,51 @@ public class BoardAdvanced implements Board{
 
 
     public boolean checkIfConquerable(Player currentPlayer){
-        int currPosMotherNature = this.board.whereIsMotherNature();
-        Archipelago currentArchipelago = this.board.archipelagos.get(currPosMotherNature);
-        //if the owner of the Archipelago is the current Player, he conquers nothing
-        if(currentArchipelago.getOwner() == currentPlayer){
-            return false;
-        }
-        else if(currentArchipelago.getOwner() == null){ //archipelago never conquered before
-            return true;
-        }
-        else if(currentArchipelago.getForbidFlag()){ //This is an advanced function => see comment above(*)
-            currentArchipelago.setForbidFlag(false);
-        }
-        else if(currentArchipelago.getTowerNoValueFlag()){ //This is an advanced function => see comment above(*)
-            currentArchipelago.setTowerNoValueFlag(false);
-        }
-        //the current Player is not the owner: can he conquer the Archipelago?
-        else{
-            //who has higher influence according to rules?
-            Player winner = this.computeWinner(currentArchipelago.getOwner(), currentPlayer, currentArchipelago, twoExtraPointsFlag, colourToExclude);
-            twoExtraPointsFlag = false;
+        Archipelago currentArchipelago = this.board.archipelagos.get(this.board.whereIsMotherNature());
+        if(this.board instanceof BoardTwo || this.board instanceof BoardThree) {
+            //if the owner of the Archipelago is the current Player, he conquers nothing
+            if (currentArchipelago.getForbidFlag()>0) { //This is an advanced function => see comment above(*)
+                currentArchipelago.removeForbidFlag();
+                return false;
+            }
+            if (currentArchipelago.getOwner() == currentPlayer) {
+                return false;
+            } else if (currentArchipelago.getOwner() == null) { //archipelago never conquered before
+                return true;
+            }
+            //the current Player is not the owner: can he conquer the Archipelago?
+            else {
+                //who has higher influence according to rules?
+                Player winner = this.computeWinner(currentArchipelago.getOwner(), currentPlayer, currentArchipelago, twoExtraPointsFlag, colourToExclude);
+                currentArchipelago.setTowerNoValueFlag(false);
+                twoExtraPointsFlag = false;
 
-            return winner == currentPlayer;
+                return winner == currentPlayer;
+            }
+        } else if(this.board instanceof BoardFour){
+            if (currentArchipelago.getForbidFlag()>0) { //This is an advanced function => see comment above(*)
+                currentArchipelago.removeForbidFlag();
+                return false;
+            }
+            if (currentArchipelago.getOwner() == currentPlayer || currentArchipelago.getOwner() ==((BoardFour)this.board).teammates.get(currentArchipelago.getOwner())) {
+                return false;
+            } else if (currentArchipelago.getOwner() == null) { //archipelago never conquered before
+                List<Professor> conquerorProfessors = this.board.playerSchool.get(currentPlayer).getProfessors();
+                conquerorProfessors.addAll(this.board.playerSchool.get(((BoardFour)this.board).teammates.get(currentPlayer)).getProfessors());
+                for (Professor p : conquerorProfessors) {
+                    //can't conquer an Island without Students coloured without the Colour of a Professor of mine, even if no one has conquered it before
+                    return currentArchipelago.howManyStudents().get(p.getColour()) > 0;
+                }
+                return false;
+            }
+            //the current Player is not the owner: can he conquer the Archipelago?
+            else {
+                //who has higher influence according to rules?
+                Player winner = this.computeWinner(currentArchipelago.getOwner(), currentPlayer, currentArchipelago);
+                currentArchipelago.setTowerNoValueFlag(false);
+                twoExtraPointsFlag = false;
+                return winner == currentPlayer || winner == ((BoardFour)this.board).teammates.get(currentPlayer);
+            }
         }
         return false;
     }
@@ -223,19 +246,34 @@ public class BoardAdvanced implements Board{
     }
 
     protected Player computeWinner(Player owner, Player challenger, Archipelago archipelago, boolean twoExtraPointsFlag, SPColour colourToExclude){
-        int ownerInfluence = this.computeInfluenceOfPlayer(owner, archipelago, colourToExclude);
-        int challengerInfluence = this.computeInfluenceOfPlayer(challenger, archipelago, colourToExclude);
+        if(this.board instanceof BoardTwo || this.board instanceof BoardThree) {
+            int ownerInfluence = this.computeInfluenceOfPlayer(owner, archipelago, colourToExclude);
+            int challengerInfluence = this.computeInfluenceOfPlayer(challenger, archipelago, colourToExclude);
 
-        if(twoExtraPointsFlag) {
-            challengerInfluence += 2;
-        }
+            if (twoExtraPointsFlag) {
+                challengerInfluence += 2;
+            }
 
-        if(ownerInfluence > challengerInfluence){
-            return owner;
+            if (ownerInfluence > challengerInfluence) {
+                return owner;
+            } else {
+                return challenger;
+            }
+        } else if(this.board instanceof BoardFour){
+            int ownerTeamInfluence = this.computeInfluenceOfPlayer(owner, archipelago, colourToExclude) + this.computeInfluenceOfPlayer(((BoardFour)board).teammates.get(owner), archipelago,colourToExclude);
+            int challengerTeamInfluence = this.computeInfluenceOfPlayer(challenger, archipelago,colourToExclude) + this.computeInfluenceOfPlayer(((BoardFour)board).teammates.get(challenger), archipelago, colourToExclude);
+
+            if (twoExtraPointsFlag) {
+                challengerTeamInfluence += 2;
+            }
+
+            if (ownerTeamInfluence > challengerTeamInfluence) {
+                return owner;
+            } else {
+                return challenger;
+            }
         }
-        else{
-            return challenger;
-        }
+        return null;
     }
 
 
@@ -243,18 +281,32 @@ public class BoardAdvanced implements Board{
     private int computeInfluenceOfPlayer(Player player, Archipelago archipelago, SPColour colourToExclude){
         int influence = 0;
 
-        //if the player owns the Archipelago, the number of Towers (= number of Islands) counts
-        if(player == archipelago.getOwner()){
-            influence += archipelago.getNumIslands();
-        }
+        if(this.board instanceof BoardTwo || this.board instanceof BoardThree) {
+            //if the player owns the Archipelago, the number of Towers (= number of Islands) counts
+            if (player == archipelago.getOwner()) {
+                if(archipelago.getTowerNoValueFlag()==false)
+                    influence += archipelago.getNumIslands();
+            }
 
-        Map<SPColour, Integer> archipelagoStudentsData = archipelago.howManyStudents(); //data about Students on the Archipelago
-        List<Professor> playerProfessors = this.board.playerSchool.get(player).getProfessors(); //Professors of the player
-        for(Professor p : playerProfessors){
-            if(!p.getColour().equals(colourToExclude))
-                influence += archipelagoStudentsData.get(p.getColour());
+            Map<SPColour, Integer> archipelagoStudentsData = archipelago.howManyStudents(); //data about Students on the Archipelago
+            List<Professor> playerProfessors = this.board.playerSchool.get(player).getProfessors(); //Professors of the player
+            for (Professor p : playerProfessors) {
+                if (!p.getColour().equals(colourToExclude))
+                    influence += archipelagoStudentsData.get(p.getColour());
+            }
+        } else if(this.board instanceof BoardFour){
+            if (player == archipelago.getOwner() || player == ((BoardFour)board).teammates.get(archipelago.getOwner())) {
+                if(archipelago.getTowerNoValueFlag() == false)
+                    influence += archipelago.getNumIslands();
+            }
+            Map<SPColour, Integer> archipelagoStudentsData = archipelago.howManyStudents(); //data about Students on the Archipelago
+            List<Professor> teamProfessors = this.board.playerSchool.get(player).getProfessors(); //Professors of the player
+            teamProfessors.addAll(this.board.playerSchool.get(((BoardFour)board).teammates.get(player)).getProfessors());
+            for (Professor p : teamProfessors) {
+                if (!p.getColour().equals(colourToExclude))
+                    influence += archipelagoStudentsData.get(p.getColour());
+            }
         }
-
         return influence;
     }
 
