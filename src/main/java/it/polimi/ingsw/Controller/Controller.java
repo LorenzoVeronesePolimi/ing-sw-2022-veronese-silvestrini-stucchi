@@ -14,6 +14,7 @@ import it.polimi.ingsw.Model.Player;
 import it.polimi.ingsw.View.View;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 // This is the main Controller: it coordinates all the others
 public class Controller implements Observer {
@@ -93,6 +94,14 @@ public class Controller implements Observer {
                 if(!this.manageMoveMotherNature((MessageMoveMotherNature)message)){
                     System.out.println("You can't move the Mother Nature in that way");
                 }
+            case STUDENT_CLOUD_TO_SCHOOL:
+                if(!this.manageStudentCloudToSchool((MessageStudentCloudToSchool)message)){
+                    System.out.println("You can't choose that Cloud");
+                }
+            case CC_EXCHANGE_THREE_STUDENTS:
+                if(!this.manageCCExchangeThreeStudents((MessageCCExchangeThreeStudents)message)){
+                    System.out.println("Wrong parameters");
+                }
         }
 
         //check if I have to make some automatic action (=>PIANIFICATION1)
@@ -123,7 +132,20 @@ public class Controller implements Observer {
             case "green":
                 return SPColour.GREEN;
         }
-        return null; //impossible
+        return null; //possible only in case of "-"
+    }
+
+    //this eliminates all "-"s and converts the others
+    private List<SPColour> mapListStringToColour(List<String> colours){
+        List<SPColour> converted = new ArrayList<>();
+
+        for(String s : colours){
+            if(!s.equals("-")){
+                converted.add(this.mapStringToSPColour(s));
+            }
+        }
+
+        return converted;
     }
 
     private PlayerColour mapStringToPlayerColour(String s){
@@ -135,7 +157,7 @@ public class Controller implements Observer {
             case "gray":
                 return PlayerColour.GRAY;
         }
-        return null; //impossible
+        return null; //possible only in case of "-"
     }
 
     private Player mapStringToPlayer(String s) throws NoPlayerException{
@@ -167,16 +189,13 @@ public class Controller implements Observer {
                 this.boardAdvanced = new BoardAdvanced((BoardAbstract) this.board);
             } catch (ExceededMaxStudentsHallException e) {
                 e.printStackTrace();
-            } catch (StudentNotFoundException e) {
-                e.printStackTrace();
-            } catch (TowerNotFoundException e) {
-                e.printStackTrace();
-            } catch (EmptyCaveauExcepion e) {
+            } catch (StudentNotFoundException | TowerNotFoundException | EmptyCaveauExcepion e) {
                 e.printStackTrace();
             }
         }
 
         controllerIntegrity.setBoard(this.board);
+        controllerIntegrity.setBoardAdvanced(this.boardAdvanced);
         controllerIntegrity.setAdvanced(this.advanced);
 
         //set number of Students to move at each ACTION1
@@ -259,10 +278,9 @@ public class Controller implements Observer {
         controllerIntegrity.checkAssistantCard(this.players, this.currentPlayerIndex, this.players.get(this.currentPlayerIndex), turnPriority);
 
         // Remove the card from his hand
-        //TODO: surrounded with try catch just to remove errors. It needs to be checked before leaving it like that
         try{
             board.useAssistantCard(this.players.get(this.currentPlayerIndex), turnPriority);
-        } catch(AssistantCardAlreadyPlayedTurnException | NoAssistantCardException ex){return false;} // card already used
+        } catch(AssistantCardAlreadyPlayedTurnException | NoAssistantCardException ex){return false;} // card already used or no AssistantCard present
 
         // Go on within the turn
         this.currentPlayerIndex++;
@@ -282,34 +300,18 @@ public class Controller implements Observer {
 
         if(controllerIntegrity.checkStudentHallToDiningRoom(this.players.get(this.currentPlayerIndex), studentColour)){
             if(this.advanced){
-                //TODO: surrounded with try catch just to remove errors. It needs to be checked before leaving it like that
                 try {
                     boardAdvanced.moveStudentHallToDiningRoom(this.players.get(this.currentPlayerIndex), studentColour);
-                } catch (StudentNotFoundException e) {
-                    e.printStackTrace();
-                } catch (ExceededMaxStudentsDiningRoomException e) {
-                    e.printStackTrace();
-                } catch (EmptyCaveauExcepion e) {
-                    e.printStackTrace();
-                } catch (ProfessorNotFoundException e) {
-                    e.printStackTrace();
-                } catch (NoProfessorBagException e) {
-                    e.printStackTrace();
+                } catch (StudentNotFoundException | ExceededMaxStudentsDiningRoomException | EmptyCaveauExcepion |
+                        ProfessorNotFoundException | NoProfessorBagException e) {
+                    return false;
                 }
             } else{
-                //TODO: surrounded with try catch just to remove errors. It needs to be checked before leaving it like that
                 try {
                     board.moveStudentHallToDiningRoom(this.players.get(this.currentPlayerIndex), studentColour);
-                } catch (StudentNotFoundException e) {
-                    e.printStackTrace();
-                } catch (ExceededMaxStudentsDiningRoomException e) {
-                    e.printStackTrace();
-                } catch (EmptyCaveauExcepion e) {
-                    e.printStackTrace();
-                } catch (ProfessorNotFoundException e) {
-                    e.printStackTrace();
-                } catch (NoProfessorBagException e) {
-                    e.printStackTrace();
+                } catch (StudentNotFoundException | ExceededMaxStudentsDiningRoomException | EmptyCaveauExcepion |
+                        ProfessorNotFoundException | NoProfessorBagException e) {
+                    return false;
                 }
             }
             this.numStudentsToMoveCurrent--;
@@ -331,11 +333,10 @@ public class Controller implements Observer {
         if(!isCurrentPlayer(nicknamePlayer)){return false;}
 
         if(controllerIntegrity.checkStudentToArchipelago(this.players.get(this.currentPlayerIndex), studentColour, destArchipelagoIndex)){
-            //TODO: surrounded with try catch just to remove errors. It needs to be checked before leaving it like that
             try {
                 board.moveStudentSchoolToArchipelagos(this.players.get(this.currentPlayerIndex), studentColour, destArchipelagoIndex);
             } catch (StudentNotFoundException e) {
-                e.printStackTrace();
+                return false;
             }
             return true;
         }
@@ -350,21 +351,55 @@ public class Controller implements Observer {
 
         if(controllerIntegrity.checkMoveMotherNature(this.players.get(this.currentPlayerIndex), moves)){
             board.moveMotherNature(moves);
-            //TODO: surrounded with try catch just to remove errors. It needs to be checked before leaving it like that
             try {
                 board.tryToConquer(this.players.get(this.currentPlayerIndex));
-            } catch (InvalidTowerNumberException e) {
-                e.printStackTrace();
-            } catch (AnotherTowerException e) {
-                e.printStackTrace();
-            } catch (ExceededMaxTowersException e) {
-                e.printStackTrace();
-            } catch (TowerNotFoundException e) {
-                e.printStackTrace();
+            } catch (InvalidTowerNumberException | AnotherTowerException | ExceededMaxTowersException | TowerNotFoundException e) {
+                return false;
             }
             controllerState.setState(State.ACTION3);
             return true;
         }
         return false;
     }
+
+    private boolean manageStudentCloudToSchool(MessageStudentCloudToSchool message){
+        String nicknamePlayer = message.getNicknamePlayer();
+        int indexCloud = message.getIndexCloud();
+
+        if(!isCurrentPlayer(nicknamePlayer)){return false;}
+
+        if(controllerIntegrity.checkStudentCloudToSchool(this.players.get(this.currentPlayerIndex), indexCloud)){
+            try{
+                board.moveStudentCloudToSchool(this.players.get(this.currentPlayerIndex), indexCloud);
+            } catch(ExceededMaxStudentsHallException ex){return false;}
+
+            // change current Player
+            this.currentPlayerIndex++;
+            if(this.currentPlayerIndex >= this.players.size()){ //all Players made their move => new turn
+                controllerState.setState(State.PLANNING1);
+                this.currentPlayerIndex = 0;
+            }
+            else{
+                controllerState.setState(State.ACTION1);
+            }
+            return true;
+        }
+        return false;
+    }
+
+
+
+
+    //--------------------------------------------------CHARACTER CARDS
+    private boolean manageCCExchangeThreeStudents(MessageCCExchangeThreeStudents message){
+        String nicknamePlayer = message.getNicknamePlayer();
+        List<SPColour> coloursCard = this.mapListStringToColour(message.getColoursCard());
+        List<SPColour> coloursHall = this.mapListStringToColour(message.getColoursHall());
+
+        if(!isCurrentPlayer(nicknamePlayer)){return false;}
+
+        //TODO
+        return false;
+    }
 }
+

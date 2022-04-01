@@ -2,6 +2,8 @@ package it.polimi.ingsw.Controller;
 
 import it.polimi.ingsw.Controller.Messages.*;
 
+import java.util.List;
+
 
 public class ControllerInput {
     private static final int MAX_NUM_ARCHIPELAGOS = 12;
@@ -39,6 +41,10 @@ public class ControllerInput {
             case STUDENT_CLOUD_TO_SCHOOL:
                 return (this.checkNickname(((MessageStudentCloudToSchool)message).getNicknamePlayer()) &&
                         this.checkCloudIndex(((MessageStudentCloudToSchool)message).getIndexCloud()));
+            case CC_EXCHANGE_THREE_STUDENTS:
+                return (this.checkNickname(((MessageCCExchangeThreeStudents)message).getNicknamePlayer()) &&
+                        this.checkMultipleStudentColour(((MessageCCExchangeThreeStudents)message).getColoursCard()) &&
+                        this.checkMultipleStudentColour(((MessageCCExchangeThreeStudents)message).getColoursHall()));
         }
 
         return false;
@@ -73,6 +79,13 @@ public class ControllerInput {
             if(c.toLowerCase().equals(s)){return true;}
         }
         return false;
+    }
+
+    private boolean checkMultipleStudentColour(List<String> colours){
+        for(String c : colours){
+            if(!this.checkStudentColour(c) || c.equals("-")){return false;} //I accept "-" for Character Cards
+        }
+        return true;
     }
 
     // Check if the destination Archipelago is possible

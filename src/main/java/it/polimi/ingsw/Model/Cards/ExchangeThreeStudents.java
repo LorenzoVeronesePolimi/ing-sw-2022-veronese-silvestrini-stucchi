@@ -30,6 +30,10 @@ public class ExchangeThreeStudents extends AbstractCharacterCard{
         this.boardAdvanced = boardAdvanced;
     }
 
+    public List<Student> getStudents(){
+        return new ArrayList<Student>(this.students);
+    }
+
     public void useEffect(Player player, List<SPColour> hallStudents, List<SPColour> exchangeStudents) throws
             WrongNumberOfStudentsTransferExcpetion, StudentNotFoundException, ExceededMaxStudentsHallException {
 

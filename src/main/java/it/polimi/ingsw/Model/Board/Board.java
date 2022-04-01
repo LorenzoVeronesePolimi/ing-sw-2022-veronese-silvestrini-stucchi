@@ -3,12 +3,17 @@ package it.polimi.ingsw.Model.Board;
 import it.polimi.ingsw.Model.Enumerations.SPColour;
 import it.polimi.ingsw.Model.Exceptions.*;
 import it.polimi.ingsw.Model.Places.Archipelago;
+import it.polimi.ingsw.Model.Places.Cloud;
 import it.polimi.ingsw.Model.Places.School.School;
 import it.polimi.ingsw.Model.Player;
+
+import java.util.List;
 
 /*TODO: Understand what to do with private methods*/
 public interface Board {
     Archipelago getArchipelago(int archipelagoIndex);
+
+    public List<Cloud> getClouds();
 
     boolean isStudentInSchoolHall(Player player, SPColour c);
 

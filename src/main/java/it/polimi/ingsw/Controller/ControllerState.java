@@ -27,6 +27,8 @@ public class ControllerState {
                 return (this.state == State.ACTION1);
             case MOVE_MOTHER_NATURE:
                 return (this.state == State.ACTION2);
+            case STUDENT_CLOUD_TO_SCHOOL:
+                return (this.state == State.ACTION3);
         }
         return false;
     }

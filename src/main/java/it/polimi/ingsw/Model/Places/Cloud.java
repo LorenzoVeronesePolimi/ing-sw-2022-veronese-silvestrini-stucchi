@@ -19,7 +19,6 @@ public class Cloud {
         this.students = new ArrayList<>();
     }
 
-    //TODO: maybe in this case is better to use the toString instead of passing the exact objects
     //this method is to show the elements inside the cloud
     public List<Student> getStudents(){
         return new ArrayList<>(this.students);
