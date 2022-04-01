@@ -49,7 +49,7 @@ public class ArchipelagoTest {
     @Test
     void getForbidFlag(){
         Archipelago tested = new Archipelago();
-        assertFalse(tested.getForbidFlag());
+        assertTrue(tested.getForbidFlag() == 0);
 
         Player p1 = new Player("p1", PlayerColour.WHITE);
         Player p2 = new Player("p2", PlayerColour.BLACK);
@@ -78,7 +78,7 @@ public class ArchipelagoTest {
         }
         ForbidIsland card= new ForbidIsland(boardAdvanced);
         card.useEffect(6);
-        assertTrue(boardAdvanced.getArchiList().get(6).getForbidFlag());
+        assertTrue(boardAdvanced.getArchiList().get(6).getForbidFlag() == 1);
     }
     @Test
     void getTowerNoValueFlag(){
@@ -120,16 +120,18 @@ public class ArchipelagoTest {
             e.printStackTrace();
         } catch (ExceededMaxTowersException e) {
             e.printStackTrace();
+        } catch (TowerNotFoundException e) {
+            e.printStackTrace();
         }
         assertTrue(boardAdvanced.getArchiList().get(4).getTowerNoValueFlag());
     }
     @Test
     void setForbidFlag(){
         Archipelago tested = new Archipelago();
-        tested.setForbidFlag(false);
-        assertFalse(tested.getForbidFlag());
-        tested.setForbidFlag(true);
-        assertTrue(tested.getForbidFlag());
+        tested.removeForbidFlag();
+        assertTrue(tested.getForbidFlag() >= 0);
+        tested.addForbidFlag();
+        assertTrue(tested.getForbidFlag() == 1);
     }
     @Test
     void setTowerNoValueFlag(){

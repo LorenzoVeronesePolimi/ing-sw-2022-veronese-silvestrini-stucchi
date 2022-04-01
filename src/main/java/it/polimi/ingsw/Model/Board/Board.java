@@ -24,7 +24,7 @@ public interface Board {
 
     void placeMotherNatureInitialBoard();
 
-    void moveMotherNature(int archipelagoIndex);
+    void moveMotherNature(int mnMoves);
 
     void moveProfessor(Player destinationPlayer, SPColour colour) throws NoProfessorBagException, ProfessorNotFoundException;
 

@@ -8,23 +8,25 @@ import it.polimi.ingsw.Model.Exceptions.*;
 import it.polimi.ingsw.Model.Pawns.Professor;
 import it.polimi.ingsw.Model.Pawns.Student;
 import it.polimi.ingsw.Model.Places.Archipelago;
+import it.polimi.ingsw.Model.Places.Cloud;
 import it.polimi.ingsw.Model.Places.School.School;
 import it.polimi.ingsw.Model.Places.School.SchoolAdvanced;
 import it.polimi.ingsw.Model.Player;
 
 import java.util.*;
 
-public class BoardAdvanced implements Board{
+public class BoardAdvanced implements Board {
     private final BoardAbstract board;
     private boolean twoExtraPointsFlag = false;
     private SPColour colourToExclude=null;
     private final List<AbstractCharacterCard> extractedCards;
-    private final Bank bank = new Bank();
+    private final Bank bank;
 
 
     public BoardAdvanced(BoardAbstract boardToExtend) throws
             ExceededMaxStudentsHallException, StudentNotFoundException, TowerNotFoundException, EmptyCaveauExcepion {
 
+        bank = new Bank();
         this.board = boardToExtend;
         List<School> schoolsAdvanced = new ArrayList<>();
         for(School s: this.board.schools){
@@ -34,6 +36,7 @@ public class BoardAdvanced implements Board{
         SPColour[] availableColours = {SPColour.BLUE, SPColour.PINK, SPColour.RED, SPColour.GREEN, SPColour.YELLOW};
 
         for(int i = 0; i < this.board.schools.size(); i++) {
+            //((SchoolAdvanced)schoolsAdvanced.get(i)).addCoin(bank.getCoin());
             for(int j = 0; j < this.board.schools.get(i).getStudentsHall().size(); j++) {
                 schoolsAdvanced.get(i).addStudentHall(this.board.schools.get(i).getStudentsHall().get(j));
             }
@@ -89,6 +92,8 @@ public class BoardAdvanced implements Board{
 
     public List<School> getSchools(){return new ArrayList<>(this.board.schools);}
 
+    public List<Cloud> getClouds(){return new ArrayList<>(this.board.clouds);}
+
     public Archipelago getArchipelago(int archipelagoIndex) {
         return this.board.getArchipelago(archipelagoIndex);
     }
@@ -139,8 +144,8 @@ public class BoardAdvanced implements Board{
         this.board.placeMotherNatureInitialBoard();
     }
 
-    public void moveMotherNature(int archipelagoIndex) {
-        this.board.moveMotherNature(archipelagoIndex);
+    public void moveMotherNature(int mnMoves) {
+        this.board.moveMotherNature(mnMoves);
     }
 
     public void moveProfessor(Player destinationPlayer, SPColour colour) throws ProfessorNotFoundException, NoProfessorBagException {
@@ -282,7 +287,7 @@ public class BoardAdvanced implements Board{
         if(this.board instanceof BoardTwo || this.board instanceof BoardThree) {
             //if the player owns the Archipelago, the number of Towers (= number of Islands) counts
             if (player == archipelago.getOwner()) {
-                if(archipelago.getTowerNoValueFlag()==false)
+                if(!archipelago.getTowerNoValueFlag())
                     influence += archipelago.getNumIslands();
             }
 
@@ -294,7 +299,7 @@ public class BoardAdvanced implements Board{
             }
         } else if(this.board instanceof BoardFour){
             if (player == archipelago.getOwner() || player == ((BoardFour)board).teammates.get(archipelago.getOwner())) {
-                if(archipelago.getTowerNoValueFlag() == false)
+                if(!archipelago.getTowerNoValueFlag())
                     influence += archipelago.getNumIslands();
             }
             Map<SPColour, Integer> archipelagoStudentsData = archipelago.howManyStudents(); //data about Students on the Archipelago
@@ -339,7 +344,7 @@ public class BoardAdvanced implements Board{
     }
 
     public void setColourToExclude(SPColour colourToExclude){
-        this.colourToExclude= colourToExclude;
+        this.colourToExclude = colourToExclude;
     }
 
     public void setTwoExtraPointsFlag(boolean twoExtraPointsFlag) {

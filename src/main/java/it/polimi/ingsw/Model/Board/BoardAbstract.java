@@ -91,6 +91,10 @@ public abstract class BoardAbstract implements Board{
 
 
     //--------------------------------------------------GETTER AND SETTER
+    public List<Cloud> getClouds() {
+        return new ArrayList<>(this.clouds);
+    }
+
     public Archipelago getArchipelago(int archipelagoIndex){
         return this.archipelagos.get(archipelagoIndex);
     }

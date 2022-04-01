@@ -27,32 +27,24 @@ class BoardAbstractTest {
         playerList = new ArrayList<>();
         Player p1 = new Player("player one", PlayerColour.BLACK);
         Player p2 = new Player("player two", PlayerColour.WHITE);
-        Player p3 = new Player("player three", PlayerColour.GRAY);
         playerList.add(p1);
         playerList.add(p2);
-        playerList.add(p3);
 
+        //create board factory
+        BoardFactory bf = new BoardFactory(playerList);
         //test for BoardTwo
-        try {
-            b2 = new BoardTwo(playerList);
-        } catch (StudentNotFoundException e) {
-            e.printStackTrace();
-        } catch (ExceededMaxStudentsCloudException e) {
-            e.printStackTrace();
-        } catch (ExceededMaxStudentsHallException e) {
-            e.printStackTrace();
-        } catch (ExceedingAssistantCardNumberException e) {
-            e.printStackTrace();
-        } catch (NullContentException e) {
-            e.printStackTrace();
-        }
+        b2 = bf.createBoard();
         //b3 = new BoardThree(playerList);
 
     }
 
     @Test
     void boardTest() {
+        //--------------------- side checks
+        //Player
         Assertions.assertEquals(2, this.b2.players.size());
+
+        //Archipelago
         //check if there are 12 archipelagos
         Assertions.assertEquals(12, b2.archipelagos.size());
 
@@ -70,6 +62,36 @@ class BoardAbstractTest {
         Assertions.assertEquals(this.b2.archipelagos.get(10), this.b2.getArchipelago(10));
         Assertions.assertEquals(this.b2.archipelagos.get(11), this.b2.getArchipelago(11));
 
+        // Cloud
+        Assertions.assertEquals(2, this.b2.getClouds().size());
+
+        Assertions.assertEquals(3, this.b2.clouds.get(0).getStudents().size());
+        Assertions.assertEquals(3, this.b2.clouds.get(1).getStudents().size());
+
+        // Schools
+        Assertions.assertEquals(2, this.b2.schools.size());
+        Assertions.assertEquals(7, this.b2.schools.get(0).getStudentsHall().size());
+        Assertions.assertEquals(7, this.b2.schools.get(1).getStudentsHall().size());
+        Assertions.assertEquals(8, this.b2.schools.get(0).getNumTowers());
+        Assertions.assertEquals(8, this.b2.schools.get(1).getNumTowers());
+        Assertions.assertEquals(8, this.b2.schools.get(0).getTowers().size());
+        Assertions.assertEquals(8, this.b2.schools.get(1).getTowers().size());
+        //TODO: check empty diningroom
+
+        // Map
+        Assertions.assertEquals(this.b2.schools.get(0), this.b2.playerSchool.get(this.b2.players.get(0)));
+        Assertions.assertEquals(this.b2.schools.get(1), this.b2.playerSchool.get(this.b2.players.get(1)));
+
+        // MotherNature
+        Assertions.assertEquals(this.b2.archipelagos.get(0), this.b2.mn.getCurrentPosition());
+
+        // Bag
+        try {
+            Assertions.assertEquals(0, this.b2.bag.getInitialStudents().size());
+        } catch (NullContentException e) {
+            e.printStackTrace();
+        }
+
         //--------------------- initialize conquer sequence (left merge)
         Student s1 = new Student(SPColour.RED);
         Student s2 = new Student(SPColour.RED);
@@ -82,6 +104,11 @@ class BoardAbstractTest {
         } catch (ExceededMaxStudentsDiningRoomException | NoProfessorBagException | ProfessorNotFoundException e) {
             e.printStackTrace();
         }
+        // check correct conquer professor
+        Assertions.assertTrue(this.b2.whereIsProfessor(SPColour.RED) == this.b2.schools.get(0));
+        // check owner equals owner
+        Assertions.assertFalse(this.b2.checkIfConquerable(this.b2.players.get(0)));
+
         //TODO:check try to conquer
         this.b2.archipelagos.get(0).addStudent(s1);
         this.b2.archipelagos.get(1).addStudent(s2);
@@ -95,10 +122,18 @@ class BoardAbstractTest {
             e.printStackTrace();
         } catch (ExceededMaxTowersException e) {
             e.printStackTrace();
+        } catch (TowerNotFoundException e) {
+            e.printStackTrace();
         }
         //check correct conquer
         Assertions.assertEquals(playerList.get(0), this.b2.getArchipelago(0).getOwner());
+
+        // move mother nature
         this.b2.moveMotherNature(1);
+        // check correct MN position
+        Assertions.assertEquals(this.b2.archipelagos.get(1), this.b2.mn.getCurrentPosition());
+
+        // conquer
         try {
             this.b2.tryToConquer(playerList.get(0));
         } catch (InvalidTowerNumberException e) {
@@ -107,13 +142,16 @@ class BoardAbstractTest {
             e.printStackTrace();
         } catch (ExceededMaxTowersException e) {
             e.printStackTrace();
+        } catch (TowerNotFoundException e) {
+            e.printStackTrace();
         }
-        //check correct conquer
+
+        //check correct conquer (after merge they become one archipelago in index 0)
         Assertions.assertEquals(playerList.get(0), this.b2.getArchipelago(0).getOwner());
         //check if there are 11 archipelagos
         assertEquals(11, b2.archipelagos.size());
 
-        //--------------------- (right merge)
+        //--------------------- (left merge - 0 to conquer 10)
         Student s5 = new Student(SPColour.RED);
         Student s6 = new Student(SPColour.RED);
         this.b2.archipelagos.get(10).addStudent(s5);
@@ -127,8 +165,10 @@ class BoardAbstractTest {
             e.printStackTrace();
         } catch (ExceededMaxTowersException e) {
             e.printStackTrace();
+        } catch (TowerNotFoundException e) {
+            e.printStackTrace();
         }
-        //check correct conquer
+        //check correct conquer (after merge, one archipelago in index 9)
         Assertions.assertEquals(playerList.get(0), this.b2.getArchipelago(9).getOwner());
         //check if there are 10 archipelagos
         assertEquals(10, b2.archipelagos.size());
@@ -146,7 +186,7 @@ class BoardAbstractTest {
         Assertions.assertEquals(this.b2.archipelagos.get(9), this.b2.getArchipelago(9));
 
         //-------------------- Professors
-        //check professor position
+        //check professor position (red)
         Assertions.assertEquals(this.b2.getPlayerSchool(playerList.get(0)), this.b2.whereIsProfessor(SPColour.RED));
 
         //move students from hall to archipelago
@@ -177,6 +217,9 @@ class BoardAbstractTest {
                 this.b2.moveStudentHallToDiningRoom(playerList.get(1), SPColour.GREEN);
                 this.b2.moveStudentHallToDiningRoom(playerList.get(0), SPColour.PINK);
                 this.b2.moveStudentHallToDiningRoom(playerList.get(0), SPColour.PINK);
+                // after this
+                // Player[0] has pink professor
+                // Player[1] has green professor
             } catch (StudentNotFoundException e) {
                 e.printStackTrace();
             } catch (ExceededMaxStudentsDiningRoomException e) {
@@ -233,10 +276,10 @@ class BoardAbstractTest {
             e.printStackTrace();
         }
 
-        //assert change of professor dominance
+        //assert change of professor dominance (pink)
         Assertions.assertEquals(this.b2.getPlayerSchool(playerList.get(1)), this.b2.whereIsProfessor(SPColour.PINK));
 
-        //move students from hall to archi in order to free the space for students from cloud
+        //move students from hall to archipelago in order to free the space for students from cloud
         try {
             this.b2.moveStudentSchoolToArchipelagos(playerList.get(0), this.b2.getPlayerSchool(playerList.get(0)).getStudentsHall().get(0).getColour(), 4);
             this.b2.moveStudentSchoolToArchipelagos(playerList.get(0), this.b2.getPlayerSchool(playerList.get(0)).getStudentsHall().get(0).getColour(), 5);
@@ -268,6 +311,67 @@ class BoardAbstractTest {
         Assertions.assertEquals(5, this.b2.getPlayerSchool(playerList.get(0)).getStudentsHall().size());
         //empty cloud
         Assertions.assertTrue(this.b2.clouds.get(0).getStudents().size() == 0);
+
+        // conquer archipelago 7
+        Student _1 = new Student(SPColour.RED);
+        Student _2 = new Student(SPColour.RED);
+        Student _3 = new Student(SPColour.RED);
+
+        this.b2.archipelagos.get(7).addStudent(_1);
+        this.b2.archipelagos.get(7).addStudent(_2);
+        this.b2.archipelagos.get(7).addStudent(_3);
+
+        this.b2.moveMotherNature(8);
+        Assertions.assertEquals(7, this.b2.whereIsMotherNature());
+
+        try {
+            this.b2.tryToConquer(this.b2.players.get(0));
+        } catch (InvalidTowerNumberException e) {
+            e.printStackTrace();
+        } catch (AnotherTowerException e) {
+            e.printStackTrace();
+        } catch (ExceededMaxTowersException e) {
+            e.printStackTrace();
+        } catch (TowerNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        Assertions.assertEquals(playerList.get(0), this.b2.getArchipelago(7).getOwner());
+
+        Student _4 = new Student(SPColour.GREEN);
+        Student _5 = new Student(SPColour.GREEN);
+        Student _6 = new Student(SPColour.GREEN);
+        Student _7 = new Student(SPColour.GREEN);
+        Student _8 = new Student(SPColour.GREEN);
+
+        this.b2.archipelagos.get(7).addStudent(_4);
+        this.b2.archipelagos.get(7).addStudent(_5);
+        this.b2.archipelagos.get(7).addStudent(_6);
+        this.b2.archipelagos.get(7).addStudent(_7);
+        this.b2.archipelagos.get(7).addStudent(_8);
+
+        try {
+            this.b2.tryToConquer(this.b2.players.get(1));
+        } catch (InvalidTowerNumberException e) {
+            e.printStackTrace();
+        } catch (AnotherTowerException e) {
+            e.printStackTrace();
+        } catch (ExceededMaxTowersException e) {
+            e.printStackTrace();
+        } catch (TowerNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        Assertions.assertEquals(playerList.get(1), this.b2.getArchipelago(7).getOwner());
+
+        try {
+            this.b2.useAssistantCard(this.b2.players.get(0), 1);
+            Assertions.assertThrows(AssistantCardAlreadyPlayedTurnException.class, () -> this.b2.useAssistantCard(this.b2.players.get(1), 1));
+        } catch (AssistantCardAlreadyPlayedTurnException e) {
+            e.printStackTrace();
+        } catch (NoAssistantCardException e) {
+            e.printStackTrace();
+        }
     }
 
 }

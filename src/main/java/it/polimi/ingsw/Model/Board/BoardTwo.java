@@ -22,8 +22,8 @@ public class BoardTwo extends BoardAbstract {
         this.clouds = new ArrayList<>();
         //creation of schools, map player -> school, clouds.
         for(int i = 0; i < 2; i++) {
-            School s =  new School(playersParam.get(i), 7, 8);
-            Cloud c =  new Cloud(3);
+            School s = new School(playersParam.get(i), 7, 8);
+            Cloud c = new Cloud(3);
 
             schools.add(s);
             playerSchool.put(playersParam.get(i), s);

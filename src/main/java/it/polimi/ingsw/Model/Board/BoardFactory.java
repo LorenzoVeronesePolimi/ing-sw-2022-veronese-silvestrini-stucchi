@@ -14,7 +14,7 @@ public class BoardFactory {
     }
 
     //TODO: check if return copy needed
-    public Board createBoard(){
+    public BoardAbstract createBoard(){
         try {
             if (this.players.size() == 2) {
                 return new BoardTwo(this.players);
