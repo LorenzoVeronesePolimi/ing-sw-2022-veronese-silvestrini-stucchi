@@ -256,7 +256,7 @@ public abstract class BoardAbstract implements Board{
 
     //--------------------------------------------------CONQUERING ISLANDS
     public void tryToConquer(Player currentPlayer) throws
-            InvalidTowerNumberException, AnotherTowerException, ExceededMaxTowersException {
+            InvalidTowerNumberException, AnotherTowerException, ExceededMaxTowersException, TowerNotFoundException {
 
         int currPosMotherNature = this.whereIsMotherNature();
         boolean archipelagoConquerable = checkIfConquerable(currentPlayer);
@@ -326,15 +326,10 @@ public abstract class BoardAbstract implements Board{
     }
 
     // the Player conquers the Archipelago putting his own Towers and removing the previous ones (if present)
-    protected void conquerArchipelago(Player conqueror, Archipelago toConquer) throws InvalidTowerNumberException, AnotherTowerException, ExceededMaxTowersException {
+    protected void conquerArchipelago(Player conqueror, Archipelago toConquer) throws InvalidTowerNumberException, AnotherTowerException, ExceededMaxTowersException, TowerNotFoundException {
         // conqueror's Towers to put on the Archipelago
-        List<Tower> conquerorTowers = null;
-        try {
-            conquerorTowers = this.playerSchool.get(conqueror).removeNumTowers(toConquer.getNumIslands());
-        } catch (TowerNotFoundException e) {
-            e.printStackTrace();
-        }
-
+        List<Tower> conquerorTowers;
+        conquerorTowers = this.playerSchool.get(conqueror).removeNumTowers(toConquer.getNumIslands());
         List<Tower> looserTowers = null;
         if (conquerorTowers != null) {
             looserTowers = toConquer.conquerArchipelago(conquerorTowers);
@@ -352,7 +347,7 @@ public abstract class BoardAbstract implements Board{
     protected void mergeArchipelagos(){
         if(this.isThereRightMerge()){
             Archipelago currentArchipelago = this.archipelagos.get(this.whereIsMotherNature());
-            Archipelago rightArchipelago = this.archipelagos.get((this.whereIsMotherNature() - 1) % 12);
+            Archipelago rightArchipelago = this.archipelagos.get(getPreviousArchipelagoIndex(whereIsMotherNature()));
             this.archipelagos.remove(rightArchipelago);
             try{currentArchipelago.mergeArchipelagos((rightArchipelago));}
             catch(MergeDifferentOwnersException ex){ex.printStackTrace();}
@@ -360,7 +355,7 @@ public abstract class BoardAbstract implements Board{
         }
         else if(this.isThereLeftMerge()){
             Archipelago currentArchipelago = this.archipelagos.get(this.whereIsMotherNature());
-            Archipelago leftArchipelago = this.archipelagos.get((this.whereIsMotherNature() + 1) % archipelagos.size());
+            Archipelago leftArchipelago = this.archipelagos.get((this.whereIsMotherNature() + 1) % this.archipelagos.size());
             this.archipelagos.remove(leftArchipelago);
             try{currentArchipelago.mergeArchipelagos((leftArchipelago));}
             catch(MergeDifferentOwnersException ex){ex.printStackTrace();}

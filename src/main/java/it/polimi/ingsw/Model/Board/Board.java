@@ -38,7 +38,7 @@ public interface Board {
 
     School getPlayerSchool(Player player);
 
-    void tryToConquer(Player currentPlayer) throws InvalidTowerNumberException, AnotherTowerException, ExceededMaxTowersException;
+    void tryToConquer(Player currentPlayer) throws InvalidTowerNumberException, AnotherTowerException, ExceededMaxTowersException, TowerNotFoundException;
     boolean checkIfConquerable(Player currentPlayer);
     Player computeWinner(Player owner, Player challenger, Archipelago archipelago);
     int computeInfluenceOfPlayer(Player player, Archipelago archipelago);
