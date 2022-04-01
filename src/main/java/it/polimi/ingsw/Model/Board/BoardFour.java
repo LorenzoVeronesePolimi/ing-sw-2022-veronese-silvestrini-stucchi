@@ -83,7 +83,7 @@ public class BoardFour extends BoardAbstract {
     @Override
     protected void conquerArchipelago(Player conqueror, Archipelago toConquer) throws InvalidTowerNumberException, AnotherTowerException, ExceededMaxTowersException, TowerNotFoundException {
         // conqueror's Towers to put on the Archipelago
-        List<Tower> conquerorTowers = null;
+        List<Tower> conquerorTowers;
         if (this.playerSchool.get(conqueror).getNumMaxTowers() != 0)
             conquerorTowers = this.playerSchool.get(conqueror).removeNumTowers(toConquer.getNumIslands());
         else

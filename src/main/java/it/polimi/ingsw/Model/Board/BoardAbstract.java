@@ -266,8 +266,6 @@ public abstract class BoardAbstract implements Board{
             //let's merge Archipelagos
             this.mergeArchipelagos();
         }
-        else { //TODO: the Archipelago remains to the owner
-        }
     }
 
     // true if the current Player (who moved MotherNature) will conquer the Archipelago, false otherwise

@@ -177,8 +177,6 @@ public class BoardAdvanced implements Board{
             //let's merge Archipelagos
             this.board.mergeArchipelagos();
         }
-        else { //TODO: what to do?? "the Archipelago remains to the owner"
-        }
     }
 
 
@@ -365,7 +363,7 @@ public class BoardAdvanced implements Board{
 
     public void useTakeProfessorOnEquity(Player player) throws
             EmptyCaveauExcepion, ExceededMaxNumCoinException, CoinNotFoundException, InvalidTowerNumberException,
-            AnotherTowerException, ProfessorNotFoundException, NoProfessorBagException, ExceededMaxTowersException {
+            AnotherTowerException, ProfessorNotFoundException, NoProfessorBagException, ExceededMaxTowersException, TowerNotFoundException {
 
         for(AbstractCharacterCard card: extractedCards) {
             if(card instanceof TakeProfessorOnEquity) {
@@ -382,7 +380,7 @@ public class BoardAdvanced implements Board{
 
     public void useFakeMNMovement(Player player, int fakeMNPosition) throws
             EmptyCaveauExcepion, ExceededMaxNumCoinException, CoinNotFoundException, InvalidTowerNumberException,
-            AnotherTowerException, ExceededMaxTowersException {
+            AnotherTowerException, ExceededMaxTowersException, TowerNotFoundException {
 
         for(AbstractCharacterCard card: extractedCards) {
             if(card instanceof FakeMNMovement) {
@@ -399,7 +397,7 @@ public class BoardAdvanced implements Board{
 
     public void useTwoExtraIslands(Player player, int archipelago) throws
             EmptyCaveauExcepion, ExceededMaxNumCoinException, CoinNotFoundException, ImpossibleMNMove,
-            InvalidTowerNumberException, AnotherTowerException, ExceededMaxTowersException {
+            InvalidTowerNumberException, AnotherTowerException, ExceededMaxTowersException, TowerNotFoundException {
 
         for(AbstractCharacterCard card: extractedCards) {
             if(card instanceof TwoExtraIslands) {
@@ -431,7 +429,7 @@ public class BoardAdvanced implements Board{
 
     public void useTowerNoValue(Player player) throws
             EmptyCaveauExcepion, ExceededMaxNumCoinException, CoinNotFoundException, InvalidTowerNumberException,
-            AnotherTowerException, ExceededMaxTowersException {
+            AnotherTowerException, ExceededMaxTowersException, TowerNotFoundException {
 
         for(AbstractCharacterCard card: extractedCards) {
             if(card instanceof TowerNoValue) {
@@ -465,7 +463,7 @@ public class BoardAdvanced implements Board{
 
     public void useTwoExtraPoints(Player player) throws
             EmptyCaveauExcepion, ExceededMaxNumCoinException, CoinNotFoundException, InvalidTowerNumberException,
-            AnotherTowerException, ExceededMaxTowersException {
+            AnotherTowerException, ExceededMaxTowersException, TowerNotFoundException {
 
         for(AbstractCharacterCard card: extractedCards) {
             if(card instanceof TwoExtraPoints) {
@@ -482,7 +480,7 @@ public class BoardAdvanced implements Board{
 
     public void useExcludeColourFromCounting(Player player, SPColour colourToExclude) throws
             EmptyCaveauExcepion, ExceededMaxNumCoinException, CoinNotFoundException, InvalidTowerNumberException,
-            AnotherTowerException, ExceededMaxTowersException {
+            AnotherTowerException, ExceededMaxTowersException, TowerNotFoundException {
 
         for(AbstractCharacterCard card: extractedCards) {
             if(card instanceof ExcludeColourFromCounting) {

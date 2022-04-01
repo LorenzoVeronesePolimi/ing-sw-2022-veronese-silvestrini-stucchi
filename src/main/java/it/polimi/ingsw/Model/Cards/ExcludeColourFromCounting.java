@@ -5,6 +5,7 @@ import it.polimi.ingsw.Model.Enumerations.SPColour;
 import it.polimi.ingsw.Model.Exceptions.AnotherTowerException;
 import it.polimi.ingsw.Model.Exceptions.ExceededMaxTowersException;
 import it.polimi.ingsw.Model.Exceptions.InvalidTowerNumberException;
+import it.polimi.ingsw.Model.Exceptions.TowerNotFoundException;
 import it.polimi.ingsw.Model.Player;
 
 public class ExcludeColourFromCounting extends AbstractCharacterCard{
@@ -16,7 +17,7 @@ public class ExcludeColourFromCounting extends AbstractCharacterCard{
     }
 
     public void useEffect(Player currentPlayer, SPColour colourToExclude) throws
-            InvalidTowerNumberException, AnotherTowerException, ExceededMaxTowersException {
+            InvalidTowerNumberException, AnotherTowerException, ExceededMaxTowersException, TowerNotFoundException {
 
         boardAdvanced.setColourToExclude(colourToExclude);
         boardAdvanced.tryToConquer(currentPlayer);

@@ -16,7 +16,7 @@ public class TakeProfessorOnEquity extends AbstractCharacterCard{
         this.boardAdvanced = boardAdvanced;
     }
 
-    public void useEffect(Player currentPlayer) throws ProfessorNotFoundException, NoProfessorBagException, InvalidTowerNumberException, AnotherTowerException, ExceededMaxTowersException {
+    public void useEffect(Player currentPlayer) throws ProfessorNotFoundException, NoProfessorBagException, InvalidTowerNumberException, AnotherTowerException, ExceededMaxTowersException, TowerNotFoundException {
         School currentSchoolPlayer = boardAdvanced.getPlayerSchool(currentPlayer);
 
         for(SPColour colour: availableColours) {

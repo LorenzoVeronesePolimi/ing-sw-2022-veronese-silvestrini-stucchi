@@ -359,6 +359,8 @@ public class Controller implements Observer {
                 e.printStackTrace();
             } catch (ExceededMaxTowersException e) {
                 e.printStackTrace();
+            } catch (TowerNotFoundException e) {
+                e.printStackTrace();
             }
             controllerState.setState(State.ACTION3);
             return true;

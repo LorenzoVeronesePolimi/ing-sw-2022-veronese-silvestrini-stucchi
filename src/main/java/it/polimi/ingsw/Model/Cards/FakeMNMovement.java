@@ -4,6 +4,7 @@ import it.polimi.ingsw.Model.Board.BoardAdvanced;
 import it.polimi.ingsw.Model.Exceptions.AnotherTowerException;
 import it.polimi.ingsw.Model.Exceptions.ExceededMaxTowersException;
 import it.polimi.ingsw.Model.Exceptions.InvalidTowerNumberException;
+import it.polimi.ingsw.Model.Exceptions.TowerNotFoundException;
 import it.polimi.ingsw.Model.Player;
 
 public class FakeMNMovement extends AbstractCharacterCard{
@@ -16,7 +17,7 @@ public class FakeMNMovement extends AbstractCharacterCard{
     }
 
     public void useEffect(Player currentPlayer, int fakeMNPosition) throws
-            InvalidTowerNumberException, AnotherTowerException, ExceededMaxTowersException {
+            InvalidTowerNumberException, AnotherTowerException, ExceededMaxTowersException, TowerNotFoundException {
 
         int mnRealPosition = boardAdvanced.whereIsMotherNature();
 

@@ -153,13 +153,7 @@ public class BoardAdvancedTest {
             e.printStackTrace();
         }
 
-        try {
-            boardAdvanced.moveStudentBagToSchool(1);
-        } catch (ExceededMaxStudentsHallException e) {
-            e.printStackTrace();
-        } catch (StudentNotFoundException e) {
-            e.printStackTrace();
-        }
+        Assertions.assertThrows(ExceededMaxStudentsHallException.class, () -> finalBoardAdvanced.moveStudentBagToSchool(1));
 
         boardAdvanced.moveMotherNature(1);
         Assertions.assertEquals(1, boardAdvanced.whereIsMotherNature());
