@@ -168,7 +168,7 @@ public class BoardAdvanced implements Board{
     }
 
     public void tryToConquer(Player currentPlayer) throws
-            InvalidTowerNumberException, AnotherTowerException, ExceededMaxTowersException {
+            InvalidTowerNumberException, AnotherTowerException, ExceededMaxTowersException, TowerNotFoundException {
         int currPosMotherNature = this.board.whereIsMotherNature();
         boolean archipelagoConquerable = this.checkIfConquerable(currentPlayer);
         if(archipelagoConquerable){
