@@ -129,6 +129,14 @@ public class Controller implements Observer {
                 if(!this.manageCCPlaceOneStudent((MessageCCPlaceOneStudent)message)){
                     System.out.println("Wrong parameters");
                 }
+            case CC_TOWER_NO_VALUE:
+                if(!this.manageCCTowerNoValue((MessageCCTowerNoValue)message)){
+                    System.out.println("Wrong parameters");
+                }
+            case CC_TWO_EXTRA_POINTS:
+                if(!this.manageCCTwoExtraPoints((MessageCCTwoExtraPoints)message)){
+                    System.out.println("Wrong parameters");
+                }
         }
 
         //check if I have to make some automatic action (=>PIANIFICATION1)
@@ -204,6 +212,34 @@ public class Controller implements Observer {
         switch(type){
             case CC_EXCHANGE_THREE_STUDENTS:
                 if (chosenCard instanceof ExchangeThreeStudents){
+                    return chosenCard;
+                }
+            case CC_EXCLUDE_COLOUR_FROM_COUNTING:
+                if (chosenCard instanceof ExcludeColourFromCounting){
+                    return chosenCard;
+                }
+            case CC_EXTRA_STUDENT_IN_DINING:
+                if (chosenCard instanceof ExtraStudentInDining){
+                    return chosenCard;
+                }
+            case CC_FAKE_MN_MOVEMENT:
+                if (chosenCard instanceof FakeMNMovement){
+                    return chosenCard;
+                }
+            case CC_FORBID_ISLAND:
+                if (chosenCard instanceof ForbidIsland){
+                    return chosenCard;
+                }
+            case CC_PLACE_ONE_STUDENT:
+                if (chosenCard instanceof PlaceOneStudent){
+                    return chosenCard;
+                }
+            case CC_TOWER_NO_VALUE:
+                if (chosenCard instanceof TowerNoValue){
+                    return chosenCard;
+                }
+            case CC_TWO_EXTRA_POINTS:
+                if (chosenCard instanceof TwoExtraPoints){
                     return chosenCard;
                 }
         }
@@ -608,6 +644,30 @@ public class Controller implements Observer {
                 AnotherTowerException |
                 ExceededMaxTowersException |
                 TowerNotFoundException e) {
+            return false;
+        }
+
+        return false;
+    }
+
+    private boolean manageCCTwoExtraPoints(MessageCCTwoExtraPoints message){
+        int indexCard = message.getIndexCard();
+        String nicknamePlayer = message.getNicknamePlayer();
+
+        if(!isCurrentPlayer(nicknamePlayer)){return false;}
+
+        try {
+            if(controllerIntegrity.checkCCGeneric()){
+                TwoExtraPoints chosenCard = (TwoExtraPoints)this.mapIndexToCharacterCard(MessageType.CC_TWO_EXTRA_POINTS, indexCard);
+                chosenCard.useEffect(this.players.get(this.currentPlayerIndex));
+
+                return true;
+            }
+        } catch (NoCorrespondingCharacterCardException |
+                TowerNotFoundException |
+                InvalidTowerNumberException |
+                AnotherTowerException |
+                ExceededMaxTowersException e) {
             return false;
         }
 

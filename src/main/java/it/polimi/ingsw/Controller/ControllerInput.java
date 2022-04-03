@@ -75,6 +75,9 @@ public class ControllerInput {
             case CC_TOWER_NO_VALUE:
                 return (this.checkIndexCard(((MessageCC)message).getIndexCard()) &&
                         this.checkNickname(((MessageCCTowerNoValue)message).getNicknamePlayer()));
+            case CC_TWO_EXTRA_POINTS:
+                return (this.checkIndexCard(((MessageCC)message).getIndexCard()) &&
+                        this.checkNickname(((MessageCCTwoExtraPoints)message).getNicknamePlayer()));
         }
 
         return false;
