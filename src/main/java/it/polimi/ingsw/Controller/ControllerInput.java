@@ -46,6 +46,11 @@ public class ControllerInput {
                         this.checkNickname(((MessageCCExchangeThreeStudents)message).getNicknamePlayer()) &&
                         this.checkMultipleStudentColour(((MessageCCExchangeThreeStudents)message).getColoursCard()) &&
                         this.checkMultipleStudentColour(((MessageCCExchangeThreeStudents)message).getColoursHall()));
+            case CC_EXCHANGE_TWO_HALL_DINING:
+                return (this.checkIndexCard(((MessageCC)message).getIndexCard()) &&
+                        this.checkNickname(((MessageCCExchangeTwoHallDining)message).getNicknamePlayer()) &&
+                        this.checkMultipleStudentColour(((MessageCCExchangeTwoHallDining)message).getColoursHall()) &&
+                        this.checkMultipleStudentColour(((MessageCCExchangeTwoHallDining)message).getColoursDiningRoom()));
         }
 
         return false;

@@ -11,6 +11,7 @@ import it.polimi.ingsw.Model.Board.BoardAdvanced;
 import it.polimi.ingsw.Model.Board.BoardFactory;
 import it.polimi.ingsw.Model.Cards.AbstractCharacterCard;
 import it.polimi.ingsw.Model.Cards.ExchangeThreeStudents;
+import it.polimi.ingsw.Model.Cards.ExchangeTwoHallDining;
 import it.polimi.ingsw.Model.Enumerations.PlayerColour;
 import it.polimi.ingsw.Model.Enumerations.SPColour;
 import it.polimi.ingsw.Model.Exceptions.*;
@@ -104,6 +105,10 @@ public class Controller implements Observer {
                 }
             case CC_EXCHANGE_THREE_STUDENTS:
                 if(!this.manageCCExchangeThreeStudents((MessageCCExchangeThreeStudents)message)){
+                    System.out.println("Wrong parameters");
+                }
+            case CC_EXCHANGE_TWO_HALL_DINING:
+                if(!this.manageCCExchangeTwoHallDining((MessageCCExchangeTwoHallDining)message)){
                     System.out.println("Wrong parameters");
                 }
         }
@@ -419,7 +424,33 @@ public class Controller implements Observer {
                 chosenCard.useEffect(this.players.get(this.currentPlayerIndex), coloursHall, coloursCard);
                 return true;
             }
-        } catch(NoCorrespondingCharacterCardException | WrongNumberOfStudentsTransferExcpetion | StudentNotFoundException | ExceededMaxStudentsHallException ex){return false;}
+        } catch(NoCorrespondingCharacterCardException |
+                WrongNumberOfStudentsTransferExcpetion |
+                StudentNotFoundException |
+                ExceededMaxStudentsHallException ex){return false;}
+
+        return false;
+    }
+
+    private boolean manageCCExchangeTwoHallDining(MessageCCExchangeTwoHallDining message){
+        int indexCard = message.getIndexCard();
+        String nicknamePlayer = message.getNicknamePlayer();
+        List<SPColour> coloursHall = this.mapListStringToColour(message.getColoursHall());
+        List<SPColour> coloursDiningRoom = this.mapListStringToColour(message.getColoursDiningRoom());
+
+        if(!isCurrentPlayer(nicknamePlayer)){return false;}
+
+        try {
+            ExchangeTwoHallDining chosenCard = (ExchangeTwoHallDining)this.mapIndexToCharacterCard(MessageType.CC_EXCHANGE_THREE_STUDENTS, indexCard);
+            if(controllerIntegrity.checkCCExchangeTwoHallDining(this.players.get(this.currentPlayerIndex), coloursHall, coloursDiningRoom, chosenCard)){
+                chosenCard.useEffect(this.players.get(this.currentPlayerIndex), coloursHall, coloursDiningRoom);
+                return true;
+            }
+        } catch (NoCorrespondingCharacterCardException |
+                WrongNumberOfStudentsTransferExcpetion |
+                StudentNotFoundException |
+                ExceededMaxStudentsHallException |
+                ExceededMaxStudentsDiningRoomException e) {return false;}
 
         return false;
     }

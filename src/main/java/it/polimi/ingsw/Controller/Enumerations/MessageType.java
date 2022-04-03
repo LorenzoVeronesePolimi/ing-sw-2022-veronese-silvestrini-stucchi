@@ -10,4 +10,5 @@ public enum MessageType {
     STUDENT_CLOUD_TO_SCHOOL,
     //CharactedCards
     CC_EXCHANGE_THREE_STUDENTS,
+    CC_EXCHANGE_TWO_HALL_DINING
 }
