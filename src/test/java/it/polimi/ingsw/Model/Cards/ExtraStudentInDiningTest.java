@@ -63,13 +63,17 @@ public class ExtraStudentInDiningTest {
 
         Assertions.assertEquals(2,((SchoolAdvanced)boardAdvanced.getSchools().get(0)).getNumCoins());
 
-        /* TODO: the result of this test is random, because we can't know which students are on the card (maybe there is no pink student)
-        try {
-            boardAdvanced.useExtraStudentInDining(p1,SPColour.PINK);
-            Assertions.assertEquals(1, boardAdvanced.getSchools().get(0).getNumStudentColour(SPColour.PINK));
-        } catch (EmptyCaveauExcepion | ExceededMaxNumCoinException | CoinNotFoundException | StudentNotFoundException | ExceededMaxStudentsDiningRoomException e) {
-            e.printStackTrace();
+        if(card.getStudentOnCard().stream().filter(x -> x.getColour().equals(SPColour.PINK)).count()>=1){
+            try {
+                boardAdvanced.useExtraStudentInDining(p1,SPColour.PINK);
+                Assertions.assertEquals(1, boardAdvanced.getSchools().get(0).getNumStudentColour(SPColour.PINK));
+            } catch (EmptyCaveauExcepion | ExceededMaxNumCoinException | CoinNotFoundException | StudentNotFoundException | ExceededMaxStudentsDiningRoomException e) {
+                e.printStackTrace();
+            }
+        }else{
+            BoardAdvanced finalBoardAdvanced = boardAdvanced;
+            Assertions.assertThrows(StudentNotFoundException.class, () -> finalBoardAdvanced.moveStudentHallToDiningRoom(p1, SPColour.BLUE));
         }
-         */
+
     }
 }
