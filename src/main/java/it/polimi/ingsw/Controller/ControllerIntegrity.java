@@ -2,6 +2,7 @@ package it.polimi.ingsw.Controller;
 
 import it.polimi.ingsw.Model.Board.Board;
 import it.polimi.ingsw.Model.Board.BoardAdvanced;
+import it.polimi.ingsw.Model.Cards.ExchangeThreeStudents;
 import it.polimi.ingsw.Model.Enumerations.SPColour;
 import it.polimi.ingsw.Model.Pawns.Student;
 import it.polimi.ingsw.Model.Places.Cloud;
@@ -29,6 +30,25 @@ public class ControllerIntegrity {
 
     public void setAdvanced(boolean advanced){
         this.advanced = advanced;
+    }
+
+    private boolean enoughColoursInListStudents(List<SPColour> coloursToHave, List<Student> available){
+        int equal = 0;
+        for(SPColour c : coloursToHave){
+            for(Student s : available){
+                if(s.getColour() == c){
+                    available.remove(s);
+                    equal++;
+                    break;
+                }
+            }
+        }
+        if(equal == coloursToHave.size()){
+            return true;
+        }
+        else{
+            return false;
+        }
     }
 
     public boolean checkCreateMatch(int numPlayers){
@@ -81,36 +101,17 @@ public class ControllerIntegrity {
         } else{return false;}
     }
 
-    public boolean checkCCExchangeThreeStudents(Player player, List<SPColour> coloursCard, List<SPColour> coloursSchool){
+    public boolean checkCCExchangeThreeStudents(Player player, List<SPColour> coloursCard, List<SPColour> coloursSchool, ExchangeThreeStudents chosenCard){
         if(!this.advanced){return false;}
 
         if(coloursCard.size() != coloursSchool.size()){return false;}
 
         // all Students in the Hall
         List<Student> availableSchool = this.board.getPlayerSchool(player).getStudentsHall();
-        int equalsSchool = 0;
-        for(SPColour c : coloursSchool){
-            for(Student s : availableSchool){
-                if(s.getColour() == c){
-                    availableSchool.remove(s);
-                    equalsSchool++;
-                    break;
-                }
-            }
+        if(enoughColoursInListStudents(coloursSchool, chosenCard.getStudents()) &&
+            enoughColoursInListStudents(coloursCard, this.board.getPlayerSchool(player).getStudentsHall())){
+            return true;
         }
-        /*
-        // all Students on the Card
-        //TODO: List<Student> availableCard = this.boardAdvanced.get;
-        int equalsCard = 0;
-        for(SPColour c : coloursSchool){
-            for(Student s : availableCard){
-                if(s.getColour() == c){
-                    availableCard.remove(s);
-                    equalsCard++;
-                    break;
-                }
-            }
-        }*/
-        return false;
+        else{return false;}
     }
 }
