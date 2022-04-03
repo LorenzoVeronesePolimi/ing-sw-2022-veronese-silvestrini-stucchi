@@ -1,12 +1,16 @@
 package it.polimi.ingsw.Controller;
 
+import it.polimi.ingsw.Controller.Enumerations.MessageType;
 import it.polimi.ingsw.Controller.Enumerations.State;
+import it.polimi.ingsw.Controller.Exceptions.NoCorrespondingCharacterCardException;
 import it.polimi.ingsw.Controller.Exceptions.NoPlayerException;
 import it.polimi.ingsw.Controller.Messages.*;
 import it.polimi.ingsw.Model.Board.Board;
 import it.polimi.ingsw.Model.Board.BoardAbstract;
 import it.polimi.ingsw.Model.Board.BoardAdvanced;
 import it.polimi.ingsw.Model.Board.BoardFactory;
+import it.polimi.ingsw.Model.Cards.AbstractCharacterCard;
+import it.polimi.ingsw.Model.Cards.ExchangeThreeStudents;
 import it.polimi.ingsw.Model.Enumerations.PlayerColour;
 import it.polimi.ingsw.Model.Enumerations.SPColour;
 import it.polimi.ingsw.Model.Exceptions.*;
@@ -168,6 +172,19 @@ public class Controller implements Observer {
         }
 
         throw new NoPlayerException();
+    }
+
+    private AbstractCharacterCard mapIndexToCharacterCard(MessageType type, int indexCard) throws NoCorrespondingCharacterCardException{
+        AbstractCharacterCard chosenCard = this.boardAdvanced.getExtractedCards().get(indexCard);
+
+        // is this card corresponding to the index chosen?
+        switch(type){
+            case CC_EXCHANGE_THREE_STUDENTS:
+                if (chosenCard instanceof ExchangeThreeStudents){
+                    return chosenCard;
+                }
+        }
+        throw new NoCorrespondingCharacterCardException();
     }
 
     // checks if nickname is the current Player
@@ -387,18 +404,23 @@ public class Controller implements Observer {
         return false;
     }
 
-
-
-
     //--------------------------------------------------CHARACTER CARDS
     private boolean manageCCExchangeThreeStudents(MessageCCExchangeThreeStudents message){
+        int indexCard = message.getIndexCard();
         String nicknamePlayer = message.getNicknamePlayer();
         List<SPColour> coloursCard = this.mapListStringToColour(message.getColoursCard());
         List<SPColour> coloursHall = this.mapListStringToColour(message.getColoursHall());
 
         if(!isCurrentPlayer(nicknamePlayer)){return false;}
 
-        //TODO
+        try{
+            ExchangeThreeStudents chosenCard = (ExchangeThreeStudents)this.mapIndexToCharacterCard(MessageType.CC_EXCHANGE_THREE_STUDENTS, indexCard);
+            if(controllerIntegrity.checkCCExchangeThreeStudents(this.players.get(this.currentPlayerIndex), coloursCard, coloursHall, chosenCard)){
+                chosenCard.useEffect(this.players.get(this.currentPlayerIndex), coloursHall, coloursCard);
+                return true;
+            }
+        } catch(NoCorrespondingCharacterCardException | WrongNumberOfStudentsTransferExcpetion | StudentNotFoundException | ExceededMaxStudentsHallException ex){return false;}
+
         return false;
     }
 }

@@ -104,6 +104,10 @@ public class BoardAdvanced implements Board {
         return this.board.getArchipelago(archipelagoIndex);
     }
 
+    public List<AbstractCharacterCard> getExtractedCards(){
+        return new ArrayList<AbstractCharacterCard>(this.extractedCards);
+    }
+
     public boolean isStudentInSchoolHall(Player player, SPColour c){
         return this.board.isStudentInSchoolHall(player, c);
     }

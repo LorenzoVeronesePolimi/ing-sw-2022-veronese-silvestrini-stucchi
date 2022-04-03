@@ -5,7 +5,7 @@ import java.util.List;
 
 import static it.polimi.ingsw.Controller.Enumerations.MessageType.CC_EXCHANGE_THREE_STUDENTS;
 
-public class MessageCCExchangeThreeStudents extends Message{
+public class MessageCCExchangeThreeStudents extends MessageCC{
     private String nicknamePlayer;
     private String colourCard1;
     private String colourCard2;
@@ -15,8 +15,8 @@ public class MessageCCExchangeThreeStudents extends Message{
     private String colourHall3;
 
 
-    public MessageCCExchangeThreeStudents(String nicknamePlayer, String cc1, String cc2, String cc3, String ch1, String ch2, String ch3){
-        super(CC_EXCHANGE_THREE_STUDENTS);
+    public MessageCCExchangeThreeStudents(int indexCard, String nicknamePlayer, String cc1, String cc2, String cc3, String ch1, String ch2, String ch3){
+        super(CC_EXCHANGE_THREE_STUDENTS, indexCard);
         this.nicknamePlayer = nicknamePlayer;
         this.colourCard1 = cc1;
         this.colourCard2 = cc2;

@@ -42,7 +42,8 @@ public class ControllerInput {
                 return (this.checkNickname(((MessageStudentCloudToSchool)message).getNicknamePlayer()) &&
                         this.checkCloudIndex(((MessageStudentCloudToSchool)message).getIndexCloud()));
             case CC_EXCHANGE_THREE_STUDENTS:
-                return (this.checkNickname(((MessageCCExchangeThreeStudents)message).getNicknamePlayer()) &&
+                return (this.checkIndexCard(((MessageCC)message).getIndexCard()) &&
+                        this.checkNickname(((MessageCCExchangeThreeStudents)message).getNicknamePlayer()) &&
                         this.checkMultipleStudentColour(((MessageCCExchangeThreeStudents)message).getColoursCard()) &&
                         this.checkMultipleStudentColour(((MessageCCExchangeThreeStudents)message).getColoursHall()));
         }
@@ -95,5 +96,9 @@ public class ControllerInput {
 
     private boolean checkCloudIndex(int i){
         return (i >= 0 && i <=4);
+    }
+
+    private boolean checkIndexCard(int i){
+        return (i>=0 && i <= 2);
     }
 }

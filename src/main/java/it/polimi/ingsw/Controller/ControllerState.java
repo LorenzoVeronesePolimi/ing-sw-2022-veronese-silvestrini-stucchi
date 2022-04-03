@@ -29,6 +29,9 @@ public class ControllerState {
                 return (this.state == State.ACTION2);
             case STUDENT_CLOUD_TO_SCHOOL:
                 return (this.state == State.ACTION3);
+            case CC_EXCHANGE_THREE_STUDENTS:
+                return (this.state != State.CONNECTING &&
+                        this.state != State.WAITING_PLAYERS);
         }
         return false;
     }
