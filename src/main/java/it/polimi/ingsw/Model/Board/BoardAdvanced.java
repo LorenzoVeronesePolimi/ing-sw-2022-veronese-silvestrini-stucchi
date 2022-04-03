@@ -162,6 +162,10 @@ public class BoardAdvanced implements Board {
         this.board.moveMotherNature(mnMoves);
     }
 
+    public void moveMotherNatureInArchipelagoIndex(int index){
+        this.board.moveMotherNatureInArchipelagoIndex(index);
+    }
+
     public void moveProfessor(Player destinationPlayer, SPColour colour) throws ProfessorNotFoundException, NoProfessorBagException {
         this.board.moveProfessor(destinationPlayer, colour);
     }

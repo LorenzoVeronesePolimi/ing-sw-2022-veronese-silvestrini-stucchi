@@ -144,6 +144,10 @@ public abstract class BoardAbstract implements Board{
             mn.putInPosition(archipelagos.get((whereIsMotherNature() + mnMoves) % archipelagos.size()));
     }
 
+    public void moveMotherNatureInArchipelagoIndex(int index){
+        mn.putInPosition(archipelagos.get(index));
+    }
+
     public void moveStudentSchoolToArchipelagos(Player player, SPColour colour, int archipelagoIndex) throws StudentNotFoundException {
         //school related to the player that made the move
         School currentSchool = playerSchool.get(player);

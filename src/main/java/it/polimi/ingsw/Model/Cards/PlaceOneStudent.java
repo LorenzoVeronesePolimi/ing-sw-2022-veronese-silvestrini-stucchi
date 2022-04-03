@@ -14,6 +14,10 @@ public class PlaceOneStudent extends AbstractCharacterCard{
     private List<Student> fourStudents;
     private final Bag bag;
 
+    public List<Student> getCardStudents(){
+        return fourStudents;
+    }
+
     public PlaceOneStudent(BoardAdvanced boardAdvanced) {
         super(1);
         this.boardAdvanced = boardAdvanced;
