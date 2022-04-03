@@ -9,9 +9,7 @@ import it.polimi.ingsw.Model.Board.Board;
 import it.polimi.ingsw.Model.Board.BoardAbstract;
 import it.polimi.ingsw.Model.Board.BoardAdvanced;
 import it.polimi.ingsw.Model.Board.BoardFactory;
-import it.polimi.ingsw.Model.Cards.AbstractCharacterCard;
-import it.polimi.ingsw.Model.Cards.ExchangeThreeStudents;
-import it.polimi.ingsw.Model.Cards.ExchangeTwoHallDining;
+import it.polimi.ingsw.Model.Cards.*;
 import it.polimi.ingsw.Model.Enumerations.PlayerColour;
 import it.polimi.ingsw.Model.Enumerations.SPColour;
 import it.polimi.ingsw.Model.Exceptions.*;
@@ -109,6 +107,26 @@ public class Controller implements Observer {
                 }
             case CC_EXCHANGE_TWO_HALL_DINING:
                 if(!this.manageCCExchangeTwoHallDining((MessageCCExchangeTwoHallDining)message)){
+                    System.out.println("Wrong parameters");
+                }
+            case CC_EXCLUDE_COLOUR_FROM_COUNTING:
+                if(!this.manageCCExcludeColourFromCounting((MessageCCExcludeColourFromCounting)message)){
+                    System.out.println("Wrong parameters");
+                }
+            case CC_EXTRA_STUDENT_IN_DINING:
+                if(!this.manageCCExtraStudentInDining((MessageCCExtraStudentInDining)message)){
+                    System.out.println("Wrong parameters");
+                }
+            case CC_FAKE_MN_MOVEMENT:
+                if(!this.manageCCFakeMNMovement((MessageCCFakeMNMovement)message)){
+                    System.out.println("Wrong parameters");
+                }
+            case CC_FORBID_ISLAND:
+                if(!this.manageCCForbidIsland((MessageCCForbidIsland)message)){
+                    System.out.println("Wrong parameters");
+                }
+            case CC_PLACE_ONE_STUDENT:
+                if(!this.manageCCPlaceOneStudent((MessageCCPlaceOneStudent)message)){
                     System.out.println("Wrong parameters");
                 }
         }
@@ -422,6 +440,7 @@ public class Controller implements Observer {
             ExchangeThreeStudents chosenCard = (ExchangeThreeStudents)this.mapIndexToCharacterCard(MessageType.CC_EXCHANGE_THREE_STUDENTS, indexCard);
             if(controllerIntegrity.checkCCExchangeThreeStudents(this.players.get(this.currentPlayerIndex), coloursCard, coloursHall, chosenCard)){
                 chosenCard.useEffect(this.players.get(this.currentPlayerIndex), coloursHall, coloursCard);
+
                 return true;
             }
         } catch(NoCorrespondingCharacterCardException |
@@ -444,6 +463,7 @@ public class Controller implements Observer {
             ExchangeTwoHallDining chosenCard = (ExchangeTwoHallDining)this.mapIndexToCharacterCard(MessageType.CC_EXCHANGE_THREE_STUDENTS, indexCard);
             if(controllerIntegrity.checkCCExchangeTwoHallDining(this.players.get(this.currentPlayerIndex), coloursHall, coloursDiningRoom, chosenCard)){
                 chosenCard.useEffect(this.players.get(this.currentPlayerIndex), coloursHall, coloursDiningRoom);
+
                 return true;
             }
         } catch (NoCorrespondingCharacterCardException |
@@ -451,6 +471,145 @@ public class Controller implements Observer {
                 StudentNotFoundException |
                 ExceededMaxStudentsHallException |
                 ExceededMaxStudentsDiningRoomException e) {return false;}
+
+        return false;
+    }
+
+    private boolean manageCCExcludeColourFromCounting(MessageCCExcludeColourFromCounting message){
+        int indexCard = message.getIndexCard();
+        String nicknamePlayer = message.getNicknamePlayer();
+
+        if(!isCurrentPlayer(nicknamePlayer)){return false;}
+
+        if(controllerIntegrity.checkCCGeneric()){
+            try {
+                ExcludeColourFromCounting chosenCard = (ExcludeColourFromCounting)this.mapIndexToCharacterCard(MessageType.CC_EXCLUDE_COLOUR_FROM_COUNTING, indexCard);
+                chosenCard.useEffect(this.players.get(this.currentPlayerIndex), this.mapStringToSPColour(message.getColourToExclude()));
+
+                return true;
+            } catch (NoCorrespondingCharacterCardException |
+                    InvalidTowerNumberException |
+                    AnotherTowerException |
+                    ExceededMaxTowersException |
+                    TowerNotFoundException e) {
+                return false;
+            }
+        }
+
+        return false;
+    }
+
+    private boolean manageCCExtraStudentInDining(MessageCCExtraStudentInDining message){
+        int indexCard = message.getIndexCard();
+        String nicknamePlayer = message.getNicknamePlayer();
+        SPColour colourToMove = mapStringToSPColour(message.getColourToMove());
+
+        if(!isCurrentPlayer(nicknamePlayer)){return false;}
+
+        if(controllerIntegrity.checkCCGeneric()){
+            try {
+                ExtraStudentInDining chosenCard = (ExtraStudentInDining)this.mapIndexToCharacterCard(MessageType.CC_EXTRA_STUDENT_IN_DINING, indexCard);
+                chosenCard.useEffect(this.players.get(this.currentPlayerIndex), colourToMove);
+
+                return true;
+            } catch (NoCorrespondingCharacterCardException |
+                    ExceededMaxStudentsDiningRoomException |
+                    StudentNotFoundException e) {
+                return false;
+            }
+        }
+
+        return false;
+    }
+
+    private boolean manageCCFakeMNMovement(MessageCCFakeMNMovement message){
+        int indexCard = message.getIndexCard();
+        String nicknamePlayer = message.getNicknamePlayer();
+        int fakeMNPosition = message.getFakeMNPosition();
+
+        if(!isCurrentPlayer(nicknamePlayer)){return false;}
+
+        if(controllerIntegrity.checkCCFakeMNMovement(fakeMNPosition)){
+            try {
+                FakeMNMovement chosenCard = (FakeMNMovement)this.mapIndexToCharacterCard(MessageType.CC_FAKE_MN_MOVEMENT, indexCard);
+                chosenCard.useEffect(this.players.get(currentPlayerIndex), fakeMNPosition);
+
+                return true;
+            } catch (NoCorrespondingCharacterCardException |
+                    TowerNotFoundException |
+                    InvalidTowerNumberException |
+                    AnotherTowerException |
+                    ExceededMaxTowersException e) {
+                return false;
+            }
+        }
+
+        return false;
+    }
+
+    private boolean manageCCForbidIsland(MessageCCForbidIsland message){
+        int indexCard = message.getIndexCard();
+        String nicknamePlayer = message.getNicknamePlayer();
+        int archipelagoIndexToForbid = message.getArchipelagoIndexToForbid();
+
+        if(!isCurrentPlayer(nicknamePlayer)){return false;}
+
+        if(controllerIntegrity.checkCCForbidIsland(archipelagoIndexToForbid)){
+            try {
+                ForbidIsland chosenCard = (ForbidIsland)this.mapIndexToCharacterCard(MessageType.CC_FORBID_ISLAND, indexCard);
+                chosenCard.useEffect(archipelagoIndexToForbid);
+
+                return true;
+            } catch (NoCorrespondingCharacterCardException e) {
+                e.printStackTrace();
+            }
+        }
+        return false;
+    }
+
+    private boolean manageCCPlaceOneStudent(MessageCCPlaceOneStudent message){
+        int indexCard = message.getIndexCard();
+        String nicknamePlayer = message.getNicknamePlayer();
+        SPColour colourToMove = mapStringToSPColour(message.getColourToMove());
+        int archipelagoIndexDest = message.getArchipelagoIndexDest();
+
+        if(!isCurrentPlayer(nicknamePlayer)){return false;}
+
+        try {
+            PlaceOneStudent chosenCard = (PlaceOneStudent)this.mapIndexToCharacterCard(MessageType.CC_PLACE_ONE_STUDENT, indexCard);
+            if(controllerIntegrity.checkCCPlaceOneStudent(colourToMove, archipelagoIndexDest, chosenCard)){
+                chosenCard.useEffect(colourToMove, archipelagoIndexDest);
+
+                return true;
+            }
+        } catch (NoCorrespondingCharacterCardException |
+                StudentNotFoundException e) {
+            return false;
+        }
+
+        return false;
+    }
+
+    private boolean manageCCTowerNoValue(MessageCCTowerNoValue message){
+        int indexCard = message.getIndexCard();
+        String nicknamePlayer = message.getNicknamePlayer();
+
+        if(!isCurrentPlayer(nicknamePlayer)){return false;}
+
+        try {
+            if(controllerIntegrity.checkCCGeneric()){
+                TowerNoValue chosenCard = (TowerNoValue)this.mapIndexToCharacterCard(MessageType.CC_TOWER_NO_VALUE, indexCard);
+                chosenCard.useEffect(this.players.get(this.currentPlayerIndex));
+
+                return true;
+            }
+        } catch (NoCorrespondingCharacterCardException |
+                InvalidTowerNumberException |
+                AnotherTowerException |
+                ExceededMaxTowersException |
+                TowerNotFoundException e) {
+            return false;
+        }
 
         return false;
     }
