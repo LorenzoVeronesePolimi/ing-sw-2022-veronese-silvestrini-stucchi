@@ -288,7 +288,7 @@ public class BoardAdvanced implements Board {
                 challengerInfluence += 2;
             }
 
-            if (ownerInfluence > challengerInfluence) {
+            if (ownerInfluence >= challengerInfluence) {
                 return owner;
             } else {
                 return challenger;

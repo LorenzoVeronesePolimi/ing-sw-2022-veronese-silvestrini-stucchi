@@ -17,7 +17,9 @@ public class ReduceColourInDining extends AbstractCharacterCard{
     public void useEffect(SPColour colour) throws StudentNotFoundException {
         for(School s: boardAdvanced.getSchools()){
             for(int i=0; i<3; i++){
-                bag.putStudent(s.removeStudentDiningRoom(colour));
+                if(s.getNumStudentColour(colour)>0) {
+                    bag.putStudent(s.removeStudentDiningRoom(colour));
+                }
             }
         }
     }
