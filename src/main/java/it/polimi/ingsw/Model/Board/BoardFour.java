@@ -8,6 +8,7 @@ import it.polimi.ingsw.Model.Places.Cloud;
 import it.polimi.ingsw.Model.Places.School.School;
 import it.polimi.ingsw.Model.Player;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -18,7 +19,9 @@ public class BoardFour extends BoardAbstract {
     public BoardFour(List<Player> players) throws
             ExceedingAssistantCardNumberException, NullContentException, StudentNotFoundException, ExceededMaxStudentsCloudException, ExceededMaxStudentsHallException {
         super(players);
-        School s;
+        this.schools = new ArrayList<>();
+        this.playerSchool = new HashMap<>();
+        this.clouds = new ArrayList<>();
 
         teammates = new HashMap<>();
         teammates.put(players.get(0), players.get(1));
@@ -28,17 +31,19 @@ public class BoardFour extends BoardAbstract {
 
         //creation of a map player -> school
         for (int i = 0; i < players.size(); i++) {
+            School s;
+            Cloud cloud = new Cloud(3);
+
             if (i % 2 == 0) {
                 s = new School(players.get(i), 7, 8);
             } else {
                 s = new School(players.get(i), 7, 0);
 
             }
-            schools.add(s);
-            playerSchool.put(players.get(i), s);
 
-            Cloud cloud = new Cloud(3);
-            clouds.add(cloud);
+            this.schools.add(s);
+            this.playerSchool.put(players.get(i), s);
+            this.clouds.add(cloud);
         }
         super.moveStudentBagToCloud();
         super.moveStudentBagToSchool(7);
