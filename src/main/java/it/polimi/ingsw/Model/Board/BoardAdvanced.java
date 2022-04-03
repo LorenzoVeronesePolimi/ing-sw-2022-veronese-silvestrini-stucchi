@@ -19,7 +19,7 @@ public class BoardAdvanced implements Board {
     private final BoardAbstract board;
     private boolean twoExtraPointsFlag = false;
     private SPColour colourToExclude=null;
-    private final List<AbstractCharacterCard> extractedCards;
+    private  List<AbstractCharacterCard> extractedCards; //is final... temporarily removed just for testing card usage
     private final Bank bank;
 
 
@@ -82,6 +82,12 @@ public class BoardAdvanced implements Board {
         extractedCards.add(cards.get(0));
         extractedCards.add(cards.get(1));
         extractedCards.add(cards.get(2));
+    }
+
+    //TODO: remove this method ad set final the extractedCard list...added just for testing
+    public void setExtractedCards(AbstractCharacterCard c){
+        extractedCards.clear();
+        extractedCards.add(c);
     }
 
     public Bag getBag(){return this.board.bag;}

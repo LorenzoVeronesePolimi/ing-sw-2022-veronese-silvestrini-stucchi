@@ -15,9 +15,9 @@ import org.junit.jupiter.api.Test;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ExchangeTwoHallDiningTest {
+public class ExcludeColourFromCountingTest {
     @Test
-    void ExchangeTwoHallDiningTest() {
+    void ExcludeColourFromCountingTest(){
         List<Player> playerList = new ArrayList<>();
         Player p1 = new Player("player one", PlayerColour.BLACK);
         Player p2 = new Player("player two", PlayerColour.WHITE);
@@ -25,7 +25,7 @@ public class ExchangeTwoHallDiningTest {
         playerList.add(p2);
 
         BoardFactory bf = new BoardFactory(playerList);
-        BoardAbstract board = bf.createBoard();
+        BoardAbstract board =  bf.createBoard();
         BoardAdvanced boardAdvanced = null;
         try {
             boardAdvanced = new BoardAdvanced(board);
@@ -39,11 +39,13 @@ public class ExchangeTwoHallDiningTest {
             e.printStackTrace();
         }
 
-        ExchangeTwoHallDining card = new ExchangeTwoHallDining(boardAdvanced);
+        ExcludeColourFromCounting card = new ExcludeColourFromCounting(boardAdvanced);
+        boardAdvanced.setExtractedCards(card);
 
-        for (int i = 0; i < 7; i++) {
+        for(int i=0; i<7; i++) {
             try {
                 boardAdvanced.getSchools().get(0).removeStudentHall(boardAdvanced.getSchools().get(0).getStudentsHall().get(0).getColour());
+                boardAdvanced.getSchools().get(1).removeStudentHall(boardAdvanced.getSchools().get(1).getStudentsHall().get(0).getColour());
             } catch (StudentNotFoundException e) {
                 e.printStackTrace();
             }
@@ -53,9 +55,11 @@ public class ExchangeTwoHallDiningTest {
         Student s2 = new Student(SPColour.BLUE);
         Student s3 = new Student(SPColour.BLUE);
         Student s4 = new Student(SPColour.BLUE);
-        Student s5 = new Student(SPColour.BLUE);
-        Student s6 = new Student(SPColour.BLUE);
-        Student s7 = new Student(SPColour.BLUE);
+        Student s5 = new Student(SPColour.PINK);
+        Student s6 = new Student(SPColour.PINK);
+        Student s7 = new Student(SPColour.PINK);
+        Student s8 = new Student(SPColour.RED);
+        Student s9 = new Student(SPColour.RED);
 
         try {
             boardAdvanced.getSchools().get(0).addStudentHall(s1);
@@ -65,69 +69,64 @@ public class ExchangeTwoHallDiningTest {
             boardAdvanced.getSchools().get(0).addStudentHall(s5);
             boardAdvanced.getSchools().get(0).addStudentHall(s6);
             boardAdvanced.getSchools().get(0).addStudentHall(s7);
-
+            boardAdvanced.getSchools().get(1).addStudentHall(s8);
+            boardAdvanced.getSchools().get(1).addStudentHall(s9);
         } catch (ExceededMaxStudentsHallException e) {
             e.printStackTrace();
         }
+
         try {
-            boardAdvanced.getSchools().get(0).moveStudentHallToDiningRoom(SPColour.BLUE);
-            boardAdvanced.getSchools().get(0).moveStudentHallToDiningRoom(SPColour.BLUE);
+            boardAdvanced.moveStudentHallToDiningRoom(p1,SPColour.BLUE);
+            boardAdvanced.moveStudentHallToDiningRoom(p1,SPColour.BLUE);
+            boardAdvanced.moveStudentHallToDiningRoom(p1,SPColour.BLUE);
+            boardAdvanced.moveStudentHallToDiningRoom(p1,SPColour.BLUE);
+            boardAdvanced.moveStudentHallToDiningRoom(p1,SPColour.PINK);
+            boardAdvanced.moveStudentHallToDiningRoom(p1,SPColour.PINK);
+            boardAdvanced.moveStudentHallToDiningRoom(p1,SPColour.PINK);
+            boardAdvanced.moveStudentHallToDiningRoom(p2,SPColour.RED);
+            boardAdvanced.moveStudentHallToDiningRoom(p2,SPColour.RED);
         } catch (StudentNotFoundException e) {
             e.printStackTrace();
         } catch (ExceededMaxStudentsDiningRoomException e) {
             e.printStackTrace();
-        }
-        Assertions.assertEquals(2, boardAdvanced.getSchools().get(0).getNumStudentColour(SPColour.BLUE));
-        Assertions.assertEquals(0, boardAdvanced.getSchools().get(0).getNumStudentColour(SPColour.PINK));
-        Assertions.assertEquals(0, boardAdvanced.getSchools().get(0).getNumStudentColour(SPColour.RED));
-        Assertions.assertEquals(0, boardAdvanced.getSchools().get(0).getNumStudentColour(SPColour.GREEN));
-        Assertions.assertEquals(0, boardAdvanced.getSchools().get(0).getNumStudentColour(SPColour.YELLOW));
-
-        Student s8 = new Student(SPColour.PINK);
-        Student s9 = new Student(SPColour.RED);
-
-        try {
-            boardAdvanced.getSchools().get(0).addStudentHall(s8);
-            boardAdvanced.getSchools().get(0).addStudentHall(s9);
-        } catch (ExceededMaxStudentsHallException e) {
+        } catch (EmptyCaveauExcepion e) {
+            e.printStackTrace();
+        } catch (ProfessorNotFoundException e) {
+            e.printStackTrace();
+        } catch (NoProfessorBagException e) {
             e.printStackTrace();
         }
 
-        boardAdvanced.setExtractedCards(card);
+        Assertions.assertEquals(boardAdvanced.getSchools().get(0),boardAdvanced.whereIsProfessor(SPColour.BLUE));
+        Assertions.assertEquals(boardAdvanced.getSchools().get(0),boardAdvanced.whereIsProfessor(SPColour.PINK));
+        Assertions.assertEquals(boardAdvanced.getSchools().get(1),boardAdvanced.whereIsProfessor(SPColour.RED));
+        Assertions.assertEquals(3,((SchoolAdvanced)boardAdvanced.getSchools().get(0)).getNumCoins());
+        Assertions.assertEquals(1,((SchoolAdvanced)boardAdvanced.getSchools().get(1)).getNumCoins());
 
-        List<SPColour> hallColours = new ArrayList<>();
-        hallColours.add(SPColour.PINK);
-        hallColours.add(SPColour.RED);
-
-        List<SPColour> diningColour = new ArrayList<>();
-        diningColour.add(SPColour.BLUE);
-        diningColour.add(SPColour.BLUE);
+        Student s10 = new Student(SPColour.BLUE);
+        Student s11 = new Student(SPColour.RED);
+        boardAdvanced.getArchiList().get(0).addStudent(s10);
+        boardAdvanced.getArchiList().get(0).addStudent(s11);
 
         try {
-            boardAdvanced.useExchangeTwoHallDining(p1,hallColours,diningColour);
+            boardAdvanced.useExcludeColourFromCounting(p1,SPColour.RED);
         } catch (EmptyCaveauExcepion e) {
             e.printStackTrace();
         } catch (ExceededMaxNumCoinException e) {
             e.printStackTrace();
         } catch (CoinNotFoundException e) {
             e.printStackTrace();
-        } catch (WrongNumberOfStudentsTransferExcpetion e) {
+        } catch (InvalidTowerNumberException e) {
             e.printStackTrace();
-        } catch (ExceededMaxStudentsDiningRoomException e) {
+        } catch (AnotherTowerException e) {
             e.printStackTrace();
-        } catch (ExceededMaxStudentsHallException e) {
+        } catch (ExceededMaxTowersException e) {
             e.printStackTrace();
-        } catch (StudentNotFoundException e) {
+        } catch (TowerNotFoundException e) {
             e.printStackTrace();
         }
 
-        Assertions.assertEquals(0, ((SchoolAdvanced)boardAdvanced.getSchools().get(0)).getNumCoins());
-
-        Assertions.assertEquals(0, boardAdvanced.getSchools().get(0).getNumStudentColour(SPColour.BLUE));
-        Assertions.assertEquals(1, boardAdvanced.getSchools().get(0).getNumStudentColour(SPColour.PINK));
-        Assertions.assertEquals(1, boardAdvanced.getSchools().get(0).getNumStudentColour(SPColour.RED));
-        Assertions.assertEquals(0, boardAdvanced.getSchools().get(0).getNumStudentColour(SPColour.GREEN));
-        Assertions.assertEquals(0, boardAdvanced.getSchools().get(0).getNumStudentColour(SPColour.YELLOW));
-
+        Assertions.assertEquals(0,((SchoolAdvanced)boardAdvanced.getSchools().get(0)).getNumCoins());
+        Assertions.assertEquals(p1,boardAdvanced.getArchiList().get(0).getOwner());
     }
 }

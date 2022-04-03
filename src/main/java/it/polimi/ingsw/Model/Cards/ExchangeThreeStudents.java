@@ -37,7 +37,7 @@ public class ExchangeThreeStudents extends AbstractCharacterCard{
     public void useEffect(Player player, List<SPColour> hallStudents, List<SPColour> exchangeStudents) throws
             WrongNumberOfStudentsTransferExcpetion, StudentNotFoundException, ExceededMaxStudentsHallException {
 
-        if(hallStudents.size() != 3 || exchangeStudents.size() != 3) {
+        if(hallStudents.size() > 3 || exchangeStudents.size() > 3) {
             throw new WrongNumberOfStudentsTransferExcpetion();
         }
 
@@ -51,11 +51,11 @@ public class ExchangeThreeStudents extends AbstractCharacterCard{
             List<Student> temp = students.stream().filter(x -> x.getColour().equals(colour)).collect(Collectors.toList());
 
             if(!temp.isEmpty()) {
-                cardToHall.add(temp.get(0));
+                cardToHall.add(students.remove(students.indexOf(temp.get(0))));
             }
         }
 
-        if(hallToCard.size() != 3 || cardToHall.size() != 3) {
+        if(hallToCard.size() > 3 || cardToHall.size() > 3) {
             throw new WrongNumberOfStudentsTransferExcpetion();
         }
 

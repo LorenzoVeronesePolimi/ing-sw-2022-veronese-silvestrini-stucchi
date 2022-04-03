@@ -25,7 +25,7 @@ public class ExchangeTwoHallDining extends AbstractCharacterCard{
             WrongNumberOfStudentsTransferExcpetion, StudentNotFoundException, ExceededMaxStudentsHallException,
             ExceededMaxStudentsDiningRoomException {
 
-        if(hallStudents.size()<=2 || diningStudents.size()<=2) {
+        if(hallStudents.size()>2 || diningStudents.size()>2) {
             throw new WrongNumberOfStudentsTransferExcpetion();
         }
 
@@ -39,7 +39,7 @@ public class ExchangeTwoHallDining extends AbstractCharacterCard{
             diningToHall.add(boardAdvanced.getPlayerSchool(player).removeStudentDiningRoom(colour));
         }
 
-        if((hallStudents.size()<=2) || (diningStudents.size()<=2)) {
+        if((hallStudents.size()>2) || (diningStudents.size()>2)) {
             throw new WrongNumberOfStudentsTransferExcpetion();
         }
 
