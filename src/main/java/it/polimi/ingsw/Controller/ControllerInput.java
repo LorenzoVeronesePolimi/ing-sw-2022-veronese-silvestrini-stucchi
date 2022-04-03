@@ -46,6 +46,38 @@ public class ControllerInput {
                         this.checkNickname(((MessageCCExchangeThreeStudents)message).getNicknamePlayer()) &&
                         this.checkMultipleStudentColour(((MessageCCExchangeThreeStudents)message).getColoursCard()) &&
                         this.checkMultipleStudentColour(((MessageCCExchangeThreeStudents)message).getColoursHall()));
+            case CC_EXCHANGE_TWO_HALL_DINING:
+                return (this.checkIndexCard(((MessageCC)message).getIndexCard()) &&
+                        this.checkNickname(((MessageCCExchangeTwoHallDining)message).getNicknamePlayer()) &&
+                        this.checkMultipleStudentColour(((MessageCCExchangeTwoHallDining)message).getColoursHall()) &&
+                        this.checkMultipleStudentColour(((MessageCCExchangeTwoHallDining)message).getColoursDiningRoom()));
+            case CC_EXCLUDE_COLOUR_FROM_COUNTING:
+                return (this.checkIndexCard(((MessageCC)message).getIndexCard()) &&
+                        this.checkNickname(((MessageCCExcludeColourFromCounting)message).getNicknamePlayer())) &&
+                        this.checkStudentColour(((MessageCCExcludeColourFromCounting)message).getColourToExclude());
+            case CC_EXTRA_STUDENT_IN_DINING:
+                return (this.checkIndexCard(((MessageCC)message).getIndexCard()) &&
+                        this.checkNickname(((MessageCCExtraStudentInDining)message).getNicknamePlayer())) &&
+                        this.checkStudentColour(((MessageCCExtraStudentInDining)message).getColourToMove());
+            case CC_FAKE_MN_MOVEMENT:
+                return (this.checkIndexCard(((MessageCC)message).getIndexCard()) &&
+                        this.checkNickname(((MessageCCFakeMNMovement)message).getNicknamePlayer()) &&
+                        this.checkDestArchipelagoIndex(((MessageCCFakeMNMovement)message).getFakeMNPosition()));
+            case CC_FORBID_ISLAND:
+                return (this.checkIndexCard(((MessageCC)message).getIndexCard()) &&
+                        this.checkNickname(((MessageCCForbidIsland)message).getNicknamePlayer()) &&
+                        this.checkDestArchipelagoIndex(((MessageCCForbidIsland)message).getArchipelagoIndexToForbid()));
+            case CC_PLACE_ONE_STUDENT:
+                return (this.checkIndexCard(((MessageCC)message).getIndexCard()) &&
+                        this.checkNickname(((MessageCCPlaceOneStudent)message).getNicknamePlayer()) &&
+                        this.checkStudentColour(((MessageCCPlaceOneStudent)message).getColourToMove()) &&
+                        this.checkDestArchipelagoIndex(((MessageCCPlaceOneStudent)message).getArchipelagoIndexDest()));
+            case CC_TOWER_NO_VALUE:
+                return (this.checkIndexCard(((MessageCC)message).getIndexCard()) &&
+                        this.checkNickname(((MessageCCTowerNoValue)message).getNicknamePlayer()));
+            case CC_TWO_EXTRA_POINTS:
+                return (this.checkIndexCard(((MessageCC)message).getIndexCard()) &&
+                        this.checkNickname(((MessageCCTwoExtraPoints)message).getNicknamePlayer()));
         }
 
         return false;

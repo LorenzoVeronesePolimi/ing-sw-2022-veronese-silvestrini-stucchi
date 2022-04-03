@@ -30,6 +30,12 @@ public class ControllerState {
             case STUDENT_CLOUD_TO_SCHOOL:
                 return (this.state == State.ACTION3);
             case CC_EXCHANGE_THREE_STUDENTS:
+            case CC_EXCHANGE_TWO_HALL_DINING:
+            case CC_EXCLUDE_COLOUR_FROM_COUNTING:
+            case CC_EXTRA_STUDENT_IN_DINING:
+            case CC_FAKE_MN_MOVEMENT:
+            case CC_FORBID_ISLAND:
+            case CC_PLACE_ONE_STUDENT:
                 return (this.state != State.CONNECTING &&
                         this.state != State.WAITING_PLAYERS);
         }

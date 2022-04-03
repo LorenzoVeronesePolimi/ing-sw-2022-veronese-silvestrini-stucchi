@@ -2,7 +2,7 @@ package it.polimi.ingsw.Controller.Messages;
 
 import it.polimi.ingsw.Controller.Enumerations.MessageType;
 
-public class MessageCC extends Message{
+public abstract class MessageCC extends Message{
     int indexCard;
 
     public MessageCC(MessageType type, int indexCard){

@@ -3,6 +3,8 @@ package it.polimi.ingsw.Controller;
 import it.polimi.ingsw.Model.Board.Board;
 import it.polimi.ingsw.Model.Board.BoardAdvanced;
 import it.polimi.ingsw.Model.Cards.ExchangeThreeStudents;
+import it.polimi.ingsw.Model.Cards.ExchangeTwoHallDining;
+import it.polimi.ingsw.Model.Cards.PlaceOneStudent;
 import it.polimi.ingsw.Model.Enumerations.SPColour;
 import it.polimi.ingsw.Model.Pawns.Student;
 import it.polimi.ingsw.Model.Places.Cloud;
@@ -113,5 +115,59 @@ public class ControllerIntegrity {
             return true;
         }
         else{return false;}
+    }
+
+    public boolean checkCCExchangeTwoHallDining(Player player, List<SPColour> coloursHall, List<SPColour> coloursDiningRoom, ExchangeTwoHallDining chosenCard){
+        if(!this.advanced){return false;}
+
+        if(coloursHall.size() != coloursDiningRoom.size()){return false;}
+
+        // all Students required are present
+        List<Student> studentsDiningRoom = new ArrayList<>();
+        if(coloursHall.get(0) != coloursHall.get(1)){ //take interesting Students of the DiningRoom
+            studentsDiningRoom.addAll(this.board.getPlayerSchool(player).getListStudentColour(coloursHall.get(0)));
+            studentsDiningRoom.addAll(this.board.getPlayerSchool(player).getListStudentColour(coloursHall.get(1)));
+        }
+        else{
+            studentsDiningRoom.addAll(this.board.getPlayerSchool(player).getListStudentColour(coloursHall.get(0)));
+        }
+
+        if(enoughColoursInListStudents(coloursHall, studentsDiningRoom)){return true;}
+
+        return false;
+    }
+
+    public boolean checkCCGeneric(){
+        if(!this.advanced){return false;}
+
+        return true;
+    }
+
+    public boolean checkCCFakeMNMovement(int fakeMNPosition){
+        if(!this.advanced){return false;}
+
+        if(fakeMNPosition < this.boardAdvanced.getArchiList().size()){return true;}
+
+        return false;
+    }
+
+    public boolean checkCCForbidIsland(int archipelagoIndexToForbid){
+        if(!this.advanced){return false;}
+
+        if(archipelagoIndexToForbid < this.boardAdvanced.getArchiList().size()){return true;}
+
+        return false;
+    }
+
+    public boolean checkCCPlaceOneStudent(SPColour colourToMove, int archipelagoIndexDest, PlaceOneStudent chosenCard){
+        if(!this.advanced){return false;}
+
+        if(!(archipelagoIndexDest < this.boardAdvanced.getArchiList().size())){return false;}
+
+        for(Student s: chosenCard.getCardStudents()){
+            if(s.getColour() == colourToMove){return true;}
+        }
+
+        return false;
     }
 }
