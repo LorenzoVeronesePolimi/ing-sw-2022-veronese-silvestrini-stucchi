@@ -18,7 +18,7 @@ import java.util.*;
 public class BoardAdvanced implements Board {
     private final BoardAbstract board;
     private boolean twoExtraPointsFlag = false;
-    private SPColour colourToExclude=null;
+    private SPColour colourToExclude = null;
     private  List<AbstractCharacterCard> extractedCards; //is final... temporarily removed just for testing card usage
     private final Bank bank;
 
@@ -102,6 +102,10 @@ public class BoardAdvanced implements Board {
 
     public Archipelago getArchipelago(int archipelagoIndex) {
         return this.board.getArchipelago(archipelagoIndex);
+    }
+
+    public Map<SPColour, Integer> getNumStudentsInArchipelago(int archipelagoIndex) {
+        return this.board.getNumStudentsInArchipelago(archipelagoIndex);
     }
 
     public List<AbstractCharacterCard> getExtractedCards(){
@@ -203,10 +207,19 @@ public class BoardAdvanced implements Board {
                 currentArchipelago.removeForbidFlag();
                 return false;
             }
+
             if (currentArchipelago.getOwner() == currentPlayer) {
                 return false;
             } else if (currentArchipelago.getOwner() == null) { //archipelago never conquered before
-                return true;
+                List<Professor> conquerorProfessors = this.board.playerSchool.get(currentPlayer).getProfessors();
+                boolean conquerable = false;
+                for(Professor p : conquerorProfessors){
+                    //can't conquer an Island without Students coloured without the Colour of a Professor of mine, even if no one has conquered it before
+                    if(!conquerable && !p.getColour().equals(colourToExclude))
+                        conquerable = currentArchipelago.howManyStudents().get(p.getColour()) > 0;
+                }
+                this.colourToExclude = null;
+                return conquerable;
             }
             //the current Player is not the owner: can he conquer the Archipelago?
             else {
@@ -227,11 +240,14 @@ public class BoardAdvanced implements Board {
             } else if (currentArchipelago.getOwner() == null) { //archipelago never conquered before
                 List<Professor> conquerorProfessors = this.board.playerSchool.get(currentPlayer).getProfessors();
                 conquerorProfessors.addAll(this.board.playerSchool.get(((BoardFour)this.board).teammates.get(currentPlayer)).getProfessors());
+                boolean conquerable = false;
                 for (Professor p : conquerorProfessors) {
                     //can't conquer an Island without Students coloured without the Colour of a Professor of mine, even if no one has conquered it before
-                    return currentArchipelago.howManyStudents().get(p.getColour()) > 0;
+                    if(!conquerable && !p.getColour().equals(colourToExclude))
+                        conquerable = currentArchipelago.howManyStudents().get(p.getColour()) > 0;
                 }
-                return false;
+                this.colourToExclude = null;
+                return conquerable;
             }
             //the current Player is not the owner: can he conquer the Archipelago?
             else {
@@ -262,6 +278,7 @@ public class BoardAdvanced implements Board {
         if(this.board instanceof BoardTwo || this.board instanceof BoardThree) {
             int ownerInfluence = this.computeInfluenceOfPlayer(owner, archipelago, colourToExclude);
             int challengerInfluence = this.computeInfluenceOfPlayer(challenger, archipelago, colourToExclude);
+            this.colourToExclude = null;
 
             if (twoExtraPointsFlag) {
                 challengerInfluence += 2;

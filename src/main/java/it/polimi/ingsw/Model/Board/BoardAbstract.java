@@ -99,6 +99,10 @@ public abstract class BoardAbstract implements Board{
         return this.archipelagos.get(archipelagoIndex);
     }
 
+    public Map<SPColour, Integer> getNumStudentsInArchipelago(int archipelagoIndex) {
+        return this.archipelagos.get(archipelagoIndex).howManyStudents();
+    }
+
     // Find the School where the Professor is in
     public School whereIsProfessor(SPColour colour){
         for(School s: schools) {
@@ -137,7 +141,7 @@ public abstract class BoardAbstract implements Board{
 
     //--------------------------------------------------PAWNS MOVEMENTS
     public void moveMotherNature(int mnMoves){
-            mn.putInPosition(archipelagos.get((whereIsMotherNature()+mnMoves)%archipelagos.size()));
+            mn.putInPosition(archipelagos.get((whereIsMotherNature() + mnMoves) % archipelagos.size()));
     }
 
     public void moveStudentSchoolToArchipelagos(Player player, SPColour colour, int archipelagoIndex) throws StudentNotFoundException {
@@ -263,7 +267,7 @@ public abstract class BoardAbstract implements Board{
             InvalidTowerNumberException, AnotherTowerException, ExceededMaxTowersException, TowerNotFoundException {
 
         int currPosMotherNature = this.whereIsMotherNature();
-        boolean archipelagoConquerable = checkIfConquerable(currentPlayer);
+        boolean archipelagoConquerable = this.checkIfConquerable(currentPlayer);
         if(archipelagoConquerable){
             this.conquerArchipelago(currentPlayer, this.archipelagos.get(currPosMotherNature));
 
@@ -276,17 +280,20 @@ public abstract class BoardAbstract implements Board{
     public boolean checkIfConquerable(Player currentPlayer){
         int currPosMotherNature = this.whereIsMotherNature();
         Archipelago currentArchipelago = this.archipelagos.get(currPosMotherNature);
+
         //if the owner of the Archipelago is the current Player, he conquers nothing
         if(currentArchipelago.getOwner() == currentPlayer){
             return false;
         }
         else if(currentArchipelago.getOwner() == null){ //archipelago never conquered before
             List<Professor> conquerorProfessors = this.playerSchool.get(currentPlayer).getProfessors();
+            boolean conquerable = false;
             for(Professor p : conquerorProfessors){
                 //can't conquer an Island without Students coloured without the Colour of a Professor of mine, even if no one has conquered it before
-                return currentArchipelago.howManyStudents().get(p.getColour()) > 0;
+                if(!conquerable)
+                    conquerable = currentArchipelago.howManyStudents().get(p.getColour()) > 0;
             }
-            return false;
+            return conquerable;
         }
         //the current Player is not the owner: can he conquer the Archipelago?
         else{

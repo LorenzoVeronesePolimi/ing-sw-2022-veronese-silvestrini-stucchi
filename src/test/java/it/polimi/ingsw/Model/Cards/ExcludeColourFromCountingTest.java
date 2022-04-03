@@ -17,7 +17,7 @@ import java.util.List;
 
 public class ExcludeColourFromCountingTest {
     @Test
-    void ExcludeColourFromCountingTest(){
+    void ExcludeColourFromCountingTests(){
         List<Player> playerList = new ArrayList<>();
         Player p1 = new Player("player one", PlayerColour.BLACK);
         Player p2 = new Player("player two", PlayerColour.WHITE);
@@ -29,17 +29,12 @@ public class ExcludeColourFromCountingTest {
         BoardAdvanced boardAdvanced = null;
         try {
             boardAdvanced = new BoardAdvanced(board);
-        } catch (ExceededMaxStudentsHallException e) {
-            e.printStackTrace();
-        } catch (StudentNotFoundException e) {
-            e.printStackTrace();
-        } catch (TowerNotFoundException e) {
-            e.printStackTrace();
-        } catch (EmptyCaveauExcepion e) {
+        } catch (ExceededMaxStudentsHallException | StudentNotFoundException | TowerNotFoundException | EmptyCaveauExcepion e) {
             e.printStackTrace();
         }
 
         ExcludeColourFromCounting card = new ExcludeColourFromCounting(boardAdvanced);
+        assert boardAdvanced != null;
         boardAdvanced.setExtractedCards(card);
 
         for(int i=0; i<7; i++) {
@@ -85,15 +80,7 @@ public class ExcludeColourFromCountingTest {
             boardAdvanced.moveStudentHallToDiningRoom(p1,SPColour.PINK);
             boardAdvanced.moveStudentHallToDiningRoom(p2,SPColour.RED);
             boardAdvanced.moveStudentHallToDiningRoom(p2,SPColour.RED);
-        } catch (StudentNotFoundException e) {
-            e.printStackTrace();
-        } catch (ExceededMaxStudentsDiningRoomException e) {
-            e.printStackTrace();
-        } catch (EmptyCaveauExcepion e) {
-            e.printStackTrace();
-        } catch (ProfessorNotFoundException e) {
-            e.printStackTrace();
-        } catch (NoProfessorBagException e) {
+        } catch (StudentNotFoundException | ExceededMaxStudentsDiningRoomException | EmptyCaveauExcepion | ProfessorNotFoundException | NoProfessorBagException e) {
             e.printStackTrace();
         }
 
@@ -110,23 +97,11 @@ public class ExcludeColourFromCountingTest {
 
         try {
             boardAdvanced.useExcludeColourFromCounting(p1,SPColour.RED);
-        } catch (EmptyCaveauExcepion e) {
-            e.printStackTrace();
-        } catch (ExceededMaxNumCoinException e) {
-            e.printStackTrace();
-        } catch (CoinNotFoundException e) {
-            e.printStackTrace();
-        } catch (InvalidTowerNumberException e) {
-            e.printStackTrace();
-        } catch (AnotherTowerException e) {
-            e.printStackTrace();
-        } catch (ExceededMaxTowersException e) {
-            e.printStackTrace();
-        } catch (TowerNotFoundException e) {
+        } catch (EmptyCaveauExcepion | ExceededMaxNumCoinException | CoinNotFoundException | InvalidTowerNumberException | AnotherTowerException | ExceededMaxTowersException | TowerNotFoundException e) {
             e.printStackTrace();
         }
 
         Assertions.assertEquals(0,((SchoolAdvanced)boardAdvanced.getSchools().get(0)).getNumCoins());
-        Assertions.assertEquals(p1,boardAdvanced.getArchiList().get(0).getOwner());
+        Assertions.assertEquals(p1, boardAdvanced.getArchiList().get(0).getOwner());
     }
 }

@@ -296,13 +296,7 @@ public class BoardAdvancedTest {
         try {
             boardAdvanced.tryToConquer(p2);
             Assertions.assertEquals(p2, boardAdvanced.getArchipelago(1).getOwner());
-        } catch (InvalidTowerNumberException e) {
-            e.printStackTrace();
-        } catch (AnotherTowerException e) {
-            e.printStackTrace();
-        } catch (ExceededMaxTowersException e) {
-            e.printStackTrace();
-        } catch (TowerNotFoundException e) {
+        } catch (InvalidTowerNumberException | AnotherTowerException | ExceededMaxTowersException | TowerNotFoundException e) {
             e.printStackTrace();
         }
         _1 = new Student(SPColour.GREEN);

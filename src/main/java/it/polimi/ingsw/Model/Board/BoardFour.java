@@ -53,15 +53,19 @@ public class BoardFour extends BoardAbstract {
     public boolean checkIfConquerable(Player currentPlayer) {
         Archipelago currentArchipelago = this.archipelagos.get(whereIsMotherNature());
         //if the owner of the Archipelago is the current Player or mate, he conquers nothing
-        if (currentArchipelago.getOwner() == currentPlayer || currentArchipelago.getOwner().getColour().equals(currentPlayer.getColour())) {
-            return false;
-        } else if (currentArchipelago.getOwner() == null) { //archipelago never conquered before
+        if (currentArchipelago.getOwner() == null) { //archipelago never conquered before
             List<Professor> conquerorProfessors = this.playerSchool.get(currentPlayer).getProfessors();
             conquerorProfessors.addAll(this.playerSchool.get(teammates.get(currentPlayer)).getProfessors());
+            boolean conquerable = false;
+
             for (Professor p : conquerorProfessors) {
                 //can't conquer an Island without Students coloured without the Colour of a Professor of mine, even if no one has conquered it before
-                return currentArchipelago.howManyStudents().get(p.getColour()) > 0;
+                if(!conquerable)
+                    conquerable = currentArchipelago.howManyStudents().get(p.getColour()) > 0;
             }
+            return conquerable;
+
+        } else if (currentArchipelago.getOwner() == currentPlayer || currentArchipelago.getOwner().getColour().equals(currentPlayer.getColour())) {
             return false;
         }
         //the current Player is not the owner: can he conquer the Archipelago?

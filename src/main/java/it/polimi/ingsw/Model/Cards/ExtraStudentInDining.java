@@ -28,6 +28,7 @@ public class ExtraStudentInDining extends AbstractCharacterCard{
         }
         this.boardAdvanced = boardAdvanced;
     }
+
     public void useEffect(Player currentPlayer, SPColour cardToDining) throws StudentNotFoundException, ExceededMaxStudentsDiningRoomException {
         School school=boardAdvanced.getPlayerSchool(currentPlayer);
         List<Student> s= students.stream().filter(x -> x.getColour().equals(cardToDining)).collect(Collectors.toList());

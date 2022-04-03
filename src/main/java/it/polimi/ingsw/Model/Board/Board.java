@@ -8,12 +8,15 @@ import it.polimi.ingsw.Model.Places.School.School;
 import it.polimi.ingsw.Model.Player;
 
 import java.util.List;
+import java.util.Map;
 
 /*TODO: Understand what to do with private methods*/
 public interface Board {
     Archipelago getArchipelago(int archipelagoIndex);
 
-    public List<Cloud> getClouds();
+    List<Cloud> getClouds();
+
+    Map<SPColour, Integer> getNumStudentsInArchipelago(int archipelagoIndex);
 
     boolean isStudentInSchoolHall(Player player, SPColour c);
 
