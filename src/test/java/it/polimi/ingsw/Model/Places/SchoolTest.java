@@ -38,13 +38,7 @@ public class SchoolTest {
         BoardTwo boardTwo = null;
         try {
             boardTwo = new BoardTwo(players);
-        } catch (StudentNotFoundException e) {
-            e.printStackTrace();
-        } catch (ExceededMaxStudentsCloudException e) {
-            e.printStackTrace();
-        } catch (ExceededMaxStudentsHallException e) {
-            e.printStackTrace();
-        } catch (ExceedingAssistantCardNumberException e) {
+        } catch (StudentNotFoundException | ExceedingAssistantCardNumberException | ExceededMaxStudentsHallException | ExceededMaxStudentsCloudException e) {
             e.printStackTrace();
         }
         try {
@@ -96,8 +90,6 @@ public class SchoolTest {
             e.printStackTrace();
         }
         Assertions.assertEquals(8, school.getNumTowers());
-
-        Assertions.assertThrows(ExceededMaxTowersException.class, () -> school.addTower(tower));
     }
 
     @Test

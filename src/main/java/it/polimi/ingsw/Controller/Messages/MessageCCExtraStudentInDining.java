@@ -3,8 +3,8 @@ package it.polimi.ingsw.Controller.Messages;
 import static it.polimi.ingsw.Controller.Enumerations.MessageType.CC_EXTRA_STUDENT_IN_DINING;
 
 public class MessageCCExtraStudentInDining extends MessageCC{
-    private String nicknamePlayer;
-    private String colourToMove;
+    private final String nicknamePlayer;
+    private final String colourToMove;
 
     public MessageCCExtraStudentInDining(int indexCard, String nicknamePlayer, String colourToMove){
         super(CC_EXTRA_STUDENT_IN_DINING, indexCard);

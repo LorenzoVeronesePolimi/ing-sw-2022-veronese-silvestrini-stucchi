@@ -85,23 +85,7 @@ public class TakeProfessorOnEquityTest {
 
         try {
             boardAdvanced.useTakeProfessorOnEquity(p2);
-        } catch (EmptyCaveauExcepion e) {
-            e.printStackTrace();
-        } catch (ExceededMaxNumCoinException e) {
-            e.printStackTrace();
-        } catch (CoinNotFoundException e) {
-            e.printStackTrace();
-        } catch (InvalidTowerNumberException e) {
-            e.printStackTrace();
-        } catch (AnotherTowerException e) {
-            e.printStackTrace();
-        } catch (ProfessorNotFoundException e) {
-            e.printStackTrace();
-        } catch (NoProfessorBagException e) {
-            e.printStackTrace();
-        } catch (ExceededMaxTowersException e) {
-            e.printStackTrace();
-        } catch (TowerNotFoundException e) {
+        } catch (EmptyCaveauExcepion | TowerNotFoundException | ExceededMaxTowersException | NoProfessorBagException | ProfessorNotFoundException | AnotherTowerException | InvalidTowerNumberException | CoinNotFoundException | ExceededMaxNumCoinException e) {
             e.printStackTrace();
         }
 

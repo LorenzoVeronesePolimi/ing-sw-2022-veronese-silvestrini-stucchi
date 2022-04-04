@@ -1,6 +1,5 @@
 package it.polimi.ingsw.Controller;
 
-import it.polimi.ingsw.Model.Board.Board;
 import it.polimi.ingsw.Model.Board.BoardAbstract;
 import it.polimi.ingsw.Model.Board.BoardAdvanced;
 import it.polimi.ingsw.Model.Cards.ExchangeThreeStudents;
@@ -46,12 +45,7 @@ public class ControllerIntegrity {
                 }
             }
         }
-        if(equal == coloursToHave.size()){
-            return true;
-        }
-        else{
-            return false;
-        }
+        return equal == coloursToHave.size();
     }
 
     public boolean checkCreateMatch(int numPlayers){
@@ -77,15 +71,12 @@ public class ControllerIntegrity {
     }
 
     public boolean checkStudentHallToDiningRoom(Player player, SPColour colour){
-        if(this.board.getPlayerSchool(player).getNumStudentColour(colour) == 10){return false;}
-
-        return true;
+        return this.board.getPlayerSchool(player).getNumStudentColour(colour) != 10;
     }
 
-    public boolean checkStudentToArchipelago(Player player, SPColour studentColour, int destArchipelagoIndex){
+    public boolean checkStudentToArchipelago(Player player, SPColour studentColour, int destinationArchipelagoIndex){
         if(!this.board.isStudentInSchoolHall(player, studentColour)){return false;}
-        if(this.board.getArchipelago(destArchipelagoIndex) != null){return false;}
-        return true;
+        return this.board.getArchipelago(destinationArchipelagoIndex) == null;
     }
 
     public boolean checkMoveMotherNature(Player player, int moves){
@@ -93,15 +84,14 @@ public class ControllerIntegrity {
     }
 
     public boolean checkStudentCloudToSchool(Player player, int indexCloud){
-        List<Cloud> clouds = new ArrayList<>();
+        List<Cloud> clouds;
         clouds = this.board.getClouds();
         if(clouds.get(indexCloud).getStudents().size() > 0){ //I can't choose a void Cloud
             School s = board.getPlayerSchool(player);
-            if(s.getNumMaxStudentsHall() - s.getStudentsHall().size() <= clouds.get(0).getNumMaxStudents()){ // Is there enough space in the Hall?
-                return true;
-            }
-            return false;
-        } else{return false;}
+            // Is there enough space in the Hall?
+            return s.getNumMaxStudentsHall() - s.getStudentsHall().size() <= clouds.get(0).getNumMaxStudents();
+        }
+        return false;
     }
 
     public boolean checkCCExchangeThreeStudents(Player player, List<SPColour> coloursCard, List<SPColour> coloursSchool, ExchangeThreeStudents chosenCard){
@@ -110,14 +100,13 @@ public class ControllerIntegrity {
         if(coloursCard.size() != coloursSchool.size()){return false;}
 
         // all Students in the Hall
+        //TODO: is chosenCard needed? (it's never used)
         List<Student> availableSchool = this.board.getPlayerSchool(player).getStudentsHall();
-        if(enoughColoursInListStudents(coloursSchool, chosenCard.getStudents()) &&
-            enoughColoursInListStudents(coloursCard, this.board.getPlayerSchool(player).getStudentsHall())){
-            return true;
-        }
-        else{return false;}
+        return enoughColoursInListStudents(coloursSchool, chosenCard.getStudents()) &&
+                enoughColoursInListStudents(coloursCard, this.board.getPlayerSchool(player).getStudentsHall());
     }
 
+    //TODO: is chosenCard needed? (it's never used)
     public boolean checkCCExchangeTwoHallDining(Player player, List<SPColour> coloursHall, List<SPColour> coloursDiningRoom, ExchangeTwoHallDining chosenCard){
         if(!this.advanced){return false;}
 
@@ -133,37 +122,29 @@ public class ControllerIntegrity {
             studentsDiningRoom.addAll(this.board.getPlayerSchool(player).getListStudentColour(coloursHall.get(0)));
         }
 
-        if(enoughColoursInListStudents(coloursHall, studentsDiningRoom)){return true;}
-
-        return false;
+        return enoughColoursInListStudents(coloursHall, studentsDiningRoom);
     }
 
     public boolean checkCCGeneric(){
-        if(!this.advanced){return false;}
-
-        return true;
+        return this.advanced;
     }
 
     public boolean checkCCFakeMNMovement(int fakeMNPosition){
         if(!this.advanced){return false;}
 
-        if(fakeMNPosition < this.boardAdvanced.getArchiList().size()){return true;}
-
-        return false;
+        return fakeMNPosition < this.boardAdvanced.getArchiList().size();
     }
 
     public boolean checkCCForbidIsland(int archipelagoIndexToForbid){
         if(!this.advanced){return false;}
 
-        if(archipelagoIndexToForbid < this.boardAdvanced.getArchiList().size()){return true;}
-
-        return false;
+        return archipelagoIndexToForbid < this.boardAdvanced.getArchiList().size();
     }
 
-    public boolean checkCCPlaceOneStudent(SPColour colourToMove, int archipelagoIndexDest, PlaceOneStudent chosenCard){
+    public boolean checkCCPlaceOneStudent(SPColour colourToMove, int archipelagoIndexDestination, PlaceOneStudent chosenCard){
         if(!this.advanced){return false;}
 
-        if(!(archipelagoIndexDest < this.boardAdvanced.getArchiList().size())){return false;}
+        if(!(archipelagoIndexDestination < this.boardAdvanced.getArchiList().size())){return false;}
 
         for(Student s: chosenCard.getCardStudents()){
             if(s.getColour() == colourToMove){return true;}

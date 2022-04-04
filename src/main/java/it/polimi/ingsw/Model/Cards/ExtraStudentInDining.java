@@ -14,8 +14,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class ExtraStudentInDining extends AbstractCharacterCard{
-    BoardAdvanced boardAdvanced;
-    Bag bag;
+    final BoardAdvanced boardAdvanced;
+    final Bag bag;
     private List<Student> students;
 
     public ExtraStudentInDining(BoardAdvanced boardAdvanced){

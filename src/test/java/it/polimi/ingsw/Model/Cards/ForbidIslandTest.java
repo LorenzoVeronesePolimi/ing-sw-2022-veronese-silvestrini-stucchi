@@ -83,11 +83,7 @@ public class ForbidIslandTest {
 
         try {
             boardAdvanced.useForbidIsland(p1, 5);
-        } catch (EmptyCaveauExcepion e) {
-            e.printStackTrace();
-        } catch (ExceededMaxNumCoinException e) {
-            e.printStackTrace();
-        } catch (CoinNotFoundException e) {
+        } catch (EmptyCaveauExcepion | CoinNotFoundException | ExceededMaxNumCoinException e) {
             e.printStackTrace();
         }
 
@@ -96,13 +92,7 @@ public class ForbidIslandTest {
         boardAdvanced.moveMotherNature(5);
         try {
             boardAdvanced.tryToConquer(p2);
-        } catch (InvalidTowerNumberException e) {
-            e.printStackTrace();
-        } catch (AnotherTowerException e) {
-            e.printStackTrace();
-        } catch (ExceededMaxTowersException e) {
-            e.printStackTrace();
-        } catch (TowerNotFoundException e) {
+        } catch (InvalidTowerNumberException | TowerNotFoundException | ExceededMaxTowersException | AnotherTowerException e) {
             e.printStackTrace();
         }
 
@@ -118,13 +108,7 @@ public class ForbidIslandTest {
 
         try {
             boardAdvanced.tryToConquer(p1);
-        } catch (InvalidTowerNumberException e) {
-            e.printStackTrace();
-        } catch (AnotherTowerException e) {
-            e.printStackTrace();
-        } catch (ExceededMaxTowersException e) {
-            e.printStackTrace();
-        } catch (TowerNotFoundException e) {
+        } catch (InvalidTowerNumberException | TowerNotFoundException | ExceededMaxTowersException | AnotherTowerException e) {
             e.printStackTrace();
         }
 

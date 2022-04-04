@@ -5,7 +5,6 @@ import it.polimi.ingsw.Controller.Enumerations.State;
 import it.polimi.ingsw.Controller.Exceptions.NoCorrespondingCharacterCardException;
 import it.polimi.ingsw.Controller.Exceptions.NoPlayerException;
 import it.polimi.ingsw.Controller.Messages.*;
-import it.polimi.ingsw.Model.Board.Board;
 import it.polimi.ingsw.Model.Board.BoardAbstract;
 import it.polimi.ingsw.Model.Board.BoardAdvanced;
 import it.polimi.ingsw.Model.Board.BoardFactory;
@@ -14,10 +13,8 @@ import it.polimi.ingsw.Model.Enumerations.PlayerColour;
 import it.polimi.ingsw.Model.Enumerations.SPColour;
 import it.polimi.ingsw.Model.Exceptions.*;
 import it.polimi.ingsw.Model.Player;
-import it.polimi.ingsw.View.View;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 // This is the main Controller: it coordinates all the others
 public class Controller implements Observer {
@@ -64,81 +61,113 @@ public class Controller implements Observer {
         if(!controllerInput.checkFormat(arg)){
             System.out.println("Invalid format");
             return;
-        };
+        }
 
         Message message = (Message)arg;
         if(!controllerState.checkState(message.getType())){
             System.out.println("You can't do that now");
             return;
-        };
+        }
 
         switch(message.getType()){
             case CREATE_MATCH: //TODO: manage GameFour
-                if(!this.manageCreateMatch((MessageCreateMatch)message)){
+                if(message instanceof MessageCreateMatch &&
+                        !this.manageCreateMatch((MessageCreateMatch)message)){
                     System.out.println("You can't create a match now");
                 }
+
             case ADD_PLAYER:
-                if(!this.manageAddPlayer((MessageAddPlayer)message)){
+                if(message instanceof MessageAddPlayer &&
+                    !this.manageAddPlayer((MessageAddPlayer) message)) {
                     System.out.println("Impossible to add this player");
                 }
+
             case ASSISTANT_CARD:
-                if(!this.manageAssistantCard((MessageAssistantCard)message)){
+                if(message instanceof MessageAssistantCard &&
+                        !this.manageAssistantCard((MessageAssistantCard) message)) {
                     System.out.println("Impossible to play this AssistantCard");
                 }
+
             case STUDENT_HALL_TO_DINING_ROOM:
-                if(!this.manageStudentHallToDiningRoom((MessageStudentHallToDiningRoom)message)){
+                if(message instanceof MessageStudentHallToDiningRoom &&
+                        !this.manageStudentHallToDiningRoom((MessageStudentHallToDiningRoom) message)) {
                     System.out.println("You can't move a Student in that way");
                 }
+
             case STUDENT_TO_ARCHIPELAGO:
-                if(!this.manageStudentToArchipelago((MessageStudentToArchipelago)message)){
+                if(message instanceof MessageStudentToArchipelago &&
+                        !this.manageStudentToArchipelago((MessageStudentToArchipelago) message)) {
                     System.out.println("You can't move a Student in that way");
                 }
+
             case MOVE_MOTHER_NATURE:
-                if(!this.manageMoveMotherNature((MessageMoveMotherNature)message)){
+                if(message instanceof MessageMoveMotherNature &&
+                        !this.manageMoveMotherNature((MessageMoveMotherNature) message)) {
                     System.out.println("You can't move the Mother Nature in that way");
                 }
+
             case STUDENT_CLOUD_TO_SCHOOL:
-                if(!this.manageStudentCloudToSchool((MessageStudentCloudToSchool)message)){
+                if(message instanceof MessageStudentCloudToSchool &&
+                        !this.manageStudentCloudToSchool((MessageStudentCloudToSchool) message)) {
                     System.out.println("You can't choose that Cloud");
                 }
+
             case CC_EXCHANGE_THREE_STUDENTS:
-                if(!this.manageCCExchangeThreeStudents((MessageCCExchangeThreeStudents)message)){
+                if(message instanceof MessageCCExchangeThreeStudents &&
+                        !this.manageCCExchangeThreeStudents((MessageCCExchangeThreeStudents) message)) {
                     System.out.println("Wrong parameters");
                 }
+
             case CC_EXCHANGE_TWO_HALL_DINING:
-                if(!this.manageCCExchangeTwoHallDining((MessageCCExchangeTwoHallDining)message)){
+                if(message instanceof MessageCCExchangeTwoHallDining &&
+                        !this.manageCCExchangeTwoHallDining((MessageCCExchangeTwoHallDining) message)) {
                     System.out.println("Wrong parameters");
                 }
+
             case CC_EXCLUDE_COLOUR_FROM_COUNTING:
-                if(!this.manageCCExcludeColourFromCounting((MessageCCExcludeColourFromCounting)message)){
+                if(message instanceof MessageCCExcludeColourFromCounting &&
+                        !this.manageCCExcludeColourFromCounting((MessageCCExcludeColourFromCounting)message)){
                     System.out.println("Wrong parameters");
                 }
+
             case CC_EXTRA_STUDENT_IN_DINING:
-                if(!this.manageCCExtraStudentInDining((MessageCCExtraStudentInDining)message)){
+                if(message instanceof MessageCCExtraStudentInDining &&
+                        !this.manageCCExtraStudentInDining((MessageCCExtraStudentInDining)message)){
                     System.out.println("Wrong parameters");
                 }
             case CC_FAKE_MN_MOVEMENT:
-                if(!this.manageCCFakeMNMovement((MessageCCFakeMNMovement)message)){
+                if(message instanceof MessageCCFakeMNMovement &&
+                        !this.manageCCFakeMNMovement((MessageCCFakeMNMovement)message)){
                     System.out.println("Wrong parameters");
                 }
+
             case CC_FORBID_ISLAND:
-                if(!this.manageCCForbidIsland((MessageCCForbidIsland)message)){
+                if(message instanceof MessageCCForbidIsland &&
+                        !this.manageCCForbidIsland((MessageCCForbidIsland)message)){
                     System.out.println("Wrong parameters");
                 }
+
             case CC_PLACE_ONE_STUDENT:
-                if(!this.manageCCPlaceOneStudent((MessageCCPlaceOneStudent)message)){
+                if(message instanceof MessageCCPlaceOneStudent &&
+                        !this.manageCCPlaceOneStudent((MessageCCPlaceOneStudent)message)){
                     System.out.println("Wrong parameters");
                 }
+
             case CC_REDUCE_COLOUR_IN_DINING:
-                if(!this.manageCCReduceColourInDining((MessageCCReduceColourInDining)message)){
+                if(message instanceof MessageCCReduceColourInDining &&
+                        !this.manageCCReduceColourInDining((MessageCCReduceColourInDining)message)){
                     System.out.println("Wrong parameters");
                 }
+
             case CC_TOWER_NO_VALUE:
-                if(!this.manageCCTowerNoValue((MessageCCTowerNoValue)message)){
+                if(message instanceof MessageCCTowerNoValue &&
+                        !this.manageCCTowerNoValue((MessageCCTowerNoValue)message)){
                     System.out.println("Wrong parameters");
                 }
+
             case CC_TWO_EXTRA_POINTS:
-                if(!this.manageCCTwoExtraPoints((MessageCCTwoExtraPoints)message)){
+                if(message instanceof MessageCCTwoExtraPoints &&
+                        !this.manageCCTwoExtraPoints((MessageCCTwoExtraPoints)message)){
                     System.out.println("Wrong parameters");
                 }
         }
@@ -148,9 +177,7 @@ public class Controller implements Observer {
             //TODO: surrounded with try catch just to remove errors. It needs to be checked before leaving it like that
             try {
                 this.board.moveStudentBagToCloud();
-            } catch (ExceededMaxStudentsCloudException e) {
-                e.printStackTrace();
-            } catch (StudentNotFoundException e) {
+            } catch (ExceededMaxStudentsCloudException | StudentNotFoundException e) {
                 e.printStackTrace();
             }
         }
@@ -201,7 +228,7 @@ public class Controller implements Observer {
 
     private Player mapStringToPlayer(String s) throws NoPlayerException{
         for(Player p : this.players){
-            if(p.getNickname() == s){
+            if(p.getNickname().equals(s)){
                 return p;
             }
         }
@@ -254,9 +281,9 @@ public class Controller implements Observer {
     private boolean isCurrentPlayer(String nickname){
         try{
             Player player = this.mapStringToPlayer(nickname);
-            if(!(this.players.get(currentPlayerIndex) == player)){return false;}
-        } catch(NoPlayerException ex){return false;}
-        return true;
+            if(this.players.get(currentPlayerIndex) == player){return true;}
+        } catch(NoPlayerException ex){return true;}
+        return false;
     }
 
     private void initMatch(){
@@ -267,9 +294,7 @@ public class Controller implements Observer {
             //TODO: surrounded with try catch just to remove errors. It needs to be checked before leaving it like that
             try {
                 this.boardAdvanced = new BoardAdvanced(this.board);
-            } catch (ExceededMaxStudentsHallException e) {
-                e.printStackTrace();
-            } catch (StudentNotFoundException | TowerNotFoundException | EmptyCaveauExcepion e) {
+            } catch (ExceededMaxStudentsHallException | StudentNotFoundException | TowerNotFoundException | EmptyCaveauExcepion e) {
                 e.printStackTrace();
             }
         }
@@ -333,7 +358,7 @@ public class Controller implements Observer {
         PlayerColour colour = mapStringToPlayerColour(message.getColour());
         // He can't have the name of an existing Player
         for(Player p : this.players){
-            if(p.getNickname() == nickname){return false;}
+            if(p.getNickname().equals(nickname)){return false;}
         }
 
         // No integrity to check
@@ -354,7 +379,7 @@ public class Controller implements Observer {
         int turnPriority = message.getTurnPriority();
 
         // Is him the currentPlayer? Can he use that AssistantCard?
-        if(!isCurrentPlayer(nicknamePlayer)){return false;}
+        if(isCurrentPlayer(nicknamePlayer)){return false;}
         controllerIntegrity.checkAssistantCard(this.players, this.currentPlayerIndex, this.players.get(this.currentPlayerIndex), turnPriority);
 
         // Remove the card from his hand
@@ -376,7 +401,7 @@ public class Controller implements Observer {
         String nicknamePlayer = message.getNicknamePlayer();
         SPColour studentColour = mapStringToSPColour(message.getColour());
 
-        if(!isCurrentPlayer(nicknamePlayer)){return false;}
+        if(isCurrentPlayer(nicknamePlayer)){return false;}
 
         if(controllerIntegrity.checkStudentHallToDiningRoom(this.players.get(this.currentPlayerIndex), studentColour)){
             if(this.advanced){
@@ -408,13 +433,13 @@ public class Controller implements Observer {
     private boolean manageStudentToArchipelago(MessageStudentToArchipelago message){
         String nicknamePlayer = message.getNicknamePlayer();
         SPColour studentColour = mapStringToSPColour(message.getColour());
-        int destArchipelagoIndex = message.getDestArchipelagoIndex();
+        int destinationArchipelagoIndex = message.getDestArchipelagoIndex();
 
-        if(!isCurrentPlayer(nicknamePlayer)){return false;}
+        if(isCurrentPlayer(nicknamePlayer)){return false;}
 
-        if(controllerIntegrity.checkStudentToArchipelago(this.players.get(this.currentPlayerIndex), studentColour, destArchipelagoIndex)){
+        if(controllerIntegrity.checkStudentToArchipelago(this.players.get(this.currentPlayerIndex), studentColour, destinationArchipelagoIndex)){
             try {
-                board.moveStudentSchoolToArchipelagos(this.players.get(this.currentPlayerIndex), studentColour, destArchipelagoIndex);
+                board.moveStudentSchoolToArchipelagos(this.players.get(this.currentPlayerIndex), studentColour, destinationArchipelagoIndex);
             } catch (StudentNotFoundException e) {
                 return false;
             }
@@ -427,7 +452,7 @@ public class Controller implements Observer {
         String nicknamePlayer = message.getNicknamePlayer();
         int moves = message.getMoves();
 
-        if(!isCurrentPlayer(nicknamePlayer)){return false;}
+        if(isCurrentPlayer(nicknamePlayer)){return false;}
 
         if(controllerIntegrity.checkMoveMotherNature(this.players.get(this.currentPlayerIndex), moves)){
             board.moveMotherNature(moves);
@@ -446,7 +471,7 @@ public class Controller implements Observer {
         String nicknamePlayer = message.getNicknamePlayer();
         int indexCloud = message.getIndexCloud();
 
-        if(!isCurrentPlayer(nicknamePlayer)){return false;}
+        if(isCurrentPlayer(nicknamePlayer)){return false;}
 
         if(controllerIntegrity.checkStudentCloudToSchool(this.players.get(this.currentPlayerIndex), indexCloud)){
             try{
@@ -474,7 +499,7 @@ public class Controller implements Observer {
         List<SPColour> coloursCard = this.mapListStringToColour(message.getColoursCard());
         List<SPColour> coloursHall = this.mapListStringToColour(message.getColoursHall());
 
-        if(!isCurrentPlayer(nicknamePlayer)){return false;}
+        if(isCurrentPlayer(nicknamePlayer)){return false;}
 
         try{
             ExchangeThreeStudents chosenCard = (ExchangeThreeStudents)this.mapIndexToCharacterCard(MessageType.CC_EXCHANGE_THREE_STUDENTS, indexCard);
@@ -497,7 +522,7 @@ public class Controller implements Observer {
         List<SPColour> coloursHall = this.mapListStringToColour(message.getColoursHall());
         List<SPColour> coloursDiningRoom = this.mapListStringToColour(message.getColoursDiningRoom());
 
-        if(!isCurrentPlayer(nicknamePlayer)){return false;}
+        if(isCurrentPlayer(nicknamePlayer)){return false;}
 
         try {
             ExchangeTwoHallDining chosenCard = (ExchangeTwoHallDining)this.mapIndexToCharacterCard(MessageType.CC_EXCHANGE_THREE_STUDENTS, indexCard);
@@ -519,7 +544,7 @@ public class Controller implements Observer {
         int indexCard = message.getIndexCard();
         String nicknamePlayer = message.getNicknamePlayer();
 
-        if(!isCurrentPlayer(nicknamePlayer)){return false;}
+        if(isCurrentPlayer(nicknamePlayer)){return false;}
 
         if(controllerIntegrity.checkCCGeneric()){
             try {
@@ -544,7 +569,7 @@ public class Controller implements Observer {
         String nicknamePlayer = message.getNicknamePlayer();
         SPColour colourToMove = mapStringToSPColour(message.getColourToMove());
 
-        if(!isCurrentPlayer(nicknamePlayer)){return false;}
+        if(isCurrentPlayer(nicknamePlayer)){return false;}
 
         if(controllerIntegrity.checkCCGeneric()){
             try {
@@ -567,7 +592,7 @@ public class Controller implements Observer {
         String nicknamePlayer = message.getNicknamePlayer();
         int fakeMNPosition = message.getFakeMNPosition();
 
-        if(!isCurrentPlayer(nicknamePlayer)){return false;}
+        if(isCurrentPlayer(nicknamePlayer)){return false;}
 
         if(controllerIntegrity.checkCCFakeMNMovement(fakeMNPosition)){
             try {
@@ -592,7 +617,7 @@ public class Controller implements Observer {
         String nicknamePlayer = message.getNicknamePlayer();
         int archipelagoIndexToForbid = message.getArchipelagoIndexToForbid();
 
-        if(!isCurrentPlayer(nicknamePlayer)){return false;}
+        if(isCurrentPlayer(nicknamePlayer)){return false;}
 
         if(controllerIntegrity.checkCCForbidIsland(archipelagoIndexToForbid)){
             try {
@@ -611,14 +636,14 @@ public class Controller implements Observer {
         int indexCard = message.getIndexCard();
         String nicknamePlayer = message.getNicknamePlayer();
         SPColour colourToMove = mapStringToSPColour(message.getColourToMove());
-        int archipelagoIndexDest = message.getArchipelagoIndexDest();
+        int archipelagoIndexDestination = message.getArchipelagoIndexDest();
 
-        if(!isCurrentPlayer(nicknamePlayer)){return false;}
+        if(isCurrentPlayer(nicknamePlayer)){return false;}
 
         try {
             PlaceOneStudent chosenCard = (PlaceOneStudent)this.mapIndexToCharacterCard(MessageType.CC_PLACE_ONE_STUDENT, indexCard);
-            if(controllerIntegrity.checkCCPlaceOneStudent(colourToMove, archipelagoIndexDest, chosenCard)){
-                chosenCard.useEffect(colourToMove, archipelagoIndexDest);
+            if(controllerIntegrity.checkCCPlaceOneStudent(colourToMove, archipelagoIndexDestination, chosenCard)){
+                chosenCard.useEffect(colourToMove, archipelagoIndexDestination);
 
                 return true;
             }
@@ -635,7 +660,7 @@ public class Controller implements Observer {
         String nicknamePlayer = message.getNicknamePlayer();
         SPColour colourToReduce = mapStringToSPColour(message.getColourToReduce());
 
-        if(!isCurrentPlayer(nicknamePlayer)){return false;}
+        if(isCurrentPlayer(nicknamePlayer)){return false;}
 
         try {
             if(controllerIntegrity.checkCCGeneric()) {
@@ -656,7 +681,7 @@ public class Controller implements Observer {
         int indexCard = message.getIndexCard();
         String nicknamePlayer = message.getNicknamePlayer();
 
-        if(!isCurrentPlayer(nicknamePlayer)){return false;}
+        if(isCurrentPlayer(nicknamePlayer)){return false;}
 
         try {
             if(controllerIntegrity.checkCCGeneric()){
@@ -680,7 +705,7 @@ public class Controller implements Observer {
         int indexCard = message.getIndexCard();
         String nicknamePlayer = message.getNicknamePlayer();
 
-        if(!isCurrentPlayer(nicknamePlayer)){return false;}
+        if(isCurrentPlayer(nicknamePlayer)){return false;}
 
         try {
             if(controllerIntegrity.checkCCGeneric()){
@@ -704,7 +729,7 @@ public class Controller implements Observer {
         int indexCard = message.getIndexCard();
         String nicknamePlayer = message.getNicknamePlayer();
 
-        if(!isCurrentPlayer(nicknamePlayer)){return false;}
+        if(isCurrentPlayer(nicknamePlayer)){return false;}
 
         try {
             if(controllerIntegrity.checkCCGeneric()){
@@ -730,7 +755,7 @@ public class Controller implements Observer {
         int indexCard = message.getIndexCard();
         String nicknamePlayer = message.getNicknamePlayer();
 
-        if(!isCurrentPlayer(nicknamePlayer)){return false;}
+        if(isCurrentPlayer(nicknamePlayer)){return false;}
 
         if(controllerIntegrity.checkCCGeneric()){
             try {

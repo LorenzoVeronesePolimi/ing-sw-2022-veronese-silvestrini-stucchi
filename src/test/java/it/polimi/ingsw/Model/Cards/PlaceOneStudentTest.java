@@ -41,7 +41,7 @@ public class PlaceOneStudentTest {
         Assertions.assertTrue(boardAdvanced.getArchipelago(6).howManyStudents().get(SPColour.GREEN) == 0);
         Assertions.assertTrue(boardAdvanced.getArchipelago(6).howManyStudents().get(SPColour.YELLOW) == 0);
 
-        if(card.getCardStudents().stream().filter(x -> x.getColour().equals(SPColour.BLUE)).count()>=1){
+        if(card.getCardStudents().stream().anyMatch(x -> x.getColour().equals(SPColour.BLUE))){
             try {
                 boardAdvanced.usePlaceOneStudent(p1,SPColour.BLUE,6);
                 Assertions.assertTrue(boardAdvanced.getArchipelago(6).howManyStudents().get(SPColour.BLUE) == 1);
@@ -50,13 +50,7 @@ public class PlaceOneStudentTest {
                 Assertions.assertTrue(boardAdvanced.getArchipelago(6).howManyStudents().get(SPColour.GREEN) == 0);
                 Assertions.assertTrue(boardAdvanced.getArchipelago(6).howManyStudents().get(SPColour.YELLOW) == 0);
 
-            } catch (StudentNotFoundException e) {
-                e.printStackTrace();
-            } catch (EmptyCaveauExcepion e) {
-                e.printStackTrace();
-            } catch (ExceededMaxNumCoinException e) {
-                e.printStackTrace();
-            } catch (CoinNotFoundException e) {
+            } catch (StudentNotFoundException | CoinNotFoundException | ExceededMaxNumCoinException | EmptyCaveauExcepion e) {
                 e.printStackTrace();
             }
         }else{

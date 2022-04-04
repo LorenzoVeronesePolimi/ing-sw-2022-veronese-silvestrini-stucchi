@@ -98,16 +98,6 @@ public class BoardFour extends BoardAbstract {
         else
             conquerorTowers = this.playerSchool.get(teammates.get(conqueror)).removeNumTowers(toConquer.getNumIslands());
 
-        List<Tower> looserTowers = null;
-        if (conquerorTowers != null) {
-            looserTowers = toConquer.conquerArchipelago(conquerorTowers);
-        }
-        // == 0 would be the case in which the Archipelago is conquered for the first time => no Towers to reposition
-        // otherwise I replace the looser Towers
-        if (looserTowers != null && looserTowers.size() != 0) {
-            Player looser = looserTowers.get(0).getPlayer();
-            this.playerSchool.get(looser).addNumTower(looserTowers);
-        }
-
+        moveTower(conquerorTowers, toConquer);
     }
 }

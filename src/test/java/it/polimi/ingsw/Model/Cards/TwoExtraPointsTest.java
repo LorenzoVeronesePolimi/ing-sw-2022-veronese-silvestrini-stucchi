@@ -82,19 +82,7 @@ public class TwoExtraPointsTest {
 
         try {
             boardAdvanced.useTwoExtraPoints(p1);
-        } catch (EmptyCaveauExcepion e) {
-            e.printStackTrace();
-        } catch (ExceededMaxNumCoinException e) {
-            e.printStackTrace();
-        } catch (CoinNotFoundException e) {
-            e.printStackTrace();
-        } catch (InvalidTowerNumberException e) {
-            e.printStackTrace();
-        } catch (AnotherTowerException e) {
-            e.printStackTrace();
-        } catch (ExceededMaxTowersException e) {
-            e.printStackTrace();
-        } catch (TowerNotFoundException e) {
+        } catch (EmptyCaveauExcepion | TowerNotFoundException | ExceededMaxTowersException | AnotherTowerException | InvalidTowerNumberException | CoinNotFoundException | ExceededMaxNumCoinException e) {
             e.printStackTrace();
         }
 

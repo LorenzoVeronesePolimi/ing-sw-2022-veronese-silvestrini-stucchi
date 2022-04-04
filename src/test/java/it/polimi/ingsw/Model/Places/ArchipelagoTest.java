@@ -61,13 +61,7 @@ public class ArchipelagoTest {
         BoardTwo board = null;
         try {
             board = new BoardTwo(players);
-        } catch (StudentNotFoundException e) {
-            e.printStackTrace();
-        } catch (ExceededMaxStudentsCloudException e) {
-            e.printStackTrace();
-        } catch (ExceededMaxStudentsHallException e) {
-            e.printStackTrace();
-        } catch (ExceedingAssistantCardNumberException e) {
+        } catch (StudentNotFoundException | ExceedingAssistantCardNumberException | ExceededMaxStudentsHallException | ExceededMaxStudentsCloudException e) {
             e.printStackTrace();
         }
         BoardAdvanced boardAdvanced = null;
@@ -93,13 +87,7 @@ public class ArchipelagoTest {
         BoardTwo board = null;
         try {
             board = new BoardTwo(players);
-        } catch (StudentNotFoundException e) {
-            e.printStackTrace();
-        } catch (ExceededMaxStudentsCloudException e) {
-            e.printStackTrace();
-        } catch (ExceededMaxStudentsHallException e) {
-            e.printStackTrace();
-        } catch (ExceedingAssistantCardNumberException e) {
+        } catch (StudentNotFoundException | ExceedingAssistantCardNumberException | ExceededMaxStudentsHallException | ExceededMaxStudentsCloudException e) {
             e.printStackTrace();
         }
         BoardAdvanced boardAdvanced = null;
@@ -112,13 +100,7 @@ public class ArchipelagoTest {
         board.moveMotherNature(4);
         try {
             card.useEffect(p1);
-        } catch (InvalidTowerNumberException e) {
-            e.printStackTrace();
-        } catch (AnotherTowerException e) {
-            e.printStackTrace();
-        } catch (ExceededMaxTowersException e) {
-            e.printStackTrace();
-        } catch (TowerNotFoundException e) {
+        } catch (InvalidTowerNumberException | TowerNotFoundException | ExceededMaxTowersException | AnotherTowerException e) {
             e.printStackTrace();
         }
         assertTrue(boardAdvanced.getArchiList().get(4).getTowerNoValueFlag());
@@ -142,7 +124,7 @@ public class ArchipelagoTest {
     @Test
     void howManyStudents(){
         Archipelago tested = new Archipelago();
-        Map<SPColour, Integer> studentsDataCopy = new HashMap<SPColour, Integer>();
+        Map<SPColour, Integer> studentsDataCopy = new HashMap<>();
         SPColour[] availableColours = {SPColour.BLUE, SPColour.PINK, SPColour.RED, SPColour.GREEN, SPColour.YELLOW};
         for(SPColour c : availableColours){
             studentsDataCopy.put(c, 0);

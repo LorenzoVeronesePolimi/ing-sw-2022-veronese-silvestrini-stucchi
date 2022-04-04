@@ -1,10 +1,8 @@
 package it.polimi.ingsw.Controller;
 
 import it.polimi.ingsw.Controller.Enumerations.MessageType;
-import it.polimi.ingsw.Controller.Enumerations.State;
 
 import it.polimi.ingsw.Controller.Enumerations.State;
-import it.polimi.ingsw.Controller.Messages.MessageStudentToArchipelago;
 
 public class ControllerState {
 
