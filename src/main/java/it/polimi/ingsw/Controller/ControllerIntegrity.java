@@ -1,6 +1,7 @@
 package it.polimi.ingsw.Controller;
 
 import it.polimi.ingsw.Model.Board.Board;
+import it.polimi.ingsw.Model.Board.BoardAbstract;
 import it.polimi.ingsw.Model.Board.BoardAdvanced;
 import it.polimi.ingsw.Model.Cards.ExchangeThreeStudents;
 import it.polimi.ingsw.Model.Cards.ExchangeTwoHallDining;
@@ -15,14 +16,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ControllerIntegrity {
-    private Board board;
+    private BoardAbstract board;
     private BoardAdvanced boardAdvanced;
     private boolean advanced; //0: simple, 1: advanced
 
     public ControllerIntegrity(){
     }
 
-    public void setBoard(Board board) {
+    public void setBoard(BoardAbstract board) {
         this.board = board;
     }
 

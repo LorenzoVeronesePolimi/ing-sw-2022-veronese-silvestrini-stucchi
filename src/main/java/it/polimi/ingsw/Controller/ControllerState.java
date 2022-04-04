@@ -36,6 +36,10 @@ public class ControllerState {
             case CC_FAKE_MN_MOVEMENT:
             case CC_FORBID_ISLAND:
             case CC_PLACE_ONE_STUDENT:
+            case CC_REDUCE_COLOUR_IN_DINING:
+            case CC_TAKE_PROFESSOR_ON_EQUITY:
+            case CC_TOWER_NO_VALUE:
+            case CC_TWO_EXTRA_POINTS:
                 return (this.state != State.CONNECTING &&
                         this.state != State.WAITING_PLAYERS);
         }

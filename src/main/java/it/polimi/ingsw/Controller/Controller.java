@@ -23,7 +23,7 @@ import java.util.stream.Collectors;
 public class Controller implements Observer {
     private int numPlayers;
     private boolean advanced;
-    private Board board;
+    private BoardAbstract board;
     private BoardAdvanced boardAdvanced; //null if advanced=0
     private List<Player> players; //ordered
 
@@ -127,6 +127,10 @@ public class Controller implements Observer {
                 }
             case CC_PLACE_ONE_STUDENT:
                 if(!this.manageCCPlaceOneStudent((MessageCCPlaceOneStudent)message)){
+                    System.out.println("Wrong parameters");
+                }
+            case CC_REDUCE_COLOUR_IN_DINING:
+                if(!this.manageCCReduceColourInDining((MessageCCReduceColourInDining)message)){
                     System.out.println("Wrong parameters");
                 }
             case CC_TOWER_NO_VALUE:
@@ -262,7 +266,7 @@ public class Controller implements Observer {
         if(this.advanced){
             //TODO: surrounded with try catch just to remove errors. It needs to be checked before leaving it like that
             try {
-                this.boardAdvanced = new BoardAdvanced((BoardAbstract) this.board);
+                this.boardAdvanced = new BoardAdvanced(this.board);
             } catch (ExceededMaxStudentsHallException e) {
                 e.printStackTrace();
             } catch (StudentNotFoundException | TowerNotFoundException | EmptyCaveauExcepion e) {
@@ -385,7 +389,7 @@ public class Controller implements Observer {
             } else{
                 try {
                     board.moveStudentHallToDiningRoom(this.players.get(this.currentPlayerIndex), studentColour);
-                } catch (StudentNotFoundException | ExceededMaxStudentsDiningRoomException | EmptyCaveauExcepion |
+                } catch (StudentNotFoundException | ExceededMaxStudentsDiningRoomException |
                         ProfessorNotFoundException | NoProfessorBagException e) {
                     return false;
                 }
@@ -626,6 +630,28 @@ public class Controller implements Observer {
         return false;
     }
 
+    private boolean manageCCReduceColourInDining(MessageCCReduceColourInDining message){
+        int indexCard = message.getIndexCard();
+        String nicknamePlayer = message.getNicknamePlayer();
+        SPColour colourToReduce = mapStringToSPColour(message.getColourToReduce());
+
+        if(!isCurrentPlayer(nicknamePlayer)){return false;}
+
+        try {
+            if(controllerIntegrity.checkCCGeneric()) {
+                ReduceColourInDining chosenCard = (ReduceColourInDining) this.mapIndexToCharacterCard(MessageType.CC_REDUCE_COLOUR_IN_DINING, indexCard);
+                chosenCard.useEffect(colourToReduce);
+
+                return true;
+            }
+        } catch (NoCorrespondingCharacterCardException |
+                StudentNotFoundException e) {
+            return false;
+        }
+
+        return false;
+    }
+
     private boolean manageCCTowerNoValue(MessageCCTowerNoValue message){
         int indexCard = message.getIndexCard();
         String nicknamePlayer = message.getNicknamePlayer();
@@ -669,6 +695,52 @@ public class Controller implements Observer {
                 AnotherTowerException |
                 ExceededMaxTowersException e) {
             return false;
+        }
+
+        return false;
+    }
+
+    private boolean manageCCTakeProfessorOnEquity(MessageCCTakeProfessorOnEquity message){
+        int indexCard = message.getIndexCard();
+        String nicknamePlayer = message.getNicknamePlayer();
+
+        if(!isCurrentPlayer(nicknamePlayer)){return false;}
+
+        try {
+            if(controllerIntegrity.checkCCGeneric()){
+                TakeProfessorOnEquity chosenCard = (TakeProfessorOnEquity)this.mapIndexToCharacterCard(MessageType.CC_TAKE_PROFESSOR_ON_EQUITY, indexCard);
+                chosenCard.useEffect(this.players.get(currentPlayerIndex));
+
+                return true;
+            }
+        } catch (NoCorrespondingCharacterCardException |
+                TowerNotFoundException |
+                InvalidTowerNumberException |
+                AnotherTowerException |
+                ProfessorNotFoundException |
+                NoProfessorBagException |
+                ExceededMaxTowersException e) {
+            return false;
+        }
+
+        return false;
+    }
+
+    private boolean manageTwoExtraIslands(MessageCCTwoExtraIslands message){
+        int indexCard = message.getIndexCard();
+        String nicknamePlayer = message.getNicknamePlayer();
+
+        if(!isCurrentPlayer(nicknamePlayer)){return false;}
+
+        if(controllerIntegrity.checkCCGeneric()){
+            try {
+                TwoExtraIslands chosenCard = (TwoExtraIslands)this.mapIndexToCharacterCard(MessageType.CC_TWO_EXTRA_ISLANDS, indexCard);
+                //TODO after TwoExtraIslands correction: chosenCard.useEffect(this.players.get(currentPlayerIndex));
+
+                return true;
+            } catch (NoCorrespondingCharacterCardException e) {
+                return false;
+            }
         }
 
         return false;

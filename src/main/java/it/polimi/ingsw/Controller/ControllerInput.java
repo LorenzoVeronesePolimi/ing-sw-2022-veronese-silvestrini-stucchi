@@ -72,6 +72,13 @@ public class ControllerInput {
                         this.checkNickname(((MessageCCPlaceOneStudent)message).getNicknamePlayer()) &&
                         this.checkStudentColour(((MessageCCPlaceOneStudent)message).getColourToMove()) &&
                         this.checkDestArchipelagoIndex(((MessageCCPlaceOneStudent)message).getArchipelagoIndexDest()));
+            case CC_REDUCE_COLOUR_IN_DINING:
+                return (this.checkIndexCard(((MessageCC)message).getIndexCard()) &&
+                        this.checkNickname(((MessageCCReduceColourInDining)message).getNicknamePlayer()) &&
+                        this.checkStudentColour(((MessageCCReduceColourInDining)message).getColourToReduce()));
+            case CC_TAKE_PROFESSOR_ON_EQUITY:
+                return (this.checkIndexCard(((MessageCC)message).getIndexCard()) &&
+                        this.checkNickname(((MessageCCTakeProfessorOnEquity)message).getNicknamePlayer()));
             case CC_TOWER_NO_VALUE:
                 return (this.checkIndexCard(((MessageCC)message).getIndexCard()) &&
                         this.checkNickname(((MessageCCTowerNoValue)message).getNicknamePlayer()));
