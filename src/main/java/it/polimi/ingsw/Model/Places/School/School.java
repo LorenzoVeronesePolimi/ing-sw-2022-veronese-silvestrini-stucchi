@@ -46,7 +46,7 @@ public class School {
 
     public Player getPlayer(){ return this.player; }
 
-    public List<Professor> getProfessors(){ return professors; }
+    public List<Professor> getProfessors(){ return this.professors; }
 
     public List<Student> getStudentsHall() {
         return new ArrayList<>(this.studentsHall);

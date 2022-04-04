@@ -169,7 +169,147 @@ public class BoardFourTest {
     }
 
     @Test
-    void BoardTestAdvancedTest() {
+    void BoardFourAdvancedTest() {
+        Board boardFour = boardFactory.createBoard();
+        BoardAdvanced boardAdvanced = null;
 
+        try {
+            boardAdvanced = new BoardAdvanced((BoardAbstract) boardFour);
+        } catch (ExceededMaxStudentsHallException | StudentNotFoundException | TowerNotFoundException | EmptyCaveauExcepion e) {
+            e.printStackTrace();
+        }
+
+        // Schools
+        Assertions.assertEquals(_1, boardAdvanced.getPlayerSchool(_1).getPlayer());
+        Assertions.assertEquals(_2, boardAdvanced.getPlayerSchool(_2).getPlayer());
+        Assertions.assertEquals(_3, boardAdvanced.getPlayerSchool(_3).getPlayer());
+        Assertions.assertEquals(_4, boardAdvanced.getPlayerSchool(_4).getPlayer());
+
+        Assertions.assertEquals(7, boardAdvanced.getPlayerSchool(_1).getStudentsHall().size());
+        Assertions.assertEquals(8, boardAdvanced.getPlayerSchool(_1).getTowers().size());
+
+        Assertions.assertEquals(7, boardAdvanced.getPlayerSchool(_2).getStudentsHall().size());
+        Assertions.assertEquals(0, boardAdvanced.getPlayerSchool(_2).getTowers().size());
+
+        Assertions.assertEquals(7, boardAdvanced.getPlayerSchool(_3).getStudentsHall().size());
+        Assertions.assertEquals(8, boardAdvanced.getPlayerSchool(_3).getTowers().size());
+
+        Assertions.assertEquals(7, boardAdvanced.getPlayerSchool(_4).getStudentsHall().size());
+        Assertions.assertEquals(0, boardAdvanced.getPlayerSchool(_4).getTowers().size());
+
+        // Cloud
+        Assertions.assertEquals(4, boardAdvanced.getClouds().size());
+        Assertions.assertEquals(3, boardAdvanced.getClouds().get(0).getStudents().size());
+        Assertions.assertEquals(3, boardAdvanced.getClouds().get(1).getStudents().size());
+        Assertions.assertEquals(3, boardAdvanced.getClouds().get(2).getStudents().size());
+        Assertions.assertEquals(3, boardAdvanced.getClouds().get(3).getStudents().size());
+
+        // Mother Nature
+        Assertions.assertEquals(0, boardAdvanced.whereIsMotherNature());
+
+        // Moving student conquering professor and archipelago 0
+        SPColour[] availableColours = {SPColour.BLUE, SPColour.PINK, SPColour.RED, SPColour.GREEN, SPColour.YELLOW};
+        SPColour choosenColour = null;
+        for(SPColour c : availableColours) {
+            if(boardAdvanced.isStudentInSchoolHall(_1, c)) {
+                try {
+                    boardAdvanced.moveStudentHallToDiningRoom(_1, c);
+                    Assertions.assertTrue(boardAdvanced.isProfessorInSchool(c));
+                    Assertions.assertEquals(boardAdvanced.getPlayerSchool(_1), boardAdvanced.whereIsProfessor(c));
+                } catch (StudentNotFoundException | ExceededMaxStudentsDiningRoomException | EmptyCaveauExcepion | ProfessorNotFoundException | NoProfessorBagException e) {
+                    e.printStackTrace();
+                }
+
+                if(boardAdvanced.isStudentInSchoolHall(_1, c)) {
+                    choosenColour = c;
+                    try {
+                        boardAdvanced.moveStudentSchoolToArchipelagos(_1, c, 0);
+                        Assertions.assertEquals(1, boardAdvanced.getNumStudentsInArchipelago(0).get(c));
+                    } catch (StudentNotFoundException e) {
+                        e.printStackTrace();
+                    }
+
+                    try {
+                        boardAdvanced.tryToConquer(_1);
+                        Assertions.assertEquals(_1, boardAdvanced.getArchipelago(0).getOwner());
+                        Assertions.assertEquals(7, boardAdvanced.getPlayerSchool(_1).getNumTowers());
+
+                        // test if teammate tries to conquer same archipelago
+                        boardAdvanced.tryToConquer(_2);
+                        Assertions.assertEquals(_1, boardAdvanced.getArchipelago(0).getOwner());
+                        Assertions.assertEquals(7, boardAdvanced.getPlayerSchool(_1).getNumTowers());
+                    } catch (InvalidTowerNumberException | AnotherTowerException | ExceededMaxTowersException | TowerNotFoundException e) {
+                        e.printStackTrace();
+                    }
+
+                    break;
+                }
+            }
+        }
+
+        // compute change of dominance
+        try {
+            boardAdvanced.getPlayerSchool(_4).removeStudentHall(boardFour.getPlayerSchool(_4).getStudentsHall().get(0).getColour());
+            boardAdvanced.getPlayerSchool(_4).removeStudentHall(boardFour.getPlayerSchool(_4).getStudentsHall().get(0).getColour());
+            boardAdvanced.getPlayerSchool(_4).removeStudentHall(boardFour.getPlayerSchool(_4).getStudentsHall().get(0).getColour());
+            boardAdvanced.getPlayerSchool(_4).removeStudentHall(boardFour.getPlayerSchool(_4).getStudentsHall().get(0).getColour());
+        } catch (StudentNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        Student s1 = new Student(choosenColour);
+        Student s2 = new Student(choosenColour);
+        Student s3 = new Student(choosenColour);
+        Student s4 = new Student(choosenColour);
+
+        try {
+            boardAdvanced.getPlayerSchool(_4).addStudentHall(s1);
+            boardAdvanced.getPlayerSchool(_4).addStudentHall(s2);
+            boardAdvanced.getPlayerSchool(_4).addStudentHall(s3);
+            boardAdvanced.getPlayerSchool(_4).addStudentHall(s4);
+        } catch (ExceededMaxStudentsHallException e) {
+            e.printStackTrace();
+        }
+
+        try {
+            boardAdvanced.moveStudentHallToDiningRoom(_4, choosenColour);
+            boardAdvanced.moveStudentHallToDiningRoom(_4, choosenColour);
+            Assertions.assertTrue(boardAdvanced.isProfessorInSchool(choosenColour));
+            Assertions.assertEquals(boardAdvanced.getPlayerSchool(_4), boardAdvanced.whereIsProfessor(choosenColour));
+        } catch (StudentNotFoundException | ExceededMaxStudentsDiningRoomException | EmptyCaveauExcepion | ProfessorNotFoundException | NoProfessorBagException e) {
+            e.printStackTrace();
+        }
+
+        try {
+            boardAdvanced.moveStudentSchoolToArchipelagos(_4, choosenColour, 0);
+            boardAdvanced.moveStudentSchoolToArchipelagos(_4, choosenColour, 0);
+            Assertions.assertEquals(3, boardAdvanced.getNumStudentsInArchipelago(0).get(choosenColour));
+        } catch (StudentNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        // conquering (after setup of needed students and professors positions)
+        try {
+            boardAdvanced.tryToConquer(_4);
+            // the owner is the one with the towers
+            Assertions.assertEquals(_3, boardAdvanced.getArchipelago(0).getOwner());
+            Assertions.assertEquals(7, boardAdvanced.getPlayerSchool(_3).getNumTowers());
+
+            // test if teammate tries to conquer same archipelago
+            boardAdvanced.tryToConquer(_3);
+            Assertions.assertEquals(_3, boardAdvanced.getArchipelago(0).getOwner());
+            Assertions.assertEquals(7, boardAdvanced.getPlayerSchool(_3).getNumTowers());
+        } catch (InvalidTowerNumberException | AnotherTowerException | ExceededMaxTowersException | TowerNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        // try to conquer with lower influence
+
+        try {
+            boardAdvanced.tryToConquer(_2);
+            Assertions.assertEquals(_3, boardAdvanced.getArchipelago(0).getOwner());
+        } catch (InvalidTowerNumberException | AnotherTowerException | ExceededMaxTowersException | TowerNotFoundException e) {
+            e.printStackTrace();
+        }
     }
 }

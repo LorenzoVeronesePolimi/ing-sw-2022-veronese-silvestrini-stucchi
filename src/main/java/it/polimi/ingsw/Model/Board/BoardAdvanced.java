@@ -239,7 +239,7 @@ public class BoardAdvanced implements Board {
                 currentArchipelago.removeForbidFlag();
                 return false;
             }
-            if (currentArchipelago.getOwner() == currentPlayer || currentArchipelago.getOwner() ==((BoardFour)this.board).teammates.get(currentArchipelago.getOwner())) {
+            if (currentArchipelago.getOwner() == currentPlayer || currentArchipelago.getOwner() == ((BoardFour)this.board).teammates.get(currentPlayer)) {
                 return false;
             } else if (currentArchipelago.getOwner() == null) { //archipelago never conquered before
                 List<Professor> conquerorProfessors = this.board.playerSchool.get(currentPlayer).getProfessors();
@@ -256,7 +256,7 @@ public class BoardAdvanced implements Board {
             //the current Player is not the owner: can he conquer the Archipelago?
             else {
                 //who has higher influence according to rules?
-                Player winner = this.computeWinner(currentArchipelago.getOwner(), currentPlayer, currentArchipelago);
+                Player winner = this.computeWinner(currentArchipelago.getOwner(), currentPlayer, currentArchipelago, twoExtraPointsFlag, colourToExclude);
                 currentArchipelago.setTowerNoValueFlag(false);
                 twoExtraPointsFlag = false;
                 return winner == currentPlayer || winner == ((BoardFour)this.board).teammates.get(currentPlayer);

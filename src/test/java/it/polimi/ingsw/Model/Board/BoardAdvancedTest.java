@@ -29,13 +29,7 @@ public class BoardAdvancedTest {
         BoardAdvanced boardAdvanced = null;
         try {
             boardAdvanced = new BoardAdvanced(board);
-        } catch (ExceededMaxStudentsHallException e) {
-            e.printStackTrace();
-        } catch (StudentNotFoundException e) {
-            e.printStackTrace();
-        } catch (TowerNotFoundException e) {
-            e.printStackTrace();
-        } catch (EmptyCaveauExcepion e) {
+        } catch (ExceededMaxStudentsHallException | StudentNotFoundException | TowerNotFoundException | EmptyCaveauExcepion e) {
             e.printStackTrace();
         }
 
@@ -46,9 +40,7 @@ public class BoardAdvancedTest {
             Assertions.assertEquals(boardAdvanced.computeInfluenceOfPlayer(board.players.get(0), board.archipelagos.get(0)), 0);
             Assertions.assertEquals(1, ((SchoolAdvanced)boardAdvanced.getPlayerSchool(p2)).getNumCoins());
 
-        } catch (AssistantCardAlreadyPlayedTurnException e) {
-            e.printStackTrace();
-        } catch (NoAssistantCardException e) {
+        } catch (AssistantCardAlreadyPlayedTurnException | NoAssistantCardException e) {
             e.printStackTrace();
         }
 
@@ -79,6 +71,22 @@ public class BoardAdvancedTest {
         e.printStackTrace();
         }
         Assertions.assertFalse(boardAdvanced.isStudentInSchoolHall(p1,SPColour.BLUE));
+        Assertions.assertFalse(boardAdvanced.isStudentInSchoolHall(p1,SPColour.GREEN));
+        Assertions.assertFalse(boardAdvanced.isStudentInSchoolHall(p1,SPColour.RED));
+        Assertions.assertFalse(boardAdvanced.isStudentInSchoolHall(p1,SPColour.YELLOW));
+        Assertions.assertFalse(boardAdvanced.isStudentInSchoolHall(p1,SPColour.PINK));
+
+        Assertions.assertFalse(boardAdvanced.isStudentInSchoolHall(p2,SPColour.BLUE));
+        Assertions.assertFalse(boardAdvanced.isStudentInSchoolHall(p2,SPColour.GREEN));
+        Assertions.assertFalse(boardAdvanced.isStudentInSchoolHall(p2,SPColour.RED));
+        Assertions.assertFalse(boardAdvanced.isStudentInSchoolHall(p2,SPColour.YELLOW));
+        Assertions.assertFalse(boardAdvanced.isStudentInSchoolHall(p2,SPColour.PINK));
+
+        Assertions.assertFalse(boardAdvanced.isStudentInSchoolHall(p3,SPColour.BLUE));
+        Assertions.assertFalse(boardAdvanced.isStudentInSchoolHall(p3,SPColour.GREEN));
+        Assertions.assertFalse(boardAdvanced.isStudentInSchoolHall(p3,SPColour.RED));
+        Assertions.assertFalse(boardAdvanced.isStudentInSchoolHall(p3,SPColour.YELLOW));
+        Assertions.assertFalse(boardAdvanced.isStudentInSchoolHall(p3,SPColour.PINK));
 
         BoardAdvanced finalBoardAdvanced1 = boardAdvanced;
         Assertions.assertThrows(StudentNotFoundException.class, () -> finalBoardAdvanced1.moveStudentHallToDiningRoom(p1, SPColour.BLUE));
@@ -104,6 +112,10 @@ public class BoardAdvancedTest {
             e.printStackTrace();
         }
         Assertions.assertEquals(1, boardAdvanced.getArchipelago(0).howManyStudents().get(SPColour.PINK));
+        Assertions.assertEquals(0, boardAdvanced.getArchipelago(0).howManyStudents().get(SPColour.BLUE));
+        Assertions.assertEquals(0, boardAdvanced.getArchipelago(0).howManyStudents().get(SPColour.GREEN));
+        Assertions.assertEquals(0, boardAdvanced.getArchipelago(0).howManyStudents().get(SPColour.YELLOW));
+        Assertions.assertEquals(0, boardAdvanced.getArchipelago(0).howManyStudents().get(SPColour.RED));
 
         Assertions.assertThrows(StudentNotFoundException.class, () -> finalBoardAdvanced.moveStudentSchoolToArchipelagos(p1, SPColour.RED, 0));
 
@@ -117,9 +129,7 @@ public class BoardAdvancedTest {
 
         try {
             boardAdvanced.moveStudentBagToCloud();
-        } catch (StudentNotFoundException e) {
-            e.printStackTrace();
-        } catch (ExceededMaxStudentsCloudException e) {
+        } catch (StudentNotFoundException | ExceededMaxStudentsCloudException e) {
             e.printStackTrace();
         }
 
@@ -171,15 +181,7 @@ public class BoardAdvancedTest {
             boardAdvanced.moveStudentHallToDiningRoom(p3, SPColour.GREEN);
             boardAdvanced.moveStudentHallToDiningRoom(p3, SPColour.GREEN);
             boardAdvanced.moveStudentHallToDiningRoom(p3, SPColour.GREEN);
-        } catch (StudentNotFoundException e) {
-            e.printStackTrace();
-        } catch (ExceededMaxStudentsDiningRoomException e) {
-            e.printStackTrace();
-        } catch (EmptyCaveauExcepion e) {
-            e.printStackTrace();
-        } catch (ProfessorNotFoundException e) {
-            e.printStackTrace();
-        } catch (NoProfessorBagException e) {
+        } catch (StudentNotFoundException | ExceededMaxStudentsDiningRoomException | EmptyCaveauExcepion | ProfessorNotFoundException | NoProfessorBagException e) {
             e.printStackTrace();
         }
 
@@ -188,9 +190,7 @@ public class BoardAdvancedTest {
         Assertions.assertFalse(boardAdvanced.isProfessorInSchool(SPColour.YELLOW));
         try {
             boardAdvanced.moveProfessor(p3, SPColour.YELLOW);
-        } catch (ProfessorNotFoundException e) {
-            e.printStackTrace();
-        } catch (NoProfessorBagException e) {
+        } catch (ProfessorNotFoundException | NoProfessorBagException e) {
             e.printStackTrace();
         }
         Assertions.assertTrue(boardAdvanced.isProfessorInSchool(SPColour.YELLOW));
@@ -205,16 +205,11 @@ public class BoardAdvancedTest {
 
         try {
             boardAdvanced.tryToConquer(p3);
-        } catch (InvalidTowerNumberException e) {
-            e.printStackTrace();
-        } catch (AnotherTowerException e) {
-            e.printStackTrace();
-        } catch (ExceededMaxTowersException e) {
-            e.printStackTrace();
-        } catch (TowerNotFoundException e) {
+        } catch (InvalidTowerNumberException | AnotherTowerException | ExceededMaxTowersException | TowerNotFoundException e) {
             e.printStackTrace();
         }
         Assertions.assertEquals(PlayerColour.GRAY, boardAdvanced.getArchipelago(1).getOwner().getColour());
+        Assertions.assertEquals(p3, boardAdvanced.getArchipelago(1).getOwner());
 
         // check coin needed
 
@@ -231,6 +226,7 @@ public class BoardAdvancedTest {
             boardAdvanced.moveStudentHallToDiningRoom(p2, SPColour.BLUE);
             boardAdvanced.moveStudentHallToDiningRoom(p2, SPColour.BLUE);
             Assertions.assertEquals(2, ((SchoolAdvanced)boardAdvanced.getPlayerSchool(p2)).getNumCoins());
+            Assertions.assertEquals(boardAdvanced.getPlayerSchool(p2), boardAdvanced.whereIsProfessor(SPColour.BLUE));
 
 
             _1 = new Student(SPColour.RED);
@@ -243,6 +239,7 @@ public class BoardAdvancedTest {
             boardAdvanced.moveStudentHallToDiningRoom(p2, SPColour.RED);
             boardAdvanced.moveStudentHallToDiningRoom(p2, SPColour.RED);
             Assertions.assertEquals(3, ((SchoolAdvanced)boardAdvanced.getPlayerSchool(p2)).getNumCoins());
+            Assertions.assertEquals(boardAdvanced.getPlayerSchool(p2), boardAdvanced.whereIsProfessor(SPColour.RED));
 
 
 
@@ -256,6 +253,7 @@ public class BoardAdvancedTest {
             boardAdvanced.moveStudentHallToDiningRoom(p2, SPColour.YELLOW);
             boardAdvanced.moveStudentHallToDiningRoom(p2, SPColour.YELLOW);
             Assertions.assertEquals(4, ((SchoolAdvanced)boardAdvanced.getPlayerSchool(p2)).getNumCoins());
+            Assertions.assertEquals(boardAdvanced.getPlayerSchool(p2), boardAdvanced.whereIsProfessor(SPColour.YELLOW));
 
 
 
@@ -268,21 +266,11 @@ public class BoardAdvancedTest {
             boardAdvanced.moveStudentHallToDiningRoom(p2, SPColour.PINK);
             boardAdvanced.moveStudentHallToDiningRoom(p2, SPColour.PINK);
             boardAdvanced.moveStudentHallToDiningRoom(p2, SPColour.PINK);
-
             Assertions.assertEquals(5, ((SchoolAdvanced)boardAdvanced.getPlayerSchool(p2)).getNumCoins());
+            Assertions.assertEquals(boardAdvanced.getPlayerSchool(p2), boardAdvanced.whereIsProfessor(SPColour.PINK));
 
 
-        } catch (ExceededMaxStudentsHallException e) {
-            e.printStackTrace();
-        } catch (ExceededMaxStudentsDiningRoomException e) {
-            e.printStackTrace();
-        } catch (ProfessorNotFoundException e) {
-            e.printStackTrace();
-        } catch (StudentNotFoundException e) {
-            e.printStackTrace();
-        } catch (EmptyCaveauExcepion e) {
-            e.printStackTrace();
-        } catch (NoProfessorBagException e) {
+        } catch (ExceededMaxStudentsHallException | ExceededMaxStudentsDiningRoomException | ProfessorNotFoundException | StudentNotFoundException | EmptyCaveauExcepion | NoProfessorBagException e) {
             e.printStackTrace();
         }
 
@@ -290,9 +278,13 @@ public class BoardAdvancedTest {
         _1 = new Student(SPColour.BLUE);
         _2 = new Student(SPColour.BLUE);
         _3 = new Student(SPColour.BLUE);
+        _4 = new Student(SPColour.BLUE);
+        _5 = new Student(SPColour.BLUE);
         board.archipelagos.get(1).addStudent(_1);
         board.archipelagos.get(1).addStudent(_2);
         board.archipelagos.get(1).addStudent(_3);
+        board.archipelagos.get(1).addStudent(_4);
+        board.archipelagos.get(1).addStudent(_5);
         try {
             boardAdvanced.tryToConquer(p2);
             Assertions.assertEquals(p2, boardAdvanced.getArchipelago(1).getOwner());
@@ -304,21 +296,17 @@ public class BoardAdvancedTest {
         _3 = new Student(SPColour.GREEN);
         _4 = new Student(SPColour.GREEN);
         _5 = new Student(SPColour.GREEN);
+        _6 = new Student(SPColour.GREEN);
         board.archipelagos.get(1).addStudent(_1);
         board.archipelagos.get(1).addStudent(_2);
         board.archipelagos.get(1).addStudent(_3);
         board.archipelagos.get(1).addStudent(_4);
         board.archipelagos.get(1).addStudent(_5);
+        board.archipelagos.get(1).addStudent(_6);
         try {
             boardAdvanced.tryToConquer(p3);
             Assertions.assertEquals(p3, boardAdvanced.getArchipelago(1).getOwner());
-        } catch (InvalidTowerNumberException e) {
-            e.printStackTrace();
-        } catch (AnotherTowerException e) {
-            e.printStackTrace();
-        } catch (ExceededMaxTowersException e) {
-            e.printStackTrace();
-        } catch (TowerNotFoundException e) {
+        } catch (InvalidTowerNumberException | AnotherTowerException | ExceededMaxTowersException | TowerNotFoundException e) {
             e.printStackTrace();
         }
 
