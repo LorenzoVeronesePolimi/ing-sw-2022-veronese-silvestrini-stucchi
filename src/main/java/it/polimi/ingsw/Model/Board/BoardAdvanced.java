@@ -432,8 +432,7 @@ public class BoardAdvanced implements Board {
     }
 
     public void useTwoExtraIslands(Player player, int archipelago) throws
-            EmptyCaveauExcepion, ExceededMaxNumCoinException, CoinNotFoundException, ImpossibleMNMove,
-            InvalidTowerNumberException, AnotherTowerException, ExceededMaxTowersException, TowerNotFoundException {
+            EmptyCaveauExcepion, ExceededMaxNumCoinException, CoinNotFoundException{
 
         for(AbstractCharacterCard card: extractedCards) {
             if(card instanceof TwoExtraIslands) {
@@ -442,7 +441,7 @@ public class BoardAdvanced implements Board {
                     bank.addCoin(((SchoolAdvanced)currentSchool).removeCoin());
                 }
 
-                ((TwoExtraIslands)card).useEffect(player, archipelago);
+                ((TwoExtraIslands)card).useEffect(player);
                 card.updatePrice(this.bank.getCoin());
             }
         }

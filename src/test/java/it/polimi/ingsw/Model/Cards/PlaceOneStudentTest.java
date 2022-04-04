@@ -6,6 +6,7 @@ import it.polimi.ingsw.Model.Board.BoardFactory;
 import it.polimi.ingsw.Model.Enumerations.PlayerColour;
 import it.polimi.ingsw.Model.Enumerations.SPColour;
 import it.polimi.ingsw.Model.Exceptions.*;
+import it.polimi.ingsw.Model.Pawns.Student;
 import it.polimi.ingsw.Model.Player;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -62,5 +63,16 @@ public class PlaceOneStudentTest {
             BoardAdvanced finalBoardAdvanced = boardAdvanced;
             Assertions.assertThrows(StudentNotFoundException.class, () -> finalBoardAdvanced.usePlaceOneStudent(p1,SPColour.BLUE,6));
         }
+
+        for(int i=0; i<10;i++) {
+            try {
+                boardAdvanced.getPlayerSchool(p1).addStudentDiningRoom(new Student(SPColour.BLUE));
+            } catch (ExceededMaxStudentsDiningRoomException e) {
+                e.printStackTrace();
+            }
+        }
+
+        BoardAdvanced finalBoardAdvanced = boardAdvanced;
+        Assertions.assertThrows(ExceededMaxStudentsDiningRoomException.class, () -> finalBoardAdvanced.getPlayerSchool(p1).addStudentDiningRoom(new Student(SPColour.BLUE)));
     }
 }

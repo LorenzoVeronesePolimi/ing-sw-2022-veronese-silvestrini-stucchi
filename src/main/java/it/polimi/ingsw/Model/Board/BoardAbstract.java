@@ -31,7 +31,7 @@ public abstract class BoardAbstract implements Board{
 
 
     //--------------------------------------------------INITIALIZATION OF BOARD
-    public BoardAbstract(List<Player> players) throws ExceedingAssistantCardNumberException, NullContentException {
+    public BoardAbstract(List<Player> players) throws ExceedingAssistantCardNumberException {
         this.archipelagos = new ArrayList<>();
 
         for(int i = 0; i < 12; i++) {
@@ -68,7 +68,7 @@ public abstract class BoardAbstract implements Board{
         }
     }
 
-    private void placeStudentInitialBoard() throws NullContentException{
+    private void placeStudentInitialBoard(){
         //get 10 initial students to be placed on the archipelagos (one each, except mn position and the opposite)
         List<Student> initialStudents;
         initialStudents = bag.getInitialStudents();

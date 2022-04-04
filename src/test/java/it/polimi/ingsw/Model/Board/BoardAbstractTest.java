@@ -86,11 +86,7 @@ class BoardAbstractTest {
         Assertions.assertEquals(this.b2.archipelagos.get(0), this.b2.mn.getCurrentPosition());
 
         // Bag
-        try {
-            Assertions.assertEquals(0, this.b2.bag.getInitialStudents().size());
-        } catch (NullContentException e) {
-            e.printStackTrace();
-        }
+        Assertions.assertEquals(0, this.b2.bag.getInitialStudents().size());
 
         //--------------------- initialize conquer sequence (left merge)
         Student s1 = new Student(SPColour.RED);
@@ -372,6 +368,6 @@ class BoardAbstractTest {
         } catch (NoAssistantCardException e) {
             e.printStackTrace();
         }
-    }
 
+    }
 }

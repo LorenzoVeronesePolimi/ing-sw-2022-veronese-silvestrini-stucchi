@@ -46,8 +46,6 @@ public class SchoolTest {
             e.printStackTrace();
         } catch (ExceedingAssistantCardNumberException e) {
             e.printStackTrace();
-        } catch (NullContentException e) {
-            e.printStackTrace();
         }
         try {
             boardTwo.moveProfessor(p, SPColour.BLUE); //this method calls school method getProfessor and addProfessor
@@ -98,6 +96,8 @@ public class SchoolTest {
             e.printStackTrace();
         }
         Assertions.assertEquals(8, school.getNumTowers());
+
+        Assertions.assertThrows(ExceededMaxTowersException.class, () -> school.addTower(tower));
     }
 
     @Test
@@ -166,6 +166,15 @@ public class SchoolTest {
             e.printStackTrace();
         }
         Assertions.assertEquals(1, school.getNumTowers());
+
+        try {
+            school.removeNumTowers(1);
+        } catch (TowerNotFoundException e) {
+            e.printStackTrace();
+        }
+        Assertions.assertEquals(0, school.getNumTowers());
+
+        Assertions.assertThrows(TowerNotFoundException.class, () -> school.removeTower());
     }
 
     @Test

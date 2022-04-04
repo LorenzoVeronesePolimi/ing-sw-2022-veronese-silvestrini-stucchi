@@ -17,7 +17,7 @@ public class BoardFour extends BoardAbstract {
     protected final Map<Player, Player> teammates;
 
     public BoardFour(List<Player> players) throws
-            ExceedingAssistantCardNumberException, NullContentException, StudentNotFoundException, ExceededMaxStudentsCloudException, ExceededMaxStudentsHallException {
+            ExceedingAssistantCardNumberException, StudentNotFoundException, ExceededMaxStudentsCloudException, ExceededMaxStudentsHallException {
         super(players);
         this.schools = new ArrayList<>();
         this.playerSchool = new HashMap<>();
