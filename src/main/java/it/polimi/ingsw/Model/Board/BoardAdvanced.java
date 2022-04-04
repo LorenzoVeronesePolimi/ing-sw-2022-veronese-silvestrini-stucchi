@@ -19,7 +19,7 @@ public class BoardAdvanced implements Board {
     private final BoardAbstract board;
     private boolean twoExtraPointsFlag = false;
     private SPColour colourToExclude = null;
-    private  List<AbstractCharacterCard> extractedCards; //is final... temporarily removed just for testing card usage
+    private final List<AbstractCharacterCard> extractedCards; //is final... temporarily removed just for testing card usage
     private final Bank bank;
 
 
@@ -109,7 +109,7 @@ public class BoardAdvanced implements Board {
     }
 
     public List<AbstractCharacterCard> getExtractedCards(){
-        return new ArrayList<AbstractCharacterCard>(this.extractedCards);
+        return new ArrayList<>(this.extractedCards);
     }
 
     public boolean isStudentInSchoolHall(Player player, SPColour c){
@@ -216,14 +216,7 @@ public class BoardAdvanced implements Board {
                 return false;
             } else if (currentArchipelago.getOwner() == null) { //archipelago never conquered before
                 List<Professor> conquerorProfessors = this.board.playerSchool.get(currentPlayer).getProfessors();
-                boolean conquerable = false;
-                for(Professor p : conquerorProfessors){
-                    //can't conquer an Island without Students coloured without the Colour of a Professor of mine, even if no one has conquered it before
-                    if(!conquerable && !p.getColour().equals(colourToExclude))
-                        conquerable = currentArchipelago.howManyStudents().get(p.getColour()) > 0;
-                }
-                this.colourToExclude = null;
-                return conquerable;
+                return setConquerable(currentArchipelago, conquerorProfessors);
             }
             //the current Player is not the owner: can he conquer the Archipelago?
             else {
@@ -244,14 +237,7 @@ public class BoardAdvanced implements Board {
             } else if (currentArchipelago.getOwner() == null) { //archipelago never conquered before
                 List<Professor> conquerorProfessors = this.board.playerSchool.get(currentPlayer).getProfessors();
                 conquerorProfessors.addAll(this.board.playerSchool.get(((BoardFour)this.board).teammates.get(currentPlayer)).getProfessors());
-                boolean conquerable = false;
-                for (Professor p : conquerorProfessors) {
-                    //can't conquer an Island without Students coloured without the Colour of a Professor of mine, even if no one has conquered it before
-                    if(!conquerable && !p.getColour().equals(colourToExclude))
-                        conquerable = currentArchipelago.howManyStudents().get(p.getColour()) > 0;
-                }
-                this.colourToExclude = null;
-                return conquerable;
+                return setConquerable(currentArchipelago, conquerorProfessors);
             }
             //the current Player is not the owner: can he conquer the Archipelago?
             else {
@@ -263,6 +249,17 @@ public class BoardAdvanced implements Board {
             }
         }
         return false;
+    }
+
+    private boolean setConquerable(Archipelago currentArchipelago, List<Professor> conquerorProfessors) {
+        boolean conquerable = false;
+        for(Professor p : conquerorProfessors){
+            //can't conquer an Island without Students coloured without the Colour of a Professor of mine, even if no one has conquered it before
+            if(!conquerable && !p.getColour().equals(colourToExclude))
+                conquerable = currentArchipelago.howManyStudents().get(p.getColour()) > 0;
+        }
+        this.colourToExclude = null;
+        return conquerable;
     }
 
     public Player computeWinner(Player owner, Player challenger, Archipelago archipelago) {

@@ -7,7 +7,7 @@ import it.polimi.ingsw.Model.Places.School.School;
 import it.polimi.ingsw.Model.Player;
 
 public class TakeProfessorOnEquity extends AbstractCharacterCard{
-    SPColour[] availableColours = {SPColour.BLUE, SPColour.PINK, SPColour.RED, SPColour.GREEN, SPColour.YELLOW};
+    final SPColour[] availableColours = {SPColour.BLUE, SPColour.PINK, SPColour.RED, SPColour.GREEN, SPColour.YELLOW};
     private final BoardAdvanced boardAdvanced;
 
     public  TakeProfessorOnEquity(BoardAdvanced boardAdvanced){

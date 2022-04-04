@@ -155,9 +155,6 @@ public abstract class BoardAbstract implements Board{
         if(currentSchool != null) {
             Student toBeMoved = currentSchool.removeStudentHall(colour);
             archipelagos.get(archipelagoIndex).addStudent(toBeMoved);
-
-            //TODO: check if I have to move a professor (Why?)
-
         }
     }
 
@@ -343,6 +340,10 @@ public abstract class BoardAbstract implements Board{
         // conqueror's Towers to put on the Archipelago
         List<Tower> conquerorTowers;
         conquerorTowers = this.playerSchool.get(conqueror).removeNumTowers(toConquer.getNumIslands());
+        moveTower(conquerorTowers, toConquer);
+    }
+
+    protected void moveTower(List<Tower> conquerorTowers, Archipelago toConquer) throws InvalidTowerNumberException, AnotherTowerException, ExceededMaxTowersException {
         List<Tower> looserTowers = null;
         if (conquerorTowers != null) {
             looserTowers = toConquer.conquerArchipelago(conquerorTowers);
@@ -353,7 +354,6 @@ public abstract class BoardAbstract implements Board{
             Player looser = looserTowers.get(0).getPlayer();
             this.playerSchool.get(looser).addNumTower(looserTowers);
         }
-
     }
 
     // This merges as much adjacent Archipelagos as possible removing the old one from the this.archipelagos

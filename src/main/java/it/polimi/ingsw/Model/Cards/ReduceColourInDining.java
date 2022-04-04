@@ -7,8 +7,8 @@ import it.polimi.ingsw.Model.Exceptions.StudentNotFoundException;
 import it.polimi.ingsw.Model.Places.School.School;
 
 public class ReduceColourInDining extends AbstractCharacterCard{
-    BoardAdvanced boardAdvanced;
-    Bag bag;
+    final BoardAdvanced boardAdvanced;
+    final Bag bag;
     public ReduceColourInDining(BoardAdvanced boardAdvanced){
         super(3);
         bag=boardAdvanced.getBag();

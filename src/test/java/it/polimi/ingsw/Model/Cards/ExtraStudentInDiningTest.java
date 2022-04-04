@@ -63,7 +63,7 @@ public class ExtraStudentInDiningTest {
 
         Assertions.assertEquals(2,((SchoolAdvanced)boardAdvanced.getSchools().get(0)).getNumCoins());
 
-        if(card.getStudentOnCard().stream().filter(x -> x.getColour().equals(SPColour.PINK)).count()>=1){
+        if(card.getStudentOnCard().stream().anyMatch(x -> x.getColour().equals(SPColour.PINK))){
             try {
                 boardAdvanced.useExtraStudentInDining(p1,SPColour.PINK);
                 Assertions.assertEquals(1, boardAdvanced.getSchools().get(0).getNumStudentColour(SPColour.PINK));

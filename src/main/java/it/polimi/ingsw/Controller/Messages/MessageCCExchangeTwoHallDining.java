@@ -6,20 +6,21 @@ import java.util.List;
 import static it.polimi.ingsw.Controller.Enumerations.MessageType.CC_EXCHANGE_TWO_HALL_DINING;
 
 public class MessageCCExchangeTwoHallDining extends MessageCC{
-    private String nicknamePlayer;
-    private String colourHall1;
-    private String colourHall2;
-    private String colourDiningRoom1;
-    private String colourDiningRoom2;
+    private final String nicknamePlayer;
+    private final String colourHall1;
+    private final String colourHall2;
+    private final String colourDiningRoom1;
+    private final String colourDiningRoom2;
 
 
-    public MessageCCExchangeTwoHallDining(int indexCard, String nicknamePlayer, String ch1, String ch2, String cdr1, String cdr2){
+    public MessageCCExchangeTwoHallDining(int indexCard, String nicknamePlayer, String colourHall1, String colourHall2,
+                                          String colourDiningRoom1, String colourDiningRoom2){
         super(CC_EXCHANGE_TWO_HALL_DINING, indexCard);
         this.nicknamePlayer = nicknamePlayer;
-        this.colourHall1 = ch1;
-        this.colourHall2 = ch2;
-        this.colourDiningRoom1 = cdr1;
-        this.colourDiningRoom2 = cdr2;
+        this.colourHall1 = colourHall1;
+        this.colourHall2 = colourHall2;
+        this.colourDiningRoom1 = colourDiningRoom1;
+        this.colourDiningRoom2 = colourDiningRoom2;
     }
 
     public String getNicknamePlayer() {

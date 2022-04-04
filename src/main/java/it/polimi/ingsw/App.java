@@ -96,7 +96,7 @@ public class App
         System.out.println(board.getArchipelago(2));
         System.out.println(board.getPlayerSchool(player1));
 
-        //Turn of player 2. He conquer Archipelago 4 with RED Professor
+        //Turn of player 2. He conquers Archipelago 4 with RED Professor
         System.out.println(board.getPlayerSchool(player2));
         board.moveStudentHallToDiningRoom(player2, SPColour.RED);
         System.out.println(board.getPlayerSchool(player2));

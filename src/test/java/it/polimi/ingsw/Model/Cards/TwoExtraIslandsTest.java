@@ -35,9 +35,7 @@ public class TwoExtraIslandsTest {
         try {
             boardAdvanced.useAssistantCard(p1,3);
             boardAdvanced.useAssistantCard(p1,5);
-        } catch (AssistantCardAlreadyPlayedTurnException e) {
-            e.printStackTrace();
-        } catch (NoAssistantCardException e) {
+        } catch (AssistantCardAlreadyPlayedTurnException | NoAssistantCardException e) {
             e.printStackTrace();
         }
 

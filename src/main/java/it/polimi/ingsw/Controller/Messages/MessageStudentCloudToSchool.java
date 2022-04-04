@@ -3,8 +3,8 @@ package it.polimi.ingsw.Controller.Messages;
 import static it.polimi.ingsw.Controller.Enumerations.MessageType.STUDENT_CLOUD_TO_SCHOOL;
 
 public class MessageStudentCloudToSchool extends Message{
-    private String nicknamePlayer;
-    private int indexCloud;
+    private final String nicknamePlayer;
+    private final int indexCloud;
 
     public MessageStudentCloudToSchool(String nicknamePlayer, int indexCloud){
         super(STUDENT_CLOUD_TO_SCHOOL);

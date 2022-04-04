@@ -14,11 +14,11 @@ import java.util.List;
 
 public class BoardFourTest {
     BoardFactory boardFactory;
-    Player _1 = new Player("player one", PlayerColour.WHITE);
-    Player _2 = new Player("player two", PlayerColour.WHITE);
-    Player _3 = new Player("player three", PlayerColour.BLACK);
-    Player _4 = new Player("player four", PlayerColour.BLACK);
-    List<Player> playerList = new ArrayList<>();
+    final Player _1 = new Player("player one", PlayerColour.WHITE);
+    final Player _2 = new Player("player two", PlayerColour.WHITE);
+    final Player _3 = new Player("player three", PlayerColour.BLACK);
+    final Player _4 = new Player("player four", PlayerColour.BLACK);
+    final List<Player> playerList = new ArrayList<>();
 
     @BeforeEach
     void init() {

@@ -3,9 +3,9 @@ package it.polimi.ingsw.Controller.Messages;
 import static it.polimi.ingsw.Controller.Enumerations.MessageType.CC_PLACE_ONE_STUDENT;
 
 public class MessageCCPlaceOneStudent extends MessageCC{
-    private String nicknamePlayer;
-    private String colourToMove;
-    private int archipelagoIndexDest;
+    private final String nicknamePlayer;
+    private final String colourToMove;
+    private final int archipelagoIndexDest;
 
     public MessageCCPlaceOneStudent(int indexCard, String nicknamePlayer, String colourToMove, int archipelagoIndexDest) {
         super(CC_PLACE_ONE_STUDENT, indexCard);

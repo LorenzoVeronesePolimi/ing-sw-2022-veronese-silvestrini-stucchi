@@ -6,7 +6,6 @@ import it.polimi.ingsw.Model.Exceptions.AnotherTowerException;
 import it.polimi.ingsw.Model.Pawns.Student;
 import it.polimi.ingsw.Model.Pawns.Tower;
 import it.polimi.ingsw.Model.Player;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 

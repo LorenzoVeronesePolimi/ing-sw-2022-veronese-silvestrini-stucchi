@@ -38,15 +38,7 @@ public class SchoolTest {
         BoardTwo boardTwo = null;
         try {
             boardTwo = new BoardTwo(players);
-        } catch (StudentNotFoundException e) {
-            e.printStackTrace();
-        } catch (ExceededMaxStudentsCloudException e) {
-            e.printStackTrace();
-        } catch (ExceededMaxStudentsHallException e) {
-            e.printStackTrace();
-        } catch (ExceedingAssistantCardNumberException e) {
-            e.printStackTrace();
-        } catch (NullContentException e) {
+        } catch (StudentNotFoundException | NullContentException | ExceedingAssistantCardNumberException | ExceededMaxStudentsHallException | ExceededMaxStudentsCloudException e) {
             e.printStackTrace();
         }
         try {
