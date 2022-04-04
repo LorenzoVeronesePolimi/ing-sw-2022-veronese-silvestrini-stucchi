@@ -6,6 +6,7 @@ import it.polimi.ingsw.Model.Board.BoardFactory;
 import it.polimi.ingsw.Model.Enumerations.PlayerColour;
 import it.polimi.ingsw.Model.Enumerations.SPColour;
 import it.polimi.ingsw.Model.Exceptions.*;
+import it.polimi.ingsw.Model.Pawns.Student;
 import it.polimi.ingsw.Model.Player;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -40,7 +41,7 @@ public class PlaceOneStudentTest {
         Assertions.assertTrue(boardAdvanced.getArchipelago(6).howManyStudents().get(SPColour.GREEN) == 0);
         Assertions.assertTrue(boardAdvanced.getArchipelago(6).howManyStudents().get(SPColour.YELLOW) == 0);
 
-        if(card.getCardStudents().stream().filter(x -> x.getColour().equals(SPColour.BLUE)).count()>=1){
+        if(card.getCardStudents().stream().anyMatch(x -> x.getColour().equals(SPColour.BLUE))){
             try {
                 boardAdvanced.usePlaceOneStudent(p1,SPColour.BLUE,6);
                 Assertions.assertTrue(boardAdvanced.getArchipelago(6).howManyStudents().get(SPColour.BLUE) == 1);
@@ -49,18 +50,23 @@ public class PlaceOneStudentTest {
                 Assertions.assertTrue(boardAdvanced.getArchipelago(6).howManyStudents().get(SPColour.GREEN) == 0);
                 Assertions.assertTrue(boardAdvanced.getArchipelago(6).howManyStudents().get(SPColour.YELLOW) == 0);
 
-            } catch (StudentNotFoundException e) {
-                e.printStackTrace();
-            } catch (EmptyCaveauExcepion e) {
-                e.printStackTrace();
-            } catch (ExceededMaxNumCoinException e) {
-                e.printStackTrace();
-            } catch (CoinNotFoundException e) {
+            } catch (StudentNotFoundException | CoinNotFoundException | ExceededMaxNumCoinException | EmptyCaveauExcepion e) {
                 e.printStackTrace();
             }
         }else{
             BoardAdvanced finalBoardAdvanced = boardAdvanced;
             Assertions.assertThrows(StudentNotFoundException.class, () -> finalBoardAdvanced.usePlaceOneStudent(p1,SPColour.BLUE,6));
         }
+
+        for(int i=0; i<10;i++) {
+            try {
+                boardAdvanced.getPlayerSchool(p1).addStudentDiningRoom(new Student(SPColour.BLUE));
+            } catch (ExceededMaxStudentsDiningRoomException e) {
+                e.printStackTrace();
+            }
+        }
+
+        BoardAdvanced finalBoardAdvanced = boardAdvanced;
+        Assertions.assertThrows(ExceededMaxStudentsDiningRoomException.class, () -> finalBoardAdvanced.getPlayerSchool(p1).addStudentDiningRoom(new Student(SPColour.BLUE)));
     }
 }

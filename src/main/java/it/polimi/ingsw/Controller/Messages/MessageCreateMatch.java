@@ -1,16 +1,15 @@
 package it.polimi.ingsw.Controller.Messages;
 
-import it.polimi.ingsw.Controller.Enumerations.MessageType;
-import it.polimi.ingsw.Model.Enumerations.PlayerColour;
+import static it.polimi.ingsw.Controller.Enumerations.MessageType.CREATE_MATCH;
 
 public class MessageCreateMatch extends Message{
-    private String nicknameFirstPlayer;
-    private String colourFirstPlayer;
-    private int numPlayers;
-    private boolean advanced; // 1 if advanced, otherwise 0
+    private final String nicknameFirstPlayer;
+    private final String colourFirstPlayer;
+    private final int numPlayers;
+    private final boolean advanced; // 1 if advanced, otherwise 0
 
     public MessageCreateMatch(String nicknameFirstPlayer, String colourFirstPlayer, int numPlayers, boolean advanced){
-        super(MessageType.CREATE_MATCH);
+        super(CREATE_MATCH);
         this.nicknameFirstPlayer = nicknameFirstPlayer;
         this.colourFirstPlayer = colourFirstPlayer;
         this.numPlayers = numPlayers;

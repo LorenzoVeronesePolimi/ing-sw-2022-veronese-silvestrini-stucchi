@@ -13,7 +13,7 @@ import java.util.stream.Collectors;
 public class BoardThree extends BoardAbstract {
     public BoardThree(List<Player> playersParam) throws
             StudentNotFoundException, ExceededMaxStudentsCloudException, ExceededMaxStudentsHallException,
-            ExceedingAssistantCardNumberException, NullContentException {
+            ExceedingAssistantCardNumberException {
 
         super(playersParam.stream().filter(x -> ((playersParam.indexOf(x) == 0) || (playersParam.indexOf(x) == 1) || (playersParam.indexOf(x) == 2))).collect(Collectors.toList()));
 

@@ -29,13 +29,7 @@ public class ExchangeTwoHallDiningTest {
         BoardAdvanced boardAdvanced = null;
         try {
             boardAdvanced = new BoardAdvanced(board);
-        } catch (ExceededMaxStudentsHallException e) {
-            e.printStackTrace();
-        } catch (StudentNotFoundException e) {
-            e.printStackTrace();
-        } catch (TowerNotFoundException e) {
-            e.printStackTrace();
-        } catch (EmptyCaveauExcepion e) {
+        } catch (ExceededMaxStudentsHallException | EmptyCaveauExcepion | TowerNotFoundException | StudentNotFoundException e) {
             e.printStackTrace();
         }
 
@@ -72,9 +66,7 @@ public class ExchangeTwoHallDiningTest {
         try {
             boardAdvanced.getSchools().get(0).moveStudentHallToDiningRoom(SPColour.BLUE);
             boardAdvanced.getSchools().get(0).moveStudentHallToDiningRoom(SPColour.BLUE);
-        } catch (StudentNotFoundException e) {
-            e.printStackTrace();
-        } catch (ExceededMaxStudentsDiningRoomException e) {
+        } catch (StudentNotFoundException | ExceededMaxStudentsDiningRoomException e) {
             e.printStackTrace();
         }
         Assertions.assertEquals(2, boardAdvanced.getSchools().get(0).getNumStudentColour(SPColour.BLUE));
@@ -105,19 +97,7 @@ public class ExchangeTwoHallDiningTest {
 
         try {
             boardAdvanced.useExchangeTwoHallDining(p1,hallColours,diningColour);
-        } catch (EmptyCaveauExcepion e) {
-            e.printStackTrace();
-        } catch (ExceededMaxNumCoinException e) {
-            e.printStackTrace();
-        } catch (CoinNotFoundException e) {
-            e.printStackTrace();
-        } catch (WrongNumberOfStudentsTransferExcpetion e) {
-            e.printStackTrace();
-        } catch (ExceededMaxStudentsDiningRoomException e) {
-            e.printStackTrace();
-        } catch (ExceededMaxStudentsHallException e) {
-            e.printStackTrace();
-        } catch (StudentNotFoundException e) {
+        } catch (EmptyCaveauExcepion | StudentNotFoundException | ExceededMaxStudentsHallException | ExceededMaxStudentsDiningRoomException | WrongNumberOfStudentsTransferExcpetion | CoinNotFoundException | ExceededMaxNumCoinException e) {
             e.printStackTrace();
         }
 

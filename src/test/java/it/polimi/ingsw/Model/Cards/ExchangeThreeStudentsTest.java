@@ -17,7 +17,7 @@ import java.util.List;
 
 public class ExchangeThreeStudentsTest {
     @Test
-    void ExchangeThreeStudentTest(){
+    void ExchangeThreeStudentTest() {
         List<Player> playerList = new ArrayList<>();
         Player p1 = new Player("player one", PlayerColour.BLACK);
         Player p2 = new Player("player two", PlayerColour.WHITE);
@@ -25,23 +25,17 @@ public class ExchangeThreeStudentsTest {
         playerList.add(p2);
 
         BoardFactory bf = new BoardFactory(playerList);
-        BoardAbstract board =  bf.createBoard();
+        BoardAbstract board = bf.createBoard();
         BoardAdvanced boardAdvanced = null;
         try {
             boardAdvanced = new BoardAdvanced(board);
-        } catch (ExceededMaxStudentsHallException e) {
-            e.printStackTrace();
-        } catch (StudentNotFoundException e) {
-            e.printStackTrace();
-        } catch (TowerNotFoundException e) {
-            e.printStackTrace();
-        } catch (EmptyCaveauExcepion e) {
+        } catch (ExceededMaxStudentsHallException | EmptyCaveauExcepion | TowerNotFoundException | StudentNotFoundException e) {
             e.printStackTrace();
         }
 
         ExchangeThreeStudents card = new ExchangeThreeStudents(boardAdvanced);
 
-        for(int i=0; i<7; i++) {
+        for (int i = 0; i < 7; i++) {
             try {
                 boardAdvanced.getSchools().get(0).removeStudentHall(boardAdvanced.getSchools().get(0).getStudentsHall().get(0).getColour());
             } catch (StudentNotFoundException e) {
@@ -70,17 +64,17 @@ public class ExchangeThreeStudentsTest {
             e.printStackTrace();
         }
 
-        long numBlueBefore = boardAdvanced.getSchools().get(0).getStudentsHall().stream().filter(x->x.getColour().equals(SPColour.BLUE)).count();
-        long numPinkBefore = boardAdvanced.getSchools().get(0).getStudentsHall().stream().filter(x->x.getColour().equals(SPColour.PINK)).count();
-        long numRedBefore = boardAdvanced.getSchools().get(0).getStudentsHall().stream().filter(x->x.getColour().equals(SPColour.RED)).count();
-        long numGreenBefore = boardAdvanced.getSchools().get(0).getStudentsHall().stream().filter(x->x.getColour().equals(SPColour.GREEN)).count();
-        long numYellowBefore = boardAdvanced.getSchools().get(0).getStudentsHall().stream().filter(x->x.getColour().equals(SPColour.YELLOW)).count();
+        long numBlueBefore = boardAdvanced.getSchools().get(0).getStudentsHall().stream().filter(x -> x.getColour().equals(SPColour.BLUE)).count();
+        long numPinkBefore = boardAdvanced.getSchools().get(0).getStudentsHall().stream().filter(x -> x.getColour().equals(SPColour.PINK)).count();
+        long numRedBefore = boardAdvanced.getSchools().get(0).getStudentsHall().stream().filter(x -> x.getColour().equals(SPColour.RED)).count();
+        long numGreenBefore = boardAdvanced.getSchools().get(0).getStudentsHall().stream().filter(x -> x.getColour().equals(SPColour.GREEN)).count();
+        long numYellowBefore = boardAdvanced.getSchools().get(0).getStudentsHall().stream().filter(x -> x.getColour().equals(SPColour.YELLOW)).count();
 
-        Assertions.assertEquals(7,numBlueBefore);
-        Assertions.assertEquals(0,numPinkBefore);
-        Assertions.assertEquals(0,numRedBefore);
-        Assertions.assertEquals(0,numGreenBefore);
-        Assertions.assertEquals(0,numYellowBefore);
+        Assertions.assertEquals(7, numBlueBefore);
+        Assertions.assertEquals(0, numPinkBefore);
+        Assertions.assertEquals(0, numRedBefore);
+        Assertions.assertEquals(0, numGreenBefore);
+        Assertions.assertEquals(0, numYellowBefore);
 
         List<SPColour> exchangeColours = new ArrayList<>();
         exchangeColours.add(card.getStudents().get(0).getColour());
@@ -110,32 +104,106 @@ public class ExchangeThreeStudentsTest {
 
         try {
             boardAdvanced.useExchangeThreeStudents(p1, hallColours, exchangeColours);
-        } catch (EmptyCaveauExcepion e) {
+        } catch (EmptyCaveauExcepion | ExceededMaxStudentsHallException | StudentNotFoundException | WrongNumberOfStudentsTransferExcpetion | CoinNotFoundException | ExceededMaxNumCoinException e) {
             e.printStackTrace();
-        } catch (ExceededMaxNumCoinException e) {
-            e.printStackTrace();
-        } catch (CoinNotFoundException e) {
-            e.printStackTrace();
-        } catch (WrongNumberOfStudentsTransferExcpetion e) {
+        }
+
+        Assertions.assertEquals(0, ((SchoolAdvanced) boardAdvanced.getSchools().get(0)).getNumCoins());
+
+        long numBlueAfter = boardAdvanced.getSchools().get(0).getStudentsHall().stream().filter(x -> x.getColour().equals(SPColour.BLUE)).count();
+        long numPinkAfter = boardAdvanced.getSchools().get(0).getStudentsHall().stream().filter(x -> x.getColour().equals(SPColour.PINK)).count();
+        long numRedAfter = boardAdvanced.getSchools().get(0).getStudentsHall().stream().filter(x -> x.getColour().equals(SPColour.RED)).count();
+        long numGreenAfter = boardAdvanced.getSchools().get(0).getStudentsHall().stream().filter(x -> x.getColour().equals(SPColour.GREEN)).count();
+        long numYellowAfter = boardAdvanced.getSchools().get(0).getStudentsHall().stream().filter(x -> x.getColour().equals(SPColour.YELLOW)).count();
+
+        Assertions.assertEquals(numBlueBefore - numBlueToBeRemoved + numBlueToBeAdded, numBlueAfter);
+        Assertions.assertEquals(numPinkBefore - numPinkToBeRemoved + numPinkToBeAdded, numPinkAfter);
+        Assertions.assertEquals(numRedBefore - numRedToBeRemoved + numRedToBeAdded, numRedAfter);
+        Assertions.assertEquals(numGreenBefore - numGreenToBeRemoved + numGreenToBeAdded, numGreenAfter);
+        Assertions.assertEquals(numYellowBefore - numYellowToBeRemoved + numYellowToBeAdded, numYellowAfter);
+
+        BoardAdvanced finalBoardAdvance = boardAdvanced;
+        Assertions.assertThrows(CoinNotFoundException.class, () -> finalBoardAdvance.useExchangeThreeStudents(p1, hallColours, exchangeColours));
+    }
+
+    @Test
+    void ExchangeThreeStudentExceptionTest() {
+        List<Player> playerList = new ArrayList<>();
+        Player p1 = new Player("player one", PlayerColour.BLACK);
+        Player p2 = new Player("player two", PlayerColour.WHITE);
+        playerList.add(p1);
+        playerList.add(p2);
+
+        BoardFactory bf = new BoardFactory(playerList);
+        BoardAbstract board = bf.createBoard();
+        BoardAdvanced boardAdvanced = null;
+        try {
+            boardAdvanced = new BoardAdvanced(board);
+        } catch (ExceededMaxStudentsHallException e) {
             e.printStackTrace();
         } catch (StudentNotFoundException e) {
             e.printStackTrace();
+        } catch (TowerNotFoundException e) {
+            e.printStackTrace();
+        } catch (EmptyCaveauExcepion e) {
+            e.printStackTrace();
+        }
+
+        ExchangeThreeStudents card = new ExchangeThreeStudents(boardAdvanced);
+        boardAdvanced.setExtractedCards(card);
+
+
+        for (int i = 0; i < 7; i++) {
+            try {
+                boardAdvanced.getSchools().get(0).removeStudentHall(boardAdvanced.getSchools().get(0).getStudentsHall().get(0).getColour());
+            } catch (StudentNotFoundException e) {
+                e.printStackTrace();
+            }
+        }
+
+        Student s1 = new Student(SPColour.BLUE);
+        Student s2 = new Student(SPColour.BLUE);
+        Student s3 = new Student(SPColour.BLUE);
+        Student s4 = new Student(SPColour.BLUE);
+        Student s5 = new Student(SPColour.BLUE);
+        Student s6 = new Student(SPColour.BLUE);
+        Student s7 = new Student(SPColour.BLUE);
+
+        try {
+            boardAdvanced.getSchools().get(0).addStudentHall(s1);
+            boardAdvanced.getSchools().get(0).addStudentHall(s2);
+            boardAdvanced.getSchools().get(0).addStudentHall(s3);
+            boardAdvanced.getSchools().get(0).addStudentHall(s4);
+            boardAdvanced.getSchools().get(0).addStudentHall(s5);
+            boardAdvanced.getSchools().get(0).addStudentHall(s6);
+            boardAdvanced.getSchools().get(0).addStudentHall(s7);
+
         } catch (ExceededMaxStudentsHallException e) {
             e.printStackTrace();
         }
 
-        Assertions.assertEquals(0,((SchoolAdvanced)boardAdvanced.getSchools().get(0)).getNumCoins());
+        long numBlueBefore = boardAdvanced.getSchools().get(0).getStudentsHall().stream().filter(x -> x.getColour().equals(SPColour.BLUE)).count();
+        long numPinkBefore = boardAdvanced.getSchools().get(0).getStudentsHall().stream().filter(x -> x.getColour().equals(SPColour.PINK)).count();
+        long numRedBefore = boardAdvanced.getSchools().get(0).getStudentsHall().stream().filter(x -> x.getColour().equals(SPColour.RED)).count();
+        long numGreenBefore = boardAdvanced.getSchools().get(0).getStudentsHall().stream().filter(x -> x.getColour().equals(SPColour.GREEN)).count();
+        long numYellowBefore = boardAdvanced.getSchools().get(0).getStudentsHall().stream().filter(x -> x.getColour().equals(SPColour.YELLOW)).count();
 
-        long numBlueAfter = boardAdvanced.getSchools().get(0).getStudentsHall().stream().filter(x->x.getColour().equals(SPColour.BLUE)).count();
-        long numPinkAfter = boardAdvanced.getSchools().get(0).getStudentsHall().stream().filter(x->x.getColour().equals(SPColour.PINK)).count();
-        long numRedAfter = boardAdvanced.getSchools().get(0).getStudentsHall().stream().filter(x->x.getColour().equals(SPColour.RED)).count();
-        long numGreenAfter = boardAdvanced.getSchools().get(0).getStudentsHall().stream().filter(x->x.getColour().equals(SPColour.GREEN)).count();
-        long numYellowAfter = boardAdvanced.getSchools().get(0).getStudentsHall().stream().filter(x->x.getColour().equals(SPColour.YELLOW)).count();
+        Assertions.assertEquals(7, numBlueBefore);
+        Assertions.assertEquals(0, numPinkBefore);
+        Assertions.assertEquals(0, numRedBefore);
+        Assertions.assertEquals(0, numGreenBefore);
+        Assertions.assertEquals(0, numYellowBefore);
 
-        Assertions.assertEquals(numBlueBefore - numBlueToBeRemoved + numBlueToBeAdded, numBlueAfter);
-        Assertions.assertEquals(numPinkBefore - numPinkToBeRemoved + numPinkToBeAdded, numPinkAfter);
-        Assertions.assertEquals(numRedBefore - numRedToBeRemoved + numRedToBeAdded , numRedAfter);
-        Assertions.assertEquals(numGreenBefore - numGreenToBeRemoved + numGreenToBeAdded, numGreenAfter);
-        Assertions.assertEquals(numYellowBefore - numYellowToBeRemoved + numYellowToBeAdded , numYellowAfter);
+        List<SPColour> exchangeColours = new ArrayList<>();
+        exchangeColours.add(card.getStudents().get(0).getColour());
+        exchangeColours.add(card.getStudents().get(1).getColour());
+
+        List<SPColour> hallColours = new ArrayList<>();
+        hallColours.add(SPColour.BLUE);
+        hallColours.add(SPColour.BLUE);
+        hallColours.add(SPColour.BLUE);
+
+        BoardAdvanced finalBoard = boardAdvanced;
+        Assertions.assertThrows(WrongNumberOfStudentsTransferExcpetion.class, () -> finalBoard.useExchangeThreeStudents(p1, hallColours, exchangeColours));
     }
 }

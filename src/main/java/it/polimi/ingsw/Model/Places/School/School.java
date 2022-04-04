@@ -12,18 +12,18 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class School {
-    protected Player player;
+    protected final Player player;
 
     protected final int numMaxStudentsHall;
     protected final int numMaxTowers;
-    protected List<Student> studentsHall;
-    protected List<Student> studentsDiningRed;
-    protected List<Student> studentsDiningPink;
-    protected List<Student> studentsDiningGreen;
-    protected List<Student> studentsDiningYellow;
-    protected List<Student> studentsDiningBlue;
-    protected List<Professor> professors;
-    protected List<Tower> towers;
+    protected final List<Student> studentsHall;
+    protected final List<Student> studentsDiningRed;
+    protected final List<Student> studentsDiningPink;
+    protected final List<Student> studentsDiningGreen;
+    protected final List<Student> studentsDiningYellow;
+    protected final List<Student> studentsDiningBlue;
+    protected final List<Professor> professors;
+    protected final List<Tower> towers;
 
     public School(Player player, int numMaxStudentsHall, int numTowers){
         this.player = player;

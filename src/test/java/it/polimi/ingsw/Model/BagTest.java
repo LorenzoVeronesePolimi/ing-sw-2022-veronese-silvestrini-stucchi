@@ -4,15 +4,12 @@ import static org.junit.Assert.*;
 
 import it.polimi.ingsw.Model.Enumerations.SPColour;
 import it.polimi.ingsw.Model.Exceptions.NoProfessorBagException;
-import it.polimi.ingsw.Model.Exceptions.NullContentException;
 import it.polimi.ingsw.Model.Exceptions.StudentNotFoundException;
 import it.polimi.ingsw.Model.Pawns.Professor;
 import it.polimi.ingsw.Model.Pawns.Student;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class BagTest {
@@ -25,21 +22,13 @@ public class BagTest {
     @Test
     public void getInitialStudents() {
         List<Student> students = null;
-        try {
-            students = bag.getInitialStudents();
-        } catch (NullContentException e) {
-            e.printStackTrace();
-        }
+        students = bag.getInitialStudents();
 
         //check if initial students are always 10
         assertEquals(students.size(), 10);
 
         //check if initial students are removed from the list in bag after one call of getInitialStudents
-        try {
-            assertEquals(0, bag.getInitialStudents().size());
-        } catch (NullContentException e) {
-            e.printStackTrace();
-        }
+        assertEquals(0, bag.getInitialStudents().size());
     }
 
     @Test

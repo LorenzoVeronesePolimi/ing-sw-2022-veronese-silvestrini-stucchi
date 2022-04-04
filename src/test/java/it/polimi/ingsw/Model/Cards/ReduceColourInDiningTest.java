@@ -100,13 +100,7 @@ public class ReduceColourInDiningTest {
 
         try {
             boardAdvanced.useReduceColourInDining(p1,SPColour.RED);
-        } catch (EmptyCaveauExcepion e) {
-            e.printStackTrace();
-        } catch (ExceededMaxNumCoinException e) {
-            e.printStackTrace();
-        } catch (CoinNotFoundException e) {
-            e.printStackTrace();
-        } catch (StudentNotFoundException e) {
+        } catch (EmptyCaveauExcepion | StudentNotFoundException | CoinNotFoundException | ExceededMaxNumCoinException e) {
             e.printStackTrace();
         }
 

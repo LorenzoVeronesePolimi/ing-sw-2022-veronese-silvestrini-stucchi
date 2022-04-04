@@ -3,9 +3,9 @@ package it.polimi.ingsw.Controller.Messages;
 import it.polimi.ingsw.Controller.Enumerations.MessageType;
 
 public class MessageAssistantCard extends Message{
-    private String nicknamePlayer;
-    private int motherNatureMovement;
-    private int turnPriority;
+    private final String nicknamePlayer;
+    private final int motherNatureMovement;
+    private final int turnPriority;
 
     public MessageAssistantCard(String nicknamePlayer, int motherNatureMovement, int turnPriority){
         super(MessageType.ASSISTANT_CARD);

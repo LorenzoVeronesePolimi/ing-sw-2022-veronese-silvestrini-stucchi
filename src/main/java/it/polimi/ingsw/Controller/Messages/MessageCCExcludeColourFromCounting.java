@@ -3,8 +3,8 @@ package it.polimi.ingsw.Controller.Messages;
 import static it.polimi.ingsw.Controller.Enumerations.MessageType.CC_EXCLUDE_COLOUR_FROM_COUNTING;
 
 public class MessageCCExcludeColourFromCounting extends MessageCC{
-    private String nicknamePlayer;
-    private String colourToExclude;
+    private final String nicknamePlayer;
+    private final String colourToExclude;
 
     public MessageCCExcludeColourFromCounting(int indexCard, String nicknamePlayer, String colourToExclude){
         super(CC_EXCLUDE_COLOUR_FROM_COUNTING, indexCard);

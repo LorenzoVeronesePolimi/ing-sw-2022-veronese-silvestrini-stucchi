@@ -2,7 +2,6 @@ package it.polimi.ingsw.Model;
 
 import it.polimi.ingsw.Model.Enumerations.SPColour;
 import it.polimi.ingsw.Model.Exceptions.NoProfessorBagException;
-import it.polimi.ingsw.Model.Exceptions.NullContentException;
 import it.polimi.ingsw.Model.Exceptions.StudentNotFoundException;
 import it.polimi.ingsw.Model.Pawns.Professor;
 import it.polimi.ingsw.Model.Pawns.Student;
@@ -51,20 +50,14 @@ public class Bag {
     }
 
     // ---------------STUDENTS
-    public List<Student> getInitialStudents() throws NullContentException {
+    public List<Student> getInitialStudents(){
         //new list to return
         List<Student> removedStudents = new ArrayList<>(initialStudents);
 
         //remove all students from the list of initial students
         initialStudents.clear();
 
-        //return the removed students only if there is no null element
-        if(!removedStudents.contains(null)) {
-            return removedStudents; // I want to modify it directly: no clone needed
-        }
-
-        //exception in case of null element in list
-        throw new NullContentException();
+        return removedStudents;
     }
 
     public List<Student> extractStudents(int num) throws StudentNotFoundException {

@@ -3,8 +3,8 @@ package it.polimi.ingsw.Controller.Messages;
 import it.polimi.ingsw.Controller.Enumerations.MessageType;
 
 public class MessageAddPlayer extends Message{
-    private String nickname;
-    private String colour;
+    private final String nickname;
+    private final String colour;
 
     public MessageAddPlayer(String nickname, String colour){
         super(MessageType.CREATE_MATCH);

@@ -13,6 +13,7 @@ import it.polimi.ingsw.Model.Exceptions.*;
 import it.polimi.ingsw.Model.Pawns.Student;
 import it.polimi.ingsw.Model.Pawns.Tower;
 import it.polimi.ingsw.Model.Player;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.util.*;
@@ -45,6 +46,7 @@ public class ArchipelagoTest {
             e.printStackTrace();
         }
         assertEquals(p, tested.getOwner());
+
     }
     @Test
     void getForbidFlag(){
@@ -59,15 +61,7 @@ public class ArchipelagoTest {
         BoardTwo board = null;
         try {
             board = new BoardTwo(players);
-        } catch (StudentNotFoundException e) {
-            e.printStackTrace();
-        } catch (ExceededMaxStudentsCloudException e) {
-            e.printStackTrace();
-        } catch (ExceededMaxStudentsHallException e) {
-            e.printStackTrace();
-        } catch (ExceedingAssistantCardNumberException e) {
-            e.printStackTrace();
-        } catch (NullContentException e) {
+        } catch (StudentNotFoundException | ExceedingAssistantCardNumberException | ExceededMaxStudentsHallException | ExceededMaxStudentsCloudException e) {
             e.printStackTrace();
         }
         BoardAdvanced boardAdvanced = null;
@@ -93,15 +87,7 @@ public class ArchipelagoTest {
         BoardTwo board = null;
         try {
             board = new BoardTwo(players);
-        } catch (StudentNotFoundException e) {
-            e.printStackTrace();
-        } catch (ExceededMaxStudentsCloudException e) {
-            e.printStackTrace();
-        } catch (ExceededMaxStudentsHallException e) {
-            e.printStackTrace();
-        } catch (ExceedingAssistantCardNumberException e) {
-            e.printStackTrace();
-        } catch (NullContentException e) {
+        } catch (StudentNotFoundException | ExceedingAssistantCardNumberException | ExceededMaxStudentsHallException | ExceededMaxStudentsCloudException e) {
             e.printStackTrace();
         }
         BoardAdvanced boardAdvanced = null;
@@ -114,13 +100,7 @@ public class ArchipelagoTest {
         board.moveMotherNature(4);
         try {
             card.useEffect(p1);
-        } catch (InvalidTowerNumberException e) {
-            e.printStackTrace();
-        } catch (AnotherTowerException e) {
-            e.printStackTrace();
-        } catch (ExceededMaxTowersException e) {
-            e.printStackTrace();
-        } catch (TowerNotFoundException e) {
+        } catch (InvalidTowerNumberException | TowerNotFoundException | ExceededMaxTowersException | AnotherTowerException e) {
             e.printStackTrace();
         }
         assertTrue(boardAdvanced.getArchiList().get(4).getTowerNoValueFlag());
@@ -144,7 +124,7 @@ public class ArchipelagoTest {
     @Test
     void howManyStudents(){
         Archipelago tested = new Archipelago();
-        Map<SPColour, Integer> studentsDataCopy = new HashMap<SPColour, Integer>();
+        Map<SPColour, Integer> studentsDataCopy = new HashMap<>();
         SPColour[] availableColours = {SPColour.BLUE, SPColour.PINK, SPColour.RED, SPColour.GREEN, SPColour.YELLOW};
         for(SPColour c : availableColours){
             studentsDataCopy.put(c, 0);
@@ -175,24 +155,57 @@ public class ArchipelagoTest {
         } catch (InvalidTowerNumberException e) {
             e.printStackTrace();
         }
+
+        Archipelago newTested = new Archipelago();
+        towersToAdd.add(new Tower(p));
+        towersToAdd.add(new Tower(p));
+        Assertions.assertThrows(InvalidTowerNumberException.class, () -> newTested.conquerArchipelago(towersToAdd));
     }
     @Test
     void mergeArchipelagos(){
         Archipelago tested = new Archipelago();
         Archipelago toMerge = new Archipelago();
+        Player p1 = new Player("GS", PlayerColour.WHITE);
+        Player p2 = new Player("WS", PlayerColour.BLACK);
+
+        Tower t1 = new Tower(p1);
+        Tower t2 = new Tower(p1);
+        List<Tower> towersT1 = new ArrayList<>();
+        towersT1.add(t1);
+        Tower t3 = new Tower(p2);
+        List<Tower> towersT2 = new ArrayList<>();
+        towersT2.add(t3);
+
+        try {
+            tested.conquerArchipelago(towersT1);
+            towersT1.add(t2);
+            toMerge.conquerArchipelago(towersT1);
+        } catch (InvalidTowerNumberException e) {
+            e.printStackTrace();
+        } catch (AnotherTowerException e) {
+            e.printStackTrace();
+        }
+        Assertions.assertEquals(p1, tested.getOwner());
+        Assertions.assertEquals(p1, toMerge.getOwner());
+
         try {
             tested.mergeArchipelagos(toMerge);
             assertEquals(2, tested.getNumIslands());
         } catch (MergeDifferentOwnersException e) {
             e.printStackTrace();
         }
+
         toMerge = new Archipelago();
         try {
-            tested.mergeArchipelagos(toMerge);
-            assertEquals(3, tested.getNumIslands());
-        } catch (MergeDifferentOwnersException e) {
+            toMerge.conquerArchipelago(towersT2);
+        } catch (InvalidTowerNumberException e) {
+            e.printStackTrace();
+        } catch (AnotherTowerException e) {
             e.printStackTrace();
         }
+
+        Archipelago finalToMerge = toMerge;
+        Assertions.assertThrows(MergeDifferentOwnersException.class, () -> tested.mergeArchipelagos(finalToMerge));
     }
     @Test
     void addStudent(){

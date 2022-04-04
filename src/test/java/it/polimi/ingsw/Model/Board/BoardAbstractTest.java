@@ -1,11 +1,8 @@
 package it.polimi.ingsw.Model.Board;
 
-import static org.junit.Assert.*;
-
 import it.polimi.ingsw.Model.Enumerations.PlayerColour;
 import it.polimi.ingsw.Model.Enumerations.SPColour;
 import it.polimi.ingsw.Model.Exceptions.*;
-import it.polimi.ingsw.Model.Pawns.Professor;
 import it.polimi.ingsw.Model.Pawns.Student;
 import it.polimi.ingsw.Model.Player;
 import org.junit.jupiter.api.Assertions;
@@ -14,8 +11,6 @@ import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 class BoardAbstractTest {
     List<Player> playerList = null;
@@ -76,7 +71,7 @@ class BoardAbstractTest {
         Assertions.assertEquals(8, this.b2.schools.get(1).getNumTowers());
         Assertions.assertEquals(8, this.b2.schools.get(0).getTowers().size());
         Assertions.assertEquals(8, this.b2.schools.get(1).getTowers().size());
-        //TODO: check empty diningroom
+        //TODO: check empty dining room
 
         // Map
         Assertions.assertEquals(this.b2.schools.get(0), this.b2.playerSchool.get(this.b2.players.get(0)));
@@ -86,11 +81,7 @@ class BoardAbstractTest {
         Assertions.assertEquals(this.b2.archipelagos.get(0), this.b2.mn.getCurrentPosition());
 
         // Bag
-        try {
-            Assertions.assertEquals(0, this.b2.bag.getInitialStudents().size());
-        } catch (NullContentException e) {
-            e.printStackTrace();
-        }
+        Assertions.assertEquals(0, this.b2.bag.getInitialStudents().size());
 
         //--------------------- initialize conquer sequence (left merge)
         Student s1 = new Student(SPColour.RED);
@@ -116,13 +107,7 @@ class BoardAbstractTest {
         //conquer
         try {
             this.b2.tryToConquer(playerList.get(0));
-        } catch (InvalidTowerNumberException e) {
-            e.printStackTrace();
-        } catch (AnotherTowerException e) {
-            e.printStackTrace();
-        } catch (ExceededMaxTowersException e) {
-            e.printStackTrace();
-        } catch (TowerNotFoundException e) {
+        } catch (InvalidTowerNumberException | TowerNotFoundException | ExceededMaxTowersException | AnotherTowerException e) {
             e.printStackTrace();
         }
         //check correct conquer
@@ -136,20 +121,14 @@ class BoardAbstractTest {
         // conquer
         try {
             this.b2.tryToConquer(playerList.get(0));
-        } catch (InvalidTowerNumberException e) {
-            e.printStackTrace();
-        } catch (AnotherTowerException e) {
-            e.printStackTrace();
-        } catch (ExceededMaxTowersException e) {
-            e.printStackTrace();
-        } catch (TowerNotFoundException e) {
+        } catch (InvalidTowerNumberException | TowerNotFoundException | ExceededMaxTowersException | AnotherTowerException e) {
             e.printStackTrace();
         }
 
         //check correct conquer (after merge they become one archipelago in index 0)
         Assertions.assertEquals(playerList.get(0), this.b2.getArchipelago(0).getOwner());
         //check if there are 11 archipelagos
-        assertEquals(11, b2.archipelagos.size());
+        Assertions.assertEquals(11, b2.archipelagos.size());
 
         //--------------------- (left merge - 0 to conquer 10)
         Student s5 = new Student(SPColour.RED);
@@ -159,19 +138,13 @@ class BoardAbstractTest {
         this.b2.moveMotherNature(10);
         try {
             this.b2.tryToConquer(playerList.get(0));
-        } catch (InvalidTowerNumberException e) {
-            e.printStackTrace();
-        } catch (AnotherTowerException e) {
-            e.printStackTrace();
-        } catch (ExceededMaxTowersException e) {
-            e.printStackTrace();
-        } catch (TowerNotFoundException e) {
+        } catch (InvalidTowerNumberException | TowerNotFoundException | ExceededMaxTowersException | AnotherTowerException e) {
             e.printStackTrace();
         }
         //check correct conquer (after merge, one archipelago in index 9)
         Assertions.assertEquals(playerList.get(0), this.b2.getArchipelago(9).getOwner());
         //check if there are 10 archipelagos
-        assertEquals(10, b2.archipelagos.size());
+        Assertions.assertEquals(10, b2.archipelagos.size());
 
         //check each archipelago
         Assertions.assertEquals(this.b2.archipelagos.get(0), this.b2.getArchipelago(0));
@@ -220,13 +193,7 @@ class BoardAbstractTest {
                 // after this
                 // Player[0] has pink professor
                 // Player[1] has green professor
-            } catch (StudentNotFoundException e) {
-                e.printStackTrace();
-            } catch (ExceededMaxStudentsDiningRoomException e) {
-                e.printStackTrace();
-            } catch (ProfessorNotFoundException e) {
-                e.printStackTrace();
-            } catch (NoProfessorBagException e) {
+            } catch (StudentNotFoundException | NoProfessorBagException | ProfessorNotFoundException | ExceededMaxStudentsDiningRoomException e) {
                 e.printStackTrace();
             }
         } catch (ExceededMaxStudentsHallException e) {
@@ -250,13 +217,7 @@ class BoardAbstractTest {
             try {
                 this.b2.moveStudentHallToDiningRoom(playerList.get(1), SPColour.PINK);
                 this.b2.moveStudentHallToDiningRoom(playerList.get(1), SPColour.PINK);
-            } catch (StudentNotFoundException e) {
-                e.printStackTrace();
-            } catch (ExceededMaxStudentsDiningRoomException e) {
-                e.printStackTrace();
-            } catch (ProfessorNotFoundException e) {
-                e.printStackTrace();
-            } catch (NoProfessorBagException e) {
+            } catch (StudentNotFoundException | NoProfessorBagException | ProfessorNotFoundException | ExceededMaxStudentsDiningRoomException e) {
                 e.printStackTrace();
             }
         } catch (ExceededMaxStudentsHallException e) {
@@ -288,12 +249,10 @@ class BoardAbstractTest {
             e.printStackTrace();
         }
 
-        List<Student> coloursHallBefore = new ArrayList<>();
-        List<Student> coloursCloud = new ArrayList<>();
         SPColour[] availableColours = {SPColour.BLUE, SPColour.PINK, SPColour.RED, SPColour.GREEN, SPColour.YELLOW};
 
-        coloursHallBefore.addAll(this.b2.getPlayerSchool(playerList.get(0)).getStudentsHall());
-        coloursCloud.addAll(this.b2.clouds.get(0).getStudents());
+        List<Student> coloursHallBefore = new ArrayList<>(this.b2.getPlayerSchool(playerList.get(0)).getStudentsHall());
+        List<Student> coloursCloud = new ArrayList<>(this.b2.clouds.get(0).getStudents());
 
         Assertions.assertEquals(2, this.b2.getPlayerSchool(playerList.get(0)).getStudentsHall().size());
         //students from cloud to hall
@@ -326,13 +285,7 @@ class BoardAbstractTest {
 
         try {
             this.b2.tryToConquer(this.b2.players.get(0));
-        } catch (InvalidTowerNumberException e) {
-            e.printStackTrace();
-        } catch (AnotherTowerException e) {
-            e.printStackTrace();
-        } catch (ExceededMaxTowersException e) {
-            e.printStackTrace();
-        } catch (TowerNotFoundException e) {
+        } catch (InvalidTowerNumberException | TowerNotFoundException | ExceededMaxTowersException | AnotherTowerException e) {
             e.printStackTrace();
         }
 
@@ -352,13 +305,7 @@ class BoardAbstractTest {
 
         try {
             this.b2.tryToConquer(this.b2.players.get(1));
-        } catch (InvalidTowerNumberException e) {
-            e.printStackTrace();
-        } catch (AnotherTowerException e) {
-            e.printStackTrace();
-        } catch (ExceededMaxTowersException e) {
-            e.printStackTrace();
-        } catch (TowerNotFoundException e) {
+        } catch (InvalidTowerNumberException | TowerNotFoundException | ExceededMaxTowersException | AnotherTowerException e) {
             e.printStackTrace();
         }
 
@@ -367,11 +314,9 @@ class BoardAbstractTest {
         try {
             this.b2.useAssistantCard(this.b2.players.get(0), 1);
             Assertions.assertThrows(AssistantCardAlreadyPlayedTurnException.class, () -> this.b2.useAssistantCard(this.b2.players.get(1), 1));
-        } catch (AssistantCardAlreadyPlayedTurnException e) {
-            e.printStackTrace();
-        } catch (NoAssistantCardException e) {
+        } catch (AssistantCardAlreadyPlayedTurnException | NoAssistantCardException e) {
             e.printStackTrace();
         }
-    }
 
+    }
 }
