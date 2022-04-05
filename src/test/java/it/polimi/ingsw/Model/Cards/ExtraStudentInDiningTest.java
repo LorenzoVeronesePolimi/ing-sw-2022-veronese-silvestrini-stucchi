@@ -72,7 +72,7 @@ public class ExtraStudentInDiningTest {
             }
         }else{
             BoardAdvanced finalBoardAdvanced = boardAdvanced;
-            Assertions.assertThrows(StudentNotFoundException.class, () -> finalBoardAdvanced.moveStudentHallToDiningRoom(p1, SPColour.BLUE));
+            Assertions.assertThrows(StudentNotFoundException.class, () -> finalBoardAdvanced.useExtraStudentInDining(p1, SPColour.PINK));
         }
 
     }

@@ -57,7 +57,7 @@ public abstract class BoardAbstract implements Board{
         List<AssistantCard> cardsCreated = new ArrayList<>();
         int[] cardsMotherNatureMoves= {1, 1, 2, 2, 3, 3, 4, 4, 5, 5}; //TODO: check if these values ar correct
         for(int i = 0; i < playerHandLength; i++){
-            cardsCreated.add(new AssistantCard(i + 1, cardsMotherNatureMoves[i]));
+            cardsCreated.add(new AssistantCard(cardsMotherNatureMoves[i], i+1));
         }
 
         // give them to Players

@@ -428,7 +428,7 @@ public class BoardAdvanced implements Board {
         }
     }
 
-    public void useTwoExtraIslands(Player player, int archipelago) throws
+    public void useTwoExtraIslands(Player player) throws
             EmptyCaveauExcepion, ExceededMaxNumCoinException, CoinNotFoundException{
 
         for(AbstractCharacterCard card: extractedCards) {

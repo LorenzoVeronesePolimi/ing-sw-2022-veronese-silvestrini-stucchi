@@ -5,7 +5,10 @@ import it.polimi.ingsw.Model.Board.BoardAdvanced;
 import it.polimi.ingsw.Model.Board.BoardFactory;
 import it.polimi.ingsw.Model.Enumerations.PlayerColour;
 import it.polimi.ingsw.Model.Exceptions.*;
+import it.polimi.ingsw.Model.Places.School.School;
+import it.polimi.ingsw.Model.Places.School.SchoolAdvanced;
 import it.polimi.ingsw.Model.Player;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
@@ -32,20 +35,28 @@ public class TwoExtraIslandsTest {
         TwoExtraIslands card = new TwoExtraIslands(boardAdvanced);
         boardAdvanced.setExtractedCards(card);
 
+        Assertions.assertEquals(card, boardAdvanced.getExtractedCards().get(0));
+
         try {
             boardAdvanced.useAssistantCard(p1,3);
-            boardAdvanced.useAssistantCard(p1,5);
         } catch (AssistantCardAlreadyPlayedTurnException | NoAssistantCardException e) {
             e.printStackTrace();
         }
 
-        //TODO: I can't really test this card... is much  more a controller task to assure that the MN movement respect the assistant card constraint
+        Assertions.assertEquals(2, p1.getLastCard().getMotherNatureMovement());
+
         try {
-            p1.useAssistantCard(3);
-        } catch (NoAssistantCardException e) {
+            boardAdvanced.useTwoExtraIslands(p1);
+        } catch (EmptyCaveauExcepion e) {
+            e.printStackTrace();
+        } catch (ExceededMaxNumCoinException e) {
+            e.printStackTrace();
+        } catch (CoinNotFoundException e) {
             e.printStackTrace();
         }
 
+        Assertions.assertEquals(0,((SchoolAdvanced)boardAdvanced.getPlayerSchool(p1)).getNumCoins());
+        Assertions.assertEquals(4,p1.getLastCard().getMotherNatureMovement()); //TODO:check assistant card values
 
     }
 }

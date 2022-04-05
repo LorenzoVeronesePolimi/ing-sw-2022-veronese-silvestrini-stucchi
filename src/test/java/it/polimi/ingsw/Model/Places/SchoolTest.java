@@ -119,12 +119,15 @@ public class SchoolTest {
 
         towersToAdd.clear();
         towersToAdd.add(tower1);
+        towersToAdd.add(new Tower(p));
         try {
             school.addNumTower(towersToAdd);
         } catch (ExceededMaxTowersException e) {
             e.printStackTrace();
         }
-        Assertions.assertEquals(7, school.getNumTowers());
+        Assertions.assertEquals(8, school.getNumTowers());
+
+        Assertions.assertThrows(ExceededMaxTowersException.class, () -> school.addTower(new Tower(p)));
     }
 
     @Test
