@@ -129,7 +129,7 @@ public class Archipelago {
 
     /**
      *
-     * @return, for each colour, the number of students that are present on the archipelago
+     * @return, for each colour, the number of students that are present on the archipelago.
      */
     public Map<SPColour, Integer> howManyStudents(){
         Map<SPColour, Integer> studentsDataCopy = new HashMap<>();
@@ -141,8 +141,10 @@ public class Archipelago {
         return studentsDataCopy;
     }
 
-
-    // Remove the Tower from each of its Islands
+    /**
+     *
+     * @return the list of towers that have been removed from all the islands of the archipelago.
+     */
     private List<Tower> removeTowers() {
         List<Tower> removed = new ArrayList<>();
 
@@ -155,9 +157,6 @@ public class Archipelago {
     }
 
 
-    //TODO: the following two are for the function which gives the influence
-    //TODO: archipelago not conquerable if forbidFlag = true, and if so, set it false; (MN is on this archipelago)
-    //TODO: check if tower has value (after character card played); if true, set false
     /*
      * Two chances:
      * 1) No one conquered the Archipelago before: I have no Tower to remove => return void List
@@ -165,6 +164,16 @@ public class Archipelago {
      *      the right School
      * EXCEPTION when the number of input Towers is different from the number of Archipelago's Islands
      *      To let Board know this number, getNumIslands() is needed
+     */
+
+    /**
+     * this method removes all the towers of the previous owner (and returns the list of them) and places in each
+     * island one tower of the conqueror
+     * @param towersToAdd is the list of the towers of the conqueror that must be placed
+     * @return the list of towers of the previous owner
+     * @throws InvalidTowerNumberException if the length of the list of towers of the conqueror is different from the number
+     * of islands of the archipelago
+     * @throws AnotherTowerException if you're trying to add a tower to an island that is already owned by you
      */
     public List<Tower> conquerArchipelago(List<Tower> towersToAdd) throws InvalidTowerNumberException, AnotherTowerException {
         List<Tower> removed = new ArrayList<>();
@@ -187,10 +196,14 @@ public class Archipelago {
     }
 
 
+    /**
+     * This method unify to the current archipelago the one that receives as a parameter, if they have the same owner.
+     * @param archipelagoToMerge is the archipelago that must be merged to the current one.
+     * @throws MergeDifferentOwnersException if the two archipelagos have two different owners.
+     */
     // This make me loose the reference to archipelagoToMerge; no problem because I still have the
     // reference to each island
     public void mergeArchipelagos(Archipelago archipelagoToMerge) throws MergeDifferentOwnersException{
-        // TODO: equals of Player
         if(archipelagoToMerge.getOwner() == this.owner) { // I can't merge not taken Archipelago
             this.islands.addAll(archipelagoToMerge.getOriginalIslands());
         }
@@ -200,8 +213,9 @@ public class Archipelago {
         this.updateStudentsData();
     }
 
-
-    // This updates this.studentsData
+    /**
+     * This method updates this.studentsData
+     */
     private void updateStudentsData(){
         Map<SPColour, Integer> newStudentsData = new HashMap<>();
         SPColour[] availableColours = {SPColour.BLUE, SPColour.PINK, SPColour.RED, SPColour.GREEN, SPColour.YELLOW};
@@ -209,7 +223,6 @@ public class Archipelago {
             newStudentsData.put(c, 0);
         }
 
-        //TODO: use functional approach
         Map<SPColour, Integer> singleIslandStudentsData;
         for(Island island : this.islands){
             singleIslandStudentsData = island.howManyStudents();
@@ -217,17 +230,22 @@ public class Archipelago {
                 newStudentsData.replace(c, newStudentsData.get(c) + singleIslandStudentsData.get(c));
             }
         }
-
         this.studentsData = newStudentsData;
     }
 
-
+    /**
+     * This method add the student received as parameter to che archipelago.
+     * @param studentToAdd is the student that must be added.
+     */
     public void addStudent(Student studentToAdd) {
         this.islands.get(0).addStudent(studentToAdd);
         this.updateStudentsData();
     }
 
     @Override
+    /**
+     * this method converts to string an object that is instance of Archipelago
+     */
     public String toString() {
         int numTowers;
         if (this.islands.get(0).getTower() == null){
