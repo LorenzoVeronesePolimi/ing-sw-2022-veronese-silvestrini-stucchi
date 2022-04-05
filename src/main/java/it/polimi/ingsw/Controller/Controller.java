@@ -26,15 +26,14 @@ public class Controller implements Observer {
 
     private int currentPlayerIndex = 0;
 
-    private ControllerInput controllerInput;
-    private ControllerState controllerState;
-    private ControllerIntegrity controllerIntegrity;
+    private final ControllerInput controllerInput;
+    private final ControllerState controllerState;
+    private final ControllerIntegrity controllerIntegrity;
 
     private int numStudentsToMove;
     private int numStudentsToMoveCurrent;
-    private static int NUM_STUDENTS_TO_MOVE_TWO;
-    private static int NUM_STUDENTS_TO_MOVE_THREE;
-
+    private final int NUM_STUDENTS_TO_MOVE_TWO_PLAYERS = 3;
+    private final int NUM_STUDENTS_TO_MOVE_THREE_PLAYERS = 4;
 
     public Controller(){
         this.players = new ArrayList<>();
@@ -281,8 +280,12 @@ public class Controller implements Observer {
     private boolean isCurrentPlayer(String nickname){
         try{
             Player player = this.mapStringToPlayer(nickname);
-            if(this.players.get(currentPlayerIndex) == player){return true;}
-        } catch(NoPlayerException ex){return true;}
+            if(getCurrentPlayer() == player){
+                return true;
+            }
+        } catch(NoPlayerException ex){
+            return false;
+        }
         return false;
     }
 
@@ -305,11 +308,11 @@ public class Controller implements Observer {
 
         //set number of Students to move at each ACTION1
         if(this.players.size() == 3){
-            this.numStudentsToMove = NUM_STUDENTS_TO_MOVE_THREE;
-            this.numStudentsToMoveCurrent = NUM_STUDENTS_TO_MOVE_THREE;
+            this.numStudentsToMove = NUM_STUDENTS_TO_MOVE_THREE_PLAYERS;
+            this.numStudentsToMoveCurrent = NUM_STUDENTS_TO_MOVE_THREE_PLAYERS;
         } else{
-            this.numStudentsToMove = NUM_STUDENTS_TO_MOVE_TWO;
-            this.numStudentsToMoveCurrent = NUM_STUDENTS_TO_MOVE_TWO;
+            this.numStudentsToMove = NUM_STUDENTS_TO_MOVE_TWO_PLAYERS;
+            this.numStudentsToMoveCurrent = NUM_STUDENTS_TO_MOVE_TWO_PLAYERS;
         }
     }
 
@@ -337,7 +340,8 @@ public class Controller implements Observer {
     }
 
     public boolean manageCreateMatch(MessageCreateMatch message){ //TODO: manage GameFour
-        int numPlayers = message.getNumPlayers();
+        this.numPlayers = message.getNumPlayers();
+        this.advanced = message.isAdvanced();
         PlayerColour colourFirstPlayer = mapStringToPlayerColour(message.getColourFirstPlayer());
         // no need to control the boolean "advanced"
 
@@ -380,11 +384,11 @@ public class Controller implements Observer {
 
         // Is him the currentPlayer? Can he use that AssistantCard?
         if(!isCurrentPlayer(nicknamePlayer)){return false;} //TODO
-        controllerIntegrity.checkAssistantCard(this.players, this.currentPlayerIndex, this.players.get(this.currentPlayerIndex), turnPriority);
+        controllerIntegrity.checkAssistantCard(this.players, this.currentPlayerIndex, getCurrentPlayer(), turnPriority);
 
         // Remove the card from his hand
         try{
-            board.useAssistantCard(this.players.get(this.currentPlayerIndex), turnPriority);
+            board.useAssistantCard(getCurrentPlayer(), turnPriority);
         } catch(AssistantCardAlreadyPlayedTurnException | NoAssistantCardException ex){return false;} // card already used or no AssistantCard present
 
         // Go on within the turn
@@ -403,17 +407,17 @@ public class Controller implements Observer {
 
         if(!isCurrentPlayer(nicknamePlayer)){return false;}
 
-        if(controllerIntegrity.checkStudentHallToDiningRoom(this.players.get(this.currentPlayerIndex), studentColour)){
+        if(controllerIntegrity.checkStudentHallToDiningRoom(getCurrentPlayer(), studentColour)){
             if(this.advanced){
                 try {
-                    boardAdvanced.moveStudentHallToDiningRoom(this.players.get(this.currentPlayerIndex), studentColour);
+                    boardAdvanced.moveStudentHallToDiningRoom(getCurrentPlayer(), studentColour);
                 } catch (StudentNotFoundException | ExceededMaxStudentsDiningRoomException | EmptyCaveauException |
                         ProfessorNotFoundException | NoProfessorBagException e) {
                     return false;
                 }
             } else{
                 try {
-                    board.moveStudentHallToDiningRoom(this.players.get(this.currentPlayerIndex), studentColour);
+                    board.moveStudentHallToDiningRoom(getCurrentPlayer(), studentColour);
                 } catch (StudentNotFoundException | ExceededMaxStudentsDiningRoomException |
                         ProfessorNotFoundException | NoProfessorBagException e) {
                     return false;
@@ -421,7 +425,7 @@ public class Controller implements Observer {
             }
             this.numStudentsToMoveCurrent--;
             if(this.numStudentsToMoveCurrent == 0 || // all possible Students moved
-                    this.board.getPlayerSchool(this.players.get(this.currentPlayerIndex)).getStudentsHall().size() == 0){ // no Students remained
+                    this.board.getPlayerSchool(getCurrentPlayer()).getStudentsHall().size() == 0){ // no Students remained
                 this.numStudentsToMoveCurrent = this.numStudentsToMove;
                 controllerState.setState(State.ACTION2);
             }
@@ -435,11 +439,11 @@ public class Controller implements Observer {
         SPColour studentColour = mapStringToSPColour(message.getColour());
         int destinationArchipelagoIndex = message.getDestArchipelagoIndex();
 
-        if(isCurrentPlayer(nicknamePlayer)){return false;}
+        if(!isCurrentPlayer(nicknamePlayer)){return false;}
 
-        if(controllerIntegrity.checkStudentToArchipelago(this.players.get(this.currentPlayerIndex), studentColour, destinationArchipelagoIndex)){
+        if(controllerIntegrity.checkStudentToArchipelago(getCurrentPlayer(), studentColour, destinationArchipelagoIndex)){
             try {
-                board.moveStudentSchoolToArchipelagos(this.players.get(this.currentPlayerIndex), studentColour, destinationArchipelagoIndex);
+                board.moveStudentSchoolToArchipelagos(getCurrentPlayer(), studentColour, destinationArchipelagoIndex);
             } catch (StudentNotFoundException e) {
                 return false;
             }
@@ -452,12 +456,12 @@ public class Controller implements Observer {
         String nicknamePlayer = message.getNicknamePlayer();
         int moves = message.getMoves();
 
-        if(isCurrentPlayer(nicknamePlayer)){return false;}
+        if(!isCurrentPlayer(nicknamePlayer)){return false;}
 
-        if(controllerIntegrity.checkMoveMotherNature(this.players.get(this.currentPlayerIndex), moves)){
+        if(controllerIntegrity.checkMoveMotherNature(getCurrentPlayer(), moves)){
             board.moveMotherNature(moves);
             try {
-                board.tryToConquer(this.players.get(this.currentPlayerIndex));
+                board.tryToConquer(getCurrentPlayer());
             } catch (InvalidTowerNumberException | AnotherTowerException | ExceededMaxTowersException | TowerNotFoundException e) {
                 return false;
             }
@@ -471,11 +475,11 @@ public class Controller implements Observer {
         String nicknamePlayer = message.getNicknamePlayer();
         int indexCloud = message.getIndexCloud();
 
-        if(isCurrentPlayer(nicknamePlayer)){return false;}
+        if(!isCurrentPlayer(nicknamePlayer)){return false;}
 
-        if(controllerIntegrity.checkStudentCloudToSchool(this.players.get(this.currentPlayerIndex), indexCloud)){
+        if(controllerIntegrity.checkStudentCloudToSchool(getCurrentPlayer(), indexCloud)){
             try{
-                board.moveStudentCloudToSchool(this.players.get(this.currentPlayerIndex), indexCloud);
+                board.moveStudentCloudToSchool(getCurrentPlayer(), indexCloud);
             } catch(ExceededMaxStudentsHallException ex){return false;}
 
             // change current Player
@@ -499,12 +503,12 @@ public class Controller implements Observer {
         List<SPColour> coloursCard = this.mapListStringToColour(message.getColoursCard());
         List<SPColour> coloursHall = this.mapListStringToColour(message.getColoursHall());
 
-        if(isCurrentPlayer(nicknamePlayer)){return false;}
+        if(!isCurrentPlayer(nicknamePlayer)){return false;}
 
         try{
             ExchangeThreeStudents chosenCard = (ExchangeThreeStudents)this.mapIndexToCharacterCard(MessageType.CC_EXCHANGE_THREE_STUDENTS, indexCard);
-            if(controllerIntegrity.checkCCExchangeThreeStudents(this.players.get(this.currentPlayerIndex), coloursCard, coloursHall, chosenCard)){
-                chosenCard.useEffect(this.players.get(this.currentPlayerIndex), coloursHall, coloursCard);
+            if(controllerIntegrity.checkCCExchangeThreeStudents(getCurrentPlayer(), coloursCard, coloursHall, chosenCard)){
+                chosenCard.useEffect(getCurrentPlayer(), coloursHall, coloursCard);
 
                 return true;
             }
@@ -522,12 +526,12 @@ public class Controller implements Observer {
         List<SPColour> coloursHall = this.mapListStringToColour(message.getColoursHall());
         List<SPColour> coloursDiningRoom = this.mapListStringToColour(message.getColoursDiningRoom());
 
-        if(isCurrentPlayer(nicknamePlayer)){return false;}
+        if(!isCurrentPlayer(nicknamePlayer)){return false;}
 
         try {
             ExchangeTwoHallDining chosenCard = (ExchangeTwoHallDining)this.mapIndexToCharacterCard(MessageType.CC_EXCHANGE_THREE_STUDENTS, indexCard);
-            if(controllerIntegrity.checkCCExchangeTwoHallDining(this.players.get(this.currentPlayerIndex), coloursHall, coloursDiningRoom, chosenCard)){
-                chosenCard.useEffect(this.players.get(this.currentPlayerIndex), coloursHall, coloursDiningRoom);
+            if(controllerIntegrity.checkCCExchangeTwoHallDining(getCurrentPlayer(), coloursHall, coloursDiningRoom, chosenCard)){
+                chosenCard.useEffect(getCurrentPlayer(), coloursHall, coloursDiningRoom);
 
                 return true;
             }
@@ -544,12 +548,12 @@ public class Controller implements Observer {
         int indexCard = message.getIndexCard();
         String nicknamePlayer = message.getNicknamePlayer();
 
-        if(isCurrentPlayer(nicknamePlayer)){return false;}
+        if(!isCurrentPlayer(nicknamePlayer)){return false;}
 
         if(controllerIntegrity.checkCCGeneric()){
             try {
                 ExcludeColourFromCounting chosenCard = (ExcludeColourFromCounting)this.mapIndexToCharacterCard(MessageType.CC_EXCLUDE_COLOUR_FROM_COUNTING, indexCard);
-                chosenCard.useEffect(this.players.get(this.currentPlayerIndex), this.mapStringToSPColour(message.getColourToExclude()));
+                chosenCard.useEffect(getCurrentPlayer(), this.mapStringToSPColour(message.getColourToExclude()));
 
                 return true;
             } catch (NoCorrespondingCharacterCardException |
@@ -569,12 +573,12 @@ public class Controller implements Observer {
         String nicknamePlayer = message.getNicknamePlayer();
         SPColour colourToMove = mapStringToSPColour(message.getColourToMove());
 
-        if(isCurrentPlayer(nicknamePlayer)){return false;}
+        if(!isCurrentPlayer(nicknamePlayer)){return false;}
 
         if(controllerIntegrity.checkCCGeneric()){
             try {
                 ExtraStudentInDining chosenCard = (ExtraStudentInDining)this.mapIndexToCharacterCard(MessageType.CC_EXTRA_STUDENT_IN_DINING, indexCard);
-                chosenCard.useEffect(this.players.get(this.currentPlayerIndex), colourToMove);
+                chosenCard.useEffect(getCurrentPlayer(), colourToMove);
 
                 return true;
             } catch (NoCorrespondingCharacterCardException |
@@ -592,12 +596,12 @@ public class Controller implements Observer {
         String nicknamePlayer = message.getNicknamePlayer();
         int fakeMNPosition = message.getFakeMNPosition();
 
-        if(isCurrentPlayer(nicknamePlayer)){return false;}
+        if(!isCurrentPlayer(nicknamePlayer)){return false;}
 
         if(controllerIntegrity.checkCCFakeMNMovement(fakeMNPosition)){
             try {
                 FakeMNMovement chosenCard = (FakeMNMovement)this.mapIndexToCharacterCard(MessageType.CC_FAKE_MN_MOVEMENT, indexCard);
-                chosenCard.useEffect(this.players.get(currentPlayerIndex), fakeMNPosition);
+                chosenCard.useEffect(getCurrentPlayer(), fakeMNPosition);
 
                 return true;
             } catch (NoCorrespondingCharacterCardException |
@@ -617,7 +621,7 @@ public class Controller implements Observer {
         String nicknamePlayer = message.getNicknamePlayer();
         int archipelagoIndexToForbid = message.getArchipelagoIndexToForbid();
 
-        if(isCurrentPlayer(nicknamePlayer)){return false;}
+        if(!isCurrentPlayer(nicknamePlayer)){return false;}
 
         if(controllerIntegrity.checkCCForbidIsland(archipelagoIndexToForbid)){
             try {
@@ -638,7 +642,7 @@ public class Controller implements Observer {
         SPColour colourToMove = mapStringToSPColour(message.getColourToMove());
         int archipelagoIndexDestination = message.getArchipelagoIndexDest();
 
-        if(isCurrentPlayer(nicknamePlayer)){return false;}
+        if(!isCurrentPlayer(nicknamePlayer)){return false;}
 
         try {
             PlaceOneStudent chosenCard = (PlaceOneStudent)this.mapIndexToCharacterCard(MessageType.CC_PLACE_ONE_STUDENT, indexCard);
@@ -660,7 +664,7 @@ public class Controller implements Observer {
         String nicknamePlayer = message.getNicknamePlayer();
         SPColour colourToReduce = mapStringToSPColour(message.getColourToReduce());
 
-        if(isCurrentPlayer(nicknamePlayer)){return false;}
+        if(!isCurrentPlayer(nicknamePlayer)){return false;}
 
         try {
             if(controllerIntegrity.checkCCGeneric()) {
@@ -681,7 +685,7 @@ public class Controller implements Observer {
         int indexCard = message.getIndexCard();
         String nicknamePlayer = message.getNicknamePlayer();
 
-        if(isCurrentPlayer(nicknamePlayer)){return false;}
+        if(!isCurrentPlayer(nicknamePlayer)){return false;}
 
         try {
             if(controllerIntegrity.checkCCGeneric()){
@@ -705,7 +709,7 @@ public class Controller implements Observer {
         int indexCard = message.getIndexCard();
         String nicknamePlayer = message.getNicknamePlayer();
 
-        if(isCurrentPlayer(nicknamePlayer)){return false;}
+        if(!isCurrentPlayer(nicknamePlayer)){return false;}
 
         try {
             if(controllerIntegrity.checkCCGeneric()){
@@ -729,12 +733,12 @@ public class Controller implements Observer {
         int indexCard = message.getIndexCard();
         String nicknamePlayer = message.getNicknamePlayer();
 
-        if(isCurrentPlayer(nicknamePlayer)){return false;}
+        if(!isCurrentPlayer(nicknamePlayer)){return false;}
 
         try {
             if(controllerIntegrity.checkCCGeneric()){
                 TakeProfessorOnEquity chosenCard = (TakeProfessorOnEquity)this.mapIndexToCharacterCard(MessageType.CC_TAKE_PROFESSOR_ON_EQUITY, indexCard);
-                chosenCard.useEffect(this.players.get(currentPlayerIndex));
+                chosenCard.useEffect(getCurrentPlayer());
 
                 return true;
             }
@@ -751,16 +755,16 @@ public class Controller implements Observer {
         return false;
     }
 
-    public boolean manageTwoExtraIslands(MessageCCTwoExtraIslands message){
+    public boolean manageCCTwoExtraIslands(MessageCCTwoExtraIslands message){
         int indexCard = message.getIndexCard();
         String nicknamePlayer = message.getNicknamePlayer();
 
-        if(isCurrentPlayer(nicknamePlayer)){return false;}
+        if(!isCurrentPlayer(nicknamePlayer)){return false;}
 
         if(controllerIntegrity.checkCCGeneric()){
             try {
                 TwoExtraIslands chosenCard = (TwoExtraIslands)this.mapIndexToCharacterCard(MessageType.CC_TWO_EXTRA_ISLANDS, indexCard);
-                //TODO after TwoExtraIslands correction: chosenCard.useEffect(this.players.get(currentPlayerIndex));
+                chosenCard.useEffect(getCurrentPlayer());
 
                 return true;
             } catch (NoCorrespondingCharacterCardException e) {
