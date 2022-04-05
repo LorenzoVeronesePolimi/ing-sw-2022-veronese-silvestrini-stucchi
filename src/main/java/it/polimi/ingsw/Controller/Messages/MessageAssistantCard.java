@@ -1,5 +1,6 @@
 package it.polimi.ingsw.Controller.Messages;
 
+import it.polimi.ingsw.Controller.Controller;
 import it.polimi.ingsw.Controller.Enumerations.MessageType;
 
 public class MessageAssistantCard extends Message{
@@ -24,5 +25,9 @@ public class MessageAssistantCard extends Message{
 
     public int getTurnPriority() {
         return turnPriority;
+    }
+
+    public boolean manageMessage(Controller controller) {
+        return controller.manageAssistantCard(this);
     }
 }

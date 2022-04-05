@@ -91,7 +91,7 @@ public class ControllerInput {
 
     }
 
-    private boolean checkNickname(String nickname){
+    public boolean checkNickname(String nickname){
         return !(nickname.equals(""));
     }
 

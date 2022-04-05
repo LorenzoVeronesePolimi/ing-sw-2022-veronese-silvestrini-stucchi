@@ -1,5 +1,7 @@
 package it.polimi.ingsw.Controller.Messages;
 
+import it.polimi.ingsw.Controller.Controller;
+
 import static it.polimi.ingsw.Controller.Enumerations.MessageType.CC_PLACE_ONE_STUDENT;
 
 public class MessageCCPlaceOneStudent extends MessageCC{
@@ -24,5 +26,10 @@ public class MessageCCPlaceOneStudent extends MessageCC{
 
     public int getArchipelagoIndexDest() {
         return archipelagoIndexDest;
+    }
+
+    @Override
+    public boolean manageMessage(Controller controller) {
+        return controller.manageCCPlaceOneStudent(this);
     }
 }

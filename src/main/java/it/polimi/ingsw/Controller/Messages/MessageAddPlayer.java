@@ -1,5 +1,6 @@
 package it.polimi.ingsw.Controller.Messages;
 
+import it.polimi.ingsw.Controller.Controller;
 import it.polimi.ingsw.Controller.Enumerations.MessageType;
 
 public class MessageAddPlayer extends Message{
@@ -20,5 +21,7 @@ public class MessageAddPlayer extends Message{
         return colour;
     }
 
-
+    public boolean manageMessage(Controller controller){
+        return controller.manageAddPlayer(this);
+    }
 }

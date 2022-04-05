@@ -1,5 +1,7 @@
 package it.polimi.ingsw.Controller.Messages;
 
+import it.polimi.ingsw.Controller.Controller;
+
 import static it.polimi.ingsw.Controller.Enumerations.MessageType.CC_EXTRA_STUDENT_IN_DINING;
 
 public class MessageCCExtraStudentInDining extends MessageCC{
@@ -18,5 +20,10 @@ public class MessageCCExtraStudentInDining extends MessageCC{
 
     public String getColourToMove() {
         return colourToMove;
+    }
+
+    @Override
+    public boolean manageMessage(Controller controller) {
+        return controller.manageCCExtraStudentInDining(this);
     }
 }

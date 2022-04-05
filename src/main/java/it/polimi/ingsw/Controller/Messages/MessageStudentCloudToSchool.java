@@ -1,5 +1,7 @@
 package it.polimi.ingsw.Controller.Messages;
 
+import it.polimi.ingsw.Controller.Controller;
+
 import static it.polimi.ingsw.Controller.Enumerations.MessageType.STUDENT_CLOUD_TO_SCHOOL;
 
 public class MessageStudentCloudToSchool extends Message{
@@ -18,5 +20,10 @@ public class MessageStudentCloudToSchool extends Message{
 
     public int getIndexCloud() {
         return indexCloud;
+    }
+
+    @Override
+    public boolean manageMessage(Controller controller) {
+        return controller.manageStudentCloudToSchool(this);
     }
 }

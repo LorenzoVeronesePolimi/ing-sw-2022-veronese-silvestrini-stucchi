@@ -1,5 +1,7 @@
 package it.polimi.ingsw.Controller.Messages;
 
+import it.polimi.ingsw.Controller.Controller;
+
 import static it.polimi.ingsw.Controller.Enumerations.MessageType.CREATE_MATCH;
 
 public class MessageCreateMatch extends Message{
@@ -30,5 +32,10 @@ public class MessageCreateMatch extends Message{
 
     public boolean isAdvanced() {
         return advanced;
+    }
+
+    @Override
+    public boolean manageMessage(Controller controller) {
+        return controller.manageCreateMatch(this);
     }
 }

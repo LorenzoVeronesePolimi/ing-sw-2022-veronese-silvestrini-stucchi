@@ -1,5 +1,7 @@
 package it.polimi.ingsw.Controller.Messages;
 
+import it.polimi.ingsw.Controller.Controller;
+
 import static it.polimi.ingsw.Controller.Enumerations.MessageType.CC_TAKE_PROFESSOR_ON_EQUITY;
 
 public class MessageCCTakeProfessorOnEquity extends MessageCC{
@@ -12,5 +14,10 @@ public class MessageCCTakeProfessorOnEquity extends MessageCC{
 
     public String getNicknamePlayer() {
         return nicknamePlayer;
+    }
+
+    @Override
+    public boolean manageMessage(Controller controller) {
+        return controller.manageCCTakeProfessorOnEquity(this);
     }
 }

@@ -1,5 +1,7 @@
 package it.polimi.ingsw.Controller.Messages;
 
+import it.polimi.ingsw.Controller.Controller;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -43,5 +45,10 @@ public class MessageCCExchangeTwoHallDining extends MessageCC{
         colours.add(colourDiningRoom2);
 
         return colours;
+    }
+
+    @Override
+    public boolean manageMessage(Controller controller) {
+        return controller.manageCCExchangeTwoHallDining(this);
     }
 }

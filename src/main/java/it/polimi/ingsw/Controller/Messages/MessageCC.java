@@ -1,5 +1,6 @@
 package it.polimi.ingsw.Controller.Messages;
 
+import it.polimi.ingsw.Controller.Controller;
 import it.polimi.ingsw.Controller.Enumerations.MessageType;
 
 public abstract class MessageCC extends Message{
@@ -13,4 +14,6 @@ public abstract class MessageCC extends Message{
     public int getIndexCard() {
         return indexCard;
     }
+
+    public abstract boolean manageMessage(Controller controller);
 }

@@ -68,6 +68,10 @@ public class Controller implements Observer {
             return;
         }
 
+        if(!message.manageMessage(this)){
+            System.out.println("Error");
+        };
+        /*
         switch(message.getType()){
             case CREATE_MATCH: //TODO: manage GameFour
                 if(message instanceof MessageCreateMatch &&
@@ -169,7 +173,7 @@ public class Controller implements Observer {
                         !this.manageCCTwoExtraPoints((MessageCCTwoExtraPoints)message)){
                     System.out.println("Wrong parameters");
                 }
-        }
+        }*/
 
         //check if I have to make some automatic action (=>PIANIFICATION1)
         if(controllerState.getState() == State.PLANNING1){
