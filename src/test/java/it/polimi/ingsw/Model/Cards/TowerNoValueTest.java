@@ -81,7 +81,7 @@ public class TowerNoValueTest {
             boardAdvanced.moveStudentHallToDiningRoom(p2, SPColour.RED);
             boardAdvanced.moveStudentHallToDiningRoom(p2, SPColour.RED);
             boardAdvanced.moveStudentHallToDiningRoom(p2, SPColour.RED);
-        } catch (StudentNotFoundException | ExceededMaxStudentsDiningRoomException | EmptyCaveauExcepion | ProfessorNotFoundException | NoProfessorBagException e) {
+        } catch (StudentNotFoundException | ExceededMaxStudentsDiningRoomException | EmptyCaveauException | ProfessorNotFoundException | NoProfessorBagException e) {
             e.printStackTrace();
         }
 
@@ -111,7 +111,8 @@ public class TowerNoValueTest {
 
         try {
             boardAdvanced.useTowerNoValue(p1);
-        } catch (EmptyCaveauExcepion | TowerNotFoundException | ExceededMaxTowersException | AnotherTowerException | InvalidTowerNumberException | CoinNotFoundException | ExceededMaxNumCoinException e) {
+            boardAdvanced.tryToConquer(p1);
+        } catch (EmptyCaveauException | TowerNotFoundException | ExceededMaxTowersException | AnotherTowerException | InvalidTowerNumberException | CoinNotFoundException | ExceededMaxNumCoinException e) {
             e.printStackTrace();
         }
 

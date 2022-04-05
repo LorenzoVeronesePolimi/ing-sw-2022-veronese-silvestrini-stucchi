@@ -110,7 +110,8 @@ public class School {
      * It is called when two island are merged into one archipelago that, if conquered, needs to be cleared from all the
      * towers.
      * @param toAdd List of towers to add.
-     * @throws ExceededMaxTowersException
+     * @throws ExceededMaxTowersException when there are already enough tower in the school, without exceeding the
+     *                                    numMaxTowers value.
      */
     public void addNumTower(List<Tower> toAdd) throws ExceededMaxTowersException {
         for(Tower t : toAdd){
@@ -118,6 +119,11 @@ public class School {
         }
     }
 
+    /**
+     * This method removes a tower from the school and returns it.
+     * @return a tower from the school, removing it.
+     * @throws TowerNotFoundException when there are no towers left in the school.
+     */
     public Tower removeTower() throws TowerNotFoundException {
         if(towers.size() > 0)
             return towers.remove(0);
