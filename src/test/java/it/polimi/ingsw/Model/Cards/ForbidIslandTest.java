@@ -29,7 +29,7 @@ public class ForbidIslandTest {
         BoardAdvanced boardAdvanced = null;
         try {
             boardAdvanced = new BoardAdvanced(board);
-        } catch (ExceededMaxStudentsHallException | StudentNotFoundException | TowerNotFoundException | EmptyCaveauExcepion e) {
+        } catch (ExceededMaxStudentsHallException | StudentNotFoundException | TowerNotFoundException | EmptyCaveauException e) {
             e.printStackTrace();
         }
 
@@ -67,7 +67,7 @@ public class ForbidIslandTest {
             boardAdvanced.moveStudentHallToDiningRoom(p1,SPColour.BLUE);
             boardAdvanced.moveStudentHallToDiningRoom(p2,SPColour.PINK);
             boardAdvanced.moveStudentHallToDiningRoom(p2,SPColour.PINK);
-        } catch (StudentNotFoundException | ExceededMaxStudentsDiningRoomException | EmptyCaveauExcepion | ProfessorNotFoundException | NoProfessorBagException e) {
+        } catch (StudentNotFoundException | ExceededMaxStudentsDiningRoomException | EmptyCaveauException | ProfessorNotFoundException | NoProfessorBagException e) {
             e.printStackTrace();
         }
 
@@ -83,7 +83,7 @@ public class ForbidIslandTest {
 
         try {
             boardAdvanced.useForbidIsland(p1, 5);
-        } catch (EmptyCaveauExcepion | CoinNotFoundException | ExceededMaxNumCoinException e) {
+        } catch (EmptyCaveauException | CoinNotFoundException | ExceededMaxNumCoinException e) {
             e.printStackTrace();
         }
 

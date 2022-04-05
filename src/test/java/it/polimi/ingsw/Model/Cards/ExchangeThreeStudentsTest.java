@@ -29,7 +29,7 @@ public class ExchangeThreeStudentsTest {
         BoardAdvanced boardAdvanced = null;
         try {
             boardAdvanced = new BoardAdvanced(board);
-        } catch (ExceededMaxStudentsHallException | EmptyCaveauExcepion | TowerNotFoundException | StudentNotFoundException e) {
+        } catch (ExceededMaxStudentsHallException | EmptyCaveauException | TowerNotFoundException | StudentNotFoundException e) {
             e.printStackTrace();
         }
 
@@ -104,7 +104,7 @@ public class ExchangeThreeStudentsTest {
 
         try {
             boardAdvanced.useExchangeThreeStudents(p1, hallColours, exchangeColours);
-        } catch (EmptyCaveauExcepion | ExceededMaxStudentsHallException | StudentNotFoundException | WrongNumberOfStudentsTransferExcpetion | CoinNotFoundException | ExceededMaxNumCoinException e) {
+        } catch (EmptyCaveauException | ExceededMaxStudentsHallException | StudentNotFoundException | WrongNumberOfStudentsTransferExcpetion | CoinNotFoundException | ExceededMaxNumCoinException e) {
             e.printStackTrace();
         }
 
@@ -145,7 +145,7 @@ public class ExchangeThreeStudentsTest {
             e.printStackTrace();
         } catch (TowerNotFoundException e) {
             e.printStackTrace();
-        } catch (EmptyCaveauExcepion e) {
+        } catch (EmptyCaveauException e) {
             e.printStackTrace();
         }
 

@@ -24,7 +24,7 @@ public interface Board {
 
     void moveStudentCloudToSchool(Player player, int cloudIndex) throws ExceededMaxStudentsHallException;
 
-    void moveStudentHallToDiningRoom(Player player, SPColour colour) throws StudentNotFoundException, ExceededMaxStudentsDiningRoomException, EmptyCaveauExcepion, ProfessorNotFoundException, NoProfessorBagException;
+    void moveStudentHallToDiningRoom(Player player, SPColour colour) throws StudentNotFoundException, ExceededMaxStudentsDiningRoomException, EmptyCaveauException, ProfessorNotFoundException, NoProfessorBagException;
 
     void moveStudentBagToCloud() throws ExceededMaxStudentsCloudException, StudentNotFoundException;
 

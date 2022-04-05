@@ -294,7 +294,7 @@ public class Controller implements Observer {
             //TODO: surrounded with try catch just to remove errors. It needs to be checked before leaving it like that
             try {
                 this.boardAdvanced = new BoardAdvanced(this.board);
-            } catch (ExceededMaxStudentsHallException | StudentNotFoundException | TowerNotFoundException | EmptyCaveauExcepion e) {
+            } catch (ExceededMaxStudentsHallException | StudentNotFoundException | TowerNotFoundException | EmptyCaveauException e) {
                 e.printStackTrace();
             }
         }
@@ -407,7 +407,7 @@ public class Controller implements Observer {
             if(this.advanced){
                 try {
                     boardAdvanced.moveStudentHallToDiningRoom(this.players.get(this.currentPlayerIndex), studentColour);
-                } catch (StudentNotFoundException | ExceededMaxStudentsDiningRoomException | EmptyCaveauExcepion |
+                } catch (StudentNotFoundException | ExceededMaxStudentsDiningRoomException | EmptyCaveauException |
                         ProfessorNotFoundException | NoProfessorBagException e) {
                     return false;
                 }

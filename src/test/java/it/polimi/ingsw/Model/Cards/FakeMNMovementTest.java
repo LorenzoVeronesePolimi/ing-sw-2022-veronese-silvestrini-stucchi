@@ -29,7 +29,7 @@ public class FakeMNMovementTest {
         BoardAdvanced boardAdvanced = null;
         try {
             boardAdvanced = new BoardAdvanced(board);
-        } catch (ExceededMaxStudentsHallException | StudentNotFoundException | TowerNotFoundException | EmptyCaveauExcepion e) {
+        } catch (ExceededMaxStudentsHallException | StudentNotFoundException | TowerNotFoundException | EmptyCaveauException e) {
             e.printStackTrace();
         }
 
@@ -73,7 +73,7 @@ public class FakeMNMovementTest {
             boardAdvanced.moveStudentHallToDiningRoom(p1,SPColour.PINK);
             boardAdvanced.moveStudentHallToDiningRoom(p1,SPColour.PINK);
             boardAdvanced.moveStudentHallToDiningRoom(p1,SPColour.PINK);
-        } catch (StudentNotFoundException | ExceededMaxStudentsDiningRoomException | EmptyCaveauExcepion | ProfessorNotFoundException | NoProfessorBagException e) {
+        } catch (StudentNotFoundException | ExceededMaxStudentsDiningRoomException | EmptyCaveauException | ProfessorNotFoundException | NoProfessorBagException e) {
             e.printStackTrace();
         }
 
@@ -89,7 +89,7 @@ public class FakeMNMovementTest {
 
         try {
             boardAdvanced.useFakeMNMovement(p1,8);
-        } catch (EmptyCaveauExcepion | TowerNotFoundException | ExceededMaxTowersException | AnotherTowerException | InvalidTowerNumberException | CoinNotFoundException | ExceededMaxNumCoinException e) {
+        } catch (EmptyCaveauException | TowerNotFoundException | ExceededMaxTowersException | AnotherTowerException | InvalidTowerNumberException | CoinNotFoundException | ExceededMaxNumCoinException e) {
             e.printStackTrace();
         }
 

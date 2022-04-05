@@ -29,6 +29,11 @@ import java.util.Map;
 *           Archipelago.mergeArchipelagos()
 * */
 
+/**
+ * Initially the board creates 12 object of the archipelago class, each one of which contains
+ * on object island. During the game, two contiguous archipelagos that have the same owner can be
+ * merged is a single archipelago.
+ */
 //TODO: create Map of SPColour -> numberOfStudentsOfThatColour in an intelligent way: calculate only one time, and
 // then update when a change is made
 public class Archipelago {
@@ -41,7 +46,10 @@ public class Archipelago {
     private int forbidFlag = 0;
     private boolean towerNoValueFlag = false;
 
-
+    /**
+     * The archipelago is created with one island and no owner. The map of the number of students for
+     * each colour on the archipelago is initialized.
+     */
     public Archipelago(){
         this.islands = new ArrayList<>();
         this.islands.add(new Island());
@@ -54,43 +62,75 @@ public class Archipelago {
         }
     }
 
-
+    /**
+     *
+     * @return the number of islands that constitute the archipelago.
+     */
     public int getNumIslands(){
         return this.islands.size();
     }
 
-
+    /**
+     *
+     * @return the player that owns the archipelago.
+     */
     public Player getOwner(){
         return this.owner;
     }
 
-
-    // this return original reference of each island. Useful for mergeArchipelagos()
+    /**
+     *
+     * @return original reference of each island. Useful for mergeArchipelagos().
+     */
     private List<Island> getOriginalIslands(){
         return this.islands;
     }
 
+    /**
+     *
+     * @return the number of forbid flags that have been placed on the archipelago
+     */
+    //TODO: ForbidFlag must be <=4... check it in ForbidIsland card and throw exception
     public int getForbidFlag(){
         return this.forbidFlag;
     }
 
+    /**
+     * Increments the number of forbid flags on the archipelago.
+     */
     public void addForbidFlag(){
          this.forbidFlag++;
     }
 
+    /**
+     *
+     * @return the value of the flag that says if on this turn (on this archipelago) the towers must
+     * be counted for the computation of dominance.
+     */
     public boolean getTowerNoValueFlag(){
         return this.towerNoValueFlag;
     }
 
+    /**
+     * This method removes a forbid flag trom the archipelago.
+     */
     public void removeForbidFlag() {
         if(this.forbidFlag>0)
             this.forbidFlag --;
     }
 
+    /**
+     * This method sets the towerNoValueFlag to the value of the parameter.
+     * @param towerNoValueFlag value to which towerNoValueFlag must be set.
+     */
     public void setTowerNoValueFlag(boolean towerNoValueFlag) {
         this.towerNoValueFlag = towerNoValueFlag;
     }
 
+    /**
+     *
+     * @return, for each colour, the number of students that are present on the archipelago
+     */
     public Map<SPColour, Integer> howManyStudents(){
         Map<SPColour, Integer> studentsDataCopy = new HashMap<>();
         SPColour[] availableColours = {SPColour.BLUE, SPColour.PINK, SPColour.RED, SPColour.GREEN, SPColour.YELLOW};

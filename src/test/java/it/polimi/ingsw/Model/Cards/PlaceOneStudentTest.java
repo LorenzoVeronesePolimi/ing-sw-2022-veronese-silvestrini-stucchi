@@ -28,7 +28,7 @@ public class PlaceOneStudentTest {
         BoardAdvanced boardAdvanced = null;
         try {
             boardAdvanced = new BoardAdvanced(board);
-        } catch (ExceededMaxStudentsHallException | StudentNotFoundException | TowerNotFoundException | EmptyCaveauExcepion e) {
+        } catch (ExceededMaxStudentsHallException | StudentNotFoundException | TowerNotFoundException | EmptyCaveauException e) {
             e.printStackTrace();
         }
 
@@ -50,7 +50,7 @@ public class PlaceOneStudentTest {
                 Assertions.assertTrue(boardAdvanced.getArchipelago(6).howManyStudents().get(SPColour.GREEN) == 0);
                 Assertions.assertTrue(boardAdvanced.getArchipelago(6).howManyStudents().get(SPColour.YELLOW) == 0);
 
-            } catch (StudentNotFoundException | CoinNotFoundException | ExceededMaxNumCoinException | EmptyCaveauExcepion e) {
+            } catch (StudentNotFoundException | CoinNotFoundException | ExceededMaxNumCoinException | EmptyCaveauException e) {
                 e.printStackTrace();
             }
         }else{

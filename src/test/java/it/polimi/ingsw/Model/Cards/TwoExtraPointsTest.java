@@ -28,7 +28,7 @@ public class TwoExtraPointsTest {
         BoardAdvanced boardAdvanced = null;
         try {
             boardAdvanced = new BoardAdvanced(board);
-        } catch (ExceededMaxStudentsHallException | StudentNotFoundException | TowerNotFoundException | EmptyCaveauExcepion e) {
+        } catch (ExceededMaxStudentsHallException | StudentNotFoundException | TowerNotFoundException | EmptyCaveauException e) {
             e.printStackTrace();
         }
 
@@ -66,7 +66,7 @@ public class TwoExtraPointsTest {
             boardAdvanced.moveStudentHallToDiningRoom(p1, SPColour.BLUE);
             boardAdvanced.moveStudentHallToDiningRoom(p2, SPColour.PINK);
             boardAdvanced.moveStudentHallToDiningRoom(p2, SPColour.PINK);
-        } catch (StudentNotFoundException | ExceededMaxStudentsDiningRoomException | EmptyCaveauExcepion | ProfessorNotFoundException | NoProfessorBagException e) {
+        } catch (StudentNotFoundException | ExceededMaxStudentsDiningRoomException | EmptyCaveauException | ProfessorNotFoundException | NoProfessorBagException e) {
             e.printStackTrace();
         }
 
@@ -82,7 +82,7 @@ public class TwoExtraPointsTest {
 
         try {
             boardAdvanced.useTwoExtraPoints(p1);
-        } catch (EmptyCaveauExcepion | TowerNotFoundException | ExceededMaxTowersException | AnotherTowerException | InvalidTowerNumberException | CoinNotFoundException | ExceededMaxNumCoinException e) {
+        } catch (EmptyCaveauException | TowerNotFoundException | ExceededMaxTowersException | AnotherTowerException | InvalidTowerNumberException | CoinNotFoundException | ExceededMaxNumCoinException e) {
             e.printStackTrace();
         }
 

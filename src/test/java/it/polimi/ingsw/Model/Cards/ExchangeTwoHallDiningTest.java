@@ -29,7 +29,7 @@ public class ExchangeTwoHallDiningTest {
         BoardAdvanced boardAdvanced = null;
         try {
             boardAdvanced = new BoardAdvanced(board);
-        } catch (ExceededMaxStudentsHallException | EmptyCaveauExcepion | TowerNotFoundException | StudentNotFoundException e) {
+        } catch (ExceededMaxStudentsHallException | EmptyCaveauException | TowerNotFoundException | StudentNotFoundException e) {
             e.printStackTrace();
         }
 
@@ -97,7 +97,7 @@ public class ExchangeTwoHallDiningTest {
 
         try {
             boardAdvanced.useExchangeTwoHallDining(p1,hallColours,diningColour);
-        } catch (EmptyCaveauExcepion | StudentNotFoundException | ExceededMaxStudentsHallException | ExceededMaxStudentsDiningRoomException | WrongNumberOfStudentsTransferExcpetion | CoinNotFoundException | ExceededMaxNumCoinException e) {
+        } catch (EmptyCaveauException | StudentNotFoundException | ExceededMaxStudentsHallException | ExceededMaxStudentsDiningRoomException | WrongNumberOfStudentsTransferExcpetion | CoinNotFoundException | ExceededMaxNumCoinException e) {
             e.printStackTrace();
         }
 

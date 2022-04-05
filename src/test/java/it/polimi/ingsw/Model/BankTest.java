@@ -1,6 +1,6 @@
 package it.polimi.ingsw.Model;
 
-import it.polimi.ingsw.Model.Exceptions.EmptyCaveauExcepion;
+import it.polimi.ingsw.Model.Exceptions.EmptyCaveauException;
 import it.polimi.ingsw.Model.Exceptions.ExceededMaxNumCoinException;
 import it.polimi.ingsw.Model.Pawns.Coin;
 import org.junit.jupiter.api.Assertions;
@@ -18,12 +18,12 @@ public class BankTest {
         for(int i=0; i<20; i++) {
             try {
                 withdrawn.add(bank.getCoin());
-            } catch (EmptyCaveauExcepion e) {
+            } catch (EmptyCaveauException e) {
                 e.printStackTrace();
             }
         }
 
-        Assertions.assertThrows(EmptyCaveauExcepion.class, () -> withdrawn.add(bank.getCoin()));
+        Assertions.assertThrows(EmptyCaveauException.class, () -> withdrawn.add(bank.getCoin()));
     }
 
     @Test

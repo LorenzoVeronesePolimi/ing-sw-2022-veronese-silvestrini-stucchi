@@ -5,7 +5,6 @@ import it.polimi.ingsw.Model.Board.BoardAdvanced;
 import it.polimi.ingsw.Model.Board.BoardFactory;
 import it.polimi.ingsw.Model.Enumerations.PlayerColour;
 import it.polimi.ingsw.Model.Exceptions.*;
-import it.polimi.ingsw.Model.Places.School.School;
 import it.polimi.ingsw.Model.Places.School.SchoolAdvanced;
 import it.polimi.ingsw.Model.Player;
 import org.junit.jupiter.api.Assertions;
@@ -28,7 +27,7 @@ public class TwoExtraIslandsTest {
         BoardAdvanced boardAdvanced = null;
         try {
             boardAdvanced = new BoardAdvanced(board);
-        } catch (ExceededMaxStudentsHallException | StudentNotFoundException | TowerNotFoundException | EmptyCaveauExcepion e) {
+        } catch (ExceededMaxStudentsHallException | StudentNotFoundException | TowerNotFoundException | EmptyCaveauException e) {
             e.printStackTrace();
         }
 
@@ -47,7 +46,7 @@ public class TwoExtraIslandsTest {
 
         try {
             boardAdvanced.useTwoExtraIslands(p1);
-        } catch (EmptyCaveauExcepion e) {
+        } catch (EmptyCaveauException e) {
             e.printStackTrace();
         } catch (ExceededMaxNumCoinException e) {
             e.printStackTrace();

@@ -70,7 +70,7 @@ public class BoardFourTest {
                     boardFour.moveStudentHallToDiningRoom(_1, c);
                     Assertions.assertTrue(boardFour.isProfessorInSchool(c));
                     Assertions.assertEquals(boardFour.getPlayerSchool(_1), boardFour.whereIsProfessor(c));
-                } catch (StudentNotFoundException | ExceededMaxStudentsDiningRoomException | EmptyCaveauExcepion | ProfessorNotFoundException | NoProfessorBagException e) {
+                } catch (StudentNotFoundException | ExceededMaxStudentsDiningRoomException | EmptyCaveauException | ProfessorNotFoundException | NoProfessorBagException e) {
                     e.printStackTrace();
                 }
 
@@ -130,7 +130,7 @@ public class BoardFourTest {
             boardFour.moveStudentHallToDiningRoom(_4, choosenColour);
             Assertions.assertTrue(boardFour.isProfessorInSchool(choosenColour));
             Assertions.assertEquals(boardFour.getPlayerSchool(_4), boardFour.whereIsProfessor(choosenColour));
-        } catch (StudentNotFoundException | ExceededMaxStudentsDiningRoomException | EmptyCaveauExcepion | ProfessorNotFoundException | NoProfessorBagException e) {
+        } catch (StudentNotFoundException | ExceededMaxStudentsDiningRoomException | EmptyCaveauException | ProfessorNotFoundException | NoProfessorBagException e) {
             e.printStackTrace();
         }
 
@@ -175,7 +175,7 @@ public class BoardFourTest {
 
         try {
             boardAdvanced = new BoardAdvanced((BoardAbstract) boardFour);
-        } catch (ExceededMaxStudentsHallException | StudentNotFoundException | TowerNotFoundException | EmptyCaveauExcepion e) {
+        } catch (ExceededMaxStudentsHallException | StudentNotFoundException | TowerNotFoundException | EmptyCaveauException e) {
             e.printStackTrace();
         }
 
@@ -216,7 +216,7 @@ public class BoardFourTest {
                     boardAdvanced.moveStudentHallToDiningRoom(_1, c);
                     Assertions.assertTrue(boardAdvanced.isProfessorInSchool(c));
                     Assertions.assertEquals(boardAdvanced.getPlayerSchool(_1), boardAdvanced.whereIsProfessor(c));
-                } catch (StudentNotFoundException | ExceededMaxStudentsDiningRoomException | EmptyCaveauExcepion | ProfessorNotFoundException | NoProfessorBagException e) {
+                } catch (StudentNotFoundException | ExceededMaxStudentsDiningRoomException | EmptyCaveauException | ProfessorNotFoundException | NoProfessorBagException e) {
                     e.printStackTrace();
                 }
 
@@ -276,7 +276,7 @@ public class BoardFourTest {
             boardAdvanced.moveStudentHallToDiningRoom(_4, choosenColour);
             Assertions.assertTrue(boardAdvanced.isProfessorInSchool(choosenColour));
             Assertions.assertEquals(boardAdvanced.getPlayerSchool(_4), boardAdvanced.whereIsProfessor(choosenColour));
-        } catch (StudentNotFoundException | ExceededMaxStudentsDiningRoomException | EmptyCaveauExcepion | ProfessorNotFoundException | NoProfessorBagException e) {
+        } catch (StudentNotFoundException | ExceededMaxStudentsDiningRoomException | EmptyCaveauException | ProfessorNotFoundException | NoProfessorBagException e) {
             e.printStackTrace();
         }
 

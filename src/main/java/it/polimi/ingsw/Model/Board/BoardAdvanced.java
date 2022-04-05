@@ -24,7 +24,7 @@ public class BoardAdvanced implements Board {
 
 
     public BoardAdvanced(BoardAbstract boardToExtend) throws
-            ExceededMaxStudentsHallException, StudentNotFoundException, TowerNotFoundException, EmptyCaveauExcepion {
+            ExceededMaxStudentsHallException, StudentNotFoundException, TowerNotFoundException, EmptyCaveauException {
 
         bank = new Bank();
         this.board = boardToExtend;
@@ -130,7 +130,7 @@ public class BoardAdvanced implements Board {
     }
 
     public void moveStudentHallToDiningRoom(Player player, SPColour colour) throws
-            StudentNotFoundException, ExceededMaxStudentsDiningRoomException, EmptyCaveauExcepion, ProfessorNotFoundException,
+            StudentNotFoundException, ExceededMaxStudentsDiningRoomException, EmptyCaveauException, ProfessorNotFoundException,
             NoProfessorBagException {
 
                 //school related to the player that made the move
@@ -342,7 +342,7 @@ public class BoardAdvanced implements Board {
     }
 
     private void checkCoinNeed(School currentSchool, int numRed, int numBlue, int numGreen, int numPink,int numYellow) throws
-            EmptyCaveauExcepion {
+            EmptyCaveauException {
 
         if(numRed!=currentSchool.getNumStudentColour(SPColour.RED)){
             if(currentSchool.getNumStudentColour(SPColour.RED)==3 || currentSchool.getNumStudentColour(SPColour.RED)==6 || currentSchool.getNumStudentColour(SPColour.RED)==9){
@@ -380,7 +380,7 @@ public class BoardAdvanced implements Board {
     }
 
     public void usePlaceOneStudent(Player player, SPColour chosen, int archipelago) throws
-            StudentNotFoundException , EmptyCaveauExcepion, ExceededMaxNumCoinException, CoinNotFoundException {
+            StudentNotFoundException , EmptyCaveauException, ExceededMaxNumCoinException, CoinNotFoundException {
         for(AbstractCharacterCard card: extractedCards) {
             if(card instanceof PlaceOneStudent) {
                 School currentSchool = this.board.getPlayerSchool(player);
@@ -395,7 +395,7 @@ public class BoardAdvanced implements Board {
     }
 
     public void useTakeProfessorOnEquity(Player player) throws
-            EmptyCaveauExcepion, ExceededMaxNumCoinException, CoinNotFoundException, InvalidTowerNumberException,
+            EmptyCaveauException, ExceededMaxNumCoinException, CoinNotFoundException, InvalidTowerNumberException,
             AnotherTowerException, ProfessorNotFoundException, NoProfessorBagException, ExceededMaxTowersException, TowerNotFoundException {
 
         for(AbstractCharacterCard card: extractedCards) {
@@ -412,7 +412,7 @@ public class BoardAdvanced implements Board {
     }
 
     public void useFakeMNMovement(Player player, int fakeMNPosition) throws
-            EmptyCaveauExcepion, ExceededMaxNumCoinException, CoinNotFoundException, InvalidTowerNumberException,
+            EmptyCaveauException, ExceededMaxNumCoinException, CoinNotFoundException, InvalidTowerNumberException,
             AnotherTowerException, ExceededMaxTowersException, TowerNotFoundException {
 
         for(AbstractCharacterCard card: extractedCards) {
@@ -429,7 +429,7 @@ public class BoardAdvanced implements Board {
     }
 
     public void useTwoExtraIslands(Player player) throws
-            EmptyCaveauExcepion, ExceededMaxNumCoinException, CoinNotFoundException{
+            EmptyCaveauException, ExceededMaxNumCoinException, CoinNotFoundException{
 
         for(AbstractCharacterCard card: extractedCards) {
             if(card instanceof TwoExtraIslands) {
@@ -445,7 +445,7 @@ public class BoardAdvanced implements Board {
     }
 
     public void useForbidIsland(Player player, int archipelago) throws
-            EmptyCaveauExcepion, ExceededMaxNumCoinException, CoinNotFoundException{
+            EmptyCaveauException, ExceededMaxNumCoinException, CoinNotFoundException{
         for(AbstractCharacterCard card: extractedCards) {
             if(card instanceof ForbidIsland) {
                 School currentSchool = this.board.getPlayerSchool(player);
@@ -460,7 +460,7 @@ public class BoardAdvanced implements Board {
     }
 
     public void useTowerNoValue(Player player) throws
-            EmptyCaveauExcepion, ExceededMaxNumCoinException, CoinNotFoundException, InvalidTowerNumberException,
+            EmptyCaveauException, ExceededMaxNumCoinException, CoinNotFoundException, InvalidTowerNumberException,
             AnotherTowerException, ExceededMaxTowersException, TowerNotFoundException {
 
         for(AbstractCharacterCard card: extractedCards) {
@@ -477,7 +477,7 @@ public class BoardAdvanced implements Board {
     }
 
     public void useExchangeThreeStudents(Player player, List<SPColour> hallStudents, List<SPColour> exchangeStudents) throws
-            EmptyCaveauExcepion, ExceededMaxNumCoinException, CoinNotFoundException, WrongNumberOfStudentsTransferExcpetion,
+            EmptyCaveauException, ExceededMaxNumCoinException, CoinNotFoundException, WrongNumberOfStudentsTransferExcpetion,
             StudentNotFoundException, ExceededMaxStudentsHallException {
 
         for(AbstractCharacterCard card: extractedCards) {
@@ -494,7 +494,7 @@ public class BoardAdvanced implements Board {
     }
 
     public void useTwoExtraPoints(Player player) throws
-            EmptyCaveauExcepion, ExceededMaxNumCoinException, CoinNotFoundException, InvalidTowerNumberException,
+            EmptyCaveauException, ExceededMaxNumCoinException, CoinNotFoundException, InvalidTowerNumberException,
             AnotherTowerException, ExceededMaxTowersException, TowerNotFoundException {
 
         for(AbstractCharacterCard card: extractedCards) {
@@ -511,7 +511,7 @@ public class BoardAdvanced implements Board {
     }
 
     public void useExcludeColourFromCounting(Player player, SPColour colourToExclude) throws
-            EmptyCaveauExcepion, ExceededMaxNumCoinException, CoinNotFoundException, InvalidTowerNumberException,
+            EmptyCaveauException, ExceededMaxNumCoinException, CoinNotFoundException, InvalidTowerNumberException,
             AnotherTowerException, ExceededMaxTowersException, TowerNotFoundException {
 
         for(AbstractCharacterCard card: extractedCards) {
@@ -528,7 +528,7 @@ public class BoardAdvanced implements Board {
     }
 
     public void useExchangeTwoHallDining(Player player, List<SPColour> hallStudents, List<SPColour> diningStudents) throws
-            EmptyCaveauExcepion, ExceededMaxNumCoinException, CoinNotFoundException, WrongNumberOfStudentsTransferExcpetion,
+            EmptyCaveauException, ExceededMaxNumCoinException, CoinNotFoundException, WrongNumberOfStudentsTransferExcpetion,
             ExceededMaxStudentsDiningRoomException, ExceededMaxStudentsHallException, StudentNotFoundException {
 
         for(AbstractCharacterCard card: extractedCards) {
@@ -545,7 +545,7 @@ public class BoardAdvanced implements Board {
     }
 
     public void useExtraStudentInDining(Player player, SPColour cardToDining) throws
-            EmptyCaveauExcepion, ExceededMaxNumCoinException, CoinNotFoundException, StudentNotFoundException,
+            EmptyCaveauException, ExceededMaxNumCoinException, CoinNotFoundException, StudentNotFoundException,
             ExceededMaxStudentsDiningRoomException {
 
         for(AbstractCharacterCard card: extractedCards) {
@@ -562,7 +562,7 @@ public class BoardAdvanced implements Board {
     }
 
     public void useReduceColourInDining(Player player, SPColour colour) throws
-            EmptyCaveauExcepion, ExceededMaxNumCoinException, CoinNotFoundException, StudentNotFoundException {
+            EmptyCaveauException, ExceededMaxNumCoinException, CoinNotFoundException, StudentNotFoundException {
         for(AbstractCharacterCard card: extractedCards) {
             if(card instanceof ReduceColourInDining) {
                 School currentSchool = this.board.getPlayerSchool(player);

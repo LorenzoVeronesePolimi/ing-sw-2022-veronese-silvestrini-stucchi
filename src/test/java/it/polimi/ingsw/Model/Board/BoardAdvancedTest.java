@@ -29,7 +29,7 @@ public class BoardAdvancedTest {
         BoardAdvanced boardAdvanced = null;
         try {
             boardAdvanced = new BoardAdvanced(board);
-        } catch (ExceededMaxStudentsHallException | StudentNotFoundException | TowerNotFoundException | EmptyCaveauExcepion e) {
+        } catch (ExceededMaxStudentsHallException | StudentNotFoundException | TowerNotFoundException | EmptyCaveauException e) {
             e.printStackTrace();
         }
 
@@ -96,7 +96,7 @@ public class BoardAdvancedTest {
             boardAdvanced.getSchools().get(0).addStudentHall(s);
             boardAdvanced.moveStudentHallToDiningRoom(p1, SPColour.BLUE);
             // professor BLUE is conquered
-        } catch (ExceededMaxStudentsHallException | StudentNotFoundException | ExceededMaxStudentsDiningRoomException | EmptyCaveauExcepion | ProfessorNotFoundException | NoProfessorBagException e) {
+        } catch (ExceededMaxStudentsHallException | StudentNotFoundException | ExceededMaxStudentsDiningRoomException | EmptyCaveauException | ProfessorNotFoundException | NoProfessorBagException e) {
             e.printStackTrace();
         }
         Assertions.assertTrue(boardAdvanced.isProfessorInSchool(SPColour.BLUE));
@@ -181,7 +181,7 @@ public class BoardAdvancedTest {
             boardAdvanced.moveStudentHallToDiningRoom(p3, SPColour.GREEN);
             boardAdvanced.moveStudentHallToDiningRoom(p3, SPColour.GREEN);
             boardAdvanced.moveStudentHallToDiningRoom(p3, SPColour.GREEN);
-        } catch (StudentNotFoundException | ExceededMaxStudentsDiningRoomException | EmptyCaveauExcepion | ProfessorNotFoundException | NoProfessorBagException e) {
+        } catch (StudentNotFoundException | ExceededMaxStudentsDiningRoomException | EmptyCaveauException | ProfessorNotFoundException | NoProfessorBagException e) {
             e.printStackTrace();
         }
 
@@ -270,7 +270,7 @@ public class BoardAdvancedTest {
             Assertions.assertEquals(boardAdvanced.getPlayerSchool(p2), boardAdvanced.whereIsProfessor(SPColour.PINK));
 
 
-        } catch (ExceededMaxStudentsHallException | ExceededMaxStudentsDiningRoomException | ProfessorNotFoundException | StudentNotFoundException | EmptyCaveauExcepion | NoProfessorBagException e) {
+        } catch (ExceededMaxStudentsHallException | ExceededMaxStudentsDiningRoomException | ProfessorNotFoundException | StudentNotFoundException | EmptyCaveauException | NoProfessorBagException e) {
             e.printStackTrace();
         }
 

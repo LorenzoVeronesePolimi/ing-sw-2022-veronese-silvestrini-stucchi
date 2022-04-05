@@ -29,7 +29,7 @@ public class TakeProfessorOnEquityTest {
         BoardAdvanced boardAdvanced = null;
         try {
             boardAdvanced = new BoardAdvanced(board);
-        } catch (ExceededMaxStudentsHallException | StudentNotFoundException | TowerNotFoundException | EmptyCaveauExcepion e) {
+        } catch (ExceededMaxStudentsHallException | StudentNotFoundException | TowerNotFoundException | EmptyCaveauException e) {
             e.printStackTrace();
         }
 
@@ -67,7 +67,7 @@ public class TakeProfessorOnEquityTest {
             boardAdvanced.moveStudentHallToDiningRoom(p1,SPColour.BLUE);
             boardAdvanced.moveStudentHallToDiningRoom(p1,SPColour.BLUE);
             boardAdvanced.moveStudentHallToDiningRoom(p1,SPColour.BLUE);
-        } catch (StudentNotFoundException | ExceededMaxStudentsDiningRoomException | EmptyCaveauExcepion | ProfessorNotFoundException | NoProfessorBagException e) {
+        } catch (StudentNotFoundException | ExceededMaxStudentsDiningRoomException | EmptyCaveauException | ProfessorNotFoundException | NoProfessorBagException e) {
             e.printStackTrace();
         }
 
@@ -77,7 +77,7 @@ public class TakeProfessorOnEquityTest {
             boardAdvanced.moveStudentHallToDiningRoom(p2,SPColour.BLUE);
             boardAdvanced.moveStudentHallToDiningRoom(p2,SPColour.BLUE);
             boardAdvanced.moveStudentHallToDiningRoom(p2,SPColour.BLUE);
-        } catch (StudentNotFoundException | ExceededMaxStudentsDiningRoomException | EmptyCaveauExcepion | ProfessorNotFoundException | NoProfessorBagException e) {
+        } catch (StudentNotFoundException | ExceededMaxStudentsDiningRoomException | EmptyCaveauException | ProfessorNotFoundException | NoProfessorBagException e) {
             e.printStackTrace();
         }
 
@@ -85,7 +85,7 @@ public class TakeProfessorOnEquityTest {
 
         try {
             boardAdvanced.useTakeProfessorOnEquity(p2);
-        } catch (EmptyCaveauExcepion | TowerNotFoundException | ExceededMaxTowersException | NoProfessorBagException | ProfessorNotFoundException | AnotherTowerException | InvalidTowerNumberException | CoinNotFoundException | ExceededMaxNumCoinException e) {
+        } catch (EmptyCaveauException | TowerNotFoundException | ExceededMaxTowersException | NoProfessorBagException | ProfessorNotFoundException | AnotherTowerException | InvalidTowerNumberException | CoinNotFoundException | ExceededMaxNumCoinException e) {
             e.printStackTrace();
         }
 

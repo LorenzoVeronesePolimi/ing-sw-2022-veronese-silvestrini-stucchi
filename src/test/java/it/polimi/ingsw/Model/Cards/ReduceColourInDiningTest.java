@@ -29,7 +29,7 @@ public class ReduceColourInDiningTest {
         BoardAdvanced boardAdvanced = null;
         try {
             boardAdvanced = new BoardAdvanced(board);
-        } catch (ExceededMaxStudentsHallException | StudentNotFoundException | TowerNotFoundException | EmptyCaveauExcepion e) {
+        } catch (ExceededMaxStudentsHallException | StudentNotFoundException | TowerNotFoundException | EmptyCaveauException e) {
             e.printStackTrace();
         }
 
@@ -88,7 +88,7 @@ public class ReduceColourInDiningTest {
             boardAdvanced.moveStudentHallToDiningRoom(p1,SPColour.RED);
             boardAdvanced.moveStudentHallToDiningRoom(p2,SPColour.RED);
             boardAdvanced.moveStudentHallToDiningRoom(p2,SPColour.RED);
-        } catch (StudentNotFoundException | ExceededMaxStudentsDiningRoomException | EmptyCaveauExcepion | ProfessorNotFoundException | NoProfessorBagException e) {
+        } catch (StudentNotFoundException | ExceededMaxStudentsDiningRoomException | EmptyCaveauException | ProfessorNotFoundException | NoProfessorBagException e) {
             e.printStackTrace();
         }
 
@@ -100,7 +100,7 @@ public class ReduceColourInDiningTest {
 
         try {
             boardAdvanced.useReduceColourInDining(p1,SPColour.RED);
-        } catch (EmptyCaveauExcepion | StudentNotFoundException | CoinNotFoundException | ExceededMaxNumCoinException e) {
+        } catch (EmptyCaveauException | StudentNotFoundException | CoinNotFoundException | ExceededMaxNumCoinException e) {
             e.printStackTrace();
         }
 

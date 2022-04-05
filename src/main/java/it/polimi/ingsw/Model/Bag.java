@@ -11,11 +11,20 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
+/**
+ * This class creates every student and professor that can be used in the game.
+ */
 public class Bag {
     private final List<Student> initialStudents; //Students we have at the start, to distribute among all Islands
     private final List<Student> students; //remaining students
     private final List<Professor> professors; //At the start of the game, all Professors are in the Bag
 
+    /**
+     * The constructor generates two different lists of students: one of size 10, that contains two
+     * students for each colour (they will be distributed at the construction of the board, one per
+     * archipelago); the other of size 120 (24 per colour), that are taken during the course of the game
+     * The constructor also creates all five professors (one per colour).
+     */
     public Bag(){
         SPColour[] availableColours = {SPColour.BLUE, SPColour.PINK, SPColour.RED, SPColour.GREEN, SPColour.YELLOW};
         this.initialStudents = new ArrayList<>();
@@ -50,6 +59,11 @@ public class Bag {
     }
 
     // ---------------STUDENTS
+
+    /**
+     *
+     * @return the list of initial students.
+     */
     public List<Student> getInitialStudents(){
         //new list to return
         List<Student> removedStudents = new ArrayList<>(initialStudents);
@@ -60,6 +74,12 @@ public class Bag {
         return removedStudents;
     }
 
+    /**
+     *
+     * @param num is the number of students that the caller wants to extract.
+     * @return the list of num random students from the students list.
+     * @throws StudentNotFoundException is students list does not contain enough students.
+     */
     public List<Student> extractStudents(int num) throws StudentNotFoundException {
         if(num > students.size()) {
             throw new StudentNotFoundException();
@@ -75,13 +95,23 @@ public class Bag {
         return extracted;
     }
 
-
+    /**
+     * this method inserts a student given by the caller into the student list of the bag.
+     * @param student is the student that the caller wants to put in the bag.
+     */
     //called by reduceColourInDining
     public void putStudent(Student student) {
         students.add(student);
     }
 
     //---------------PROFESSORS
+
+    /**
+     *
+     * @param colourToTake is the colour of the requested professor.
+     * @return the professor of that colour.
+     * @throws NoProfessorBagException is the requested colour is not present in the bag.
+     */
     public Professor takeProfessor(SPColour colourToTake) throws NoProfessorBagException{
         for(Professor p : this.professors){
             if(p.getColour() == colourToTake){
@@ -93,10 +123,16 @@ public class Bag {
         throw new NoProfessorBagException();
     }
 
+    /**
+     * This method organizes in a random way the students in the initialStudent list
+     */
     private void shuffleInitial(){
         Collections.shuffle(this.initialStudents, new Random());
     }
 
+    /**
+     * This method organizes in a random way the students in the student list
+     */
     private void shuffle(){
         Collections.shuffle(this.students, new Random());
     }

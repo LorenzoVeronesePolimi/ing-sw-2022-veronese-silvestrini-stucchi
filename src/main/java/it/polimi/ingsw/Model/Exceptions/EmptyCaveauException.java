@@ -1,7 +1,7 @@
 package it.polimi.ingsw.Model.Exceptions;
 
-public class EmptyCaveauExcepion extends Exception{
-    public EmptyCaveauExcepion(){
+public class EmptyCaveauException extends Exception{
+    public EmptyCaveauException(){
         System.out.println("Caveau is empty!");
     }
 }

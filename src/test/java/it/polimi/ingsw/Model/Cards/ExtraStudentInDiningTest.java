@@ -29,7 +29,7 @@ public class ExtraStudentInDiningTest {
         BoardAdvanced boardAdvanced = null;
         try {
             boardAdvanced = new BoardAdvanced(board);
-        } catch (ExceededMaxStudentsHallException | StudentNotFoundException | TowerNotFoundException | EmptyCaveauExcepion e) {
+        } catch (ExceededMaxStudentsHallException | StudentNotFoundException | TowerNotFoundException | EmptyCaveauException e) {
             e.printStackTrace();
         }
 
@@ -57,7 +57,7 @@ public class ExtraStudentInDiningTest {
             boardAdvanced.moveStudentHallToDiningRoom(p1,SPColour.BLUE);
             boardAdvanced.moveStudentHallToDiningRoom(p1,SPColour.BLUE);
             boardAdvanced.moveStudentHallToDiningRoom(p1,SPColour.BLUE);
-        } catch (StudentNotFoundException | ExceededMaxStudentsDiningRoomException | EmptyCaveauExcepion | ProfessorNotFoundException | NoProfessorBagException e) {
+        } catch (StudentNotFoundException | ExceededMaxStudentsDiningRoomException | EmptyCaveauException | ProfessorNotFoundException | NoProfessorBagException e) {
             e.printStackTrace();
         }
 
@@ -67,7 +67,7 @@ public class ExtraStudentInDiningTest {
             try {
                 boardAdvanced.useExtraStudentInDining(p1,SPColour.PINK);
                 Assertions.assertEquals(1, boardAdvanced.getSchools().get(0).getNumStudentColour(SPColour.PINK));
-            } catch (EmptyCaveauExcepion | ExceededMaxNumCoinException | CoinNotFoundException | StudentNotFoundException | ExceededMaxStudentsDiningRoomException e) {
+            } catch (EmptyCaveauException | ExceededMaxNumCoinException | CoinNotFoundException | StudentNotFoundException | ExceededMaxStudentsDiningRoomException e) {
                 e.printStackTrace();
             }
         }else{
