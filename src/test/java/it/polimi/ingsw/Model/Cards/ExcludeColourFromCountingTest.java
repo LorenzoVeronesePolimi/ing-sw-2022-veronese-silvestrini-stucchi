@@ -80,7 +80,7 @@ public class ExcludeColourFromCountingTest {
             boardAdvanced.moveStudentHallToDiningRoom(p1,SPColour.PINK);
             boardAdvanced.moveStudentHallToDiningRoom(p2,SPColour.RED);
             boardAdvanced.moveStudentHallToDiningRoom(p2,SPColour.RED);
-        } catch (StudentNotFoundException | ExceededMaxStudentsDiningRoomException | EmptyCaveauException | ProfessorNotFoundException | NoProfessorBagException e) {
+        } catch (StudentNotFoundException | ExceededMaxStudentsDiningRoomException | EmptyCaveauExcepion | ProfessorNotFoundException | NoProfessorBagException e) {
             e.printStackTrace();
         }
 
@@ -97,7 +97,7 @@ public class ExcludeColourFromCountingTest {
 
         try {
             boardAdvanced.useExcludeColourFromCounting(p1,SPColour.RED);
-        } catch (EmptyCaveauException | ExceededMaxNumCoinException | CoinNotFoundException | InvalidTowerNumberException | AnotherTowerException | ExceededMaxTowersException | TowerNotFoundException e) {
+        } catch (EmptyCaveauExcepion | ExceededMaxNumCoinException | CoinNotFoundException | InvalidTowerNumberException | AnotherTowerException | ExceededMaxTowersException | TowerNotFoundException e) {
             e.printStackTrace();
         }
 

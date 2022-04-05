@@ -18,15 +18,11 @@ public class ExchangeThreeStudents extends AbstractCharacterCard{
     private final BoardAdvanced boardAdvanced;
     private List<Student> students;
 
-    public ExchangeThreeStudents(BoardAdvanced boardAdvanced){
+    public ExchangeThreeStudents(BoardAdvanced boardAdvanced) throws StudentNotFoundException {
         super(1);
 
         Bag bag = boardAdvanced.getBag();
-        try {
-            students = new ArrayList<>(bag.extractStudents(6));
-        } catch (StudentNotFoundException e) {
-            e.printStackTrace();
-        }
+        students = new ArrayList<>(bag.extractStudents(6));
         this.boardAdvanced = boardAdvanced;
     }
 

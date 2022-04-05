@@ -33,7 +33,12 @@ public class ExtraStudentInDiningTest {
             e.printStackTrace();
         }
 
-        ExtraStudentInDining card = new ExtraStudentInDining(boardAdvanced);
+        ExtraStudentInDining card = null;
+        try {
+            card = new ExtraStudentInDining(boardAdvanced);
+        } catch (StudentNotFoundException e) {
+            e.printStackTrace();
+        }
         boardAdvanced.setExtractedCards(card);
 
         for(int i=0; i<7; i++) {
