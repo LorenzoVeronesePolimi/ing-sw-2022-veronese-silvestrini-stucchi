@@ -1,5 +1,7 @@
 package it.polimi.ingsw.Controller.Messages;
 
+import it.polimi.ingsw.Controller.Controller;
+
 import static it.polimi.ingsw.Controller.Enumerations.MessageType.CC_FORBID_ISLAND;
 
 public class MessageCCForbidIsland extends MessageCC{
@@ -18,5 +20,10 @@ public class MessageCCForbidIsland extends MessageCC{
 
     public int getArchipelagoIndexToForbid() {
         return archipelagoIndexToForbid;
+    }
+
+    @Override
+    public boolean manageMessage(Controller controller) {
+        return controller.manageCCForbidIsland(this);
     }
 }

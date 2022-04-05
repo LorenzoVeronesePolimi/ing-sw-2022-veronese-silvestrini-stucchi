@@ -1,5 +1,7 @@
 package it.polimi.ingsw.Controller.Messages;
 
+import it.polimi.ingsw.Controller.Controller;
+
 import static it.polimi.ingsw.Controller.Enumerations.MessageType.CC_FAKE_MN_MOVEMENT;
 
 public class MessageCCFakeMNMovement extends MessageCC{
@@ -18,5 +20,10 @@ public class MessageCCFakeMNMovement extends MessageCC{
 
     public int getFakeMNPosition() {
         return fakeMNPosition;
+    }
+
+    @Override
+    public boolean manageMessage(Controller controller) {
+        return controller.manageCCFakeMNMovement(this);
     }
 }

@@ -1,5 +1,6 @@
 package it.polimi.ingsw.Controller.Messages;
 
+import it.polimi.ingsw.Controller.Controller;
 import it.polimi.ingsw.Controller.Enumerations.MessageType;
 
 public class MessageStudentToArchipelago extends Message{
@@ -22,5 +23,10 @@ public class MessageStudentToArchipelago extends Message{
 
     public int getDestArchipelagoIndex() {
         return destArchipelagoIndex;
+    }
+
+    @Override
+    public boolean manageMessage(Controller controller) {
+        return controller.manageStudentToArchipelago(this);
     }
 }

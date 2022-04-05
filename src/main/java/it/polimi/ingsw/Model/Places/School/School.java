@@ -131,6 +131,12 @@ public class School {
         throw new TowerNotFoundException();
     }
 
+    /**
+     *
+     * @param num
+     * @return
+     * @throws TowerNotFoundException
+     */
     public List<Tower> removeNumTowers(int num) throws TowerNotFoundException {
         List<Tower> removed = new ArrayList<>();
         for(int i = 0; i < num; i++){

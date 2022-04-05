@@ -1,5 +1,7 @@
 package it.polimi.ingsw.Controller.Messages;
 
+import it.polimi.ingsw.Controller.Controller;
+
 import static it.polimi.ingsw.Controller.Enumerations.MessageType.STUDENT_HALL_TO_DINING_ROOM;
 
 public class MessageStudentHallToDiningRoom extends Message{
@@ -18,5 +20,10 @@ public class MessageStudentHallToDiningRoom extends Message{
 
     public String getColour() {
         return colour;
+    }
+
+    @Override
+    public boolean manageMessage(Controller controller) {
+        return controller.manageStudentHallToDiningRoom(this);
     }
 }

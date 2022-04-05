@@ -1,5 +1,7 @@
 package it.polimi.ingsw.Controller.Messages;
 
+import it.polimi.ingsw.Controller.Controller;
+
 import static it.polimi.ingsw.Controller.Enumerations.MessageType.CC_EXCLUDE_COLOUR_FROM_COUNTING;
 
 public class MessageCCExcludeColourFromCounting extends MessageCC{
@@ -18,5 +20,10 @@ public class MessageCCExcludeColourFromCounting extends MessageCC{
 
     public String getColourToExclude() {
         return colourToExclude;
+    }
+
+    @Override
+    public boolean manageMessage(Controller controller) {
+        return controller.manageCCExcludeColourFromCounting(this);
     }
 }
