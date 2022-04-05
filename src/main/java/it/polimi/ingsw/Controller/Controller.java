@@ -336,7 +336,7 @@ public class Controller implements Observer {
         this.players = orderedPlayerList;
     }
 
-    private boolean manageCreateMatch(MessageCreateMatch message){ //TODO: manage GameFour
+    public boolean manageCreateMatch(MessageCreateMatch message){ //TODO: manage GameFour
         int numPlayers = message.getNumPlayers();
         PlayerColour colourFirstPlayer = mapStringToPlayerColour(message.getColourFirstPlayer());
         // no need to control the boolean "advanced"
@@ -353,7 +353,7 @@ public class Controller implements Observer {
         return true;
     }
 
-    private boolean manageAddPlayer(MessageAddPlayer message){ // TODO: manage GameFour
+    public boolean manageAddPlayer(MessageAddPlayer message){ // TODO: manage GameFour
         String nickname = message.getNickname();
         PlayerColour colour = mapStringToPlayerColour(message.getColour());
         // He can't have the name of an existing Player
@@ -374,7 +374,7 @@ public class Controller implements Observer {
         return true;
     }
 
-    private boolean manageAssistantCard(MessageAssistantCard message){
+    public boolean manageAssistantCard(MessageAssistantCard message){
         String nicknamePlayer = message.getNicknamePlayer();
         int turnPriority = message.getTurnPriority();
 
@@ -397,7 +397,7 @@ public class Controller implements Observer {
         return true;
     }
 
-    private boolean manageStudentHallToDiningRoom(MessageStudentHallToDiningRoom message){
+    public boolean manageStudentHallToDiningRoom(MessageStudentHallToDiningRoom message){
         String nicknamePlayer = message.getNicknamePlayer();
         SPColour studentColour = mapStringToSPColour(message.getColour());
 
@@ -430,7 +430,7 @@ public class Controller implements Observer {
         return false;
     }
 
-    private boolean manageStudentToArchipelago(MessageStudentToArchipelago message){
+    public boolean manageStudentToArchipelago(MessageStudentToArchipelago message){
         String nicknamePlayer = message.getNicknamePlayer();
         SPColour studentColour = mapStringToSPColour(message.getColour());
         int destinationArchipelagoIndex = message.getDestArchipelagoIndex();
@@ -448,7 +448,7 @@ public class Controller implements Observer {
         return false;
     }
 
-    private boolean manageMoveMotherNature(MessageMoveMotherNature message){
+    public boolean manageMoveMotherNature(MessageMoveMotherNature message){
         String nicknamePlayer = message.getNicknamePlayer();
         int moves = message.getMoves();
 
@@ -467,7 +467,7 @@ public class Controller implements Observer {
         return false;
     }
 
-    private boolean manageStudentCloudToSchool(MessageStudentCloudToSchool message){
+    public boolean manageStudentCloudToSchool(MessageStudentCloudToSchool message){
         String nicknamePlayer = message.getNicknamePlayer();
         int indexCloud = message.getIndexCloud();
 
@@ -493,7 +493,7 @@ public class Controller implements Observer {
     }
 
     //--------------------------------------------------CHARACTER CARDS
-    private boolean manageCCExchangeThreeStudents(MessageCCExchangeThreeStudents message){
+    public boolean manageCCExchangeThreeStudents(MessageCCExchangeThreeStudents message){
         int indexCard = message.getIndexCard();
         String nicknamePlayer = message.getNicknamePlayer();
         List<SPColour> coloursCard = this.mapListStringToColour(message.getColoursCard());
@@ -516,7 +516,7 @@ public class Controller implements Observer {
         return false;
     }
 
-    private boolean manageCCExchangeTwoHallDining(MessageCCExchangeTwoHallDining message){
+    public boolean manageCCExchangeTwoHallDining(MessageCCExchangeTwoHallDining message){
         int indexCard = message.getIndexCard();
         String nicknamePlayer = message.getNicknamePlayer();
         List<SPColour> coloursHall = this.mapListStringToColour(message.getColoursHall());
@@ -540,7 +540,7 @@ public class Controller implements Observer {
         return false;
     }
 
-    private boolean manageCCExcludeColourFromCounting(MessageCCExcludeColourFromCounting message){
+    public boolean manageCCExcludeColourFromCounting(MessageCCExcludeColourFromCounting message){
         int indexCard = message.getIndexCard();
         String nicknamePlayer = message.getNicknamePlayer();
 
@@ -564,7 +564,7 @@ public class Controller implements Observer {
         return false;
     }
 
-    private boolean manageCCExtraStudentInDining(MessageCCExtraStudentInDining message){
+    public boolean manageCCExtraStudentInDining(MessageCCExtraStudentInDining message){
         int indexCard = message.getIndexCard();
         String nicknamePlayer = message.getNicknamePlayer();
         SPColour colourToMove = mapStringToSPColour(message.getColourToMove());
@@ -587,7 +587,7 @@ public class Controller implements Observer {
         return false;
     }
 
-    private boolean manageCCFakeMNMovement(MessageCCFakeMNMovement message){
+    public boolean manageCCFakeMNMovement(MessageCCFakeMNMovement message){
         int indexCard = message.getIndexCard();
         String nicknamePlayer = message.getNicknamePlayer();
         int fakeMNPosition = message.getFakeMNPosition();
@@ -612,7 +612,7 @@ public class Controller implements Observer {
         return false;
     }
 
-    private boolean manageCCForbidIsland(MessageCCForbidIsland message){
+    public boolean manageCCForbidIsland(MessageCCForbidIsland message){
         int indexCard = message.getIndexCard();
         String nicknamePlayer = message.getNicknamePlayer();
         int archipelagoIndexToForbid = message.getArchipelagoIndexToForbid();
@@ -632,7 +632,7 @@ public class Controller implements Observer {
         return false;
     }
 
-    private boolean manageCCPlaceOneStudent(MessageCCPlaceOneStudent message){
+    public boolean manageCCPlaceOneStudent(MessageCCPlaceOneStudent message){
         int indexCard = message.getIndexCard();
         String nicknamePlayer = message.getNicknamePlayer();
         SPColour colourToMove = mapStringToSPColour(message.getColourToMove());
@@ -655,7 +655,7 @@ public class Controller implements Observer {
         return false;
     }
 
-    private boolean manageCCReduceColourInDining(MessageCCReduceColourInDining message){
+    public boolean manageCCReduceColourInDining(MessageCCReduceColourInDining message){
         int indexCard = message.getIndexCard();
         String nicknamePlayer = message.getNicknamePlayer();
         SPColour colourToReduce = mapStringToSPColour(message.getColourToReduce());
@@ -677,7 +677,7 @@ public class Controller implements Observer {
         return false;
     }
 
-    private boolean manageCCTowerNoValue(MessageCCTowerNoValue message){
+    public boolean manageCCTowerNoValue(MessageCCTowerNoValue message){
         int indexCard = message.getIndexCard();
         String nicknamePlayer = message.getNicknamePlayer();
 
@@ -701,7 +701,7 @@ public class Controller implements Observer {
         return false;
     }
 
-    private boolean manageCCTwoExtraPoints(MessageCCTwoExtraPoints message){
+    public boolean manageCCTwoExtraPoints(MessageCCTwoExtraPoints message){
         int indexCard = message.getIndexCard();
         String nicknamePlayer = message.getNicknamePlayer();
 
@@ -725,7 +725,7 @@ public class Controller implements Observer {
         return false;
     }
 
-    private boolean manageCCTakeProfessorOnEquity(MessageCCTakeProfessorOnEquity message){
+    public boolean manageCCTakeProfessorOnEquity(MessageCCTakeProfessorOnEquity message){
         int indexCard = message.getIndexCard();
         String nicknamePlayer = message.getNicknamePlayer();
 
@@ -751,7 +751,7 @@ public class Controller implements Observer {
         return false;
     }
 
-    private boolean manageTwoExtraIslands(MessageCCTwoExtraIslands message){
+    public boolean manageTwoExtraIslands(MessageCCTwoExtraIslands message){
         int indexCard = message.getIndexCard();
         String nicknamePlayer = message.getNicknamePlayer();
 
