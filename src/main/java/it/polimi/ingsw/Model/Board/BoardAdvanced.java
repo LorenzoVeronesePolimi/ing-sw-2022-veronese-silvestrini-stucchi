@@ -66,7 +66,7 @@ public class BoardAdvanced implements Board {
         cards.add(new PlaceOneStudent(this));
         cards.add(new TakeProfessorOnEquity(this));
         cards.add(new FakeMNMovement(this));
-        cards.add(new TwoExtraIslands(this));
+        cards.add(new TwoExtraIslands());
         cards.add(new ForbidIsland(this));
         cards.add(new TowerNoValue(this));
         cards.add(new ExchangeThreeStudents(this));
@@ -470,7 +470,7 @@ public class BoardAdvanced implements Board {
                     bank.addCoin(((SchoolAdvanced)currentSchool).removeCoin());
                 }
 
-                ((TowerNoValue)card).useEffect(player);
+                ((TowerNoValue)card).useEffect();
                 card.updatePrice(this.bank.getCoin());
             }
         }
@@ -504,7 +504,7 @@ public class BoardAdvanced implements Board {
                     bank.addCoin(((SchoolAdvanced)currentSchool).removeCoin());
                 }
 
-                ((TwoExtraPoints)card).useEffect(player);
+                ((TwoExtraPoints)card).useEffect();
                 card.updatePrice(this.bank.getCoin());
             }
         }

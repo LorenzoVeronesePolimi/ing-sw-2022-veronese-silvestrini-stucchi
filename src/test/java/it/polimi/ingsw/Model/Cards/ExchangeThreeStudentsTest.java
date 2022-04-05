@@ -33,7 +33,12 @@ public class ExchangeThreeStudentsTest {
             e.printStackTrace();
         }
 
-        ExchangeThreeStudents card = new ExchangeThreeStudents(boardAdvanced);
+        ExchangeThreeStudents card = null;
+        try {
+            card = new ExchangeThreeStudents(boardAdvanced);
+        } catch (StudentNotFoundException e) {
+            e.printStackTrace();
+        }
 
         for (int i = 0; i < 7; i++) {
             try {
@@ -149,7 +154,12 @@ public class ExchangeThreeStudentsTest {
             e.printStackTrace();
         }
 
-        ExchangeThreeStudents card = new ExchangeThreeStudents(boardAdvanced);
+        ExchangeThreeStudents card = null;
+        try {
+            card = new ExchangeThreeStudents(boardAdvanced);
+        } catch (StudentNotFoundException e) {
+            e.printStackTrace();
+        }
         boardAdvanced.setExtractedCards(card);
 
 

@@ -97,6 +97,7 @@ public class ExcludeColourFromCountingTest {
 
         try {
             boardAdvanced.useExcludeColourFromCounting(p1,SPColour.RED);
+            boardAdvanced.tryToConquer(p1);
         } catch (EmptyCaveauExcepion | ExceededMaxNumCoinException | CoinNotFoundException | InvalidTowerNumberException | AnotherTowerException | ExceededMaxTowersException | TowerNotFoundException e) {
             e.printStackTrace();
         }

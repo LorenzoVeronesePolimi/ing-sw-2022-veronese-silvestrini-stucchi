@@ -32,8 +32,8 @@ public class Controller implements Observer {
 
     private int numStudentsToMove;
     private int numStudentsToMoveCurrent;
-    private static final int NUM_STUDENTS_TO_MOVE_TWO = 3;
-    private static final int NUM_STUDENTS_TO_MOVE_THREE = 3;
+    private static int NUM_STUDENTS_TO_MOVE_TWO;
+    private static int NUM_STUDENTS_TO_MOVE_THREE;
 
 
     public Controller(){
@@ -45,7 +45,7 @@ public class Controller implements Observer {
 
     public Player getCurrentPlayer(){
         return this.players.get(this.currentPlayerIndex);
-    }
+    } //TODO
 
     /*I RECEIVED A MESSAGE => I need to:
      * Know its format: is it a STUDENT_TO_ARCHIPELAGO or something else?
@@ -379,7 +379,7 @@ public class Controller implements Observer {
         int turnPriority = message.getTurnPriority();
 
         // Is him the currentPlayer? Can he use that AssistantCard?
-        if(isCurrentPlayer(nicknamePlayer)){return false;}
+        if(!isCurrentPlayer(nicknamePlayer)){return false;} //TODO
         controllerIntegrity.checkAssistantCard(this.players, this.currentPlayerIndex, this.players.get(this.currentPlayerIndex), turnPriority);
 
         // Remove the card from his hand
@@ -401,7 +401,7 @@ public class Controller implements Observer {
         String nicknamePlayer = message.getNicknamePlayer();
         SPColour studentColour = mapStringToSPColour(message.getColour());
 
-        if(isCurrentPlayer(nicknamePlayer)){return false;}
+        if(!isCurrentPlayer(nicknamePlayer)){return false;}
 
         if(controllerIntegrity.checkStudentHallToDiningRoom(this.players.get(this.currentPlayerIndex), studentColour)){
             if(this.advanced){
@@ -686,7 +686,7 @@ public class Controller implements Observer {
         try {
             if(controllerIntegrity.checkCCGeneric()){
                 TowerNoValue chosenCard = (TowerNoValue)this.mapIndexToCharacterCard(MessageType.CC_TOWER_NO_VALUE, indexCard);
-                chosenCard.useEffect(this.players.get(this.currentPlayerIndex));
+                chosenCard.useEffect();
 
                 return true;
             }
@@ -710,7 +710,7 @@ public class Controller implements Observer {
         try {
             if(controllerIntegrity.checkCCGeneric()){
                 TwoExtraPoints chosenCard = (TwoExtraPoints)this.mapIndexToCharacterCard(MessageType.CC_TWO_EXTRA_POINTS, indexCard);
-                chosenCard.useEffect(this.players.get(this.currentPlayerIndex));
+                chosenCard.useEffect();
 
                 return true;
             }

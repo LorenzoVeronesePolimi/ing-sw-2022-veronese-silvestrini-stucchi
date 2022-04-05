@@ -82,6 +82,7 @@ public class TwoExtraPointsTest {
 
         try {
             boardAdvanced.useTwoExtraPoints(p1);
+            boardAdvanced.tryToConquer(p1);
         } catch (EmptyCaveauExcepion | TowerNotFoundException | ExceededMaxTowersException | AnotherTowerException | InvalidTowerNumberException | CoinNotFoundException | ExceededMaxNumCoinException e) {
             e.printStackTrace();
         }

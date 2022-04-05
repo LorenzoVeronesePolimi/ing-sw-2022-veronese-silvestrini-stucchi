@@ -34,7 +34,7 @@ public class ControllerIntegrity {
         this.advanced = advanced;
     }
 
-    private boolean enoughColoursInListStudents(List<SPColour> coloursToHave, List<Student> available){
+    private boolean enoughColoursInListStudents(List<SPColour> coloursToHave, List<Student> available){ //TODO
         int equal = 0;
         for(SPColour c : coloursToHave){
             for(Student s : available){
@@ -115,8 +115,8 @@ public class ControllerIntegrity {
         // all Students required are present
         List<Student> studentsDiningRoom = new ArrayList<>();
         if(coloursHall.get(0) != coloursHall.get(1)){ //take interesting Students of the DiningRoom
-            studentsDiningRoom.addAll(this.board.getPlayerSchool(player).getListStudentColour(coloursHall.get(0)));
-            studentsDiningRoom.addAll(this.board.getPlayerSchool(player).getListStudentColour(coloursHall.get(1)));
+            studentsDiningRoom.addAll(this.board.getPlayerSchool(player).getListStudentColour(coloursDiningRoom.get(0)));
+            studentsDiningRoom.addAll(this.board.getPlayerSchool(player).getListStudentColour(coloursDiningRoom.get(1)));
         }
         else{
             studentsDiningRoom.addAll(this.board.getPlayerSchool(player).getListStudentColour(coloursHall.get(0)));

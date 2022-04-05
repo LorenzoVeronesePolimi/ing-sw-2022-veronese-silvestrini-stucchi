@@ -18,15 +18,11 @@ public class PlaceOneStudent extends AbstractCharacterCard{
         return fourStudents;
     }
 
-    public PlaceOneStudent(BoardAdvanced boardAdvanced) {
+    public PlaceOneStudent(BoardAdvanced boardAdvanced) throws StudentNotFoundException {
         super(1);
         this.boardAdvanced = boardAdvanced;
         bag = boardAdvanced.getBag();
-        try {
-            fourStudents = bag.extractStudents(4);
-        } catch (StudentNotFoundException e) {
-            e.printStackTrace();
-        }
+        fourStudents = bag.extractStudents(4);
     }
 
     public void useEffect(SPColour chosen, int archipelago) throws StudentNotFoundException{

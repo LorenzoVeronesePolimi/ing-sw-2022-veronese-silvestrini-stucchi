@@ -111,6 +111,7 @@ public class TowerNoValueTest {
 
         try {
             boardAdvanced.useTowerNoValue(p1);
+            boardAdvanced.tryToConquer(p1);
         } catch (EmptyCaveauExcepion | TowerNotFoundException | ExceededMaxTowersException | AnotherTowerException | InvalidTowerNumberException | CoinNotFoundException | ExceededMaxNumCoinException e) {
             e.printStackTrace();
         }

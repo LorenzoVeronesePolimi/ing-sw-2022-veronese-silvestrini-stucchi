@@ -11,6 +11,12 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
+/**
+ * This class represents a school in the game.
+ * A school contains a certain amount of students and towers, specified by the type of match played.
+ * Also, a school can contain professors in relation to the status of the match and accordingly to the rules of the game.
+ * It is divided in a hall, in a dining room -with places for students and professors- and in a place to put towers.
+ */
 public class School {
     protected final Player player;
 
@@ -25,6 +31,15 @@ public class School {
     protected final List<Professor> professors;
     protected final List<Tower> towers;
 
+    /**
+     * This method create a school and creates a certain amount of towers accordingly to the rules of the specific match.
+     * A match with two players needs 8 towers for each school.
+     * A match with three players needs 6 towers for each school.
+     * A match with four players needs 8 towers placed in only one school of the team (two players are a team).
+     * @param player owner of the school.
+     * @param numMaxStudentsHall maximum number of students that can be placed in the hall of the school.
+     * @param numTowers maximum number of towers that can be placed in the school.
+     */
     public School(Player player, int numMaxStudentsHall, int numTowers){
         this.player = player;
         this.numMaxStudentsHall = numMaxStudentsHall;
@@ -44,22 +59,44 @@ public class School {
         }
     }
 
+    /**
+     * @return the owner of the school.
+     */
     public Player getPlayer(){ return this.player; }
 
+    /**
+     * @return the list of professors in the school.
+     */
     public List<Professor> getProfessors(){ return this.professors; }
 
+    /**
+     * @return the list of students in the school hall.
+     */
     public List<Student> getStudentsHall() {
         return new ArrayList<>(this.studentsHall);
     }
 
+    /**
+     * @return the dimension of the towers remaining in the school.
+     */
     public int getNumTowers(){
         return towers.size();
     }
 
+    /**
+     * @return a copy of the towers in the school.
+     */
     public List<Tower> getTowers(){
         return towers;
     }
 
+    /**
+     * This method adds a tower in the school, only if there is space for it. (the number of maximum towers has not
+     * been exceeded).
+     * @param tower Tower to add in the school.
+     * @throws ExceededMaxTowersException when there are already enough tower in the school, without exceeding the
+     *                                    numMaxTowers value.
+     */
     public void addTower(Tower tower) throws ExceededMaxTowersException{
         if(this.getNumTowers() < numMaxTowers){
             towers.add(tower);
@@ -68,6 +105,13 @@ public class School {
         }
     }
 
+    /**
+     * This method adds a list of towers in the school.
+     * It is called when two island are merged into one archipelago that, if conquered, needs to be cleared from all the
+     * towers.
+     * @param toAdd List of towers to add.
+     * @throws ExceededMaxTowersException
+     */
     public void addNumTower(List<Tower> toAdd) throws ExceededMaxTowersException {
         for(Tower t : toAdd){
             this.addTower(t);

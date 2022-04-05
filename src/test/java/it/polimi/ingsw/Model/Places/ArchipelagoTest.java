@@ -99,7 +99,7 @@ public class ArchipelagoTest {
         TowerNoValue card= new TowerNoValue(boardAdvanced);
         board.moveMotherNature(4);
         try {
-            card.useEffect(p1);
+            card.useEffect();
         } catch (InvalidTowerNumberException | TowerNotFoundException | ExceededMaxTowersException | AnotherTowerException e) {
             e.printStackTrace();
         }

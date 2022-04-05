@@ -20,6 +20,5 @@ public class ExcludeColourFromCounting extends AbstractCharacterCard{
             InvalidTowerNumberException, AnotherTowerException, ExceededMaxTowersException, TowerNotFoundException {
 
         boardAdvanced.setColourToExclude(colourToExclude);
-        boardAdvanced.tryToConquer(currentPlayer);
     }
 }

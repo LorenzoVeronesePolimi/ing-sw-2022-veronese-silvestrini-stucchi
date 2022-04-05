@@ -18,14 +18,10 @@ public class ExtraStudentInDining extends AbstractCharacterCard{
     final Bag bag;
     private List<Student> students;
 
-    public ExtraStudentInDining(BoardAdvanced boardAdvanced){
+    public ExtraStudentInDining(BoardAdvanced boardAdvanced) throws StudentNotFoundException {
         super(2);
         bag=boardAdvanced.getBag();
-        try {
-            students = new ArrayList<>(bag.extractStudents(4));
-        } catch (StudentNotFoundException e) {
-            e.printStackTrace();
-        }
+        students = new ArrayList<>(bag.extractStudents(4));
         this.boardAdvanced = boardAdvanced;
     }
 

@@ -32,7 +32,12 @@ public class PlaceOneStudentTest {
             e.printStackTrace();
         }
 
-        PlaceOneStudent card = new PlaceOneStudent(boardAdvanced);
+        PlaceOneStudent card = null;
+        try {
+            card = new PlaceOneStudent(boardAdvanced);
+        } catch (StudentNotFoundException e) {
+            e.printStackTrace();
+        }
         boardAdvanced.setExtractedCards(card);
 
         Assertions.assertTrue(boardAdvanced.getArchipelago(6).howManyStudents().get(SPColour.BLUE) == 0);

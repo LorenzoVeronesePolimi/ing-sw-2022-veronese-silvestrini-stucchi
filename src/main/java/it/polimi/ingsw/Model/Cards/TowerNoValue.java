@@ -16,9 +16,7 @@ public class TowerNoValue extends AbstractCharacterCard {
         this.boardAdvanced = boardAdvanced;
     }
 
-    public void useEffect(Player currentPlayer) throws InvalidTowerNumberException, AnotherTowerException, ExceededMaxTowersException, TowerNotFoundException {
+    public void useEffect() throws InvalidTowerNumberException, AnotherTowerException, ExceededMaxTowersException, TowerNotFoundException {
         boardAdvanced.getArchiList().get(boardAdvanced.whereIsMotherNature()).setTowerNoValueFlag(true);
-
-        boardAdvanced.tryToConquer(currentPlayer);
     }
 }

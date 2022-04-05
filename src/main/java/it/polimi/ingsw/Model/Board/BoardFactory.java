@@ -1,11 +1,12 @@
 package it.polimi.ingsw.Model.Board;
 
+import it.polimi.ingsw.Model.Exceptions.NoAssistantCardException;
 import it.polimi.ingsw.Model.Player;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class BoardFactory {
+public class BoardFactory extends NoAssistantCardException {
     private final List<Player> players;
 
     public BoardFactory(List<Player> players) {
