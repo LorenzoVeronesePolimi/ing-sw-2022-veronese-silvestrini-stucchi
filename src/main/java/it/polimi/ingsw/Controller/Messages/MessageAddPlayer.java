@@ -19,4 +19,6 @@ public class MessageAddPlayer extends Message{
     public String getColour() {
         return colour;
     }
+
+
 }

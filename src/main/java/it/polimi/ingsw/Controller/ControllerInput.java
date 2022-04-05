@@ -105,7 +105,7 @@ public class ControllerInput {
     }
 
     private boolean checkMotherNatureMovement(int m){
-        return (m > 1 && m <= 6);
+        return (m >= 0 && m <= 7);
     }
 
     private boolean checkTurnPriority(int p){

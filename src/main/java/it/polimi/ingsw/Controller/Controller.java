@@ -718,7 +718,7 @@ public class Controller implements Observer {
                 TowerNotFoundException |
                 InvalidTowerNumberException |
                 AnotherTowerException |
-                ExceededMaxTowersException e) {
+                ExceededMaxTowersException e){
             return false;
         }
 
