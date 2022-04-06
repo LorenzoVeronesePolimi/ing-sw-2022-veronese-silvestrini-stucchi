@@ -470,7 +470,7 @@ public class BoardAdvanced implements Board {
     }
 
     public void useExchangeThreeStudents(Player player, List<SPColour> hallStudents, List<SPColour> exchangeStudents, int indexCard) throws
-            EmptyCaveauException, ExceededMaxNumCoinException, CoinNotFoundException, WrongNumberOfStudentsTransferExcpetion,
+            EmptyCaveauException, ExceededMaxNumCoinException, CoinNotFoundException, WrongNumberOfStudentsTransferException,
             StudentNotFoundException, ExceededMaxStudentsHallException {
         if(this.makePayment(player, this.extractedCards.get(indexCard))) {
             ((ExchangeThreeStudents) this.extractedCards.get(indexCard)).useEffect(player, hallStudents, exchangeStudents);
@@ -502,7 +502,7 @@ public class BoardAdvanced implements Board {
         for(AbstractCharacterCard card: extractedCards) {
             if(card instanceof ExcludeColourFromCounting) {
                 if(this.makePayment(player, card)) {
-                    ((ExcludeColourFromCounting) card).useEffect(player, colourToExclude);
+                    ((ExcludeColourFromCounting) card).useEffect(colourToExclude);
                     card.updatePrice(this.bank.getCoin());
                 } else {
                     throw new CoinNotFoundException();
@@ -512,7 +512,7 @@ public class BoardAdvanced implements Board {
     }
 
     public void useExchangeTwoHallDining(Player player, List<SPColour> hallStudents, List<SPColour> diningStudents) throws
-            EmptyCaveauException, ExceededMaxNumCoinException, CoinNotFoundException, WrongNumberOfStudentsTransferExcpetion,
+            EmptyCaveauException, ExceededMaxNumCoinException, CoinNotFoundException, WrongNumberOfStudentsTransferException,
             ExceededMaxStudentsDiningRoomException, ExceededMaxStudentsHallException, StudentNotFoundException {
 
         for(AbstractCharacterCard card: extractedCards) {

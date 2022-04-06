@@ -109,7 +109,7 @@ public class ExchangeThreeStudentsTest {
 
         try {
             boardAdvanced.useExchangeThreeStudents(p1, hallColours, exchangeColours, 0);
-        } catch (EmptyCaveauException | ExceededMaxStudentsHallException | StudentNotFoundException | WrongNumberOfStudentsTransferExcpetion | CoinNotFoundException | ExceededMaxNumCoinException e) {
+        } catch (EmptyCaveauException | ExceededMaxStudentsHallException | StudentNotFoundException | WrongNumberOfStudentsTransferException | CoinNotFoundException | ExceededMaxNumCoinException e) {
             e.printStackTrace();
         }
 
@@ -214,6 +214,6 @@ public class ExchangeThreeStudentsTest {
         hallColours.add(SPColour.BLUE);
 
         BoardAdvanced finalBoard = boardAdvanced;
-        Assertions.assertThrows(WrongNumberOfStudentsTransferExcpetion.class, () -> finalBoard.useExchangeThreeStudents(p1, hallColours, exchangeColours, 0));
+        Assertions.assertThrows(WrongNumberOfStudentsTransferException.class, () -> finalBoard.useExchangeThreeStudents(p1, hallColours, exchangeColours, 0));
     }
 }

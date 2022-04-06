@@ -5,7 +5,7 @@ import it.polimi.ingsw.Model.Board.BoardAdvanced;
 import it.polimi.ingsw.Model.Enumerations.SPColour;
 import it.polimi.ingsw.Model.Exceptions.ExceededMaxStudentsHallException;
 import it.polimi.ingsw.Model.Exceptions.StudentNotFoundException;
-import it.polimi.ingsw.Model.Exceptions.WrongNumberOfStudentsTransferExcpetion;
+import it.polimi.ingsw.Model.Exceptions.WrongNumberOfStudentsTransferException;
 import it.polimi.ingsw.Model.Pawns.Student;
 import it.polimi.ingsw.Model.Places.School.School;
 import it.polimi.ingsw.Model.Player;
@@ -31,10 +31,10 @@ public class ExchangeThreeStudents extends AbstractCharacterCard{
     }
 
     public void useEffect(Player player, List<SPColour> hallStudents, List<SPColour> exchangeStudents) throws
-            WrongNumberOfStudentsTransferExcpetion, StudentNotFoundException, ExceededMaxStudentsHallException {
+            WrongNumberOfStudentsTransferException, StudentNotFoundException, ExceededMaxStudentsHallException {
 
         if(hallStudents.size() > 3 || exchangeStudents.size() > 3 || hallStudents.size()!= exchangeStudents.size()) {
-            throw new WrongNumberOfStudentsTransferExcpetion();
+            throw new WrongNumberOfStudentsTransferException();
         }
 
         List<Student> hallToCard = new ArrayList<>();
@@ -52,7 +52,7 @@ public class ExchangeThreeStudents extends AbstractCharacterCard{
         }
 
         if(hallToCard.size() > 3 || cardToHall.size() > 3) {
-            throw new WrongNumberOfStudentsTransferExcpetion();
+            throw new WrongNumberOfStudentsTransferException();
         }
 
         School currentPlayerSchool = boardAdvanced.getPlayerSchool(player);

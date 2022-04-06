@@ -5,7 +5,7 @@ import it.polimi.ingsw.Model.Enumerations.SPColour;
 import it.polimi.ingsw.Model.Exceptions.ExceededMaxStudentsDiningRoomException;
 import it.polimi.ingsw.Model.Exceptions.ExceededMaxStudentsHallException;
 import it.polimi.ingsw.Model.Exceptions.StudentNotFoundException;
-import it.polimi.ingsw.Model.Exceptions.WrongNumberOfStudentsTransferExcpetion;
+import it.polimi.ingsw.Model.Exceptions.WrongNumberOfStudentsTransferException;
 import it.polimi.ingsw.Model.Pawns.Student;
 import it.polimi.ingsw.Model.Places.School.School;
 import it.polimi.ingsw.Model.Player;
@@ -13,20 +13,44 @@ import it.polimi.ingsw.Model.Player;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * This class represents the card that has this effect:
+ * the player can exchange up to two students between the one that he has in the dining
+ * room and the one that are in the hall.
+ */
 public class ExchangeTwoHallDining extends AbstractCharacterCard{
     private final BoardAdvanced boardAdvanced;
 
+    /**
+     * Constructor of the card.
+     * @param boardAdvanced The object modified by the card.
+     */
     public ExchangeTwoHallDining(BoardAdvanced boardAdvanced){
         super(1);
         this.boardAdvanced=boardAdvanced;
     }
 
+    /**
+     * This method activates the effect of the card.
+     * @param player is the player that has activated the card.
+     * @param hallStudents is the list of students in the hall that must be moved in the
+     *                    dining room
+     * @param diningStudents is the list of students in the  dining room that must be
+     *                      moved in the hall
+     * @throws WrongNumberOfStudentsTransferException if the two lists of students are not of the
+     * same length, or if they have more than two students
+     * @throws StudentNotFoundException if one student is not present in dining room or hall
+     * @throws ExceededMaxStudentsHallException if is not possible to add a student in
+     * the hall because it is full
+     * @throws ExceededMaxStudentsDiningRoomException if is not possible to add a student in
+     *      * the dining room because it is full for that colour
+     */
     public void useEffect(Player player, List<SPColour> hallStudents, List<SPColour> diningStudents) throws
-            WrongNumberOfStudentsTransferExcpetion, StudentNotFoundException, ExceededMaxStudentsHallException,
+            WrongNumberOfStudentsTransferException, StudentNotFoundException, ExceededMaxStudentsHallException,
             ExceededMaxStudentsDiningRoomException {
 
         if(hallStudents.size()>2 || diningStudents.size()>2) {
-            throw new WrongNumberOfStudentsTransferExcpetion();
+            throw new WrongNumberOfStudentsTransferException();
         }
 
         List<Student> hallToDining = new ArrayList<>();
@@ -40,7 +64,7 @@ public class ExchangeTwoHallDining extends AbstractCharacterCard{
         }
 
         if((hallStudents.size()>2) || (diningStudents.size()>2)) {
-            throw new WrongNumberOfStudentsTransferExcpetion();
+            throw new WrongNumberOfStudentsTransferException();
         }
 
         School currentPlayerSchool = boardAdvanced.getPlayerSchool(player);

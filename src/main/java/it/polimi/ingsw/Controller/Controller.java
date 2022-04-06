@@ -539,7 +539,7 @@ public class Controller implements Observer {
                 return true;
             }
 
-        } catch(WrongNumberOfStudentsTransferExcpetion | StudentNotFoundException | ExceededMaxStudentsHallException ex){
+        } catch(WrongNumberOfStudentsTransferException | StudentNotFoundException | ExceededMaxStudentsHallException ex){
             return false;
         } catch (CoinNotFoundException | EmptyCaveauException | ExceededMaxNumCoinException e) {
             e.printStackTrace();
@@ -564,7 +564,7 @@ public class Controller implements Observer {
                 return true;
             }
         } catch (NoCorrespondingCharacterCardException |
-                WrongNumberOfStudentsTransferExcpetion |
+                WrongNumberOfStudentsTransferException |
                 StudentNotFoundException |
                 ExceededMaxStudentsHallException |
                 ExceededMaxStudentsDiningRoomException e) {return false;}
@@ -581,14 +581,10 @@ public class Controller implements Observer {
         if(controllerIntegrity.checkCCGeneric()){
             try {
                 ExcludeColourFromCounting chosenCard = (ExcludeColourFromCounting)this.mapIndexToCharacterCard(MessageType.CC_EXCLUDE_COLOUR_FROM_COUNTING, indexCard);
-                chosenCard.useEffect(getCurrentPlayer(), this.mapStringToSPColour(message.getColourToExclude()));
+                chosenCard.useEffect(this.mapStringToSPColour(message.getColourToExclude()));
 
                 return true;
-            } catch (NoCorrespondingCharacterCardException |
-                    InvalidTowerNumberException |
-                    AnotherTowerException |
-                    ExceededMaxTowersException |
-                    TowerNotFoundException e) {
+            } catch (NoCorrespondingCharacterCardException e) {
                 return false;
             }
         }

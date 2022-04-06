@@ -97,7 +97,7 @@ public class ExchangeTwoHallDiningTest {
 
         try {
             boardAdvanced.useExchangeTwoHallDining(p1,hallColours,diningColour);
-        } catch (EmptyCaveauException | StudentNotFoundException | ExceededMaxStudentsHallException | ExceededMaxStudentsDiningRoomException | WrongNumberOfStudentsTransferExcpetion | CoinNotFoundException | ExceededMaxNumCoinException e) {
+        } catch (EmptyCaveauException | StudentNotFoundException | ExceededMaxStudentsHallException | ExceededMaxStudentsDiningRoomException | WrongNumberOfStudentsTransferException | CoinNotFoundException | ExceededMaxNumCoinException e) {
             e.printStackTrace();
         }
 
