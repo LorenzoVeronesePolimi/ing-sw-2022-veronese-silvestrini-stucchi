@@ -132,10 +132,10 @@ public class School {
     }
 
     /**
-     *
-     * @param num
-     * @return
-     * @throws TowerNotFoundException
+     * This method removes a number of towers from the school.
+     * @param num number of towers to remove.
+     * @return the list of towers removed from the school.
+     * @throws TowerNotFoundException when there aren't towers left in the school.
      */
     public List<Tower> removeNumTowers(int num) throws TowerNotFoundException {
         List<Tower> removed = new ArrayList<>();
@@ -146,6 +146,10 @@ public class School {
         return removed;
     }
 
+    /**
+     * This method add a professor to the school.
+     * @param professor Professor to add to the school.
+     */
     public void addProfessor(Professor professor){
         professors.add(professor);
     }

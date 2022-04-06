@@ -6,7 +6,7 @@ import it.polimi.ingsw.Model.Player;
 import java.util.ArrayList;
 import java.util.List;
 
-public class BoardFactory extends NoAssistantCardException {
+public class BoardFactory {
     private final List<Player> players;
 
     public BoardFactory(List<Player> players) {

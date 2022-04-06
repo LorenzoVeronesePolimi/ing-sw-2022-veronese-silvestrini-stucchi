@@ -108,7 +108,7 @@ public class ExchangeThreeStudentsTest {
         boardAdvanced.setExtractedCards(card);
 
         try {
-            boardAdvanced.useExchangeThreeStudents(p1, hallColours, exchangeColours);
+            boardAdvanced.useExchangeThreeStudents(p1, hallColours, exchangeColours, 0);
         } catch (EmptyCaveauException | ExceededMaxStudentsHallException | StudentNotFoundException | WrongNumberOfStudentsTransferExcpetion | CoinNotFoundException | ExceededMaxNumCoinException e) {
             e.printStackTrace();
         }
@@ -128,7 +128,7 @@ public class ExchangeThreeStudentsTest {
         Assertions.assertEquals(numYellowBefore - numYellowToBeRemoved + numYellowToBeAdded, numYellowAfter);
 
         BoardAdvanced finalBoardAdvance = boardAdvanced;
-        Assertions.assertThrows(CoinNotFoundException.class, () -> finalBoardAdvance.useExchangeThreeStudents(p1, hallColours, exchangeColours));
+        Assertions.assertThrows(CoinNotFoundException.class, () -> finalBoardAdvance.useExchangeThreeStudents(p1, hallColours, exchangeColours, 0));
     }
 
     @Test
@@ -214,6 +214,6 @@ public class ExchangeThreeStudentsTest {
         hallColours.add(SPColour.BLUE);
 
         BoardAdvanced finalBoard = boardAdvanced;
-        Assertions.assertThrows(WrongNumberOfStudentsTransferExcpetion.class, () -> finalBoard.useExchangeThreeStudents(p1, hallColours, exchangeColours));
+        Assertions.assertThrows(WrongNumberOfStudentsTransferExcpetion.class, () -> finalBoard.useExchangeThreeStudents(p1, hallColours, exchangeColours, 0));
     }
 }

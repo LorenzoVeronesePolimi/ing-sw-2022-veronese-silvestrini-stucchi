@@ -510,16 +510,40 @@ public class Controller implements Observer {
         if(!isCurrentPlayer(nicknamePlayer)){return false;}
 
         try{
-            ExchangeThreeStudents chosenCard = (ExchangeThreeStudents)this.mapIndexToCharacterCard(MessageType.CC_EXCHANGE_THREE_STUDENTS, indexCard);
+            //TODO: ipotesi del nuovo codice di questa parte. Così facendo è possibile mantenere il check integrity
+            // e rimuovere lo switch enorme e gli instanceof sia nel controller che nella board.
+            // La board in questo modo non deve fare un instanceof per selezionare la carta, ma le viene passato l'indice
+            // delle stessa (presente nel messaggio).
+            // Allo stesso modo, il controller non deve fare instanceof dato che il messaggio stesso attiva il metodo
+            // corretto (questo dove siamo ora), quindi sappiamo di che tipo di carta si tratta,
+            // e ha l'indice della carta da giocare (per cui è necessario solamente un cast esplicito).
+            // Questo metodo quindi non fa uso della mapIndexToCharacterCard.
+            // [ L'unico dubbio che ci rimane è come avviene la creazione del messaggio nella view. Nel caso in cui la
+            // view non possa conoscere il tipo di carta giocata (ma solo l'indice della stessa) allora il metodo
+            // mapIndexToCharacterCard si renderebbe di nuovo necessario, però in tale caso ci sarebbe da rivedere la
+            // struttura di tutta questa parte (non potendo chiamare i metodi specifici direttamente nel messaggio). ]
+
+            // ------------ VECCHIO CODICE NON MODIFICATO, SOLO COMMENTATO
+            /*ExchangeThreeStudents chosenCard = (ExchangeThreeStudents)this.mapIndexToCharacterCard(MessageType.CC_EXCHANGE_THREE_STUDENTS, indexCard);
             if(controllerIntegrity.checkCCExchangeThreeStudents(getCurrentPlayer(), coloursCard, coloursHall, chosenCard)){
                 chosenCard.useEffect(getCurrentPlayer(), coloursHall, coloursCard);
 
                 return true;
+            }*/
+
+            // ------------- IPOTESI NUOVO CODICE
+            if(controllerIntegrity.checkCCExchangeThreeStudents(getCurrentPlayer(), coloursCard, coloursHall,
+                    (ExchangeThreeStudents) this.boardAdvanced.getExtractedCards().get(indexCard))) {
+
+                this.boardAdvanced.useExchangeThreeStudents(getCurrentPlayer(), coloursHall, coloursCard, indexCard);
+                return true;
             }
-        } catch(NoCorrespondingCharacterCardException |
-                WrongNumberOfStudentsTransferExcpetion |
-                StudentNotFoundException |
-                ExceededMaxStudentsHallException ex){return false;}
+
+        } catch(WrongNumberOfStudentsTransferExcpetion | StudentNotFoundException | ExceededMaxStudentsHallException ex){
+            return false;
+        } catch (CoinNotFoundException | EmptyCaveauException | ExceededMaxNumCoinException e) {
+            e.printStackTrace();
+        }
 
         return false;
     }

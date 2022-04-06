@@ -383,13 +383,12 @@ public class BoardAdvanced implements Board {
             StudentNotFoundException , EmptyCaveauException, ExceededMaxNumCoinException, CoinNotFoundException {
         for(AbstractCharacterCard card: extractedCards) {
             if(card instanceof PlaceOneStudent) {
-                School currentSchool = this.board.getPlayerSchool(player);
-                for(int i = 0; i < card.getCurrentPrice(); i++) {
-                    bank.addCoin(((SchoolAdvanced)currentSchool).removeCoin());
+                if(this.makePayment(player, card)) {
+                    ((PlaceOneStudent) card).useEffect(chosen, archipelago);
+                    card.updatePrice(this.bank.getCoin());
+                } else {
+                    throw new CoinNotFoundException();
                 }
-
-                ((PlaceOneStudent)card).useEffect(chosen, archipelago);
-                card.updatePrice(this.bank.getCoin());
             }
         }
     }
@@ -400,13 +399,12 @@ public class BoardAdvanced implements Board {
 
         for(AbstractCharacterCard card: extractedCards) {
             if(card instanceof TakeProfessorOnEquity) {
-                School currentSchool = this.board.getPlayerSchool(player);
-                for(int i = 0; i < card.getCurrentPrice(); i++) {
-                    bank.addCoin(((SchoolAdvanced)currentSchool).removeCoin());
+                if(this.makePayment(player, card)) {
+                    ((TakeProfessorOnEquity) card).useEffect(player);
+                    card.updatePrice(this.bank.getCoin());
+                } else {
+                    throw new CoinNotFoundException();
                 }
-
-                ((TakeProfessorOnEquity)card).useEffect(player);
-                card.updatePrice(this.bank.getCoin());
             }
         }
     }
@@ -417,13 +415,12 @@ public class BoardAdvanced implements Board {
 
         for(AbstractCharacterCard card: extractedCards) {
             if(card instanceof FakeMNMovement) {
-                School currentSchool = this.board.getPlayerSchool(player);
-                for(int i = 0; i < card.getCurrentPrice(); i++) {
-                    bank.addCoin(((SchoolAdvanced)currentSchool).removeCoin());
+                if(this.makePayment(player, card)) {
+                    ((FakeMNMovement) card).useEffect(player, fakeMNPosition);
+                    card.updatePrice(this.bank.getCoin());
+                } else {
+                    throw new CoinNotFoundException();
                 }
-
-                ((FakeMNMovement)card).useEffect(player, fakeMNPosition);
-                card.updatePrice(this.bank.getCoin());
             }
         }
     }
@@ -433,13 +430,12 @@ public class BoardAdvanced implements Board {
 
         for(AbstractCharacterCard card: extractedCards) {
             if(card instanceof TwoExtraIslands) {
-                School currentSchool = this.board.getPlayerSchool(player);
-                for(int i = 0; i < card.getCurrentPrice(); i++) {
-                    bank.addCoin(((SchoolAdvanced)currentSchool).removeCoin());
+                if(this.makePayment(player, card)) {
+                    ((TwoExtraIslands) card).useEffect(player);
+                    card.updatePrice(this.bank.getCoin());
+                } else {
+                    throw new CoinNotFoundException();
                 }
-
-                ((TwoExtraIslands)card).useEffect(player);
-                card.updatePrice(this.bank.getCoin());
             }
         }
     }
@@ -448,13 +444,12 @@ public class BoardAdvanced implements Board {
             EmptyCaveauException, ExceededMaxNumCoinException, CoinNotFoundException{
         for(AbstractCharacterCard card: extractedCards) {
             if(card instanceof ForbidIsland) {
-                School currentSchool = this.board.getPlayerSchool(player);
-                for(int i = 0; i < card.getCurrentPrice(); i++) {
-                    bank.addCoin(((SchoolAdvanced)currentSchool).removeCoin());
+                if(this.makePayment(player, card)) {
+                    ((ForbidIsland) card).useEffect(archipelago);
+                    card.updatePrice(this.bank.getCoin());
+                } else {
+                    throw new CoinNotFoundException();
                 }
-
-                ((ForbidIsland)card).useEffect(archipelago);
-                card.updatePrice(this.bank.getCoin());
             }
         }
     }
@@ -465,31 +460,24 @@ public class BoardAdvanced implements Board {
 
         for(AbstractCharacterCard card: extractedCards) {
             if(card instanceof TowerNoValue) {
-                School currentSchool = this.board.getPlayerSchool(player);
-                for(int i = 0; i < card.getCurrentPrice(); i++) {
-                    bank.addCoin(((SchoolAdvanced)currentSchool).removeCoin());
+                if(this.makePayment(player, card)) {
+                    ((TowerNoValue) card).useEffect();
+                    card.updatePrice(this.bank.getCoin());
+                } else {
+                    throw new CoinNotFoundException();
                 }
-
-                ((TowerNoValue)card).useEffect();
-                card.updatePrice(this.bank.getCoin());
             }
         }
     }
 
-    public void useExchangeThreeStudents(Player player, List<SPColour> hallStudents, List<SPColour> exchangeStudents) throws
+    public void useExchangeThreeStudents(Player player, List<SPColour> hallStudents, List<SPColour> exchangeStudents, int indexCard) throws
             EmptyCaveauException, ExceededMaxNumCoinException, CoinNotFoundException, WrongNumberOfStudentsTransferExcpetion,
             StudentNotFoundException, ExceededMaxStudentsHallException {
-
-        for(AbstractCharacterCard card: extractedCards) {
-            if(card instanceof ExchangeThreeStudents) {
-                School currentSchool = this.board.getPlayerSchool(player);
-                for(int i = 0; i < card.getCurrentPrice(); i++) {
-                    bank.addCoin(((SchoolAdvanced)currentSchool).removeCoin());
-                }
-
-                ((ExchangeThreeStudents)card).useEffect(player, hallStudents, exchangeStudents);
-                card.updatePrice(this.bank.getCoin());
-            }
+        if(this.makePayment(player, this.extractedCards.get(indexCard))) {
+            ((ExchangeThreeStudents) this.extractedCards.get(indexCard)).useEffect(player, hallStudents, exchangeStudents);
+            this.extractedCards.get(indexCard).updatePrice(this.bank.getCoin());
+        } else {
+            throw new CoinNotFoundException();
         }
     }
 
@@ -499,13 +487,12 @@ public class BoardAdvanced implements Board {
 
         for(AbstractCharacterCard card: extractedCards) {
             if(card instanceof TwoExtraPoints) {
-                School currentSchool = this.board.getPlayerSchool(player);
-                for(int i = 0; i < card.getCurrentPrice(); i++) {
-                    bank.addCoin(((SchoolAdvanced)currentSchool).removeCoin());
+                if(this.makePayment(player, card)) {
+                    ((TwoExtraPoints) card).useEffect();
+                    card.updatePrice(this.bank.getCoin());
+                } else {
+                    throw new CoinNotFoundException();
                 }
-
-                ((TwoExtraPoints)card).useEffect();
-                card.updatePrice(this.bank.getCoin());
             }
         }
     }
@@ -516,13 +503,12 @@ public class BoardAdvanced implements Board {
 
         for(AbstractCharacterCard card: extractedCards) {
             if(card instanceof ExcludeColourFromCounting) {
-                School currentSchool = this.board.getPlayerSchool(player);
-                for(int i = 0; i < card.getCurrentPrice(); i++) {
-                    bank.addCoin(((SchoolAdvanced)currentSchool).removeCoin());
+                if(this.makePayment(player, card)) {
+                    ((ExcludeColourFromCounting) card).useEffect(player, colourToExclude);
+                    card.updatePrice(this.bank.getCoin());
+                } else {
+                    throw new CoinNotFoundException();
                 }
-
-                ((ExcludeColourFromCounting)card).useEffect(player, colourToExclude);
-                card.updatePrice(this.bank.getCoin());
             }
         }
     }
@@ -533,13 +519,12 @@ public class BoardAdvanced implements Board {
 
         for(AbstractCharacterCard card: extractedCards) {
             if(card instanceof ExchangeTwoHallDining) {
-                School currentSchool = this.board.getPlayerSchool(player);
-                for(int i = 0; i < card.getCurrentPrice(); i++) {
-                    bank.addCoin(((SchoolAdvanced)currentSchool).removeCoin());
+                if(this.makePayment(player, card)) {
+                    ((ExchangeTwoHallDining) card).useEffect(player, hallStudents, diningStudents);
+                    card.updatePrice(this.bank.getCoin());
+                } else {
+                    throw new CoinNotFoundException();
                 }
-
-                ((ExchangeTwoHallDining)card).useEffect(player, hallStudents, diningStudents);
-                card.updatePrice(this.bank.getCoin());
             }
         }
     }
@@ -550,13 +535,12 @@ public class BoardAdvanced implements Board {
 
         for(AbstractCharacterCard card: extractedCards) {
             if(card instanceof ExtraStudentInDining) {
-                School currentSchool = this.board.getPlayerSchool(player);
-                for(int i = 0; i < card.getCurrentPrice(); i++) {
-                    bank.addCoin(((SchoolAdvanced)currentSchool).removeCoin());
+                if(this.makePayment(player, card)) {
+                    ((ExtraStudentInDining) card).useEffect(player, cardToDining);
+                    card.updatePrice(this.bank.getCoin());
+                } else {
+                    throw new CoinNotFoundException();
                 }
-
-                ((ExtraStudentInDining)card).useEffect(player, cardToDining);
-                card.updatePrice(this.bank.getCoin());
             }
         }
     }
@@ -565,15 +549,29 @@ public class BoardAdvanced implements Board {
             EmptyCaveauException, ExceededMaxNumCoinException, CoinNotFoundException, StudentNotFoundException {
         for(AbstractCharacterCard card: extractedCards) {
             if(card instanceof ReduceColourInDining) {
-                School currentSchool = this.board.getPlayerSchool(player);
-                for(int i = 0; i < card.getCurrentPrice(); i++) {
-                    bank.addCoin(((SchoolAdvanced)currentSchool).removeCoin());
+                if(this.makePayment(player, card)) {
+                    ((ReduceColourInDining) card).useEffect(colour);
+                    card.updatePrice(this.bank.getCoin());
+                } else {
+                    throw new CoinNotFoundException();
                 }
-
-                ((ReduceColourInDining)card).useEffect(colour);
-                card.updatePrice(this.bank.getCoin());
             }
         }
     }
 
+    private boolean makePayment(Player player, AbstractCharacterCard card) throws ExceededMaxNumCoinException, EmptyCaveauException {
+        School currentSchool = this.board.getPlayerSchool(player);
+        for(int i = 0; i < card.getCurrentPrice(); i++) {
+            try {
+                bank.addCoin(((SchoolAdvanced)currentSchool).removeCoin());
+            } catch (CoinNotFoundException e) {
+                for(int j = 0; j < i; j++) {
+                    ((SchoolAdvanced)currentSchool).addCoin(bank.getCoin());
+                }
+                return false;
+            }
+        }
+
+        return true;
+    }
 }
