@@ -164,6 +164,12 @@ public class School {
         throw new ProfessorNotFoundException();
     }
 
+    /**
+     * This method adds a student to the hall of the school.
+     * @param student Student to add in the hall of the school.
+     * @throws ExceededMaxStudentsHallException when there is no space for the student in the hall, that is already full,
+     *                                          accordingly to the numMaxStudentsHall constant.
+     */
     public void addStudentHall(Student student) throws ExceededMaxStudentsHallException{
         if(studentsHall.size() < numMaxStudentsHall) {
             studentsHall.add(student);
@@ -172,6 +178,13 @@ public class School {
         }
     }
 
+    /**
+     * This method return a student, removing it from the hall of the school.
+     * @param colour Colour of the student to remove.
+     * @return The student removed.
+     * @throws StudentNotFoundException when there are no students with the specified colours in the hall, or when the hall
+     *                                  is empty.
+     */
     public Student removeStudentHall(SPColour colour) throws StudentNotFoundException{
         boolean found = false;
         Student removed = null;
@@ -191,6 +204,12 @@ public class School {
         throw new StudentNotFoundException();
     }
 
+    /**
+     * This method adds a student to the dining room of the school.
+     * @param student Student to add in the dining room, in relation with the colour of it.
+     * @throws ExceededMaxStudentsDiningRoomException when there are already 10 student in the dining room
+     *                                                of the corresponding colour.
+     */
     public void addStudentDiningRoom(Student student) throws ExceededMaxStudentsDiningRoomException{
         if(student.getColour() == SPColour.RED) {
             if(studentsDiningRed.size() < 10) {
@@ -229,6 +248,12 @@ public class School {
         }
     }
 
+    /**
+     * This method return and removes a student from the dining room on the school, based on the colour of the student.
+     * @param colour Colour of the student to remove from the dining room.
+     * @return The student removed from the dining room.
+     * @throws StudentNotFoundException when there are no students left in the dining room of the student colour.
+     */
     public Student removeStudentDiningRoom(SPColour colour) throws StudentNotFoundException{
         if(colour.equals(SPColour.RED)) {
             if(studentsDiningRed.size() >0) {
@@ -269,6 +294,13 @@ public class School {
         throw new StudentNotFoundException();
     }
 
+    /**
+     * This method transfers a student from the hall to the dining room, based on the student colour.
+     * @param colour Colour of the student that needs to be removed from the hall and placed in the dining room.
+     * @throws StudentNotFoundException where there are no strudents of the specified colour in the hall.
+     * @throws ExceededMaxStudentsDiningRoomException when there are already 10 students of the specified colour in the
+     *                                                dining room.
+     */
     public void moveStudentHallToDiningRoom(SPColour colour) throws StudentNotFoundException, ExceededMaxStudentsDiningRoomException {
         Student student;
 
@@ -276,6 +308,10 @@ public class School {
         addStudentDiningRoom(student);
     }
 
+    /**
+     * @param colour color of students of which we want to know the number in the dining room.
+     * @return the number of students, in the dining room, of the specified colour.
+     */
     public int getNumStudentColour(SPColour colour) {
         if(colour == SPColour.RED) {
            return studentsDiningRed.size();
@@ -296,6 +332,11 @@ public class School {
         return 0;
     }
 
+    /**
+     *
+     * @param colour color of students of which we want to know the number in the dining room.
+     * @return List of the students in the dining room having the specified colour.
+     */
     public List<Student> getListStudentColour(SPColour colour) {
         if(colour == SPColour.RED) {
             return studentsDiningRed;
@@ -316,14 +357,24 @@ public class School {
         return null;
     }
 
+    /**
+     * @return The maximum number of towers in the school.
+     */
     public int getNumMaxTowers(){
         return numMaxTowers;
     }
 
+    /**
+     * @return The maximum number of students in the school hall.
+     */
     public int getNumMaxStudentsHall(){
         return numMaxStudentsHall;
     }
 
+    /**
+     * Method toString of the structure of the class.
+     * @return The description of the class.
+     */
     @Override
     public String toString() {
         return "School{" +

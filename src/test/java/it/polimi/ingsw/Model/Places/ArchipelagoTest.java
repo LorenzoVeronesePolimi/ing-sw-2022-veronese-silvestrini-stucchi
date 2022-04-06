@@ -48,6 +48,7 @@ public class ArchipelagoTest {
         assertEquals(p, tested.getOwner());
 
     }
+
     @Test
     void getForbidFlag(){
         Archipelago tested = new Archipelago();
@@ -71,9 +72,14 @@ public class ArchipelagoTest {
             e.printStackTrace();
         }
         ForbidIsland card= new ForbidIsland(boardAdvanced);
-        card.useEffect(6);
+        try {
+            card.useEffect(6);
+        } catch (ExceededNumberForbidFlagException e) {
+            e.printStackTrace();
+        }
         assertTrue(boardAdvanced.getArchiList().get(6).getForbidFlag() == 1);
     }
+
     @Test
     void getTowerNoValueFlag(){
         Archipelago tested = new Archipelago();
@@ -98,11 +104,7 @@ public class ArchipelagoTest {
         }
         TowerNoValue card= new TowerNoValue(boardAdvanced);
         board.moveMotherNature(4);
-        try {
-            card.useEffect();
-        } catch (InvalidTowerNumberException | TowerNotFoundException | ExceededMaxTowersException | AnotherTowerException e) {
-            e.printStackTrace();
-        }
+        card.useEffect();
         assertTrue(boardAdvanced.getArchiList().get(4).getTowerNoValueFlag());
     }
     @Test

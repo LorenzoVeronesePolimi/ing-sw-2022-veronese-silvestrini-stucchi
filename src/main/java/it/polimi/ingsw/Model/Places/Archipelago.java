@@ -90,7 +90,6 @@ public class Archipelago {
      *
      * @return the number of forbid flags that have been placed on the archipelago
      */
-    //TODO: ForbidFlag must be <=4... check it in ForbidIsland card and throw exception
     public int getForbidFlag(){
         return this.forbidFlag;
     }
@@ -112,7 +111,7 @@ public class Archipelago {
     }
 
     /**
-     * This method removes a forbid flag trom the archipelago.
+     * This method removes a forbid flag from the archipelago.
      */
     public void removeForbidFlag() {
         if(this.forbidFlag>0)
@@ -129,7 +128,7 @@ public class Archipelago {
 
     /**
      *
-     * @return, for each colour, the number of students that are present on the archipelago.
+     * @return for each colour, the number of students that are present on the archipelago.
      */
     public Map<SPColour, Integer> howManyStudents(){
         Map<SPColour, Integer> studentsDataCopy = new HashMap<>();
@@ -167,7 +166,7 @@ public class Archipelago {
      */
 
     /**
-     * this method removes all the towers of the previous owner (and returns the list of them) and places in each
+     * this method removes all the towers of the previous owner (and returns the list of them) and places on each
      * island one tower of the conqueror
      * @param towersToAdd is the list of the towers of the conqueror that must be placed
      * @return the list of towers of the previous owner
@@ -242,10 +241,11 @@ public class Archipelago {
         this.updateStudentsData();
     }
 
-    @Override
+
     /**
-     * this method converts to string an object that is instance of Archipelago
+     * this method converts to string an object that is instance of Archipelago.
      */
+    @Override
     public String toString() {
         int numTowers;
         if (this.islands.get(0).getTower() == null){

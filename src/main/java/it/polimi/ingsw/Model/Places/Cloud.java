@@ -72,8 +72,8 @@ public class Cloud {
     }
 
     /**
-     * This method return a copy of the tower present on the island, without removing it.
-     * @return The copy of the tower on the island.
+     * Method toString of the structure of the class.
+     * @return The description of the class.
      */
     @Override
     public String toString() {

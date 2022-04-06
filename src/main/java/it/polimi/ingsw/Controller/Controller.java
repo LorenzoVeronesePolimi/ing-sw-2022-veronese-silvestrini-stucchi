@@ -657,7 +657,7 @@ public class Controller implements Observer {
                 chosenCard.useEffect(archipelagoIndexToForbid);
 
                 return true;
-            } catch (NoCorrespondingCharacterCardException e) {
+            } catch (NoCorrespondingCharacterCardException | ExceededNumberForbidFlagException e) {
                 e.printStackTrace();
             }
         }
@@ -722,11 +722,7 @@ public class Controller implements Observer {
 
                 return true;
             }
-        } catch (NoCorrespondingCharacterCardException |
-                InvalidTowerNumberException |
-                AnotherTowerException |
-                ExceededMaxTowersException |
-                TowerNotFoundException e) {
+        } catch (NoCorrespondingCharacterCardException e) {
             return false;
         }
 
@@ -746,11 +742,7 @@ public class Controller implements Observer {
 
                 return true;
             }
-        } catch (NoCorrespondingCharacterCardException |
-                TowerNotFoundException |
-                InvalidTowerNumberException |
-                AnotherTowerException |
-                ExceededMaxTowersException e){
+        } catch (NoCorrespondingCharacterCardException e){
             return false;
         }
 

@@ -17,7 +17,7 @@ import java.util.List;
 
 public class ForbidIslandTest {
     @Test
-    void ForbidIslandTest(){
+    void ForbidIslandTests(){
         List<Player> playerList = new ArrayList<>();
         Player p1 = new Player("player one", PlayerColour.BLACK);
         Player p2 = new Player("player two", PlayerColour.WHITE);
@@ -34,6 +34,7 @@ public class ForbidIslandTest {
         }
 
         ForbidIsland card = new ForbidIsland(boardAdvanced);
+        assert boardAdvanced != null;
         boardAdvanced.setExtractedCards(card);
 
         for(int i=0; i<7; i++) {
@@ -83,7 +84,7 @@ public class ForbidIslandTest {
 
         try {
             boardAdvanced.useForbidIsland(p1, 5);
-        } catch (EmptyCaveauException | CoinNotFoundException | ExceededMaxNumCoinException e) {
+        } catch (EmptyCaveauException | CoinNotFoundException | ExceededMaxNumCoinException | ExceededNumberForbidFlagException e) {
             e.printStackTrace();
         }
 
@@ -113,5 +114,12 @@ public class ForbidIslandTest {
         }
 
         Assertions.assertEquals(p1, boardAdvanced.getArchipelago(5).getOwner());
+
+        //This needs to be modified, but it's too difficult to obtain (20 coins in a school!)
+        try {
+            throw new ExceededNumberForbidFlagException();
+        } catch (ExceededNumberForbidFlagException e) {
+            System.out.println("ExceededNumberForbidFlag");
+        }
     }
 }

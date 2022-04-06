@@ -441,7 +441,7 @@ public class BoardAdvanced implements Board {
     }
 
     public void useForbidIsland(Player player, int archipelago) throws
-            EmptyCaveauException, ExceededMaxNumCoinException, CoinNotFoundException{
+            EmptyCaveauException, ExceededMaxNumCoinException, CoinNotFoundException, ExceededNumberForbidFlagException {
         for(AbstractCharacterCard card: extractedCards) {
             if(card instanceof ForbidIsland) {
                 if(this.makePayment(player, card)) {
@@ -455,8 +455,7 @@ public class BoardAdvanced implements Board {
     }
 
     public void useTowerNoValue(Player player) throws
-            EmptyCaveauException, ExceededMaxNumCoinException, CoinNotFoundException, InvalidTowerNumberException,
-            AnotherTowerException, ExceededMaxTowersException, TowerNotFoundException {
+            EmptyCaveauException, ExceededMaxNumCoinException, CoinNotFoundException {
 
         for(AbstractCharacterCard card: extractedCards) {
             if(card instanceof TowerNoValue) {
@@ -482,8 +481,7 @@ public class BoardAdvanced implements Board {
     }
 
     public void useTwoExtraPoints(Player player) throws
-            EmptyCaveauException, ExceededMaxNumCoinException, CoinNotFoundException, InvalidTowerNumberException,
-            AnotherTowerException, ExceededMaxTowersException, TowerNotFoundException {
+            EmptyCaveauException, ExceededMaxNumCoinException, CoinNotFoundException {
 
         for(AbstractCharacterCard card: extractedCards) {
             if(card instanceof TwoExtraPoints) {

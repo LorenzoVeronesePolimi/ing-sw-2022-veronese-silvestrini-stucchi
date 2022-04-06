@@ -6,17 +6,38 @@ import it.polimi.ingsw.Model.Exceptions.*;
 import it.polimi.ingsw.Model.Places.School.School;
 import it.polimi.ingsw.Model.Player;
 
+/**
+ * This class represents the card with this effect:
+ * during this turn, the player takes control of the professors even if he has the same number of students in the
+ * school as the current owner of the professor.
+ */
 public class TakeProfessorOnEquity extends AbstractCharacterCard{
-    final SPColour[] availableColours = {SPColour.BLUE, SPColour.PINK, SPColour.RED, SPColour.GREEN, SPColour.YELLOW};
+    private final SPColour[] availableColours = {SPColour.BLUE, SPColour.PINK, SPColour.RED, SPColour.GREEN, SPColour.YELLOW};
     private final BoardAdvanced boardAdvanced;
 
+    /**
+     * Constructor of the card. It sets the price.
+     * @param boardAdvanced The object modified by the card.
+     */
     public  TakeProfessorOnEquity(BoardAdvanced boardAdvanced){
         super(2);
 
         this.boardAdvanced = boardAdvanced;
     }
 
-    public void useEffect(Player currentPlayer) throws ProfessorNotFoundException, NoProfessorBagException, InvalidTowerNumberException, AnotherTowerException, ExceededMaxTowersException, TowerNotFoundException {
+    /**
+     * This method activates the effect of the card.
+     * @param currentPlayer The current player that has the turn and has played the card.
+     * @throws ProfessorNotFoundException When moving a professor, it is not found in the school nor in the bag.
+     * @throws NoProfessorBagException When moving a professor, it is not found in the bag nor in the school.
+     * @throws InvalidTowerNumberException When changing towers on an archipelago, if there are no towers.
+     * @throws AnotherTowerException When changing towers on an archipelago, if there is a tower that has not been removed.
+     * @throws ExceededMaxTowersException When putting back in the school the towers, but the school is already full.
+     * @throws TowerNotFoundException When conquering but there are no towers in the school.
+     */
+    public void useEffect(Player currentPlayer) throws ProfessorNotFoundException, NoProfessorBagException,
+            InvalidTowerNumberException, AnotherTowerException, ExceededMaxTowersException, TowerNotFoundException {
+
         School currentSchoolPlayer = boardAdvanced.getPlayerSchool(currentPlayer);
 
         for(SPColour colour: availableColours) {
