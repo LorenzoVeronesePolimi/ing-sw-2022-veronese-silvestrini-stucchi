@@ -30,7 +30,7 @@ public class MessageStudentToArchipelago extends Message{
     public boolean checkInput(ControllerInput controller) {
         return (controller.checkNickname(this.nicknamePlayer) &&
                 controller.checkStudentColour(this.colour) &&
-                controller.checkDestArchipelagoIndex(this.destArchipelagoIndex));
+                controller.checkDestinationArchipelagoIndex(this.destArchipelagoIndex));
     }
 
     @Override

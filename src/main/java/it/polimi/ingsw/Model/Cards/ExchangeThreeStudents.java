@@ -16,7 +16,7 @@ import java.util.stream.Collectors;
 
 public class ExchangeThreeStudents extends AbstractCharacterCard{
     private final BoardAdvanced boardAdvanced;
-    private List<Student> students;
+    private final List<Student> students;
 
     public ExchangeThreeStudents(BoardAdvanced boardAdvanced) throws StudentNotFoundException {
         super(1);

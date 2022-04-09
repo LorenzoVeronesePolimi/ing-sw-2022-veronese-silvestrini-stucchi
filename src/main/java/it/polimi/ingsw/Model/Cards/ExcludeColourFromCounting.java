@@ -2,11 +2,6 @@ package it.polimi.ingsw.Model.Cards;
 
 import it.polimi.ingsw.Model.Board.BoardAdvanced;
 import it.polimi.ingsw.Model.Enumerations.SPColour;
-import it.polimi.ingsw.Model.Exceptions.AnotherTowerException;
-import it.polimi.ingsw.Model.Exceptions.ExceededMaxTowersException;
-import it.polimi.ingsw.Model.Exceptions.InvalidTowerNumberException;
-import it.polimi.ingsw.Model.Exceptions.TowerNotFoundException;
-import it.polimi.ingsw.Model.Player;
 
 /**
  * This class represents the card that has this effect:

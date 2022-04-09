@@ -379,99 +379,79 @@ public class BoardAdvanced implements Board {
         this.twoExtraPointsFlag = twoExtraPointsFlag;
     }
 
-    public void usePlaceOneStudent(Player player, SPColour chosen, int archipelago) throws
+    public void usePlaceOneStudent(Player player, SPColour chosen, int archipelago, int indexCard) throws
             StudentNotFoundException , EmptyCaveauException, ExceededMaxNumCoinException, CoinNotFoundException {
-        for(AbstractCharacterCard card: extractedCards) {
-            if(card instanceof PlaceOneStudent) {
-                if(this.makePayment(player, card)) {
-                    ((PlaceOneStudent) card).useEffect(chosen, archipelago);
-                    card.updatePrice(this.bank.getCoin());
-                } else {
-                    throw new CoinNotFoundException();
-                }
-            }
+
+        if(this.makePayment(player, this.extractedCards.get(indexCard))) {
+            ((PlaceOneStudent) this.extractedCards.get(indexCard)).useEffect(chosen, archipelago);
+            this.extractedCards.get(indexCard).updatePrice(this.bank.getCoin());
+        } else {
+            throw new CoinNotFoundException();
         }
     }
 
-    public void useTakeProfessorOnEquity(Player player) throws
+    public void useTakeProfessorOnEquity(Player player, int indexCard) throws
             EmptyCaveauException, ExceededMaxNumCoinException, CoinNotFoundException, InvalidTowerNumberException,
             AnotherTowerException, ProfessorNotFoundException, NoProfessorBagException, ExceededMaxTowersException, TowerNotFoundException {
 
-        for(AbstractCharacterCard card: extractedCards) {
-            if(card instanceof TakeProfessorOnEquity) {
-                if(this.makePayment(player, card)) {
-                    ((TakeProfessorOnEquity) card).useEffect(player);
-                    card.updatePrice(this.bank.getCoin());
-                } else {
-                    throw new CoinNotFoundException();
-                }
-            }
+        if(this.makePayment(player, this.extractedCards.get(indexCard))) {
+            ((TakeProfessorOnEquity) this.extractedCards.get(indexCard)).useEffect(player);
+            this.extractedCards.get(indexCard).updatePrice(this.bank.getCoin());
+        } else {
+            throw new CoinNotFoundException();
         }
     }
 
-    public void useFakeMNMovement(Player player, int fakeMNPosition) throws
+    public void useFakeMNMovement(Player player, int fakeMNPosition, int indexCard) throws
             EmptyCaveauException, ExceededMaxNumCoinException, CoinNotFoundException, InvalidTowerNumberException,
             AnotherTowerException, ExceededMaxTowersException, TowerNotFoundException {
 
-        for(AbstractCharacterCard card: extractedCards) {
-            if(card instanceof FakeMNMovement) {
-                if(this.makePayment(player, card)) {
-                    ((FakeMNMovement) card).useEffect(player, fakeMNPosition);
-                    card.updatePrice(this.bank.getCoin());
-                } else {
-                    throw new CoinNotFoundException();
-                }
-            }
+        if(this.makePayment(player, this.extractedCards.get(indexCard))) {
+            ((FakeMNMovement) this.extractedCards.get(indexCard)).useEffect(player, fakeMNPosition);
+            this.extractedCards.get(indexCard).updatePrice(this.bank.getCoin());
+        } else {
+            throw new CoinNotFoundException();
         }
     }
 
-    public void useTwoExtraIslands(Player player) throws
+    public void useTwoExtraIslands(Player player, int indexCard) throws
             EmptyCaveauException, ExceededMaxNumCoinException, CoinNotFoundException{
 
-        for(AbstractCharacterCard card: extractedCards) {
-            if(card instanceof TwoExtraIslands) {
-                if(this.makePayment(player, card)) {
-                    ((TwoExtraIslands) card).useEffect(player);
-                    card.updatePrice(this.bank.getCoin());
-                } else {
-                    throw new CoinNotFoundException();
-                }
-            }
+        if(this.makePayment(player, this.extractedCards.get(indexCard))) {
+            ((TwoExtraIslands) this.extractedCards.get(indexCard)).useEffect(player);
+            this.extractedCards.get(indexCard).updatePrice(this.bank.getCoin());
+        } else {
+            throw new CoinNotFoundException();
         }
     }
 
-    public void useForbidIsland(Player player, int archipelago) throws
+    public void useForbidIsland(Player player, int archipelago, int indexCard) throws
             EmptyCaveauException, ExceededMaxNumCoinException, CoinNotFoundException, ExceededNumberForbidFlagException {
-        for(AbstractCharacterCard card: extractedCards) {
-            if(card instanceof ForbidIsland) {
-                if(this.makePayment(player, card)) {
-                    ((ForbidIsland) card).useEffect(archipelago);
-                    card.updatePrice(this.bank.getCoin());
-                } else {
-                    throw new CoinNotFoundException();
-                }
-            }
+
+        if(this.makePayment(player, this.extractedCards.get(indexCard))) {
+            ((ForbidIsland) this.extractedCards.get(indexCard)).useEffect(archipelago);
+            this.extractedCards.get(indexCard).updatePrice(this.bank.getCoin());
+        } else {
+            throw new CoinNotFoundException();
         }
     }
 
-    public void useTowerNoValue(Player player) throws
+    public void useTowerNoValue(Player player, int indexCard) throws
             EmptyCaveauException, ExceededMaxNumCoinException, CoinNotFoundException {
 
-        for(AbstractCharacterCard card: extractedCards) {
-            if(card instanceof TowerNoValue) {
-                if(this.makePayment(player, card)) {
-                    ((TowerNoValue) card).useEffect();
-                    card.updatePrice(this.bank.getCoin());
-                } else {
-                    throw new CoinNotFoundException();
-                }
-            }
+        if(this.makePayment(player, this.extractedCards.get(indexCard))) {
+            ((TowerNoValue) this.extractedCards.get(indexCard)).useEffect();
+            this.extractedCards.get(indexCard).updatePrice(this.bank.getCoin());
+        } else {
+            throw new CoinNotFoundException();
         }
+
     }
 
     public void useExchangeThreeStudents(Player player, List<SPColour> hallStudents, List<SPColour> exchangeStudents, int indexCard) throws
             EmptyCaveauException, ExceededMaxNumCoinException, CoinNotFoundException, WrongNumberOfStudentsTransferException,
             StudentNotFoundException, ExceededMaxStudentsHallException {
+
         if(this.makePayment(player, this.extractedCards.get(indexCard))) {
             ((ExchangeThreeStudents) this.extractedCards.get(indexCard)).useEffect(player, hallStudents, exchangeStudents);
             this.extractedCards.get(indexCard).updatePrice(this.bank.getCoin());
@@ -480,80 +460,61 @@ public class BoardAdvanced implements Board {
         }
     }
 
-    public void useTwoExtraPoints(Player player) throws
+    public void useTwoExtraPoints(Player player, int indexCard) throws
             EmptyCaveauException, ExceededMaxNumCoinException, CoinNotFoundException {
 
-        for(AbstractCharacterCard card: extractedCards) {
-            if(card instanceof TwoExtraPoints) {
-                if(this.makePayment(player, card)) {
-                    ((TwoExtraPoints) card).useEffect();
-                    card.updatePrice(this.bank.getCoin());
-                } else {
-                    throw new CoinNotFoundException();
-                }
-            }
+        if(this.makePayment(player, this.extractedCards.get(indexCard))) {
+            ((TwoExtraPoints) this.extractedCards.get(indexCard)).useEffect();
+            this.extractedCards.get(indexCard).updatePrice(this.bank.getCoin());
+        } else {
+            throw new CoinNotFoundException();
         }
     }
 
-    public void useExcludeColourFromCounting(Player player, SPColour colourToExclude) throws
+    public void useExcludeColourFromCounting(Player player, SPColour colourToExclude, int indexCard) throws
             EmptyCaveauException, ExceededMaxNumCoinException, CoinNotFoundException, InvalidTowerNumberException,
             AnotherTowerException, ExceededMaxTowersException, TowerNotFoundException {
 
-        for(AbstractCharacterCard card: extractedCards) {
-            if(card instanceof ExcludeColourFromCounting) {
-                if(this.makePayment(player, card)) {
-                    ((ExcludeColourFromCounting) card).useEffect(colourToExclude);
-                    card.updatePrice(this.bank.getCoin());
-                } else {
-                    throw new CoinNotFoundException();
-                }
-            }
+        if(this.makePayment(player, this.extractedCards.get(indexCard))) {
+            ((ExcludeColourFromCounting) this.extractedCards.get(indexCard)).useEffect(colourToExclude);
+            this.extractedCards.get(indexCard).updatePrice(this.bank.getCoin());
+        } else {
+            throw new CoinNotFoundException();
         }
     }
 
-    public void useExchangeTwoHallDining(Player player, List<SPColour> hallStudents, List<SPColour> diningStudents) throws
+    public void useExchangeTwoHallDining(Player player, List<SPColour> hallStudents, List<SPColour> diningStudents, int indexCard) throws
             EmptyCaveauException, ExceededMaxNumCoinException, CoinNotFoundException, WrongNumberOfStudentsTransferException,
             ExceededMaxStudentsDiningRoomException, ExceededMaxStudentsHallException, StudentNotFoundException {
 
-        for(AbstractCharacterCard card: extractedCards) {
-            if(card instanceof ExchangeTwoHallDining) {
-                if(this.makePayment(player, card)) {
-                    ((ExchangeTwoHallDining) card).useEffect(player, hallStudents, diningStudents);
-                    card.updatePrice(this.bank.getCoin());
-                } else {
-                    throw new CoinNotFoundException();
-                }
-            }
+        if(this.makePayment(player, this.extractedCards.get(indexCard))) {
+            ((ExchangeTwoHallDining) this.extractedCards.get(indexCard)).useEffect(player, hallStudents, diningStudents);
+            this.extractedCards.get(indexCard).updatePrice(this.bank.getCoin());
+        } else {
+            throw new CoinNotFoundException();
         }
     }
 
-    public void useExtraStudentInDining(Player player, SPColour cardToDining) throws
+    public void useExtraStudentInDining(Player player, SPColour cardToDining, int indexCard) throws
             EmptyCaveauException, ExceededMaxNumCoinException, CoinNotFoundException, StudentNotFoundException,
             ExceededMaxStudentsDiningRoomException {
 
-        for(AbstractCharacterCard card: extractedCards) {
-            if(card instanceof ExtraStudentInDining) {
-                if(this.makePayment(player, card)) {
-                    ((ExtraStudentInDining) card).useEffect(player, cardToDining);
-                    card.updatePrice(this.bank.getCoin());
-                } else {
-                    throw new CoinNotFoundException();
-                }
-            }
+        if(this.makePayment(player, this.extractedCards.get(indexCard))) {
+            ((ExtraStudentInDining) this.extractedCards.get(indexCard)).useEffect(player, cardToDining);
+            this.extractedCards.get(indexCard).updatePrice(this.bank.getCoin());
+        } else {
+            throw new CoinNotFoundException();
         }
     }
 
-    public void useReduceColourInDining(Player player, SPColour colour) throws
+    public void useReduceColourInDining(Player player, SPColour colour, int indexCard) throws
             EmptyCaveauException, ExceededMaxNumCoinException, CoinNotFoundException, StudentNotFoundException {
-        for(AbstractCharacterCard card: extractedCards) {
-            if(card instanceof ReduceColourInDining) {
-                if(this.makePayment(player, card)) {
-                    ((ReduceColourInDining) card).useEffect(colour);
-                    card.updatePrice(this.bank.getCoin());
-                } else {
-                    throw new CoinNotFoundException();
-                }
-            }
+
+        if(this.makePayment(player, this.extractedCards.get(indexCard))) {
+            ((ReduceColourInDining) this.extractedCards.get(indexCard)).useEffect(colour);
+            this.extractedCards.get(indexCard).updatePrice(this.bank.getCoin());
+        } else {
+            throw new CoinNotFoundException();
         }
     }
 

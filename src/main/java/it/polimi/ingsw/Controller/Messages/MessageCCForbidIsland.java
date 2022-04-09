@@ -27,7 +27,7 @@ public class MessageCCForbidIsland extends MessageCC{
     public boolean checkInput(ControllerInput controller) {
         return (controller.checkIndexCard(this.indexCard) &&
                 controller.checkNickname(this.nicknamePlayer) &&
-                controller.checkDestArchipelagoIndex(this.archipelagoIndexToForbid));
+                controller.checkDestinationArchipelagoIndex(this.archipelagoIndexToForbid));
     }
 
     @Override

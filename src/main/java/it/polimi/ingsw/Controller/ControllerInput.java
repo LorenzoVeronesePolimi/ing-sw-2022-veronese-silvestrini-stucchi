@@ -59,7 +59,7 @@ public class ControllerInput {
     }
 
     // Check if the destination Archipelago is possible
-    public boolean checkDestArchipelagoIndex(int i){
+    public boolean checkDestinationArchipelagoIndex(int i){
         return i <= MAX_NUM_ARCHIPELAGOS;
     }
 

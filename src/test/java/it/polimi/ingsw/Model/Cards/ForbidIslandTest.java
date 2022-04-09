@@ -83,7 +83,7 @@ public class ForbidIslandTest {
         boardAdvanced.getArchiList().get(5).addStudent(s8);
 
         try {
-            boardAdvanced.useForbidIsland(p1, 5);
+            boardAdvanced.useForbidIsland(p1, 5, 0);
         } catch (EmptyCaveauException | CoinNotFoundException | ExceededMaxNumCoinException | ExceededNumberForbidFlagException e) {
             e.printStackTrace();
         }

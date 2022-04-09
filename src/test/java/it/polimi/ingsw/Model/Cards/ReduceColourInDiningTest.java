@@ -99,7 +99,7 @@ public class ReduceColourInDiningTest {
         Assertions.assertEquals(2, ((SchoolAdvanced)boardAdvanced.getPlayerSchool(p2)).getNumCoins());
 
         try {
-            boardAdvanced.useReduceColourInDining(p1,SPColour.RED);
+            boardAdvanced.useReduceColourInDining(p1,SPColour.RED, 0);
         } catch (EmptyCaveauException | StudentNotFoundException | CoinNotFoundException | ExceededMaxNumCoinException e) {
             e.printStackTrace();
         }

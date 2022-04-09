@@ -34,7 +34,7 @@ public class MessageCCPlaceOneStudent extends MessageCC{
         return (controller.checkIndexCard(this.indexCard) &&
                 controller.checkNickname(this.nicknamePlayer) &&
                 controller.checkStudentColour(this.colourToMove) &&
-                controller.checkDestArchipelagoIndex(this.archipelagoIndexDest));
+                controller.checkDestinationArchipelagoIndex(this.archipelagoIndexDest));
     }
 
     @Override

@@ -1,8 +1,6 @@
 package it.polimi.ingsw.Controller;
 
-import it.polimi.ingsw.Controller.Enumerations.MessageType;
 import it.polimi.ingsw.Controller.Enumerations.State;
-import it.polimi.ingsw.Controller.Exceptions.NoCorrespondingCharacterCardException;
 import it.polimi.ingsw.Controller.Exceptions.NoPlayerException;
 import it.polimi.ingsw.Controller.Messages.*;
 import it.polimi.ingsw.Model.Board.BoardAbstract;
@@ -393,14 +391,17 @@ public class Controller implements Observer {
         try {
             ExchangeTwoHallDining chosenCard = (ExchangeTwoHallDining)this.boardAdvanced.getExtractedCards().get(indexCard);
             if(controllerIntegrity.checkCCExchangeTwoHallDining(getCurrentPlayer(), coloursHall, coloursDiningRoom, chosenCard)){
-                chosenCard.useEffect(getCurrentPlayer(), coloursHall, coloursDiningRoom);
+                this.boardAdvanced.useExchangeTwoHallDining(getCurrentPlayer(), coloursHall, coloursDiningRoom, indexCard);
 
                 return true;
             }
         } catch (WrongNumberOfStudentsTransferException |
                 StudentNotFoundException |
                 ExceededMaxStudentsHallException |
-                ExceededMaxStudentsDiningRoomException e) {return false;}
+                ExceededMaxStudentsDiningRoomException |
+                EmptyCaveauException |
+                ExceededMaxNumCoinException |
+                CoinNotFoundException e) {return false;}
 
         return false;
     }
@@ -408,12 +409,22 @@ public class Controller implements Observer {
     public boolean manageCCExcludeColourFromCounting(MessageCCExcludeColourFromCounting message){
         int indexCard = message.getIndexCard();
         String nicknamePlayer = message.getNicknamePlayer();
+        SPColour colourToExclude = this.mapStringToSPColour(message.getColourToExclude());
 
         if(!isCurrentPlayer(nicknamePlayer)){return false;}
 
         if(controllerIntegrity.checkCCGeneric()){
-            ExcludeColourFromCounting chosenCard = (ExcludeColourFromCounting)this.boardAdvanced.getExtractedCards().get(indexCard);
-            chosenCard.useEffect(this.mapStringToSPColour(message.getColourToExclude()));
+            try {
+                this.boardAdvanced.useExcludeColourFromCounting(getCurrentPlayer(), colourToExclude, indexCard);
+            } catch (EmptyCaveauException |
+                    ExceededMaxNumCoinException |
+                    CoinNotFoundException |
+                    InvalidTowerNumberException |
+                    AnotherTowerException |
+                    ExceededMaxTowersException |
+                    TowerNotFoundException e) {
+                e.printStackTrace();
+            }
 
             return true;
         }
@@ -430,12 +441,14 @@ public class Controller implements Observer {
 
         if(controllerIntegrity.checkCCGeneric()){
             try {
-                ExtraStudentInDining chosenCard = (ExtraStudentInDining)this.boardAdvanced.getExtractedCards().get(indexCard);
-                chosenCard.useEffect(getCurrentPlayer(), colourToMove);
+                this.boardAdvanced.useExtraStudentInDining(getCurrentPlayer(), colourToMove, indexCard);
 
                 return true;
             } catch (ExceededMaxStudentsDiningRoomException |
-                    StudentNotFoundException e) {
+                    StudentNotFoundException |
+                    EmptyCaveauException |
+                    ExceededMaxNumCoinException |
+                    CoinNotFoundException e) {
                 return false;
             }
         }
@@ -452,14 +465,16 @@ public class Controller implements Observer {
 
         if(controllerIntegrity.checkCCFakeMNMovement(fakeMNPosition)){
             try {
-                FakeMNMovement chosenCard = (FakeMNMovement)this.boardAdvanced.getExtractedCards().get(indexCard);
-                chosenCard.useEffect(getCurrentPlayer(), fakeMNPosition);
+                this.boardAdvanced.useFakeMNMovement(getCurrentPlayer(), fakeMNPosition, indexCard);
 
                 return true;
             } catch (TowerNotFoundException |
                     InvalidTowerNumberException |
                     AnotherTowerException |
-                    ExceededMaxTowersException e) {
+                    ExceededMaxTowersException |
+                    EmptyCaveauException |
+                    ExceededMaxNumCoinException |
+                    CoinNotFoundException e) {
                 return false;
             }
         }
@@ -476,11 +491,13 @@ public class Controller implements Observer {
 
         if(controllerIntegrity.checkCCForbidIsland(archipelagoIndexToForbid)){
             try {
-                ForbidIsland chosenCard = (ForbidIsland)this.boardAdvanced.getExtractedCards().get(indexCard);;
-                chosenCard.useEffect(archipelagoIndexToForbid);
+                this.boardAdvanced.useForbidIsland(getCurrentPlayer(), archipelagoIndexToForbid, indexCard);
 
                 return true;
-            } catch (ExceededNumberForbidFlagException e) {
+            } catch (ExceededNumberForbidFlagException |
+                    EmptyCaveauException |
+                    ExceededMaxNumCoinException |
+                    CoinNotFoundException e) {
                 e.printStackTrace();
             }
         }
@@ -496,13 +513,16 @@ public class Controller implements Observer {
         if(!isCurrentPlayer(nicknamePlayer)){return false;}
 
         try {
-            PlaceOneStudent chosenCard = (PlaceOneStudent)this.boardAdvanced.getExtractedCards().get(indexCard);;
+            PlaceOneStudent chosenCard = (PlaceOneStudent)this.boardAdvanced.getExtractedCards().get(indexCard);
             if(controllerIntegrity.checkCCPlaceOneStudent(colourToMove, archipelagoIndexDestination, chosenCard)){
-                chosenCard.useEffect(colourToMove, archipelagoIndexDestination);
+                this.boardAdvanced.usePlaceOneStudent(getCurrentPlayer(), colourToMove, archipelagoIndexDestination, indexCard);
 
                 return true;
             }
-        } catch (StudentNotFoundException e) {
+        } catch (StudentNotFoundException |
+                EmptyCaveauException |
+                ExceededMaxNumCoinException |
+                CoinNotFoundException e) {
             return false;
         }
 
@@ -518,12 +538,14 @@ public class Controller implements Observer {
 
         try {
             if(controllerIntegrity.checkCCGeneric()) {
-                ReduceColourInDining chosenCard = (ReduceColourInDining)this.boardAdvanced.getExtractedCards().get(indexCard);;
-                chosenCard.useEffect(colourToReduce);
+                this.boardAdvanced.useReduceColourInDining(getCurrentPlayer(), colourToReduce, indexCard);
 
                 return true;
             }
-        } catch (StudentNotFoundException e) {
+        } catch (StudentNotFoundException |
+                EmptyCaveauException |
+                ExceededMaxNumCoinException |
+                CoinNotFoundException e) {
             return false;
         }
 
@@ -537,8 +559,13 @@ public class Controller implements Observer {
         if(!isCurrentPlayer(nicknamePlayer)){return false;}
 
         if(controllerIntegrity.checkCCGeneric()){
-            TowerNoValue chosenCard = (TowerNoValue)this.boardAdvanced.getExtractedCards().get(indexCard);;
-            chosenCard.useEffect();
+            try {
+                this.boardAdvanced.useTowerNoValue(getCurrentPlayer(), indexCard);
+            } catch (EmptyCaveauException |
+                    ExceededMaxNumCoinException |
+                    CoinNotFoundException e) {
+                e.printStackTrace();
+            }
 
             return true;
         }
@@ -553,8 +580,13 @@ public class Controller implements Observer {
         if(!isCurrentPlayer(nicknamePlayer)){return false;}
 
         if(controllerIntegrity.checkCCGeneric()){
-            TwoExtraPoints chosenCard = (TwoExtraPoints)this.boardAdvanced.getExtractedCards().get(indexCard);;
-            chosenCard.useEffect();
+            try {
+                this.boardAdvanced.useTwoExtraPoints(getCurrentPlayer(), indexCard);
+            } catch (EmptyCaveauException |
+                    ExceededMaxNumCoinException |
+                    CoinNotFoundException e) {
+                e.printStackTrace();
+            }
 
             return true;
         }
@@ -570,8 +602,7 @@ public class Controller implements Observer {
 
         try {
             if(controllerIntegrity.checkCCGeneric()){
-                TakeProfessorOnEquity chosenCard = (TakeProfessorOnEquity)this.boardAdvanced.getExtractedCards().get(indexCard);;
-                chosenCard.useEffect(getCurrentPlayer());
+                this.boardAdvanced.useTakeProfessorOnEquity(getCurrentPlayer(), indexCard);
 
                 return true;
             }
@@ -580,7 +611,10 @@ public class Controller implements Observer {
                 AnotherTowerException |
                 ProfessorNotFoundException |
                 NoProfessorBagException |
-                ExceededMaxTowersException e) {
+                ExceededMaxTowersException |
+                EmptyCaveauException |
+                ExceededMaxNumCoinException |
+                CoinNotFoundException e) {
             return false;
         }
 
@@ -594,8 +628,13 @@ public class Controller implements Observer {
         if(!isCurrentPlayer(nicknamePlayer)){return false;}
 
         if(controllerIntegrity.checkCCGeneric()){
-            TwoExtraIslands chosenCard = (TwoExtraIslands)this.boardAdvanced.getExtractedCards().get(indexCard);;
-            chosenCard.useEffect(getCurrentPlayer());
+            try {
+                this.boardAdvanced.useTwoExtraIslands(getCurrentPlayer(), indexCard);
+            } catch (EmptyCaveauException |
+                    ExceededMaxNumCoinException |
+                    CoinNotFoundException e) {
+                e.printStackTrace();
+            }
 
             return true;
         }

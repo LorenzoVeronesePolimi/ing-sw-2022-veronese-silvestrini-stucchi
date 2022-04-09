@@ -88,7 +88,7 @@ public class FakeMNMovementTest {
         boardAdvanced.getArchiList().get(8).addStudent(s9);
 
         try {
-            boardAdvanced.useFakeMNMovement(p1,8);
+            boardAdvanced.useFakeMNMovement(p1,8, 0);
         } catch (EmptyCaveauException | TowerNotFoundException | ExceededMaxTowersException | AnotherTowerException | InvalidTowerNumberException | CoinNotFoundException | ExceededMaxNumCoinException e) {
             e.printStackTrace();
         }

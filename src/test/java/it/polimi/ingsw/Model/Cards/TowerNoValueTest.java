@@ -110,7 +110,7 @@ public class TowerNoValueTest {
         Assertions.assertEquals(p2,boardAdvanced.getArchipelago(0).getOwner());
 
         try {
-            boardAdvanced.useTowerNoValue(p1);
+            boardAdvanced.useTowerNoValue(p1, 0);
             boardAdvanced.tryToConquer(p1);
         } catch (EmptyCaveauException | TowerNotFoundException | ExceededMaxTowersException | AnotherTowerException | InvalidTowerNumberException | CoinNotFoundException | ExceededMaxNumCoinException e) {
             e.printStackTrace();

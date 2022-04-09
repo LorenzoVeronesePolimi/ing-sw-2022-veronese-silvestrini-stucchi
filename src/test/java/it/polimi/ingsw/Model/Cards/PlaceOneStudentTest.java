@@ -48,7 +48,7 @@ public class PlaceOneStudentTest {
 
         if(card.getCardStudents().stream().anyMatch(x -> x.getColour().equals(SPColour.BLUE))){
             try {
-                boardAdvanced.usePlaceOneStudent(p1,SPColour.BLUE,6);
+                boardAdvanced.usePlaceOneStudent(p1,SPColour.BLUE,6, 0);
                 Assertions.assertTrue(boardAdvanced.getArchipelago(6).howManyStudents().get(SPColour.BLUE) == 1);
                 Assertions.assertTrue(boardAdvanced.getArchipelago(6).howManyStudents().get(SPColour.PINK) == 0);
                 Assertions.assertTrue(boardAdvanced.getArchipelago(6).howManyStudents().get(SPColour.RED) == 0);
@@ -60,7 +60,7 @@ public class PlaceOneStudentTest {
             }
         }else{
             BoardAdvanced finalBoardAdvanced = boardAdvanced;
-            Assertions.assertThrows(StudentNotFoundException.class, () -> finalBoardAdvanced.usePlaceOneStudent(p1,SPColour.BLUE,6));
+            Assertions.assertThrows(StudentNotFoundException.class, () -> finalBoardAdvanced.usePlaceOneStudent(p1,SPColour.BLUE,6, 0));
         }
 
         for(int i=0; i<10;i++) {

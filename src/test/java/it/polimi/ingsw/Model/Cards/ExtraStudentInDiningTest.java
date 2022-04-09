@@ -70,14 +70,14 @@ public class ExtraStudentInDiningTest {
 
         if(card.getStudentOnCard().stream().anyMatch(x -> x.getColour().equals(SPColour.PINK))){
             try {
-                boardAdvanced.useExtraStudentInDining(p1,SPColour.PINK);
+                boardAdvanced.useExtraStudentInDining(p1,SPColour.PINK, 0);
                 Assertions.assertEquals(1, boardAdvanced.getSchools().get(0).getNumStudentColour(SPColour.PINK));
             } catch (EmptyCaveauException | ExceededMaxNumCoinException | CoinNotFoundException | StudentNotFoundException | ExceededMaxStudentsDiningRoomException e) {
                 e.printStackTrace();
             }
         }else{
             BoardAdvanced finalBoardAdvanced = boardAdvanced;
-            Assertions.assertThrows(StudentNotFoundException.class, () -> finalBoardAdvanced.useExtraStudentInDining(p1, SPColour.PINK));
+            Assertions.assertThrows(StudentNotFoundException.class, () -> finalBoardAdvanced.useExtraStudentInDining(p1, SPColour.PINK,0));
         }
 
     }

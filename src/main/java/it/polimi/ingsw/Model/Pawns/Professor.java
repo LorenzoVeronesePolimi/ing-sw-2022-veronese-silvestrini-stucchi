@@ -9,7 +9,7 @@ public class Professor {
     private final SPColour colour;
 
     /**
-     * The constructor buids a professor of the colour that is received as parameter.
+     * The constructor builds a professor of the colour that is received as parameter.
      * @param colour colour of the professor to build.
      */
     public Professor(SPColour colour) {

@@ -45,7 +45,7 @@ public class TwoExtraIslandsTest {
         Assertions.assertEquals(2, p1.getLastCard().getMotherNatureMovement());
 
         try {
-            boardAdvanced.useTwoExtraIslands(p1);
+            boardAdvanced.useTwoExtraIslands(p1, 0);
         } catch (EmptyCaveauException e) {
             e.printStackTrace();
         } catch (ExceededMaxNumCoinException e) {

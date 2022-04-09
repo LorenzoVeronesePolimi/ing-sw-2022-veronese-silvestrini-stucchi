@@ -81,7 +81,7 @@ public class TwoExtraPointsTest {
         boardAdvanced.getArchipelago(0).addStudent(_3);
 
         try {
-            boardAdvanced.useTwoExtraPoints(p1);
+            boardAdvanced.useTwoExtraPoints(p1, 0);
             boardAdvanced.tryToConquer(p1);
         } catch (EmptyCaveauException | TowerNotFoundException | ExceededMaxTowersException | AnotherTowerException | InvalidTowerNumberException | CoinNotFoundException | ExceededMaxNumCoinException e) {
             e.printStackTrace();

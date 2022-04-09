@@ -96,7 +96,7 @@ public class ExchangeTwoHallDiningTest {
         diningColour.add(SPColour.BLUE);
 
         try {
-            boardAdvanced.useExchangeTwoHallDining(p1,hallColours,diningColour);
+            boardAdvanced.useExchangeTwoHallDining(p1,hallColours,diningColour, 0);
         } catch (EmptyCaveauException | StudentNotFoundException | ExceededMaxStudentsHallException | ExceededMaxStudentsDiningRoomException | WrongNumberOfStudentsTransferException | CoinNotFoundException | ExceededMaxNumCoinException e) {
             e.printStackTrace();
         }

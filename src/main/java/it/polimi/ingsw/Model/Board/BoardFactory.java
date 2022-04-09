@@ -1,6 +1,5 @@
 package it.polimi.ingsw.Model.Board;
 
-import it.polimi.ingsw.Model.Exceptions.NoAssistantCardException;
 import it.polimi.ingsw.Model.Player;
 
 import java.util.ArrayList;

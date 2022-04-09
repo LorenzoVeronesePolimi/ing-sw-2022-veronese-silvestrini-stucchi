@@ -84,7 +84,7 @@ public class TakeProfessorOnEquityTest {
         Assertions.assertEquals(2, ((SchoolAdvanced)boardAdvanced.getPlayerSchool(p2)).getNumCoins());
 
         try {
-            boardAdvanced.useTakeProfessorOnEquity(p2);
+            boardAdvanced.useTakeProfessorOnEquity(p2, 0);
         } catch (EmptyCaveauException | TowerNotFoundException | ExceededMaxTowersException | NoProfessorBagException | ProfessorNotFoundException | AnotherTowerException | InvalidTowerNumberException | CoinNotFoundException | ExceededMaxNumCoinException e) {
             e.printStackTrace();
         }

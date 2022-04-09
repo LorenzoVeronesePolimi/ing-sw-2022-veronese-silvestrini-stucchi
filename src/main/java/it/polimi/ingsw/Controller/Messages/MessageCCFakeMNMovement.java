@@ -27,7 +27,7 @@ public class MessageCCFakeMNMovement extends MessageCC{
     public boolean checkInput(ControllerInput controller) {
         return (controller.checkIndexCard(this.indexCard) &&
                 controller.checkNickname(this.nicknamePlayer) &&
-                controller.checkDestArchipelagoIndex(this.fakeMNPosition));
+                controller.checkDestinationArchipelagoIndex(this.fakeMNPosition));
     }
 
     @Override
