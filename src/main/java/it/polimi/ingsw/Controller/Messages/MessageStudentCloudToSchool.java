@@ -1,6 +1,7 @@
 package it.polimi.ingsw.Controller.Messages;
 
 import it.polimi.ingsw.Controller.Controller;
+import it.polimi.ingsw.Controller.ControllerInput;
 
 import static it.polimi.ingsw.Controller.Enumerations.MessageType.STUDENT_CLOUD_TO_SCHOOL;
 
@@ -20,6 +21,12 @@ public class MessageStudentCloudToSchool extends Message{
 
     public int getIndexCloud() {
         return indexCloud;
+    }
+
+    @Override
+    public boolean checkInput(ControllerInput controller) {
+        return (controller.checkNickname(this.nicknamePlayer) &&
+                controller.checkCloudIndex(this.indexCloud));
     }
 
     @Override

@@ -1,6 +1,7 @@
 package it.polimi.ingsw.Controller.Messages;
 
 import it.polimi.ingsw.Controller.Controller;
+import it.polimi.ingsw.Controller.ControllerInput;
 
 import static it.polimi.ingsw.Controller.Enumerations.MessageType.CREATE_MATCH;
 
@@ -32,6 +33,11 @@ public class MessageCreateMatch extends Message{
 
     public boolean isAdvanced() {
         return advanced;
+    }
+
+    public boolean checkInput(ControllerInput controller){
+        return (controller.checkNickname(this.nicknameFirstPlayer) &&
+                controller.checkPlayerColour(this.colourFirstPlayer));
     }
 
     @Override

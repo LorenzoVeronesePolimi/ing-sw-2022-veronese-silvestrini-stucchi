@@ -70,110 +70,7 @@ public class Controller implements Observer {
 
         if(!message.manageMessage(this)){
             System.out.println("Error");
-        };
-        /*
-        switch(message.getType()){
-            case CREATE_MATCH: //TODO: manage GameFour
-                if(message instanceof MessageCreateMatch &&
-                        !this.manageCreateMatch((MessageCreateMatch)message)){
-                    System.out.println("You can't create a match now");
-                }
-
-            case ADD_PLAYER:
-                if(message instanceof MessageAddPlayer &&
-                    !this.manageAddPlayer((MessageAddPlayer) message)) {
-                    System.out.println("Impossible to add this player");
-                }
-
-            case ASSISTANT_CARD:
-                if(message instanceof MessageAssistantCard &&
-                        !this.manageAssistantCard((MessageAssistantCard) message)) {
-                    System.out.println("Impossible to play this AssistantCard");
-                }
-
-            case STUDENT_HALL_TO_DINING_ROOM:
-                if(message instanceof MessageStudentHallToDiningRoom &&
-                        !this.manageStudentHallToDiningRoom((MessageStudentHallToDiningRoom) message)) {
-                    System.out.println("You can't move a Student in that way");
-                }
-
-            case STUDENT_TO_ARCHIPELAGO:
-                if(message instanceof MessageStudentToArchipelago &&
-                        !this.manageStudentToArchipelago((MessageStudentToArchipelago) message)) {
-                    System.out.println("You can't move a Student in that way");
-                }
-
-            case MOVE_MOTHER_NATURE:
-                if(message instanceof MessageMoveMotherNature &&
-                        !this.manageMoveMotherNature((MessageMoveMotherNature) message)) {
-                    System.out.println("You can't move the Mother Nature in that way");
-                }
-
-            case STUDENT_CLOUD_TO_SCHOOL:
-                if(message instanceof MessageStudentCloudToSchool &&
-                        !this.manageStudentCloudToSchool((MessageStudentCloudToSchool) message)) {
-                    System.out.println("You can't choose that Cloud");
-                }
-
-            case CC_EXCHANGE_THREE_STUDENTS:
-                if(message instanceof MessageCCExchangeThreeStudents &&
-                        !this.manageCCExchangeThreeStudents((MessageCCExchangeThreeStudents) message)) {
-                    System.out.println("Wrong parameters");
-                }
-
-            case CC_EXCHANGE_TWO_HALL_DINING:
-                if(message instanceof MessageCCExchangeTwoHallDining &&
-                        !this.manageCCExchangeTwoHallDining((MessageCCExchangeTwoHallDining) message)) {
-                    System.out.println("Wrong parameters");
-                }
-
-            case CC_EXCLUDE_COLOUR_FROM_COUNTING:
-                if(message instanceof MessageCCExcludeColourFromCounting &&
-                        !this.manageCCExcludeColourFromCounting((MessageCCExcludeColourFromCounting)message)){
-                    System.out.println("Wrong parameters");
-                }
-
-            case CC_EXTRA_STUDENT_IN_DINING:
-                if(message instanceof MessageCCExtraStudentInDining &&
-                        !this.manageCCExtraStudentInDining((MessageCCExtraStudentInDining)message)){
-                    System.out.println("Wrong parameters");
-                }
-            case CC_FAKE_MN_MOVEMENT:
-                if(message instanceof MessageCCFakeMNMovement &&
-                        !this.manageCCFakeMNMovement((MessageCCFakeMNMovement)message)){
-                    System.out.println("Wrong parameters");
-                }
-
-            case CC_FORBID_ISLAND:
-                if(message instanceof MessageCCForbidIsland &&
-                        !this.manageCCForbidIsland((MessageCCForbidIsland)message)){
-                    System.out.println("Wrong parameters");
-                }
-
-            case CC_PLACE_ONE_STUDENT:
-                if(message instanceof MessageCCPlaceOneStudent &&
-                        !this.manageCCPlaceOneStudent((MessageCCPlaceOneStudent)message)){
-                    System.out.println("Wrong parameters");
-                }
-
-            case CC_REDUCE_COLOUR_IN_DINING:
-                if(message instanceof MessageCCReduceColourInDining &&
-                        !this.manageCCReduceColourInDining((MessageCCReduceColourInDining)message)){
-                    System.out.println("Wrong parameters");
-                }
-
-            case CC_TOWER_NO_VALUE:
-                if(message instanceof MessageCCTowerNoValue &&
-                        !this.manageCCTowerNoValue((MessageCCTowerNoValue)message)){
-                    System.out.println("Wrong parameters");
-                }
-
-            case CC_TWO_EXTRA_POINTS:
-                if(message instanceof MessageCCTwoExtraPoints &&
-                        !this.manageCCTwoExtraPoints((MessageCCTwoExtraPoints)message)){
-                    System.out.println("Wrong parameters");
-                }
-        }*/
+        }
 
         //check if I have to make some automatic action (=>PIANIFICATION1)
         if(controllerState.getState() == State.PLANNING1){
@@ -237,47 +134,6 @@ public class Controller implements Observer {
         }
 
         throw new NoPlayerException();
-    }
-
-    private AbstractCharacterCard mapIndexToCharacterCard(MessageType type, int indexCard) throws NoCorrespondingCharacterCardException{
-        AbstractCharacterCard chosenCard = this.boardAdvanced.getExtractedCards().get(indexCard);
-
-        // is this card corresponding to the index chosen?
-        switch(type){
-            case CC_EXCHANGE_THREE_STUDENTS:
-                if (chosenCard instanceof ExchangeThreeStudents){
-                    return chosenCard;
-                }
-            case CC_EXCLUDE_COLOUR_FROM_COUNTING:
-                if (chosenCard instanceof ExcludeColourFromCounting){
-                    return chosenCard;
-                }
-            case CC_EXTRA_STUDENT_IN_DINING:
-                if (chosenCard instanceof ExtraStudentInDining){
-                    return chosenCard;
-                }
-            case CC_FAKE_MN_MOVEMENT:
-                if (chosenCard instanceof FakeMNMovement){
-                    return chosenCard;
-                }
-            case CC_FORBID_ISLAND:
-                if (chosenCard instanceof ForbidIsland){
-                    return chosenCard;
-                }
-            case CC_PLACE_ONE_STUDENT:
-                if (chosenCard instanceof PlaceOneStudent){
-                    return chosenCard;
-                }
-            case CC_TOWER_NO_VALUE:
-                if (chosenCard instanceof TowerNoValue){
-                    return chosenCard;
-                }
-            case CC_TWO_EXTRA_POINTS:
-                if (chosenCard instanceof TwoExtraPoints){
-                    return chosenCard;
-                }
-        }
-        throw new NoCorrespondingCharacterCardException();
     }
 
     // checks if nickname is the current Player
@@ -510,28 +366,6 @@ public class Controller implements Observer {
         if(!isCurrentPlayer(nicknamePlayer)){return false;}
 
         try{
-            //TODO: ipotesi del nuovo codice di questa parte. Così facendo è possibile mantenere il check integrity
-            // e rimuovere lo switch enorme e gli instanceof sia nel controller che nella board.
-            // La board in questo modo non deve fare un instanceof per selezionare la carta, ma le viene passato l'indice
-            // delle stessa (presente nel messaggio).
-            // Allo stesso modo, il controller non deve fare instanceof dato che il messaggio stesso attiva il metodo
-            // corretto (questo dove siamo ora), quindi sappiamo di che tipo di carta si tratta,
-            // e ha l'indice della carta da giocare (per cui è necessario solamente un cast esplicito).
-            // Questo metodo quindi non fa uso della mapIndexToCharacterCard.
-            // [ L'unico dubbio che ci rimane è come avviene la creazione del messaggio nella view. Nel caso in cui la
-            // view non possa conoscere il tipo di carta giocata (ma solo l'indice della stessa) allora il metodo
-            // mapIndexToCharacterCard si renderebbe di nuovo necessario, però in tale caso ci sarebbe da rivedere la
-            // struttura di tutta questa parte (non potendo chiamare i metodi specifici direttamente nel messaggio). ]
-
-            // ------------ VECCHIO CODICE NON MODIFICATO, SOLO COMMENTATO
-            /*ExchangeThreeStudents chosenCard = (ExchangeThreeStudents)this.mapIndexToCharacterCard(MessageType.CC_EXCHANGE_THREE_STUDENTS, indexCard);
-            if(controllerIntegrity.checkCCExchangeThreeStudents(getCurrentPlayer(), coloursCard, coloursHall, chosenCard)){
-                chosenCard.useEffect(getCurrentPlayer(), coloursHall, coloursCard);
-
-                return true;
-            }*/
-
-            // ------------- IPOTESI NUOVO CODICE
             if(controllerIntegrity.checkCCExchangeThreeStudents(getCurrentPlayer(), coloursCard, coloursHall,
                     (ExchangeThreeStudents) this.boardAdvanced.getExtractedCards().get(indexCard))) {
 
@@ -557,14 +391,13 @@ public class Controller implements Observer {
         if(!isCurrentPlayer(nicknamePlayer)){return false;}
 
         try {
-            ExchangeTwoHallDining chosenCard = (ExchangeTwoHallDining)this.mapIndexToCharacterCard(MessageType.CC_EXCHANGE_THREE_STUDENTS, indexCard);
+            ExchangeTwoHallDining chosenCard = (ExchangeTwoHallDining)this.boardAdvanced.getExtractedCards().get(indexCard);
             if(controllerIntegrity.checkCCExchangeTwoHallDining(getCurrentPlayer(), coloursHall, coloursDiningRoom, chosenCard)){
                 chosenCard.useEffect(getCurrentPlayer(), coloursHall, coloursDiningRoom);
 
                 return true;
             }
-        } catch (NoCorrespondingCharacterCardException |
-                WrongNumberOfStudentsTransferException |
+        } catch (WrongNumberOfStudentsTransferException |
                 StudentNotFoundException |
                 ExceededMaxStudentsHallException |
                 ExceededMaxStudentsDiningRoomException e) {return false;}
@@ -579,14 +412,10 @@ public class Controller implements Observer {
         if(!isCurrentPlayer(nicknamePlayer)){return false;}
 
         if(controllerIntegrity.checkCCGeneric()){
-            try {
-                ExcludeColourFromCounting chosenCard = (ExcludeColourFromCounting)this.mapIndexToCharacterCard(MessageType.CC_EXCLUDE_COLOUR_FROM_COUNTING, indexCard);
-                chosenCard.useEffect(this.mapStringToSPColour(message.getColourToExclude()));
+            ExcludeColourFromCounting chosenCard = (ExcludeColourFromCounting)this.boardAdvanced.getExtractedCards().get(indexCard);
+            chosenCard.useEffect(this.mapStringToSPColour(message.getColourToExclude()));
 
-                return true;
-            } catch (NoCorrespondingCharacterCardException e) {
-                return false;
-            }
+            return true;
         }
 
         return false;
@@ -601,12 +430,11 @@ public class Controller implements Observer {
 
         if(controllerIntegrity.checkCCGeneric()){
             try {
-                ExtraStudentInDining chosenCard = (ExtraStudentInDining)this.mapIndexToCharacterCard(MessageType.CC_EXTRA_STUDENT_IN_DINING, indexCard);
+                ExtraStudentInDining chosenCard = (ExtraStudentInDining)this.boardAdvanced.getExtractedCards().get(indexCard);
                 chosenCard.useEffect(getCurrentPlayer(), colourToMove);
 
                 return true;
-            } catch (NoCorrespondingCharacterCardException |
-                    ExceededMaxStudentsDiningRoomException |
+            } catch (ExceededMaxStudentsDiningRoomException |
                     StudentNotFoundException e) {
                 return false;
             }
@@ -624,12 +452,11 @@ public class Controller implements Observer {
 
         if(controllerIntegrity.checkCCFakeMNMovement(fakeMNPosition)){
             try {
-                FakeMNMovement chosenCard = (FakeMNMovement)this.mapIndexToCharacterCard(MessageType.CC_FAKE_MN_MOVEMENT, indexCard);
+                FakeMNMovement chosenCard = (FakeMNMovement)this.boardAdvanced.getExtractedCards().get(indexCard);
                 chosenCard.useEffect(getCurrentPlayer(), fakeMNPosition);
 
                 return true;
-            } catch (NoCorrespondingCharacterCardException |
-                    TowerNotFoundException |
+            } catch (TowerNotFoundException |
                     InvalidTowerNumberException |
                     AnotherTowerException |
                     ExceededMaxTowersException e) {
@@ -649,11 +476,11 @@ public class Controller implements Observer {
 
         if(controllerIntegrity.checkCCForbidIsland(archipelagoIndexToForbid)){
             try {
-                ForbidIsland chosenCard = (ForbidIsland)this.mapIndexToCharacterCard(MessageType.CC_FORBID_ISLAND, indexCard);
+                ForbidIsland chosenCard = (ForbidIsland)this.boardAdvanced.getExtractedCards().get(indexCard);;
                 chosenCard.useEffect(archipelagoIndexToForbid);
 
                 return true;
-            } catch (NoCorrespondingCharacterCardException | ExceededNumberForbidFlagException e) {
+            } catch (ExceededNumberForbidFlagException e) {
                 e.printStackTrace();
             }
         }
@@ -669,14 +496,13 @@ public class Controller implements Observer {
         if(!isCurrentPlayer(nicknamePlayer)){return false;}
 
         try {
-            PlaceOneStudent chosenCard = (PlaceOneStudent)this.mapIndexToCharacterCard(MessageType.CC_PLACE_ONE_STUDENT, indexCard);
+            PlaceOneStudent chosenCard = (PlaceOneStudent)this.boardAdvanced.getExtractedCards().get(indexCard);;
             if(controllerIntegrity.checkCCPlaceOneStudent(colourToMove, archipelagoIndexDestination, chosenCard)){
                 chosenCard.useEffect(colourToMove, archipelagoIndexDestination);
 
                 return true;
             }
-        } catch (NoCorrespondingCharacterCardException |
-                StudentNotFoundException e) {
+        } catch (StudentNotFoundException e) {
             return false;
         }
 
@@ -692,13 +518,12 @@ public class Controller implements Observer {
 
         try {
             if(controllerIntegrity.checkCCGeneric()) {
-                ReduceColourInDining chosenCard = (ReduceColourInDining) this.mapIndexToCharacterCard(MessageType.CC_REDUCE_COLOUR_IN_DINING, indexCard);
+                ReduceColourInDining chosenCard = (ReduceColourInDining)this.boardAdvanced.getExtractedCards().get(indexCard);;
                 chosenCard.useEffect(colourToReduce);
 
                 return true;
             }
-        } catch (NoCorrespondingCharacterCardException |
-                StudentNotFoundException e) {
+        } catch (StudentNotFoundException e) {
             return false;
         }
 
@@ -711,15 +536,11 @@ public class Controller implements Observer {
 
         if(!isCurrentPlayer(nicknamePlayer)){return false;}
 
-        try {
-            if(controllerIntegrity.checkCCGeneric()){
-                TowerNoValue chosenCard = (TowerNoValue)this.mapIndexToCharacterCard(MessageType.CC_TOWER_NO_VALUE, indexCard);
-                chosenCard.useEffect();
+        if(controllerIntegrity.checkCCGeneric()){
+            TowerNoValue chosenCard = (TowerNoValue)this.boardAdvanced.getExtractedCards().get(indexCard);;
+            chosenCard.useEffect();
 
-                return true;
-            }
-        } catch (NoCorrespondingCharacterCardException e) {
-            return false;
+            return true;
         }
 
         return false;
@@ -731,15 +552,11 @@ public class Controller implements Observer {
 
         if(!isCurrentPlayer(nicknamePlayer)){return false;}
 
-        try {
-            if(controllerIntegrity.checkCCGeneric()){
-                TwoExtraPoints chosenCard = (TwoExtraPoints)this.mapIndexToCharacterCard(MessageType.CC_TWO_EXTRA_POINTS, indexCard);
-                chosenCard.useEffect();
+        if(controllerIntegrity.checkCCGeneric()){
+            TwoExtraPoints chosenCard = (TwoExtraPoints)this.boardAdvanced.getExtractedCards().get(indexCard);;
+            chosenCard.useEffect();
 
-                return true;
-            }
-        } catch (NoCorrespondingCharacterCardException e){
-            return false;
+            return true;
         }
 
         return false;
@@ -753,13 +570,12 @@ public class Controller implements Observer {
 
         try {
             if(controllerIntegrity.checkCCGeneric()){
-                TakeProfessorOnEquity chosenCard = (TakeProfessorOnEquity)this.mapIndexToCharacterCard(MessageType.CC_TAKE_PROFESSOR_ON_EQUITY, indexCard);
+                TakeProfessorOnEquity chosenCard = (TakeProfessorOnEquity)this.boardAdvanced.getExtractedCards().get(indexCard);;
                 chosenCard.useEffect(getCurrentPlayer());
 
                 return true;
             }
-        } catch (NoCorrespondingCharacterCardException |
-                TowerNotFoundException |
+        } catch (TowerNotFoundException |
                 InvalidTowerNumberException |
                 AnotherTowerException |
                 ProfessorNotFoundException |
@@ -778,14 +594,10 @@ public class Controller implements Observer {
         if(!isCurrentPlayer(nicknamePlayer)){return false;}
 
         if(controllerIntegrity.checkCCGeneric()){
-            try {
-                TwoExtraIslands chosenCard = (TwoExtraIslands)this.mapIndexToCharacterCard(MessageType.CC_TWO_EXTRA_ISLANDS, indexCard);
-                chosenCard.useEffect(getCurrentPlayer());
+            TwoExtraIslands chosenCard = (TwoExtraIslands)this.boardAdvanced.getExtractedCards().get(indexCard);;
+            chosenCard.useEffect(getCurrentPlayer());
 
-                return true;
-            } catch (NoCorrespondingCharacterCardException e) {
-                return false;
-            }
+            return true;
         }
 
         return false;

@@ -1,6 +1,7 @@
 package it.polimi.ingsw.Controller.Messages;
 
 import it.polimi.ingsw.Controller.Controller;
+import it.polimi.ingsw.Controller.ControllerInput;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -48,7 +49,17 @@ public class MessageCCExchangeTwoHallDining extends MessageCC{
     }
 
     @Override
+    public boolean checkInput(ControllerInput controller) {
+        return (controller.checkIndexCard(this.indexCard) &&
+                controller.checkNickname(this.nicknamePlayer) &&
+                controller.checkMultipleStudentColour(this.getColoursHall()) &&
+                controller.checkMultipleStudentColour(this.getColoursDiningRoom()));
+    }
+
+    @Override
     public boolean manageMessage(Controller controller) {
         return controller.manageCCExchangeTwoHallDining(this);
     }
+
+
 }

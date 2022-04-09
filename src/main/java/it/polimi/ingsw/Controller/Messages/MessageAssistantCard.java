@@ -1,6 +1,7 @@
 package it.polimi.ingsw.Controller.Messages;
 
 import it.polimi.ingsw.Controller.Controller;
+import it.polimi.ingsw.Controller.ControllerInput;
 import it.polimi.ingsw.Controller.Enumerations.MessageType;
 
 public class MessageAssistantCard extends Message{
@@ -25,6 +26,13 @@ public class MessageAssistantCard extends Message{
 
     public int getTurnPriority() {
         return turnPriority;
+    }
+
+    @Override
+    public boolean checkInput(ControllerInput controller) {
+        return(controller.checkNickname(this.nicknamePlayer) &&
+                controller.checkMotherNatureMovement(this.motherNatureMovement) &&
+                controller.checkTurnPriority(this.turnPriority));
     }
 
     public boolean manageMessage(Controller controller) {

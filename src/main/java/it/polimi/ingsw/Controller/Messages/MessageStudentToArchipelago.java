@@ -1,6 +1,7 @@
 package it.polimi.ingsw.Controller.Messages;
 
 import it.polimi.ingsw.Controller.Controller;
+import it.polimi.ingsw.Controller.ControllerInput;
 import it.polimi.ingsw.Controller.Enumerations.MessageType;
 
 public class MessageStudentToArchipelago extends Message{
@@ -23,6 +24,13 @@ public class MessageStudentToArchipelago extends Message{
 
     public int getDestArchipelagoIndex() {
         return destArchipelagoIndex;
+    }
+
+    @Override
+    public boolean checkInput(ControllerInput controller) {
+        return (controller.checkNickname(this.nicknamePlayer) &&
+                controller.checkStudentColour(this.colour) &&
+                controller.checkDestArchipelagoIndex(this.destArchipelagoIndex));
     }
 
     @Override

@@ -1,6 +1,7 @@
 package it.polimi.ingsw.Controller.Messages;
 
 import it.polimi.ingsw.Controller.Controller;
+import it.polimi.ingsw.Controller.ControllerInput;
 
 import static it.polimi.ingsw.Controller.Enumerations.MessageType.CC_REDUCE_COLOUR_IN_DINING;
 
@@ -20,6 +21,13 @@ public class MessageCCReduceColourInDining extends MessageCC{
 
     public String getColourToReduce() {
         return colourToReduce;
+    }
+
+    @Override
+    public boolean checkInput(ControllerInput controller) {
+        return (controller.checkIndexCard(this.indexCard) &&
+                controller.checkNickname(this.nicknamePlayer) &&
+                controller.checkStudentColour(this.colourToReduce));
     }
 
     @Override

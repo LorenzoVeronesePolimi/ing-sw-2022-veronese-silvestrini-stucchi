@@ -1,6 +1,7 @@
 package it.polimi.ingsw.Controller.Messages;
 
 import it.polimi.ingsw.Controller.Controller;
+import it.polimi.ingsw.Controller.ControllerInput;
 
 import static it.polimi.ingsw.Controller.Enumerations.MessageType.STUDENT_HALL_TO_DINING_ROOM;
 
@@ -20,6 +21,12 @@ public class MessageStudentHallToDiningRoom extends Message{
 
     public String getColour() {
         return colour;
+    }
+
+    @Override
+    public boolean checkInput(ControllerInput controller) {
+        return(controller.checkNickname(this.nicknamePlayer) &&
+                controller.checkStudentColour(this.colour));
     }
 
     @Override

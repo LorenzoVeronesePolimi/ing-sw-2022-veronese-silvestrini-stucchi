@@ -1,6 +1,7 @@
 package it.polimi.ingsw.Controller.Messages;
 
 import it.polimi.ingsw.Controller.Controller;
+import it.polimi.ingsw.Controller.ControllerInput;
 
 import static it.polimi.ingsw.Controller.Enumerations.MessageType.MOVE_MOTHER_NATURE;
 
@@ -20,6 +21,12 @@ public class MessageMoveMotherNature extends Message{
 
     public int getMoves() {
         return moves;
+    }
+
+    @Override
+    public boolean checkInput(ControllerInput controller) {
+        return (controller.checkNickname(this.nicknamePlayer) &&
+                controller.checkMotherNatureMovement(this.moves));
     }
 
     @Override

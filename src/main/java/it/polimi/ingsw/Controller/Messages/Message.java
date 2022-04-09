@@ -1,6 +1,7 @@
 package it.polimi.ingsw.Controller.Messages;
 
 import it.polimi.ingsw.Controller.Controller;
+import it.polimi.ingsw.Controller.ControllerInput;
 import it.polimi.ingsw.Controller.Enumerations.MessageType;
 
 public abstract class Message {
@@ -13,6 +14,8 @@ public abstract class Message {
     public MessageType getType(){
         return this.type;
     }
+
+    public abstract boolean checkInput(ControllerInput controller);
 
     public abstract boolean manageMessage(Controller controller);
 }

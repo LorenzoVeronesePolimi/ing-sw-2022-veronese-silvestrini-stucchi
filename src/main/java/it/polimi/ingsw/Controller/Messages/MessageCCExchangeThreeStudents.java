@@ -1,6 +1,7 @@
 package it.polimi.ingsw.Controller.Messages;
 
 import it.polimi.ingsw.Controller.Controller;
+import it.polimi.ingsw.Controller.ControllerInput;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -51,6 +52,14 @@ public class MessageCCExchangeThreeStudents extends MessageCC{
         colours.add(colourHall3);
 
         return colours;
+    }
+
+    @Override
+    public boolean checkInput(ControllerInput controller) {
+        return (controller.checkIndexCard(this.indexCard) &&
+                controller.checkNickname(this.nicknamePlayer) &&
+                controller.checkMultipleStudentColour(this.getColoursCard()) &&
+                controller.checkMultipleStudentColour(this.getColoursHall()));
     }
 
     @Override
