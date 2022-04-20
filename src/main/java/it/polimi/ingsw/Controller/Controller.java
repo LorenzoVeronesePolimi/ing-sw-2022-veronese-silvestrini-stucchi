@@ -11,11 +11,16 @@ import it.polimi.ingsw.Model.Enumerations.PlayerColour;
 import it.polimi.ingsw.Model.Enumerations.SPColour;
 import it.polimi.ingsw.Model.Exceptions.*;
 import it.polimi.ingsw.Model.Player;
+import it.polimi.ingsw.Observer.ObserverString;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 
 // This is the main Controller: it coordinates all the others
-public class Controller implements Observer {
+public class Controller implements ObserverString<Message> {
     private int numPlayers;
     private boolean advanced;
     private BoardAbstract board;
@@ -54,16 +59,16 @@ public class Controller implements Observer {
      *   if no: resend
      * Call the Model and applicate the move requested
      * */
-    public void update(Observable o, Object arg) {
+    public String update(Message arg) {
         if(!controllerInput.checkFormat(arg)){
             System.out.println("Invalid format");
-            return;
+            return "";
         }
 
         Message message = (Message)arg;
         if(!controllerState.checkState(message.getType())){
             System.out.println("You can't do that now");
-            return;
+            return "";
         }
 
         if(!message.manageMessage(this)){
@@ -79,6 +84,8 @@ public class Controller implements Observer {
                 e.printStackTrace();
             }
         }
+
+        return "";
     }
 
     //associate the String to its SPColour. Note that I'm sure this association exists, since I made a control
@@ -224,7 +231,7 @@ public class Controller implements Observer {
         }
 
         // No integrity to check
-
+        //TODO: check for colour not already chosen
         Player player = new Player(nickname, colour);
         this.players.add(player);
 
