@@ -3,8 +3,6 @@ package it.polimi.ingsw.Server;
 import it.polimi.ingsw.Controller.Controller;
 import it.polimi.ingsw.Controller.Messages.Message;
 import it.polimi.ingsw.OUTMessages.OUTMessage;
-import it.polimi.ingsw.Observer.Observable;
-import it.polimi.ingsw.Observer.Observer;
 import it.polimi.ingsw.View.ServerView;
 
 import java.io.IOException;
@@ -20,9 +18,10 @@ import java.util.NoSuchElementException;
     Controller: perform the action modifying the model;
     ----
     How to pass the model to the view? How to communicate from Controller to view?
-    Second step down here (I think it makes sense)
+    Steps down here (I think it makes sense)
     ----
     Optional/Error:
+        Controller: wants to communicate with client (error or anything), uses his map player->ServerView to send messages
         Connection: send message to ClientView;
         ClientView: shows message (CLI or GUI);
 
@@ -41,14 +40,14 @@ import java.util.NoSuchElementException;
 
 public class SocketClientConnectionCLI extends ClientConnection implements Runnable {
 
-    private Socket socket;
-    private ObjectOutputStream out;
-    private ObjectInputStream in;
-    private Server server;
+    private final Socket socket;
+    private final ObjectOutputStream out;
+    private final ObjectInputStream in;
+    private final Server server;
 
     private boolean active = true;
     private boolean firstPlayer = false;
-    private ServerView serverView;
+    private final ServerView serverView;
 
 
     public SocketClientConnectionCLI(Socket socket, Server server, Controller controller) {
@@ -129,17 +128,12 @@ public class SocketClientConnectionCLI extends ClientConnection implements Runna
 
     private void close() {
         closeConnection();
-        System.out.println("Deregistering client...");
+        System.out.println("De-registering client...");
         server.deregisterConnection(this);
         System.out.println("Done!");
     }
 
     public void asyncSend(final OUTMessage message){
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                send(message);
-            }
-        }).start();
+        new Thread(() -> send(message)).start();
     }
 }

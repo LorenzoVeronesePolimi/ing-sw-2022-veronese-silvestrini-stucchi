@@ -8,17 +8,15 @@ import it.polimi.ingsw.Observer.Observer;
 import it.polimi.ingsw.Server.ClientConnection;
 
 /*
- This class observe the Model.
+ This class observe the Model. (Observer<JSON> or Observer<CustomObject> ... )
  */
 public class ServerView implements Observer {
-    private ClientConnection connection;
-
     /*
         Inner class created to divide the flow in two:
             - client -> model modification (managed byt this inner class)
             - model modified -> client (managed by ServerView)
      */
-    private class ConnectionListener extends Observable<Message> implements Observer<Message> {
+    private static class ConnectionListener extends Observable<Message> implements Observer<Message> {
         /*
             This class observe the Connection, and it's observed by the Controller.
             It notifies the controller every time a message is received from the Connection.
@@ -32,7 +30,6 @@ public class ServerView implements Observer {
     }
 
     public ServerView(ClientConnection connection, Controller controller) {
-        this.connection = connection;
         ConnectionListener connectionListener = new ConnectionListener();
         connection.addObserver(connectionListener);
         connectionListener.addObserver(controller);
