@@ -26,13 +26,19 @@ public class ControllerIntegrity {
         this.board = board;
     }
 
+    public BoardAbstract getBoard(){return this.board;}
+
     public void setBoardAdvanced(BoardAdvanced boardAdvanced){
         this.boardAdvanced = boardAdvanced;
     }
 
+    public BoardAdvanced getBoardAdvanced(){return this.boardAdvanced;}
+
     public void setAdvanced(boolean advanced){
         this.advanced = advanced;
     }
+
+    public boolean isAdvanced(){return this.advanced;}
 
     private boolean enoughColoursInListStudents(List<SPColour> coloursToHave, List<Student> available){ //TODO
         int equal = 0;
@@ -71,12 +77,16 @@ public class ControllerIntegrity {
     }
 
     public boolean checkStudentHallToDiningRoom(Player player, SPColour colour){
-        return this.board.getPlayerSchool(player).getNumStudentColour(colour) != 10;
+        return this.board.getPlayerSchool(player).getNumStudentColour(colour) < 10;
     }
 
     public boolean checkStudentToArchipelago(Player player, SPColour studentColour, int destinationArchipelagoIndex){
         if(!this.board.isStudentInSchoolHall(player, studentColour)){return false;}
-        return this.board.getArchipelago(destinationArchipelagoIndex) == null;
+
+        try{this.board.getArchipelago(destinationArchipelagoIndex);}
+        catch(IndexOutOfBoundsException ex){return false;}
+
+        return true;
     }
 
     public boolean checkMoveMotherNature(Player player, int moves){
