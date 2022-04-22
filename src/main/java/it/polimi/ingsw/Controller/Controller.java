@@ -404,7 +404,7 @@ public class Controller implements Observer<Message> {
 
         try {
             ExchangeTwoHallDining chosenCard = (ExchangeTwoHallDining)this.boardAdvanced.getExtractedCards().get(indexCard);
-            if(controllerIntegrity.checkCCExchangeTwoHallDining(getCurrentPlayer(), coloursHall, coloursDiningRoom, chosenCard)){
+            if(controllerIntegrity.checkCCExchangeTwoHallDining(getCurrentPlayer(), coloursHall, coloursDiningRoom)){
                 this.boardAdvanced.useExchangeTwoHallDining(getCurrentPlayer(), coloursHall, coloursDiningRoom, indexCard);
 
                 return true;

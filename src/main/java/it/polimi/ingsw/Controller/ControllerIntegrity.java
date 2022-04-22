@@ -40,17 +40,23 @@ public class ControllerIntegrity {
 
     public boolean isAdvanced(){return this.advanced;}
 
-    private boolean enoughColoursInListStudents(List<SPColour> coloursToHave, List<Student> available){ //TODO
+    private boolean enoughColoursInListStudents(List<SPColour> coloursToHaveIn, List<Student> availableIn){
+        List<Student> available = new ArrayList<>();
+        available.addAll(availableIn);
+        List<SPColour> coloursToHave = new ArrayList<>();
+        coloursToHave.addAll(coloursToHaveIn);
+
         int equal = 0;
         for(SPColour c : coloursToHave){
-            for(Student s : available){
-                if(s.getColour() == c){
-                    available.remove(s);
+            for(int i = 0; i < available.size(); i++){
+                if(available.get(i) != null){
+                    available.set(i, null);
                     equal++;
                     break;
                 }
             }
         }
+
         return equal == coloursToHave.size();
     }
 
@@ -110,14 +116,11 @@ public class ControllerIntegrity {
         if(coloursCard.size() != coloursSchool.size()){return false;}
 
         // all Students in the Hall
-        //TODO: is chosenCard needed? (it's never used)
-        List<Student> availableSchool = this.board.getPlayerSchool(player).getStudentsHall();
         return enoughColoursInListStudents(coloursSchool, chosenCard.getStudents()) &&
                 enoughColoursInListStudents(coloursCard, this.board.getPlayerSchool(player).getStudentsHall());
     }
 
-    //TODO: is chosenCard needed? (it's never used)
-    public boolean checkCCExchangeTwoHallDining(Player player, List<SPColour> coloursHall, List<SPColour> coloursDiningRoom, ExchangeTwoHallDining chosenCard){
+    public boolean checkCCExchangeTwoHallDining(Player player, List<SPColour> coloursHall, List<SPColour> coloursDiningRoom){
         if(!this.advanced){return false;}
 
         if(coloursHall.size() != coloursDiningRoom.size()){return false;}

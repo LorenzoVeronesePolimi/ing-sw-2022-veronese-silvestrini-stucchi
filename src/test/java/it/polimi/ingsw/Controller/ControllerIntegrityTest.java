@@ -2,6 +2,7 @@ package it.polimi.ingsw.Controller;
 
 import it.polimi.ingsw.Messages.Enumerations.INMessageType;
 import it.polimi.ingsw.Model.Board.*;
+import it.polimi.ingsw.Model.Cards.ExchangeThreeStudents;
 import it.polimi.ingsw.Model.Enumerations.PlayerColour;
 import it.polimi.ingsw.Model.Enumerations.SPColour;
 import it.polimi.ingsw.Model.Exceptions.*;
@@ -188,10 +189,46 @@ class ControllerIntegrityTest {
         assertFalse(controllerIntegrity.checkStudentCloudToSchool(players.get(0), 0));
 
         //Case not enough space in the School Hall
+        assertFalse(controllerIntegrity.checkStudentCloudToSchool(players.get(1), 0));
+
     }
 
     @Test
     void checkCCExchangeThreeStudents() {
+        //Case not advanced
+        controllerIntegrity.setAdvanced(false);
+        List colours = new ArrayList();
+        colours.add(SPColour.BLUE); colours.add(SPColour.BLUE);
+        assertFalse(controllerIntegrity.checkCCExchangeTwoHallDining(players.get(0), colours, colours));
+
+        //Case different sizes of input lists
+        controllerIntegrity.setAdvanced(true);
+        controllerIntegrity.setBoard(board);
+        controllerIntegrity.setBoardAdvanced(boardAdvanced);
+        List<SPColour> coloursCard = new ArrayList<>();
+        coloursCard.add(SPColour.BLUE); coloursCard.add(SPColour.BLUE); coloursCard.add(SPColour.BLUE);
+        List<SPColour> coloursSchool = new ArrayList<>();
+        coloursCard.add(SPColour.BLUE); coloursCard.add(SPColour.BLUE);
+        try {
+            ExchangeThreeStudents chosenCard = new ExchangeThreeStudents(boardAdvanced);
+            assertFalse(controllerIntegrity.checkCCExchangeThreeStudents(players.get(0), coloursCard, coloursSchool, chosenCard));
+        } catch (StudentNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        //Case ok
+        Player playerOk = players.get(2);
+        List<Student> studentsInSchool = board.getPlayerSchool(playerOk).getStudentsHall();
+        List<SPColour> coloursSchoolOk = new ArrayList<>();
+        coloursSchoolOk.add(studentsInSchool.get(0).getColour()); coloursSchoolOk.add(studentsInSchool.get(1).getColour());
+        List<SPColour> coloursCardOk = new ArrayList<>();
+        try {
+            ExchangeThreeStudents chosenCardOk = new ExchangeThreeStudents(boardAdvanced);
+            coloursCardOk.add(chosenCardOk.getStudents().get(0).getColour()); coloursCardOk.add(chosenCardOk.getStudents().get(1).getColour());
+            assertTrue(controllerIntegrity.checkCCExchangeThreeStudents(playerOk, coloursCardOk, coloursSchoolOk, chosenCardOk));
+        } catch (StudentNotFoundException e) {
+            e.printStackTrace();
+        }
     }
 
     @Test
