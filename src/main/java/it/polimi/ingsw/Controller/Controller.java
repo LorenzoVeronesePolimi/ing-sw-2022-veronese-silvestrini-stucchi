@@ -11,7 +11,7 @@ import it.polimi.ingsw.Model.Enumerations.PlayerColour;
 import it.polimi.ingsw.Model.Enumerations.SPColour;
 import it.polimi.ingsw.Model.Exceptions.*;
 import it.polimi.ingsw.Model.Player;
-import it.polimi.ingsw.Observer.ObserverString;
+import it.polimi.ingsw.Observer.Observer;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -20,7 +20,7 @@ import java.util.Map;
 
 
 // This is the main Controller: it coordinates all the others
-public class Controller implements ObserverString<Message> {
+public class Controller implements Observer<Message> {
     private int numPlayers;
     private boolean advanced;
     private BoardAbstract board;
@@ -59,16 +59,16 @@ public class Controller implements ObserverString<Message> {
      *   if no: resend
      * Call the Model and applicate the move requested
      * */
-    public String update(Message arg) {
+    public void update(Message arg) {
         if(!controllerInput.checkFormat(arg)){
             System.out.println("Invalid format");
-            return "";
+            return;
         }
 
-        Message message = (Message)arg;
+        Message message = arg;
         if(!controllerState.checkState(message.getType())){
             System.out.println("You can't do that now");
-            return "";
+            return;
         }
 
         if(!message.manageMessage(this)){
@@ -85,7 +85,7 @@ public class Controller implements ObserverString<Message> {
             }
         }
 
-        return "";
+        return;
     }
 
     //associate the String to its SPColour. Note that I'm sure this association exists, since I made a control

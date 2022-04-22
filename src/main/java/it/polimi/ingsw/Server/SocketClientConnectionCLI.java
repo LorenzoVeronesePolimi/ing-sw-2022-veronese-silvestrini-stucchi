@@ -1,69 +1,111 @@
 package it.polimi.ingsw.Server;
 
+import it.polimi.ingsw.Controller.Controller;
+import it.polimi.ingsw.Controller.Messages.Message;
+import it.polimi.ingsw.OUTMessages.OUTMessage;
 import it.polimi.ingsw.Observer.Observable;
+import it.polimi.ingsw.Observer.Observer;
+import it.polimi.ingsw.View.ServerView;
+
 import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.NoSuchElementException;
-import java.util.Scanner;
 
-public class SocketClientConnectionCLI extends Observable<String> implements ClientConnection, Runnable {
+/*
+    --- FROM Client TO Controller
+    Connection: receive socket message from ClientView and notify to ConnectionListener (inner class);
+    ConnectionListener (inner class): notify controller (and maybe more actions);
+    Controller: perform the action modifying the model;
+    ----
+    How to pass the model to the view? How to communicate from Controller to view?
+    Second step down here (I think it makes sense)
+    ----
+    Optional/Error:
+        Connection: send message to ClientView;
+        ClientView: shows message (CLI or GUI);
+
+        This step can be done creating a map player->ServerView in order to manage response messages from the Controller,
+        because in the controller we don't have a way to pass messages to the client.
+        We can add a method addServerView(ServerView sv) to the controller in order to create the map, so we can
+        send response messages like "errors" or "well done" to the player that has performed the action.
+        In ServerView we can than send the message via send or asyncSend (I don't know which one atm)
+
+
+    --- FROM Model TO Client
+    Model: it's modified by the controller, notify ServerView;
+    ServerView: asyncSend(model);
+
+ */
+
+public class SocketClientConnectionCLI extends ClientConnection implements Runnable {
 
     private Socket socket;
     private ObjectOutputStream out;
-    private Scanner in;
+    private ObjectInputStream in;
     private Server server;
 
     private boolean active = true;
-    private String nickname;
+    private boolean firstPlayer = false;
+    private ServerView serverView;
 
-    public SocketClientConnectionCLI(Socket socket, Server server) {
+
+    public SocketClientConnectionCLI(Socket socket, Server server, Controller controller) {
         this.socket = socket;
         this.server = server;
+        this.serverView = new ServerView(this, controller);
+
+        // Commented because I believe it's wrong (already corrected where needed)
+        //this.serverView.addObserver(controller);
+
+        try {
+            this.in = new ObjectInputStream(socket.getInputStream());
+            this.out = new ObjectOutputStream(socket.getOutputStream());
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
     public void run() {
         try{
-            in = new Scanner(socket.getInputStream());
-            out = new ObjectOutputStream(socket.getOutputStream());
-            send("Welcome!\nWhat is your name?");
-            String read = in.nextLine();
-            this.nickname = read;
+            // CLI o GUI
+            send(serverView.CLIorGUI());
+            if(firstPlayer) {
+                send(serverView.manageFirstPlayer(this));
+            } else {
+                //send("Attendi!");
+            }
+            send(serverView.chooseName());
 
-            server.manageGameMode(this);
 
-            server.lobby(this, this.nickname);
+            Message read;
+
+            //server.lobby(this, this.nickname);
             while(isActive()){
-                read = in.nextLine();
+                read = (Message) in.readObject();
                 notify(read);
             }
-        } catch (IOException | NoSuchElementException e) {
+
+        } catch (NoSuchElementException e) {
             System.err.println("Error! " + e.getMessage());
-        }finally{
+        } catch (IOException | ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        } finally {
             close();
         }
     }
 
-    protected String askNumPlayers() {
-        send("How many players?");
-        return in.nextLine();
-    }
-
-    protected String askModality() {
-        send("Modality?");
-        return in.nextLine();
-    }
-
-    protected String getNickname() {
-        return this.nickname;
+    public void setFirstPlayerAction() {
+        this.firstPlayer = true;
     }
 
     private synchronized boolean isActive(){
         return active;
     }
 
-    public synchronized void send(Object message) {
+    public synchronized void send(OUTMessage message) {
         try {
             out.reset();
             out.writeObject(message);
@@ -76,7 +118,7 @@ public class SocketClientConnectionCLI extends Observable<String> implements Cli
 
     @Override
     public synchronized void closeConnection() {
-        send("Connection closed!");
+        //send("Connection closed!");
         try {
             socket.close();
         } catch (IOException e) {
@@ -92,8 +134,7 @@ public class SocketClientConnectionCLI extends Observable<String> implements Cli
         System.out.println("Done!");
     }
 
-    @Override
-    public void asyncSend(final Object message){
+    public void asyncSend(final OUTMessage message){
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -101,5 +142,4 @@ public class SocketClientConnectionCLI extends Observable<String> implements Cli
             }
         }).start();
     }
-
 }

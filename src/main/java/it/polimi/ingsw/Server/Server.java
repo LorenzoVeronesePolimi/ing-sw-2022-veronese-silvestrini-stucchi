@@ -30,12 +30,19 @@ public class Server {
 
     public void run(){
         System.out.println("Server is running");
+        controller = new Controller();
+
         while(true){
             try {
                 Socket newSocket = serverSocket.accept();
                 connections++;
                 System.out.println("Ready for the new connection - " + connections);
-                SocketClientConnectionCLI socketConnection = new SocketClientConnectionCLI(newSocket, this);
+                SocketClientConnectionCLI socketConnection = new SocketClientConnectionCLI(newSocket, this, controller);
+
+                if(connections == 1) {
+                    socketConnection.setFirstPlayerAction();
+                }
+
                 executor.submit(socketConnection);
             } catch (IOException e) {
                 System.out.println("Connection Error!");
@@ -43,6 +50,7 @@ public class Server {
         }
     }
 
+    /*
     public synchronized void lobby(ClientConnection c, String name){
         List<String> keys = new ArrayList<>(waitingConnection.keySet());
         for(int i = 0; i < keys.size(); i++){
@@ -59,7 +67,7 @@ public class Server {
         if (waitingConnection.size() == 0) {
             ClientConnection c1 = waitingConnection.get(keys.get(0));
             ClientConnection c2 = waitingConnection.get(keys.get(1));
-            /*
+            
             Player player1 = new Player(keys.get(0), Cell.X);
             Player player2 = new Player(keys.get(1), Cell.O);
             View player1View = new RemoteView(player1, keys.get(0), c1);
@@ -84,9 +92,9 @@ public class Server {
                 c2.asyncSend(gameMessage.moveMessage);
                 c1.asyncSend(gameMessage.waitMessage);
             }
-            */
+            
         }
-    }
+    }*/
 
     //De-register connection
     public synchronized void deregisterConnection(ClientConnection c) {
@@ -102,28 +110,5 @@ public class Server {
                 iterator.remove();
             }
         }
-    }
-
-    public void manageGameMode(SocketClientConnectionCLI out) {
-        if (this.connections == 1) {
-            this.numPlayers = out.askNumPlayers();
-
-            this.mode = out.askModality();
-
-            MessageCreateMatch createMatch = new MessageCreateMatch(out.getNickname(), "BLACK", Integer.parseInt(this.numPlayers), modeConversion());
-            this.controller = new Controller();
-            if(!this.controller.manageCreateMatch(createMatch)) {
-                //TODO: impossible to create match
-            }
-        }
-    }
-
-    private boolean modeConversion() {
-        if((this.mode).equalsIgnoreCase("STANDARD")) {
-            return false;
-        } else if ((this.mode).equalsIgnoreCase("ADVANCED")) {
-            return true;
-        }
-        return false;
     }
 }
