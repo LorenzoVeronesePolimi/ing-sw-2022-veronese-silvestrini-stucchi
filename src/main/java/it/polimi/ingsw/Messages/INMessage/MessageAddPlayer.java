@@ -1,17 +1,20 @@
-package it.polimi.ingsw.Controller.Messages;
+package it.polimi.ingsw.Messages.INMessage;
 
 import it.polimi.ingsw.Controller.Controller;
 import it.polimi.ingsw.Controller.ControllerInput;
-import it.polimi.ingsw.Controller.Enumerations.MessageType;
+import it.polimi.ingsw.Messages.Enumerations.INMessageType;
+import it.polimi.ingsw.View.ServerView;
 
-public class MessageAddPlayer extends Message{
+public class MessageAddPlayer extends Message {
     private final String nickname;
     private final String colour;
+    private final ServerView serverView;
 
-    public MessageAddPlayer(String nickname, String colour){
-        super(MessageType.CREATE_MATCH);
+    public MessageAddPlayer(String nickname, String colour, ServerView serverView){
+        super(INMessageType.CREATE_MATCH);
         this.nickname = nickname;
         this.colour = colour;
+        this.serverView = serverView;
     }
 
     public String getNickname() {
@@ -20,6 +23,10 @@ public class MessageAddPlayer extends Message{
 
     public String getColour() {
         return colour;
+    }
+
+    public ServerView getServerView() {
+        return serverView;
     }
 
     @Override

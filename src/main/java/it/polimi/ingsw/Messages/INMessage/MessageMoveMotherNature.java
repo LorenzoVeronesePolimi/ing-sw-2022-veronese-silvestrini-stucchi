@@ -1,9 +1,9 @@
-package it.polimi.ingsw.Controller.Messages;
+package it.polimi.ingsw.Messages.INMessage;
 
 import it.polimi.ingsw.Controller.Controller;
 import it.polimi.ingsw.Controller.ControllerInput;
 
-import static it.polimi.ingsw.Controller.Enumerations.MessageType.MOVE_MOTHER_NATURE;
+import static it.polimi.ingsw.Messages.Enumerations.INMessageType.MOVE_MOTHER_NATURE;
 
 public class MessageMoveMotherNature extends Message{
     private final String nicknamePlayer;

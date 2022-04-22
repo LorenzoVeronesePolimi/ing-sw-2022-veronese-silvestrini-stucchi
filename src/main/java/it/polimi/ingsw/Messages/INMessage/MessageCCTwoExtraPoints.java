@@ -1,15 +1,15 @@
-package it.polimi.ingsw.Controller.Messages;
+package it.polimi.ingsw.Messages.INMessage;
 
 import it.polimi.ingsw.Controller.Controller;
 import it.polimi.ingsw.Controller.ControllerInput;
 
-import static it.polimi.ingsw.Controller.Enumerations.MessageType.CC_TAKE_PROFESSOR_ON_EQUITY;
+import static it.polimi.ingsw.Messages.Enumerations.INMessageType.CC_TWO_EXTRA_POINTS;
 
-public class MessageCCTakeProfessorOnEquity extends MessageCC{
+public class MessageCCTwoExtraPoints extends MessageCC{
     private final String nicknamePlayer;
 
-    public MessageCCTakeProfessorOnEquity(int indexCard, String nicknamePlayer){
-        super(CC_TAKE_PROFESSOR_ON_EQUITY, indexCard);
+    public MessageCCTwoExtraPoints(int indexCard, String nicknamePlayer) {
+        super(CC_TWO_EXTRA_POINTS, indexCard);
         this.nicknamePlayer = nicknamePlayer;
     }
 
@@ -25,6 +25,6 @@ public class MessageCCTakeProfessorOnEquity extends MessageCC{
 
     @Override
     public boolean manageMessage(Controller controller) {
-        return controller.manageCCTakeProfessorOnEquity(this);
+        return controller.manageCCTwoExtraPoints(this);
     }
 }

@@ -1,8 +1,12 @@
 package it.polimi.ingsw.View;
 
 import it.polimi.ingsw.Controller.Controller;
-import it.polimi.ingsw.Controller.Messages.Message;
-import it.polimi.ingsw.OUTMessages.OUTMessage;
+import it.polimi.ingsw.Messages.Enumerations.INMessageType;
+import it.polimi.ingsw.Messages.Enumerations.OUTMessageType;
+import it.polimi.ingsw.Messages.INMessage.Message;
+import it.polimi.ingsw.Messages.INMessage.MessageAddPlayer;
+import it.polimi.ingsw.Messages.OUTMessages.OUTMessage;
+import it.polimi.ingsw.Messages.OUTMessages.OUTMessageInfo;
 import it.polimi.ingsw.Observer.Observable;
 import it.polimi.ingsw.Observer.Observer;
 import it.polimi.ingsw.Server.ClientConnection;
@@ -17,6 +21,13 @@ public class ServerView implements Observer {
             - model modified -> client (managed by ServerView)
      */
     private static class ConnectionListener extends Observable<Message> implements Observer<Message> {
+        private final ServerView serverView;
+
+        private ConnectionListener(ServerView serverView) {
+            this.serverView = serverView;
+        }
+
+
         /*
             This class observe the Connection, and it's observed by the Controller.
             It notifies the controller every time a message is received from the Connection.
@@ -25,12 +36,16 @@ public class ServerView implements Observer {
          */
         @Override
         public void update(Message message) {
+            if(message.getType().equals(INMessageType.ADD_PLAYER)) {
+                message = new MessageAddPlayer(((MessageAddPlayer) message).getNickname(),
+                        ((MessageAddPlayer) message).getColour(), this.serverView);
+            }
             notify(message);
         }
     }
 
     public ServerView(ClientConnection connection, Controller controller) {
-        ConnectionListener connectionListener = new ConnectionListener();
+        ConnectionListener connectionListener = new ConnectionListener(this);
         connection.addObserver(connectionListener);
         connectionListener.addObserver(controller);
     }
@@ -43,14 +58,14 @@ public class ServerView implements Observer {
 
     // Messages generated from the ServerView and not the controller
     public OUTMessage CLIorGUI() {
-        return new OUTMessage();
+        return new OUTMessageInfo("Select between CLI[0] or GUI[1]:", OUTMessageType.ASK_CLI_GUI);
     }
 
     public OUTMessage manageFirstPlayer(ClientConnection cc) {
-        return new OUTMessage();
+        return new OUTMessageInfo("Select the number of players and the modality.", OUTMessageType.ASK_FIRST_PLAYER);
     }
 
     public OUTMessage chooseName() {
-        return new OUTMessage();
+        return new OUTMessageInfo("What's your name?", OUTMessageType.ASK_NICKNAME);
     }
 }

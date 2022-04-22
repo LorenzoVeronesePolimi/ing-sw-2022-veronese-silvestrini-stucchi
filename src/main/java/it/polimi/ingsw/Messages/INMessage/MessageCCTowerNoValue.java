@@ -1,15 +1,15 @@
-package it.polimi.ingsw.Controller.Messages;
+package it.polimi.ingsw.Messages.INMessage;
 
 import it.polimi.ingsw.Controller.Controller;
 import it.polimi.ingsw.Controller.ControllerInput;
 
-import static it.polimi.ingsw.Controller.Enumerations.MessageType.CC_TWO_EXTRA_ISLANDS;
+import static it.polimi.ingsw.Messages.Enumerations.INMessageType.CC_TOWER_NO_VALUE;
 
-public class MessageCCTwoExtraIslands extends MessageCC{
+public class MessageCCTowerNoValue extends MessageCC{
     private final String nicknamePlayer;
 
-    public MessageCCTwoExtraIslands(int indexCard, String nicknamePlayer){
-        super(CC_TWO_EXTRA_ISLANDS, indexCard);
+    public MessageCCTowerNoValue(int indexCard, String nicknamePlayer) {
+        super(CC_TOWER_NO_VALUE, indexCard);
         this.nicknamePlayer = nicknamePlayer;
     }
 
@@ -19,12 +19,12 @@ public class MessageCCTwoExtraIslands extends MessageCC{
 
     @Override
     public boolean checkInput(ControllerInput controller) {
-        return(controller.checkIndexCard(this.indexCard) &&
+        return (controller.checkIndexCard(this.indexCard) &&
                 controller.checkNickname(this.nicknamePlayer));
     }
 
     @Override
     public boolean manageMessage(Controller controller) {
-        return controller.manageCCTwoExtraIslands(this);
+        return controller.manageCCTowerNoValue(this);
     }
 }

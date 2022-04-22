@@ -2,7 +2,7 @@ package it.polimi.ingsw.Controller;
 
 import it.polimi.ingsw.Controller.Enumerations.State;
 import it.polimi.ingsw.Controller.Exceptions.NoPlayerException;
-import it.polimi.ingsw.Controller.Messages.*;
+import it.polimi.ingsw.Messages.INMessage.*;
 import it.polimi.ingsw.Model.Board.BoardAbstract;
 import it.polimi.ingsw.Model.Board.BoardAdvanced;
 import it.polimi.ingsw.Model.Board.BoardFactory;
@@ -12,6 +12,7 @@ import it.polimi.ingsw.Model.Enumerations.SPColour;
 import it.polimi.ingsw.Model.Exceptions.*;
 import it.polimi.ingsw.Model.Player;
 import it.polimi.ingsw.Observer.Observer;
+import it.polimi.ingsw.View.ServerView;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -28,6 +29,7 @@ public class Controller implements Observer<Message> {
     private List<Player> players; //ordered
 
     private int currentPlayerIndex = 0;
+    private Map<Player, ServerView> playerConnection;
 
     private final ControllerInput controllerInput;
     private final ControllerState controllerState;
@@ -43,6 +45,7 @@ public class Controller implements Observer<Message> {
         this.controllerInput = new ControllerInput();
         this.controllerState = new ControllerState();
         this.controllerIntegrity = new ControllerIntegrity();
+        this.playerConnection = new HashMap<>();
     }
 
     public Player getCurrentPlayer(){
@@ -204,6 +207,7 @@ public class Controller implements Observer<Message> {
         this.players = orderedPlayerList;
     }
 
+    // TODO: maybe divide the CreateMatch and addPlayer even for the first player
     public boolean manageCreateMatch(MessageCreateMatch message){ //TODO: manage GameFour
         this.numPlayers = message.getNumPlayers();
         this.advanced = message.isAdvanced();
@@ -225,6 +229,8 @@ public class Controller implements Observer<Message> {
     public boolean manageAddPlayer(MessageAddPlayer message){ // TODO: manage GameFour
         String nickname = message.getNickname();
         PlayerColour colour = mapStringToPlayerColour(message.getColour());
+        ServerView serverView = message.getServerView();
+
         // He can't have the name of an existing Player
         for(Player p : this.players){
             if(p.getNickname().equals(nickname)){return false;}
@@ -234,6 +240,7 @@ public class Controller implements Observer<Message> {
         //TODO: check for colour not already chosen
         Player player = new Player(nickname, colour);
         this.players.add(player);
+        this.playerConnection.put(player, serverView);
 
         if(this.players.size() == numPlayers){ // The requested number of players has been reached: let's go on
             this.initMatch();

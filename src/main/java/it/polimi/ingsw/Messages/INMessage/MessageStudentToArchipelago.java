@@ -1,8 +1,8 @@
-package it.polimi.ingsw.Controller.Messages;
+package it.polimi.ingsw.Messages.INMessage;
 
 import it.polimi.ingsw.Controller.Controller;
 import it.polimi.ingsw.Controller.ControllerInput;
-import it.polimi.ingsw.Controller.Enumerations.MessageType;
+import it.polimi.ingsw.Messages.Enumerations.INMessageType;
 
 public class MessageStudentToArchipelago extends Message{
     private final String nicknamePlayer;
@@ -10,7 +10,7 @@ public class MessageStudentToArchipelago extends Message{
     private final int destArchipelagoIndex;
 
     public MessageStudentToArchipelago(String nicknamePlayer, String colour, int destArchipelagoIndex){
-        super(MessageType.STUDENT_TO_ARCHIPELAGO);
+        super(INMessageType.STUDENT_TO_ARCHIPELAGO);
         this.nicknamePlayer = nicknamePlayer;
         this.colour = colour;
         this.destArchipelagoIndex = destArchipelagoIndex;

@@ -1,4 +1,4 @@
-package it.polimi.ingsw.Controller.Messages;
+package it.polimi.ingsw.Messages.INMessage;
 
 import it.polimi.ingsw.Controller.Controller;
 import it.polimi.ingsw.Controller.ControllerInput;
@@ -6,7 +6,7 @@ import it.polimi.ingsw.Controller.ControllerInput;
 import java.util.ArrayList;
 import java.util.List;
 
-import static it.polimi.ingsw.Controller.Enumerations.MessageType.CC_EXCHANGE_THREE_STUDENTS;
+import static it.polimi.ingsw.Messages.Enumerations.INMessageType.CC_EXCHANGE_THREE_STUDENTS;
 
 public class MessageCCExchangeThreeStudents extends MessageCC{
     private final String nicknamePlayer;

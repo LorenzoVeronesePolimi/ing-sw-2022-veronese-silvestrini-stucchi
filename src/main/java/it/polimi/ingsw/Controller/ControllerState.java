@@ -1,6 +1,6 @@
 package it.polimi.ingsw.Controller;
 
-import it.polimi.ingsw.Controller.Enumerations.MessageType;
+import it.polimi.ingsw.Messages.Enumerations.INMessageType;
 
 import it.polimi.ingsw.Controller.Enumerations.State;
 
@@ -12,7 +12,7 @@ public class ControllerState {
         this.state = State.CONNECTING;
     }
 
-    public boolean checkState(MessageType type){
+    public boolean checkState(INMessageType type){
         switch(type){
             case CREATE_MATCH:
                 return (this.state == State.CONNECTING);

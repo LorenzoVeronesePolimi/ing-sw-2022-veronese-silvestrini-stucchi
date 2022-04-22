@@ -1,8 +1,8 @@
-package it.polimi.ingsw.Controller.Messages;
+package it.polimi.ingsw.Messages.INMessage;
 
 import it.polimi.ingsw.Controller.Controller;
 import it.polimi.ingsw.Controller.ControllerInput;
-import it.polimi.ingsw.Controller.Enumerations.MessageType;
+import it.polimi.ingsw.Messages.Enumerations.INMessageType;
 
 public class MessageAssistantCard extends Message{
     private final String nicknamePlayer;
@@ -10,7 +10,7 @@ public class MessageAssistantCard extends Message{
     private final int turnPriority;
 
     public MessageAssistantCard(String nicknamePlayer, int motherNatureMovement, int turnPriority){
-        super(MessageType.ASSISTANT_CARD);
+        super(INMessageType.ASSISTANT_CARD);
         this.nicknamePlayer = nicknamePlayer;
         this.motherNatureMovement = motherNatureMovement;
         this.turnPriority = turnPriority;

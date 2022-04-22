@@ -1,6 +1,6 @@
-package it.polimi.ingsw.Controller.Enumerations;
+package it.polimi.ingsw.Messages.Enumerations;
 
-public enum MessageType {
+public enum INMessageType {
     CREATE_MATCH,
     ADD_PLAYER,
     ASSISTANT_CARD,
@@ -9,7 +9,7 @@ public enum MessageType {
     MOVE_MOTHER_NATURE,
     STUDENT_CLOUD_TO_SCHOOL,
 
-    //CharactedCards
+    //CharacterCards
     CC_EXCHANGE_THREE_STUDENTS,
     CC_EXCHANGE_TWO_HALL_DINING,
     CC_EXCLUDE_COLOUR_FROM_COUNTING,

@@ -1,8 +1,8 @@
 package it.polimi.ingsw.Server;
 
 import it.polimi.ingsw.Controller.Controller;
-import it.polimi.ingsw.Controller.Messages.Message;
-import it.polimi.ingsw.OUTMessages.OUTMessage;
+import it.polimi.ingsw.Messages.INMessage.Message;
+import it.polimi.ingsw.Messages.OUTMessages.OUTMessage;
 import it.polimi.ingsw.View.ServerView;
 
 import java.io.IOException;

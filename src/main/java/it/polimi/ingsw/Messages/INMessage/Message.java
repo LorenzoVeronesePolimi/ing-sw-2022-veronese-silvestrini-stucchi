@@ -1,17 +1,17 @@
-package it.polimi.ingsw.Controller.Messages;
+package it.polimi.ingsw.Messages.INMessage;
 
 import it.polimi.ingsw.Controller.Controller;
 import it.polimi.ingsw.Controller.ControllerInput;
-import it.polimi.ingsw.Controller.Enumerations.MessageType;
+import it.polimi.ingsw.Messages.Enumerations.INMessageType;
 
 public abstract class Message {
-    private final MessageType type;
+    private final INMessageType type;
 
-    public Message(MessageType type){
+    public Message(INMessageType type){
         this.type = type;
     }
 
-    public MessageType getType(){
+    public INMessageType getType(){
         return this.type;
     }
 

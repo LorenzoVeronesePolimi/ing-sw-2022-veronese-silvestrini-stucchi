@@ -1,9 +1,9 @@
-package it.polimi.ingsw.Controller.Messages;
+package it.polimi.ingsw.Messages.INMessage;
 
 import it.polimi.ingsw.Controller.Controller;
 import it.polimi.ingsw.Controller.ControllerInput;
 
-import static it.polimi.ingsw.Controller.Enumerations.MessageType.STUDENT_HALL_TO_DINING_ROOM;
+import static it.polimi.ingsw.Messages.Enumerations.INMessageType.STUDENT_HALL_TO_DINING_ROOM;
 
 public class MessageStudentHallToDiningRoom extends Message{
     private final String nicknamePlayer;

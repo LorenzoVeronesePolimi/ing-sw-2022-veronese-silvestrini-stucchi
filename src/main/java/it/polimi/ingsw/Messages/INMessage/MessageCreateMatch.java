@@ -1,9 +1,9 @@
-package it.polimi.ingsw.Controller.Messages;
+package it.polimi.ingsw.Messages.INMessage;
 
 import it.polimi.ingsw.Controller.Controller;
 import it.polimi.ingsw.Controller.ControllerInput;
 
-import static it.polimi.ingsw.Controller.Enumerations.MessageType.CREATE_MATCH;
+import static it.polimi.ingsw.Messages.Enumerations.INMessageType.CREATE_MATCH;
 
 public class MessageCreateMatch extends Message{
     private final String nicknameFirstPlayer;

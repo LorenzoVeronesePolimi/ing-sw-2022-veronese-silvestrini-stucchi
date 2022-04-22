@@ -1,9 +1,9 @@
-package it.polimi.ingsw.Controller.Messages;
+package it.polimi.ingsw.Messages.INMessage;
 
 import it.polimi.ingsw.Controller.Controller;
 import it.polimi.ingsw.Controller.ControllerInput;
 
-import static it.polimi.ingsw.Controller.Enumerations.MessageType.CC_FORBID_ISLAND;
+import static it.polimi.ingsw.Messages.Enumerations.INMessageType.CC_FORBID_ISLAND;
 
 public class MessageCCForbidIsland extends MessageCC{
     private final String nicknamePlayer;

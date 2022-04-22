@@ -1,15 +1,15 @@
-package it.polimi.ingsw.Controller.Messages;
+package it.polimi.ingsw.Messages.INMessage;
 
 import it.polimi.ingsw.Controller.Controller;
 import it.polimi.ingsw.Controller.ControllerInput;
 
-import static it.polimi.ingsw.Controller.Enumerations.MessageType.CC_TOWER_NO_VALUE;
+import static it.polimi.ingsw.Messages.Enumerations.INMessageType.CC_TAKE_PROFESSOR_ON_EQUITY;
 
-public class MessageCCTowerNoValue extends MessageCC{
+public class MessageCCTakeProfessorOnEquity extends MessageCC{
     private final String nicknamePlayer;
 
-    public MessageCCTowerNoValue(int indexCard, String nicknamePlayer) {
-        super(CC_TOWER_NO_VALUE, indexCard);
+    public MessageCCTakeProfessorOnEquity(int indexCard, String nicknamePlayer){
+        super(CC_TAKE_PROFESSOR_ON_EQUITY, indexCard);
         this.nicknamePlayer = nicknamePlayer;
     }
 
@@ -25,6 +25,6 @@ public class MessageCCTowerNoValue extends MessageCC{
 
     @Override
     public boolean manageMessage(Controller controller) {
-        return controller.manageCCTowerNoValue(this);
+        return controller.manageCCTakeProfessorOnEquity(this);
     }
 }
