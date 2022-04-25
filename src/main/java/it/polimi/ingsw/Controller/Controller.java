@@ -246,7 +246,7 @@ public class Controller implements Observer<Message> {
     public boolean manageAddPlayer(MessageAddPlayer message){
         String nickname = message.getNickname();
         PlayerColour colour = mapStringToPlayerColour(message.getColour());
-        ServerView serverView = message.getServerView();
+        //ServerView serverView = message.getServerView();
 
         // He can't have the name of an existing Player
         for(Player p : this.players){
@@ -276,7 +276,7 @@ public class Controller implements Observer<Message> {
         // No integrity to check
         Player player = new Player(nickname, colour);
         this.players.add(player);
-        this.playerConnection.put(player, serverView);
+        //this.playerConnection.put(player, serverView);
 
         if(this.players.size() == numPlayers){ // The requested number of players has been reached: let's go on
             this.initMatch();

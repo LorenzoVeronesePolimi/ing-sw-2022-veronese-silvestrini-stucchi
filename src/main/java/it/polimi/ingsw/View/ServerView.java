@@ -38,7 +38,7 @@ public class ServerView implements Observer {
         public void update(Message message) {
             if(message.getType().equals(INMessageType.ADD_PLAYER)) {
                 message = new MessageAddPlayer(((MessageAddPlayer) message).getNickname(),
-                        ((MessageAddPlayer) message).getColour(), this.serverView);
+                        ((MessageAddPlayer) message).getColour()/*, this.serverView*/);
             }
             notify(message);
         }
