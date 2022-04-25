@@ -40,24 +40,23 @@ public class ControllerIntegrity {
 
     public boolean isAdvanced(){return this.advanced;}
 
-    private boolean enoughColoursInListStudents(List<SPColour> coloursToHaveIn, List<Student> availableIn){
+    private boolean enoughColoursInListStudents(List<SPColour> coloursToHave, List<Student> availableIn){
         List<Student> available = new ArrayList<>();
         available.addAll(availableIn);
-        List<SPColour> coloursToHave = new ArrayList<>();
-        coloursToHave.addAll(coloursToHaveIn);
 
         int equal = 0;
         for(SPColour c : coloursToHave){
             for(int i = 0; i < available.size(); i++){
                 if(available.get(i) != null){
-                    available.set(i, null);
-                    equal++;
-                    break;
+                    if(available.get(i).getColour() == c){
+                        available.set(i, null);
+                        equal++;
+                        break;
+                    }
                 }
             }
         }
-
-        return equal == coloursToHave.size();
+        return (equal == coloursToHave.size());
     }
 
     public boolean checkCreateMatch(int numPlayers){
@@ -116,8 +115,8 @@ public class ControllerIntegrity {
         if(coloursCard.size() != coloursSchool.size()){return false;}
 
         // all Students in the Hall
-        return enoughColoursInListStudents(coloursSchool, chosenCard.getStudents()) &&
-                enoughColoursInListStudents(coloursCard, this.board.getPlayerSchool(player).getStudentsHall());
+        return enoughColoursInListStudents(coloursSchool, this.board.getPlayerSchool(player).getStudentsHall()) &&
+                enoughColoursInListStudents(coloursCard, chosenCard.getStudents());
     }
 
     public boolean checkCCExchangeTwoHallDining(Player player, List<SPColour> coloursHall, List<SPColour> coloursDiningRoom){
@@ -125,17 +124,22 @@ public class ControllerIntegrity {
 
         if(coloursHall.size() != coloursDiningRoom.size()){return false;}
 
-        // all Students required are present
-        List<Student> studentsDiningRoom = new ArrayList<>();
-        if(coloursHall.get(0) != coloursHall.get(1)){ //take interesting Students of the DiningRoom
-            studentsDiningRoom.addAll(this.board.getPlayerSchool(player).getListStudentColour(coloursDiningRoom.get(0)));
-            studentsDiningRoom.addAll(this.board.getPlayerSchool(player).getListStudentColour(coloursDiningRoom.get(1)));
+        List<Student> studentsDiningRoom = new ArrayList<>(); // Students of the DiningRoom of the requested colours
+        if(coloursDiningRoom.size() == 2){
+            if(coloursDiningRoom.get(0) != coloursDiningRoom.get(1)){ //take interesting Students of the DiningRoom
+                studentsDiningRoom.addAll(this.board.getPlayerSchool(player).getListStudentColour(coloursDiningRoom.get(0)));
+                studentsDiningRoom.addAll(this.board.getPlayerSchool(player).getListStudentColour(coloursDiningRoom.get(1)));
+            }
+            else{
+                studentsDiningRoom.addAll(this.board.getPlayerSchool(player).getListStudentColour(coloursDiningRoom.get(0)));
+            }
         }
         else{
-            studentsDiningRoom.addAll(this.board.getPlayerSchool(player).getListStudentColour(coloursHall.get(0)));
+            studentsDiningRoom.addAll(this.board.getPlayerSchool(player).getListStudentColour(coloursDiningRoom.get(0)));
         }
 
-        return enoughColoursInListStudents(coloursHall, studentsDiningRoom);
+        return (enoughColoursInListStudents(coloursDiningRoom, studentsDiningRoom) && // Are all Students required (in coloursDiningRoom) present in the DiningRoom?
+                enoughColoursInListStudents(coloursHall, this.board.getPlayerSchool(player).getStudentsHall())); // Are all Students required (in coloursHall) present in the Hall?
     }
 
     public boolean checkCCGeneric(){

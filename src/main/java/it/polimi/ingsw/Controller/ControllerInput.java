@@ -53,14 +53,14 @@ public class ControllerInput {
 
     public boolean checkMultipleStudentColour(List<String> colours){
         for(String c : colours){
-            if(!this.checkStudentColour(c) || c.equals("-")){return false;} //I accept "-" for Character Cards
+            if(!(this.checkStudentColour(c) || c.equals("-"))){return false;} //I accept "-" for Character Cards
         }
         return true;
     }
 
     // Check if the destination Archipelago is possible
     public boolean checkDestinationArchipelagoIndex(int i){
-        return i <= MAX_NUM_ARCHIPELAGOS;
+        return (i >= 0 && i <= MAX_NUM_ARCHIPELAGOS);
     }
 
     public boolean checkCloudIndex(int i){

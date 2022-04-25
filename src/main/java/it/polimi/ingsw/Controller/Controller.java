@@ -52,6 +52,26 @@ public class Controller implements Observer<Message> {
         return this.players.get(this.currentPlayerIndex);
     } //TODO
 
+    public List<Player> getPlayers(){
+        return new ArrayList<>(this.players);
+    }
+
+    public boolean isAdvanced(){
+        return this.advanced;
+    }
+
+    public ControllerState getControllerState(){
+        return this.controllerState;
+    }
+
+    public ControllerIntegrity getControllerIntegrity(){
+        return this.controllerIntegrity;
+    }
+
+    public ControllerInput getControllerInput(){
+        return this.controllerInput;
+    }
+
     /*I RECEIVED A MESSAGE => I need to:
      * Know its format: is it a STUDENT_TO_ARCHIPELAGO or something else?
      *   if not a valid format: resend
@@ -62,13 +82,12 @@ public class Controller implements Observer<Message> {
      *   if no: resend
      * Call the Model and applicate the move requested
      * */
-    public void update(Message arg) {
-        if(!controllerInput.checkFormat(arg)){
+    public void update(Message message) {
+        if(!controllerInput.checkFormat(message)){
             System.out.println("Invalid format");
             return;
         }
 
-        Message message = arg;
         if(!controllerState.checkState(message.getType())){
             System.out.println("You can't do that now");
             return;
@@ -87,8 +106,6 @@ public class Controller implements Observer<Message> {
                 e.printStackTrace();
             }
         }
-
-        return;
     }
 
     //associate the String to its SPColour. Note that I'm sure this association exists, since I made a control
@@ -208,7 +225,7 @@ public class Controller implements Observer<Message> {
     }
 
     // TODO: maybe divide the CreateMatch and addPlayer even for the first player
-    public boolean manageCreateMatch(MessageCreateMatch message){ //TODO: manage GameFour
+    public boolean manageCreateMatch(MessageCreateMatch message){
         this.numPlayers = message.getNumPlayers();
         this.advanced = message.isAdvanced();
         PlayerColour colourFirstPlayer = mapStringToPlayerColour(message.getColourFirstPlayer());
@@ -226,7 +243,7 @@ public class Controller implements Observer<Message> {
         return true;
     }
 
-    public boolean manageAddPlayer(MessageAddPlayer message){ // TODO: manage GameFour
+    public boolean manageAddPlayer(MessageAddPlayer message){
         String nickname = message.getNickname();
         PlayerColour colour = mapStringToPlayerColour(message.getColour());
         ServerView serverView = message.getServerView();
@@ -236,8 +253,27 @@ public class Controller implements Observer<Message> {
             if(p.getNickname().equals(nickname)){return false;}
         }
 
+        // Check colour not already chosen (or chosen only one time for GameFour)
+        if(this.numPlayers == 4){
+            int numSameColour = 0;
+            for(Player p : this.players){
+                if(p.getColour() == colour){
+                    numSameColour++;
+                }
+            }
+            if(numSameColour >= 2){
+                return false;
+            }
+        }
+        else{
+            for(Player p : this.players){
+                if(p.getColour() == colour){
+                    return false;
+                }
+            }
+        }
+
         // No integrity to check
-        //TODO: check for colour not already chosen
         Player player = new Player(nickname, colour);
         this.players.add(player);
         this.playerConnection.put(player, serverView);
@@ -403,7 +439,6 @@ public class Controller implements Observer<Message> {
         if(!isCurrentPlayer(nicknamePlayer)){return false;}
 
         try {
-            ExchangeTwoHallDining chosenCard = (ExchangeTwoHallDining)this.boardAdvanced.getExtractedCards().get(indexCard);
             if(controllerIntegrity.checkCCExchangeTwoHallDining(getCurrentPlayer(), coloursHall, coloursDiningRoom)){
                 this.boardAdvanced.useExchangeTwoHallDining(getCurrentPlayer(), coloursHall, coloursDiningRoom, indexCard);
 

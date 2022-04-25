@@ -1,89 +1,21 @@
 package it.polimi.ingsw.Controller;
 
+import it.polimi.ingsw.Messages.INMessage.MessageCreateMatch;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import static org.junit.Assert.assertFalse;
+
 public class ControllerTest {
-    @Test
-    void getCurrentPlayer() {
+    Controller controller;
+
+    @BeforeEach
+    void init() {
+        controller = new Controller();
     }
 
     @Test
-    void update() {
-    }
+    void controllerTest(){
 
-    @Test
-    void manageCreateMatch() {
-    }
-
-    @Test
-    void manageAddPlayer() {
-    }
-
-    @Test
-    void manageAssistantCard() {
-    }
-
-    @Test
-    void manageStudentHallToDiningRoom() {
-    }
-
-    @Test
-    void manageStudentToArchipelago() {
-    }
-
-    @Test
-    void manageMoveMotherNature() {
-    }
-
-    @Test
-    void manageStudentCloudToSchool() {
-    }
-
-    @Test
-    void manageCCExchangeThreeStudents() {
-    }
-
-    @Test
-    void manageCCExchangeTwoHallDining() {
-    }
-
-    @Test
-    void manageCCExcludeColourFromCounting() {
-    }
-
-    @Test
-    void manageCCExtraStudentInDining() {
-    }
-
-    @Test
-    void manageCCFakeMNMovement() {
-    }
-
-    @Test
-    void manageCCForbidIsland() {
-    }
-
-    @Test
-    void manageCCPlaceOneStudent() {
-    }
-
-    @Test
-    void manageCCReduceColourInDining() {
-    }
-
-    @Test
-    void manageCCTowerNoValue() {
-    }
-
-    @Test
-    void manageCCTwoExtraPoints() {
-    }
-
-    @Test
-    void manageCCTakeProfessorOnEquity() {
-    }
-
-    @Test
-    void manageCCTwoExtraIslands() {
     }
 }

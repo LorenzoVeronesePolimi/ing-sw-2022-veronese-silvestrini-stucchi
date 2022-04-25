@@ -3,6 +3,7 @@ package it.polimi.ingsw.Controller;
 import it.polimi.ingsw.Messages.Enumerations.INMessageType;
 import it.polimi.ingsw.Model.Board.*;
 import it.polimi.ingsw.Model.Cards.ExchangeThreeStudents;
+import it.polimi.ingsw.Model.Cards.PlaceOneStudent;
 import it.polimi.ingsw.Model.Enumerations.PlayerColour;
 import it.polimi.ingsw.Model.Enumerations.SPColour;
 import it.polimi.ingsw.Model.Exceptions.*;
@@ -37,6 +38,8 @@ class ControllerIntegrityTest {
         try {
             this.board = new BoardFour(players);
             this.boardAdvanced = new BoardAdvanced(board);
+            controllerIntegrity.setBoard(board);
+            controllerIntegrity.setBoardAdvanced(boardAdvanced);
         } catch (StudentNotFoundException | ExceedingAssistantCardNumberException | EmptyCaveauException | TowerNotFoundException | ExceededMaxStudentsCloudException | ExceededMaxStudentsHallException e) {
             e.printStackTrace();
         }
@@ -233,21 +236,117 @@ class ControllerIntegrityTest {
 
     @Test
     void checkCCExchangeTwoHallDining() {
+        //Case not advanced
+        controllerIntegrity.setAdvanced(false);
+        List<SPColour> colours = new ArrayList<>();
+        colours.add(SPColour.BLUE); colours.add(SPColour.BLUE);
+        assertFalse(controllerIntegrity.checkCCExchangeTwoHallDining(players.get(0), colours, colours));
+        controllerIntegrity.setAdvanced(true);
+
+        //Case different sizes of input lists
+        controllerIntegrity.setBoard(board);
+        controllerIntegrity.setBoardAdvanced(boardAdvanced);
+        List<SPColour> coloursHall = new ArrayList<>();
+        coloursHall.add(SPColour.BLUE);
+        List<SPColour> coloursDiningRoom = new ArrayList<>();
+        coloursDiningRoom.add(SPColour.BLUE); coloursDiningRoom.add(SPColour.BLUE);
+        assertFalse(controllerIntegrity.checkCCExchangeTwoHallDining(players.get(0), coloursHall, coloursDiningRoom));
+
+        // Case all Students required are present
+        // case same colours in coloursDiningRoom
+        List<SPColour> coloursDiningRoomOkSame = new ArrayList<>();
+        coloursDiningRoomOkSame.add(SPColour.RED); coloursDiningRoomOkSame.add(SPColour.RED);
+        try {
+            board.getPlayerSchool(players.get(1)).addStudentDiningRoom(new Student(SPColour.RED));
+            board.getPlayerSchool(players.get(1)).addStudentDiningRoom(new Student(SPColour.RED));
+        } catch (ExceededMaxStudentsDiningRoomException e) {
+            e.printStackTrace();
+        }
+        List<Student> studentsInHallOkSame = board.getPlayerSchool(players.get(1)).getStudentsHall();
+        List<SPColour> coloursHallOkSame = new ArrayList<>();
+        coloursHallOkSame.add(studentsInHallOkSame.get(0).getColour());
+        coloursHallOkSame.add(studentsInHallOkSame.get(1).getColour());
+        assertTrue(controllerIntegrity.checkCCExchangeTwoHallDining(players.get(1), coloursHallOkSame, coloursDiningRoomOkSame));
+        // case different colours in coloursDiningRoom
+        List<SPColour> coloursDiningRoomOkDifferent = new ArrayList<>();
+        coloursDiningRoomOkDifferent.add(SPColour.RED); coloursDiningRoomOkDifferent.add(SPColour.YELLOW);
+        try {
+            board.getPlayerSchool(players.get(2)).addStudentDiningRoom(new Student(SPColour.RED));
+            board.getPlayerSchool(players.get(2)).addStudentDiningRoom(new Student(SPColour.YELLOW));
+        } catch (ExceededMaxStudentsDiningRoomException e) {
+            e.printStackTrace();
+        }
+        List<Student> studentsInHallOkDifferent = board.getPlayerSchool(players.get(2)).getStudentsHall();
+        List<SPColour> coloursHallOkDifferent = new ArrayList<>();
+        coloursHallOkDifferent.add(studentsInHallOkDifferent.get(0).getColour());
+        coloursHallOkDifferent.add(studentsInHallOkDifferent.get(1).getColour());
+        assertTrue(controllerIntegrity.checkCCExchangeTwoHallDining(players.get(2), coloursHallOkDifferent, coloursDiningRoomOkDifferent));
+        // case one colour selected
+        List<SPColour> coloursDiningRoomOkOne = new ArrayList<>();
+        coloursDiningRoomOkOne.add(SPColour.RED);
+        try {
+            board.getPlayerSchool(players.get(3)).addStudentDiningRoom(new Student(SPColour.RED));
+        } catch (ExceededMaxStudentsDiningRoomException e) {
+            e.printStackTrace();
+        }
+        List<Student> studentsInHallOkOne = board.getPlayerSchool(players.get(3)).getStudentsHall();
+        List<SPColour> coloursHallOkOne = new ArrayList<>();
+        coloursHallOkOne.add(studentsInHallOkOne.get(0).getColour());
+        assertTrue(controllerIntegrity.checkCCExchangeTwoHallDining(players.get(3), coloursHallOkOne, coloursDiningRoomOkOne));
     }
 
     @Test
     void checkCCGeneric() {
+        controllerIntegrity.setAdvanced(false);
+        assertFalse(controllerIntegrity.checkCCGeneric());
+        controllerIntegrity.setAdvanced(true);
+        assertTrue(controllerIntegrity.checkCCGeneric());
     }
 
     @Test
     void checkCCFakeMNMovement() {
+        // Case not advanced
+        controllerIntegrity.setAdvanced(false);
+        assertFalse(controllerIntegrity.checkCCFakeMNMovement(1));
+        controllerIntegrity.setAdvanced(true);
+
+        // Case index not ok
+        assertFalse(controllerIntegrity.checkCCFakeMNMovement(13));
+
+        // Case index ok
+        assertTrue(controllerIntegrity.checkCCFakeMNMovement(2));
     }
 
     @Test
     void checkCCForbidIsland() {
+        // Case not advanced
+        controllerIntegrity.setAdvanced(false);
+        assertFalse(controllerIntegrity.checkCCForbidIsland(1));
+        controllerIntegrity.setAdvanced(true);
+
+        // Case index not ok
+        assertFalse(controllerIntegrity.checkCCForbidIsland(13));
+
+        // Case index ok
+        assertTrue(controllerIntegrity.checkCCForbidIsland(2));
     }
 
     @Test
     void checkCCPlaceOneStudent() {
+        // Case not advanced
+        controllerIntegrity.setAdvanced(false);
+        assertFalse(controllerIntegrity.checkCCForbidIsland(1));
+        controllerIntegrity.setAdvanced(true);
+
+        // Case index not ok
+        assertFalse(controllerIntegrity.checkCCForbidIsland(13));
+
+        // Case index ok
+        try {
+            PlaceOneStudent chosenCard = new PlaceOneStudent(boardAdvanced);
+            assertTrue(controllerIntegrity.checkCCPlaceOneStudent(chosenCard.getCardStudents().get(0).getColour(), 1, chosenCard));
+        } catch (StudentNotFoundException e) {
+            e.printStackTrace();
+        }
     }
 }
