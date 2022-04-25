@@ -101,6 +101,9 @@ public class ControllerIntegrity {
     public boolean checkStudentCloudToSchool(Player player, int indexCloud){
         List<Cloud> clouds;
         clouds = this.board.getClouds();
+
+        if(clouds.size() <= indexCloud){return false;}
+
         if(clouds.get(indexCloud).getStudents().size() > 0){ //I can't choose a void Cloud
             School s = board.getPlayerSchool(player);
             // Is there enough space in the Hall?

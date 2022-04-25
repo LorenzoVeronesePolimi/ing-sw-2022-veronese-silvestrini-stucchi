@@ -92,6 +92,8 @@ public class BoardAdvanced implements Board {
 
     public Bag getBag(){return this.board.bag;}
 
+    public Bank getBank(){return this.bank;}
+
     public List<Archipelago> getArchiList(){
         return new ArrayList<>(this.board.archipelagos);
     }

@@ -86,7 +86,7 @@ class ControllerInputTest {
 
     @Test
     void checkCloudIndex() {
-        assertTrue(controllerInput.checkCloudIndex(4));
+        assertTrue(controllerInput.checkCloudIndex(3));
         assertFalse(controllerInput.checkCloudIndex(-1));
         assertFalse(controllerInput.checkCloudIndex(5));
     }

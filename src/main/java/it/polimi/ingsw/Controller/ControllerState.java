@@ -38,6 +38,7 @@ public class ControllerState {
             case CC_TAKE_PROFESSOR_ON_EQUITY:
             case CC_TOWER_NO_VALUE:
             case CC_TWO_EXTRA_POINTS:
+            case CC_TWO_EXTRA_ISLANDS:
                 return (this.state != State.CONNECTING &&
                         this.state != State.WAITING_PLAYERS);
         }

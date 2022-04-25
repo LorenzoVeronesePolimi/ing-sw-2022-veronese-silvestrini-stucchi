@@ -2,6 +2,7 @@ package it.polimi.ingsw.Controller;
 
 import it.polimi.ingsw.Controller.Enumerations.State;
 import it.polimi.ingsw.Controller.Exceptions.NoPlayerException;
+import it.polimi.ingsw.Messages.Enumerations.INMessageType;
 import it.polimi.ingsw.Messages.INMessage.*;
 import it.polimi.ingsw.Model.Board.BoardAbstract;
 import it.polimi.ingsw.Model.Board.BoardAdvanced;
@@ -14,6 +15,7 @@ import it.polimi.ingsw.Model.Player;
 import it.polimi.ingsw.Observer.Observer;
 import it.polimi.ingsw.View.ServerView;
 
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -40,6 +42,8 @@ public class Controller implements Observer<Message> {
     private final int NUM_STUDENTS_TO_MOVE_TWO_PLAYERS = 3;
     private final int NUM_STUDENTS_TO_MOVE_THREE_PLAYERS = 4;
 
+    private boolean characterCardUsed = false; //true when a CC has been used
+
     public Controller(){
         this.players = new ArrayList<>();
         this.controllerInput = new ControllerInput();
@@ -56,6 +60,14 @@ public class Controller implements Observer<Message> {
         return new ArrayList<>(this.players);
     }
 
+    public int getNumStudentsToMoveCurrent(){
+        return this.numStudentsToMoveCurrent;
+    }
+
+    public BoardAbstract getBoard(){return this.board;}
+
+    public BoardAdvanced getBoardAdvanced(){return this.boardAdvanced;}
+
     public boolean isAdvanced(){
         return this.advanced;
     }
@@ -70,6 +82,14 @@ public class Controller implements Observer<Message> {
 
     public ControllerInput getControllerInput(){
         return this.controllerInput;
+    }
+
+    public boolean isCharacterCardUsed(){
+        return this.characterCardUsed;
+    }
+
+    public void setCharacterCardUsed(boolean newValue){
+        this.characterCardUsed = newValue;
     }
 
     /*I RECEIVED A MESSAGE => I need to:
@@ -100,11 +120,13 @@ public class Controller implements Observer<Message> {
         //check if I have to make some automatic action (=>PIANIFICATION1)
         if(controllerState.getState() == State.PLANNING1){
             //TODO: surrounded with try catch just to remove errors. It needs to be checked before leaving it like that
+            controllerState.setState(State.PLANNING2);
             try {
                 this.board.moveStudentBagToCloud();
             } catch (ExceededMaxStudentsCloudException | StudentNotFoundException e) {
-                e.printStackTrace();
+                return; //case of first turn, in which clouds are filled immediately
             }
+
         }
     }
 
@@ -291,7 +313,7 @@ public class Controller implements Observer<Message> {
         int turnPriority = message.getTurnPriority();
 
         // Is him the currentPlayer? Can he use that AssistantCard?
-        if(!isCurrentPlayer(nicknamePlayer)){return false;} //TODO
+        if(!isCurrentPlayer(nicknamePlayer)){return false;}
         controllerIntegrity.checkAssistantCard(this.players, this.currentPlayerIndex, getCurrentPlayer(), turnPriority);
 
         // Remove the card from his hand
@@ -302,9 +324,10 @@ public class Controller implements Observer<Message> {
         // Go on within the turn
         this.currentPlayerIndex++;
 
-        if(this.currentPlayerIndex == this.players.size()-1){ //last player: all players has played their AssistantCard. No I can set the order
+        if(this.currentPlayerIndex == this.players.size()){ //last player: all players has played their AssistantCard. No I can set the order
             this.changeTurnOrder(); // reset the order of the Players according to the values of the AssistantCards
             this.currentPlayerIndex = 0; // the new turn will start
+            controllerState.setState(State.ACTION1);
         }
         return true;
     }
@@ -337,6 +360,7 @@ public class Controller implements Observer<Message> {
                 this.numStudentsToMoveCurrent = this.numStudentsToMove;
                 controllerState.setState(State.ACTION2);
             }
+
             return true;
         }
         return false;
@@ -354,6 +378,13 @@ public class Controller implements Observer<Message> {
                 board.moveStudentSchoolToArchipelagos(getCurrentPlayer(), studentColour, destinationArchipelagoIndex);
             } catch (StudentNotFoundException e) {
                 return false;
+            }
+
+            this.numStudentsToMoveCurrent--;
+            if(this.numStudentsToMoveCurrent == 0 || // all possible Students moved
+                    this.board.getPlayerSchool(getCurrentPlayer()).getStudentsHall().size() == 0){ // no Students remained
+                this.numStudentsToMoveCurrent = this.numStudentsToMove;
+                controllerState.setState(State.ACTION2);
             }
             return true;
         }
@@ -413,11 +444,18 @@ public class Controller implements Observer<Message> {
 
         if(!isCurrentPlayer(nicknamePlayer)){return false;}
 
+        if(isCharacterCardUsed()){return false;}
+
+        if(!isRightMapIndexToCharacterCard(message.getType(), indexCard)){return false;}
+
         try{
             if(controllerIntegrity.checkCCExchangeThreeStudents(getCurrentPlayer(), coloursCard, coloursHall,
                     (ExchangeThreeStudents) this.boardAdvanced.getExtractedCards().get(indexCard))) {
 
                 this.boardAdvanced.useExchangeThreeStudents(getCurrentPlayer(), coloursHall, coloursCard, indexCard);
+
+                this.characterCardUsed = true;
+
                 return true;
             }
 
@@ -438,9 +476,15 @@ public class Controller implements Observer<Message> {
 
         if(!isCurrentPlayer(nicknamePlayer)){return false;}
 
+        if(isCharacterCardUsed()){return false;}
+
+        if(!isRightMapIndexToCharacterCard(message.getType(), indexCard)){return false;}
+
         try {
             if(controllerIntegrity.checkCCExchangeTwoHallDining(getCurrentPlayer(), coloursHall, coloursDiningRoom)){
                 this.boardAdvanced.useExchangeTwoHallDining(getCurrentPlayer(), coloursHall, coloursDiningRoom, indexCard);
+
+                this.characterCardUsed = true;
 
                 return true;
             }
@@ -462,6 +506,10 @@ public class Controller implements Observer<Message> {
 
         if(!isCurrentPlayer(nicknamePlayer)){return false;}
 
+        if(isCharacterCardUsed()){return false;}
+
+        if(!isRightMapIndexToCharacterCard(message.getType(), indexCard)){return false;}
+
         if(controllerIntegrity.checkCCGeneric()){
             try {
                 this.boardAdvanced.useExcludeColourFromCounting(getCurrentPlayer(), colourToExclude, indexCard);
@@ -474,6 +522,8 @@ public class Controller implements Observer<Message> {
                     TowerNotFoundException e) {
                 e.printStackTrace();
             }
+
+            this.characterCardUsed = true;
 
             return true;
         }
@@ -488,9 +538,15 @@ public class Controller implements Observer<Message> {
 
         if(!isCurrentPlayer(nicknamePlayer)){return false;}
 
+        if(isCharacterCardUsed()){return false;}
+
+        if(!isRightMapIndexToCharacterCard(message.getType(), indexCard)){return false;}
+
         if(controllerIntegrity.checkCCGeneric()){
             try {
                 this.boardAdvanced.useExtraStudentInDining(getCurrentPlayer(), colourToMove, indexCard);
+
+                this.characterCardUsed = true;
 
                 return true;
             } catch (ExceededMaxStudentsDiningRoomException |
@@ -512,9 +568,15 @@ public class Controller implements Observer<Message> {
 
         if(!isCurrentPlayer(nicknamePlayer)){return false;}
 
+        if(isCharacterCardUsed()){return false;}
+
+        if(!isRightMapIndexToCharacterCard(message.getType(), indexCard)){return false;}
+
         if(controllerIntegrity.checkCCFakeMNMovement(fakeMNPosition)){
             try {
                 this.boardAdvanced.useFakeMNMovement(getCurrentPlayer(), fakeMNPosition, indexCard);
+
+                this.characterCardUsed = true;
 
                 return true;
             } catch (TowerNotFoundException |
@@ -538,9 +600,15 @@ public class Controller implements Observer<Message> {
 
         if(!isCurrentPlayer(nicknamePlayer)){return false;}
 
+        if(isCharacterCardUsed()){return false;}
+
+        if(!isRightMapIndexToCharacterCard(message.getType(), indexCard)){return false;}
+
         if(controllerIntegrity.checkCCForbidIsland(archipelagoIndexToForbid)){
             try {
                 this.boardAdvanced.useForbidIsland(getCurrentPlayer(), archipelagoIndexToForbid, indexCard);
+
+                this.characterCardUsed = true;
 
                 return true;
             } catch (ExceededNumberForbidFlagException |
@@ -561,10 +629,16 @@ public class Controller implements Observer<Message> {
 
         if(!isCurrentPlayer(nicknamePlayer)){return false;}
 
+        if(isCharacterCardUsed()){return false;}
+
+        if(!isRightMapIndexToCharacterCard(message.getType(), indexCard)){return false;}
+
         try {
             PlaceOneStudent chosenCard = (PlaceOneStudent)this.boardAdvanced.getExtractedCards().get(indexCard);
             if(controllerIntegrity.checkCCPlaceOneStudent(colourToMove, archipelagoIndexDestination, chosenCard)){
                 this.boardAdvanced.usePlaceOneStudent(getCurrentPlayer(), colourToMove, archipelagoIndexDestination, indexCard);
+
+                this.characterCardUsed = true;
 
                 return true;
             }
@@ -585,9 +659,15 @@ public class Controller implements Observer<Message> {
 
         if(!isCurrentPlayer(nicknamePlayer)){return false;}
 
+        if(isCharacterCardUsed()){return false;}
+
+        if(!isRightMapIndexToCharacterCard(message.getType(), indexCard)){return false;}
+
         try {
             if(controllerIntegrity.checkCCGeneric()) {
                 this.boardAdvanced.useReduceColourInDining(getCurrentPlayer(), colourToReduce, indexCard);
+
+                this.characterCardUsed = true;
 
                 return true;
             }
@@ -607,6 +687,10 @@ public class Controller implements Observer<Message> {
 
         if(!isCurrentPlayer(nicknamePlayer)){return false;}
 
+        if(isCharacterCardUsed()){return false;}
+
+        if(!isRightMapIndexToCharacterCard(message.getType(), indexCard)){return false;}
+
         if(controllerIntegrity.checkCCGeneric()){
             try {
                 this.boardAdvanced.useTowerNoValue(getCurrentPlayer(), indexCard);
@@ -615,6 +699,8 @@ public class Controller implements Observer<Message> {
                     CoinNotFoundException e) {
                 e.printStackTrace();
             }
+
+            this.characterCardUsed = true;
 
             return true;
         }
@@ -628,6 +714,10 @@ public class Controller implements Observer<Message> {
 
         if(!isCurrentPlayer(nicknamePlayer)){return false;}
 
+        if(isCharacterCardUsed()){return false;}
+
+        if(!isRightMapIndexToCharacterCard(message.getType(), indexCard)){return false;}
+
         if(controllerIntegrity.checkCCGeneric()){
             try {
                 this.boardAdvanced.useTwoExtraPoints(getCurrentPlayer(), indexCard);
@@ -636,6 +726,8 @@ public class Controller implements Observer<Message> {
                     CoinNotFoundException e) {
                 e.printStackTrace();
             }
+
+            this.characterCardUsed = true;
 
             return true;
         }
@@ -649,9 +741,15 @@ public class Controller implements Observer<Message> {
 
         if(!isCurrentPlayer(nicknamePlayer)){return false;}
 
+        if(isCharacterCardUsed()){return false;}
+
+        if(!isRightMapIndexToCharacterCard(message.getType(), indexCard)){return false;}
+
         try {
             if(controllerIntegrity.checkCCGeneric()){
                 this.boardAdvanced.useTakeProfessorOnEquity(getCurrentPlayer(), indexCard);
+
+                this.characterCardUsed = true;
 
                 return true;
             }
@@ -676,6 +774,10 @@ public class Controller implements Observer<Message> {
 
         if(!isCurrentPlayer(nicknamePlayer)){return false;}
 
+        if(isCharacterCardUsed()){return false;}
+
+        if(!isRightMapIndexToCharacterCard(message.getType(), indexCard)){return false;}
+
         if(controllerIntegrity.checkCCGeneric()){
             try {
                 this.boardAdvanced.useTwoExtraIslands(getCurrentPlayer(), indexCard);
@@ -685,9 +787,68 @@ public class Controller implements Observer<Message> {
                 e.printStackTrace();
             }
 
+            this.characterCardUsed = true;
+
             return true;
         }
 
+        return false;
+    }
+
+    private boolean isRightMapIndexToCharacterCard(INMessageType type, int indexCard){
+        AbstractCharacterCard chosenCard = this.boardAdvanced.getExtractedCards().get(indexCard);
+
+        // is this card corresponding to the index chosen?
+        switch(type) {
+            case CC_EXCHANGE_THREE_STUDENTS:
+                if (chosenCard instanceof ExchangeThreeStudents) {
+                    return true;
+                }
+            case CC_EXCHANGE_TWO_HALL_DINING:
+                if (chosenCard instanceof ExchangeTwoHallDining) {
+                    return true;
+                }
+            case CC_EXCLUDE_COLOUR_FROM_COUNTING:
+                if (chosenCard instanceof ExcludeColourFromCounting) {
+                    return true;
+                }
+            case CC_EXTRA_STUDENT_IN_DINING:
+                if (chosenCard instanceof ExtraStudentInDining) {
+                    return true;
+                }
+            case CC_FAKE_MN_MOVEMENT:
+                if (chosenCard instanceof FakeMNMovement) {
+                    return true;
+                }
+            case CC_FORBID_ISLAND:
+                if (chosenCard instanceof ForbidIsland) {
+                    return true;
+                }
+            case CC_PLACE_ONE_STUDENT:
+                if (chosenCard instanceof PlaceOneStudent) {
+                    return true;
+                }
+            case CC_REDUCE_COLOUR_IN_DINING:
+                if (chosenCard instanceof ReduceColourInDining) {
+                    return true;
+                }
+            case CC_TAKE_PROFESSOR_ON_EQUITY:
+                if (chosenCard instanceof TakeProfessorOnEquity) {
+                    return true;
+                }
+            case CC_TOWER_NO_VALUE:
+                if (chosenCard instanceof TowerNoValue) {
+                    return true;
+                }
+            case CC_TWO_EXTRA_ISLANDS:
+                if (chosenCard instanceof TwoExtraIslands) {
+                    return true;
+                }
+            case CC_TWO_EXTRA_POINTS:
+                if (chosenCard instanceof TwoExtraPoints) {
+                    return true;
+                }
+        }
         return false;
     }
 }

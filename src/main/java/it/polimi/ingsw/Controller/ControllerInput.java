@@ -64,10 +64,10 @@ public class ControllerInput {
     }
 
     public boolean checkCloudIndex(int i){
-        return (i >= 0 && i <=4);
+        return (i >= 0 && i <=3);
     }
 
     public boolean checkIndexCard(int i){
-        return (i>=0 && i <= 2);
+        return (i >= 0 && i <= 2);
     }
 }
