@@ -12,10 +12,12 @@ import it.polimi.ingsw.Model.Places.Cloud;
 import it.polimi.ingsw.Model.Places.School.School;
 import it.polimi.ingsw.Model.Places.School.SchoolAdvanced;
 import it.polimi.ingsw.Model.Player;
+import it.polimi.ingsw.Observer.Observable;
+import org.json.JSONObject;
 
 import java.util.*;
 
-public class BoardAdvanced implements Board {
+public class BoardAdvanced extends Observable implements Board {
     private final BoardAbstract board;
     private boolean twoExtraPointsFlag = false;
     private SPColour colourToExclude = null;

@@ -31,7 +31,7 @@ public class Controller implements Observer<Message> {
     private List<Player> players; //ordered
 
     private int currentPlayerIndex = 0;
-    private Map<Player, ServerView> playerConnection;
+    private List<ServerView> serverViews;
 
     private final ControllerInput controllerInput;
     private final ControllerState controllerState;
@@ -49,7 +49,7 @@ public class Controller implements Observer<Message> {
         this.controllerInput = new ControllerInput();
         this.controllerState = new ControllerState();
         this.controllerIntegrity = new ControllerIntegrity();
-        this.playerConnection = new HashMap<>();
+        this.serverViews = new ArrayList<>();
     }
 
     public Player getCurrentPlayer(){
@@ -74,6 +74,14 @@ public class Controller implements Observer<Message> {
 
     public ControllerState getControllerState(){
         return this.controllerState;
+    }
+
+    public ControllerIntegrity getControllerIntegrity(){
+        return this.controllerIntegrity;
+    }
+
+    public ControllerInput getControllerInput(){
+        return this.controllerInput;
     }
 
     public boolean isCharacterCardUsed(){
@@ -213,6 +221,8 @@ public class Controller implements Observer<Message> {
             this.numStudentsToMove = NUM_STUDENTS_TO_MOVE_TWO_PLAYERS;
             this.numStudentsToMoveCurrent = NUM_STUDENTS_TO_MOVE_TWO_PLAYERS;
         }
+
+        this.addBoardObserver();
     }
 
     private void changeTurnOrder(){
@@ -242,6 +252,7 @@ public class Controller implements Observer<Message> {
     public boolean manageCreateMatch(MessageCreateMatch message){
         this.numPlayers = message.getNumPlayers();
         this.advanced = message.isAdvanced();
+        ServerView serverView = message.getServerView();
         PlayerColour colourFirstPlayer = mapStringToPlayerColour(message.getColourFirstPlayer());
         // no need to control the boolean "advanced"
 
@@ -251,6 +262,7 @@ public class Controller implements Observer<Message> {
 
         Player player = new Player(message.getNicknameFirstPlayer(), colourFirstPlayer);
         this.players.add(player);
+        this.serverViews.add(serverView);
 
         controllerState.setState(State.WAITING_PLAYERS);
 
@@ -260,7 +272,7 @@ public class Controller implements Observer<Message> {
     public boolean manageAddPlayer(MessageAddPlayer message){
         String nickname = message.getNickname();
         PlayerColour colour = mapStringToPlayerColour(message.getColour());
-        //ServerView serverView = message.getServerView();
+        ServerView serverView = message.getServerView();
 
         // He can't have the name of an existing Player
         for(Player p : this.players){
@@ -290,7 +302,7 @@ public class Controller implements Observer<Message> {
         // No integrity to check
         Player player = new Player(nickname, colour);
         this.players.add(player);
-        //this.playerConnection.put(player, serverView);
+        this.serverViews.add(serverView);
 
         if(this.players.size() == numPlayers){ // The requested number of players has been reached: let's go on
             this.initMatch();
@@ -842,6 +854,13 @@ public class Controller implements Observer<Message> {
                 }
         }
         return false;
+    }
+
+    public void addBoardObserver() {
+        for(ServerView s : serverViews) {
+            this.board.addObserver(s);
+            this.boardAdvanced.addObserver(s);
+        }
     }
 }
 

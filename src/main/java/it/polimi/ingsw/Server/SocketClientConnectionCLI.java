@@ -55,8 +55,7 @@ public class SocketClientConnectionCLI extends ClientConnection implements Runna
         this.server = server;
         this.serverView = new ServerView(this, controller);
 
-        // Commented because I believe it's wrong (already corrected where needed)
-        //this.serverView.addObserver(controller);
+        //controller.addBoardObserver();
 
         try {
             this.in = new ObjectInputStream(socket.getInputStream());
@@ -79,11 +78,11 @@ public class SocketClientConnectionCLI extends ClientConnection implements Runna
             send(serverView.chooseName());
 
 
-            Message read;
+            String read;
 
             //server.lobby(this, this.nickname);
             while(isActive()){
-                read = (Message) in.readObject();
+                read = (String) in.readObject();
                 notify(read);
             }
 

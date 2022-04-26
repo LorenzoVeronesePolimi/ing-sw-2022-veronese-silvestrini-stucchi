@@ -17,17 +17,21 @@ public class Server {
     private Map<String, ClientConnection> waitingConnection = new HashMap<>();
     private Map<ClientConnection, ClientConnection> playingConnection = new HashMap<>();
     private int connections = 0;
-    private String numPlayers;
-    private String mode;
+
     private Controller controller;
 
     public Server() throws IOException {
         this.serverSocket = new ServerSocket(PORT);
+        controller = new Controller();
+    }
+
+    public Controller getController() {
+        return controller;
     }
 
     public void run(){
         System.out.println("Server is running");
-        controller = new Controller();
+
 
         while(true){
             try {

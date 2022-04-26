@@ -20,7 +20,7 @@ public class ServerView implements Observer {
             - client -> model modification (managed byt this inner class)
             - model modified -> client (managed by ServerView)
      */
-    private static class ConnectionListener extends Observable<Message> implements Observer<Message> {
+    private static class ConnectionListener extends Observable<Message> implements Observer<String> {
         private final ServerView serverView;
 
         private ConnectionListener(ServerView serverView) {
@@ -35,12 +35,15 @@ public class ServerView implements Observer {
             (Maybe here we can do some message checking or something IDK)
          */
         @Override
-        public void update(Message message) {
-            if(message.getType().equals(INMessageType.ADD_PLAYER)) {
+        public void update(String message) {
+            //Parsing of messages (from String to Message)
+
+            /*if(message.getType().equals(INMessageType.ADD_PLAYER)) {
                 message = new MessageAddPlayer(((MessageAddPlayer) message).getNickname(),
-                        ((MessageAddPlayer) message).getColour()/*, this.serverView*/);
-            }
-            notify(message);
+                        ((MessageAddPlayer) message).getColour(), this.serverView);
+            }*/
+
+            //notify(message);
         }
     }
 

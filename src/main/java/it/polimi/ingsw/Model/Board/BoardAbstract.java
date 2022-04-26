@@ -12,12 +12,15 @@ import it.polimi.ingsw.Model.Places.Archipelago;
 import it.polimi.ingsw.Model.Places.Cloud;
 import it.polimi.ingsw.Model.Places.School.School;
 import it.polimi.ingsw.Model.Player;
+import it.polimi.ingsw.Observer.Observable;
+import org.json.JSONObject;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-public abstract class BoardAbstract implements Board{
+public abstract class BoardAbstract extends Observable implements Board, Serializable {
     protected List<School> schools;   //list of all school in the game (one for each player)
     protected List<Player> players;   //list of all players in the game (in order)
     protected Map<Player, School> playerSchool;   //map of players and their relative school
