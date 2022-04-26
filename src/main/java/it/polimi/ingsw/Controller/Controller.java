@@ -76,14 +76,6 @@ public class Controller implements Observer<Message> {
         return this.controllerState;
     }
 
-    public ControllerIntegrity getControllerIntegrity(){
-        return this.controllerIntegrity;
-    }
-
-    public ControllerInput getControllerInput(){
-        return this.controllerInput;
-    }
-
     public boolean isCharacterCardUsed(){
         return this.characterCardUsed;
     }
