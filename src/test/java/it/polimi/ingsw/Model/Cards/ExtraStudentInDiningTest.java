@@ -35,7 +35,7 @@ public class ExtraStudentInDiningTest {
 
         ExtraStudentInDining card = null;
         try {
-            card = new ExtraStudentInDining(boardAdvanced);
+            card = new ExtraStudentInDining(CharacterCardEnumeration.EXTRA_STUDENT_IN_DINING, boardAdvanced);
         } catch (StudentNotFoundException e) {
             e.printStackTrace();
         }
@@ -68,7 +68,7 @@ public class ExtraStudentInDiningTest {
 
         Assertions.assertEquals(2,((SchoolAdvanced)boardAdvanced.getSchools().get(0)).getNumCoins());
 
-        if(card.getStudentOnCard().stream().anyMatch(x -> x.getColour().equals(SPColour.PINK))){
+        if(card.getStudentsOnCard().stream().anyMatch(x -> x.getColour().equals(SPColour.PINK))){
             try {
                 boardAdvanced.useExtraStudentInDining(p1,SPColour.PINK, 0);
                 Assertions.assertEquals(1, boardAdvanced.getSchools().get(0).getNumStudentColour(SPColour.PINK));

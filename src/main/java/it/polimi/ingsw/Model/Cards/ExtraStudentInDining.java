@@ -29,8 +29,8 @@ public class ExtraStudentInDining extends AbstractCharacterCard{
      * @throws StudentNotFoundException when there are not enough students in the bag, so
      * it is not possible to extract four of them.
      */
-    public ExtraStudentInDining(BoardAdvanced boardAdvanced) throws StudentNotFoundException {
-        super(2);
+    public ExtraStudentInDining(CharacterCardEnumeration type, BoardAdvanced boardAdvanced) throws StudentNotFoundException {
+        super(type,2);
         bag=boardAdvanced.getBag();
         students = new ArrayList<>(bag.extractStudents(4));
         this.boardAdvanced = boardAdvanced;
@@ -40,7 +40,7 @@ public class ExtraStudentInDining extends AbstractCharacterCard{
      *
      * @return the list of Students from which the player can choose.
      */
-    public List<Student> getStudentOnCard(){
+    public List<Student> getStudentsOnCard(){
         return students;
     }
 

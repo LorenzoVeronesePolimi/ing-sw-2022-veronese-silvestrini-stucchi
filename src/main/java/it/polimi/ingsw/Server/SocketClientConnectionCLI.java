@@ -40,9 +40,9 @@ import java.util.NoSuchElementException;
 
 public class SocketClientConnectionCLI extends ClientConnection implements Runnable {
 
-    private final Socket socket;
-    private final ObjectOutputStream out;
-    private final ObjectInputStream in;
+    private Socket socket;
+    private ObjectOutputStream out;
+    private ObjectInputStream in;
     private final Server server;
 
     private boolean active = true;
@@ -63,6 +63,12 @@ public class SocketClientConnectionCLI extends ClientConnection implements Runna
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    // Just for testing
+    public SocketClientConnectionCLI(Server server, Controller controller) {
+        this.server = server;
+        this.serverView = new ServerView(this, controller);
     }
 
     @Override

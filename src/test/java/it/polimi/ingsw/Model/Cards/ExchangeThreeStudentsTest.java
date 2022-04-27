@@ -14,6 +14,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class ExchangeThreeStudentsTest {
     @Test
@@ -35,7 +36,7 @@ public class ExchangeThreeStudentsTest {
 
         ExchangeThreeStudents card = null;
         try {
-            card = new ExchangeThreeStudents(boardAdvanced);
+            card = new ExchangeThreeStudents(CharacterCardEnumeration.EXCHANGE_THREE_STUDENTS, boardAdvanced);
         } catch (StudentNotFoundException e) {
             e.printStackTrace();
         }
@@ -82,9 +83,9 @@ public class ExchangeThreeStudentsTest {
         Assertions.assertEquals(0, numYellowBefore);
 
         List<SPColour> exchangeColours = new ArrayList<>();
-        exchangeColours.add(card.getStudents().get(0).getColour());
-        exchangeColours.add(card.getStudents().get(1).getColour());
-        exchangeColours.add(card.getStudents().get(2).getColour());
+        exchangeColours.add(card.getStudentsOnCard().get(0).getColour());
+        exchangeColours.add(card.getStudentsOnCard().get(1).getColour());
+        exchangeColours.add(card.getStudentsOnCard().get(2).getColour());
 
         long numBlueToBeAdded = exchangeColours.stream().filter(x -> x.equals(SPColour.BLUE)).count();
         long numPinkToBeAdded = exchangeColours.stream().filter(x -> x.equals(SPColour.PINK)).count();
@@ -156,7 +157,7 @@ public class ExchangeThreeStudentsTest {
 
         ExchangeThreeStudents card = null;
         try {
-            card = new ExchangeThreeStudents(boardAdvanced);
+            card = new ExchangeThreeStudents(CharacterCardEnumeration.EXCHANGE_THREE_STUDENTS, boardAdvanced);
         } catch (StudentNotFoundException e) {
             e.printStackTrace();
         }
@@ -205,8 +206,8 @@ public class ExchangeThreeStudentsTest {
         Assertions.assertEquals(0, numYellowBefore);
 
         List<SPColour> exchangeColours = new ArrayList<>();
-        exchangeColours.add(card.getStudents().get(0).getColour());
-        exchangeColours.add(card.getStudents().get(1).getColour());
+        exchangeColours.add(card.getStudentsOnCard().get(0).getColour());
+        exchangeColours.add(card.getStudentsOnCard().get(1).getColour());
 
         List<SPColour> hallColours = new ArrayList<>();
         hallColours.add(SPColour.BLUE);

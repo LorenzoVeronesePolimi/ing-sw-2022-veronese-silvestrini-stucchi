@@ -25,8 +25,8 @@ public class PlaceOneStudent extends AbstractCharacterCard{
      * the card.
      * @param boardAdvanced The object modified by the card.
      */
-    public PlaceOneStudent(BoardAdvanced boardAdvanced) throws StudentNotFoundException {
-        super(1);
+    public PlaceOneStudent(CharacterCardEnumeration type, BoardAdvanced boardAdvanced) throws StudentNotFoundException {
+        super(type,1);
 
         this.boardAdvanced = boardAdvanced;
         bag = boardAdvanced.getBag();
@@ -36,7 +36,7 @@ public class PlaceOneStudent extends AbstractCharacterCard{
     /**
      * @return The list of student that are on the card.
      */
-    public List<Student> getCardStudents(){
+    public List<Student> getStudentsOnCard(){
         return fourStudents;
     }
 

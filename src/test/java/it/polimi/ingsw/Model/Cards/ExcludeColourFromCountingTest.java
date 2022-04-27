@@ -33,7 +33,7 @@ public class ExcludeColourFromCountingTest {
             e.printStackTrace();
         }
 
-        ExcludeColourFromCounting card = new ExcludeColourFromCounting(boardAdvanced);
+        ExcludeColourFromCounting card = new ExcludeColourFromCounting(CharacterCardEnumeration.EXCLUDE_COLOUR_FROM_COUNTING, boardAdvanced);
         assert boardAdvanced != null;
         boardAdvanced.setExtractedCards(card);
 

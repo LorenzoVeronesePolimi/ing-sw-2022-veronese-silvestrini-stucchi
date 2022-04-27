@@ -27,8 +27,8 @@ public class ExchangeThreeStudents extends AbstractCharacterCard{
      * Constructor of the card.
      * @param boardAdvanced The object modified by the card.
      */
-    public ExchangeThreeStudents(BoardAdvanced boardAdvanced) throws StudentNotFoundException {
-        super(1);
+    public ExchangeThreeStudents(CharacterCardEnumeration type, BoardAdvanced boardAdvanced) throws StudentNotFoundException {
+        super(type,1);
 
         Bag bag = boardAdvanced.getBag();
         students = new ArrayList<>(bag.extractStudents(6));
@@ -39,7 +39,7 @@ public class ExchangeThreeStudents extends AbstractCharacterCard{
      *
      * @return a copy of the list of students that are on the card at the moment
      */
-    public List<Student> getStudents(){
+    public List<Student> getStudentsOnCard(){
         return new ArrayList<>(this.students);
     }
 

@@ -2,6 +2,7 @@ package it.polimi.ingsw.Controller;
 
 import it.polimi.ingsw.Messages.Enumerations.INMessageType;
 import it.polimi.ingsw.Model.Board.*;
+import it.polimi.ingsw.Model.Cards.CharacterCardEnumeration;
 import it.polimi.ingsw.Model.Cards.ExchangeThreeStudents;
 import it.polimi.ingsw.Model.Cards.PlaceOneStudent;
 import it.polimi.ingsw.Model.Enumerations.PlayerColour;
@@ -12,6 +13,7 @@ import it.polimi.ingsw.Model.Player;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import javax.security.auth.callback.CallbackHandler;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -213,7 +215,7 @@ class ControllerIntegrityTest {
         List<SPColour> coloursSchool = new ArrayList<>();
         coloursCard.add(SPColour.BLUE); coloursCard.add(SPColour.BLUE);
         try {
-            ExchangeThreeStudents chosenCard = new ExchangeThreeStudents(boardAdvanced);
+            ExchangeThreeStudents chosenCard = new ExchangeThreeStudents(CharacterCardEnumeration.EXCHANGE_THREE_STUDENTS, boardAdvanced);
             assertFalse(controllerIntegrity.checkCCExchangeThreeStudents(players.get(0), coloursCard, coloursSchool, chosenCard));
         } catch (StudentNotFoundException e) {
             e.printStackTrace();
@@ -226,8 +228,8 @@ class ControllerIntegrityTest {
         coloursSchoolOk.add(studentsInSchool.get(0).getColour()); coloursSchoolOk.add(studentsInSchool.get(1).getColour());
         List<SPColour> coloursCardOk = new ArrayList<>();
         try {
-            ExchangeThreeStudents chosenCardOk = new ExchangeThreeStudents(boardAdvanced);
-            coloursCardOk.add(chosenCardOk.getStudents().get(0).getColour()); coloursCardOk.add(chosenCardOk.getStudents().get(1).getColour());
+            ExchangeThreeStudents chosenCardOk = new ExchangeThreeStudents(CharacterCardEnumeration.EXCHANGE_THREE_STUDENTS, boardAdvanced);
+            coloursCardOk.add(chosenCardOk.getStudentsOnCard().get(0).getColour()); coloursCardOk.add(chosenCardOk.getStudentsOnCard().get(1).getColour());
             assertTrue(controllerIntegrity.checkCCExchangeThreeStudents(playerOk, coloursCardOk, coloursSchoolOk, chosenCardOk));
         } catch (StudentNotFoundException e) {
             e.printStackTrace();
@@ -343,8 +345,8 @@ class ControllerIntegrityTest {
 
         // Case index ok
         try {
-            PlaceOneStudent chosenCard = new PlaceOneStudent(boardAdvanced);
-            assertTrue(controllerIntegrity.checkCCPlaceOneStudent(chosenCard.getCardStudents().get(0).getColour(), 1, chosenCard));
+            PlaceOneStudent chosenCard = new PlaceOneStudent(CharacterCardEnumeration.PLACE_ONE_STUDENT, boardAdvanced);
+            assertTrue(controllerIntegrity.checkCCPlaceOneStudent(chosenCard.getStudentsOnCard().get(0).getColour(), 1, chosenCard));
         } catch (StudentNotFoundException e) {
             e.printStackTrace();
         }

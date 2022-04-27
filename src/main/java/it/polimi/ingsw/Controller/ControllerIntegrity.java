@@ -119,7 +119,7 @@ public class ControllerIntegrity {
 
         // all Students in the Hall
         return enoughColoursInListStudents(coloursSchool, this.board.getPlayerSchool(player).getStudentsHall()) &&
-                enoughColoursInListStudents(coloursCard, chosenCard.getStudents());
+                enoughColoursInListStudents(coloursCard, chosenCard.getStudentsOnCard());
     }
 
     public boolean checkCCExchangeTwoHallDining(Player player, List<SPColour> coloursHall, List<SPColour> coloursDiningRoom){
@@ -166,7 +166,7 @@ public class ControllerIntegrity {
 
         if(!(archipelagoIndexDestination < this.boardAdvanced.getArchiList().size())){return false;}
 
-        for(Student s: chosenCard.getCardStudents()){
+        for(Student s: chosenCard.getStudentsOnCard()){
             if(s.getColour() == colourToMove){return true;}
         }
 

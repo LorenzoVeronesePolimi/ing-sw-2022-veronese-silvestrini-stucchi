@@ -57,6 +57,11 @@ public class Player {
         return this.playerHand.size();
     }
 
+    //TODO: javadoc
+    public List<AssistantCard> getPlayerHand() {
+        return playerHand;
+    }
+
     /**
      * This method is used to build the player hand, giving him the cards he can play in the game.
      * @param toAdd AssistantCard that needs to be added to the player hand.

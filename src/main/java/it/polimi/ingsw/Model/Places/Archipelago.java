@@ -34,8 +34,6 @@ import java.util.Map;
  * on object island. During the game, two contiguous archipelagos that have the same owner can be
  * merged is a single archipelago.
  */
-//TODO: create Map of SPColour -> numberOfStudentsOfThatColour in an intelligent way: calculate only one time, and
-// then update when a change is made
 public class Archipelago {
     private final List<Island> islands;
     private Player owner; //has this Archipelago been taken by any player?
@@ -138,6 +136,11 @@ public class Archipelago {
         }
 
         return studentsDataCopy;
+    }
+
+    //TODO: javadoc
+    public List<Island> getIslands() {
+        return islands;
     }
 
     /**

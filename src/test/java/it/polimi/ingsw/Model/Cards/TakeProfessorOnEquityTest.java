@@ -33,7 +33,7 @@ public class TakeProfessorOnEquityTest {
             e.printStackTrace();
         }
 
-        TakeProfessorOnEquity card = new TakeProfessorOnEquity(boardAdvanced);
+        TakeProfessorOnEquity card = new TakeProfessorOnEquity(CharacterCardEnumeration.TAKE_PROFESSOR_ON_EQUITY, boardAdvanced);
         boardAdvanced.setExtractedCards(card);
 
         for(int i=0; i<7; i++) {

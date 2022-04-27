@@ -31,7 +31,7 @@ public class TwoExtraIslandsTest {
             e.printStackTrace();
         }
 
-        TwoExtraIslands card = new TwoExtraIslands();
+        TwoExtraIslands card = new TwoExtraIslands(CharacterCardEnumeration.TWO_EXTRA_ISLANDS);
         boardAdvanced.setExtractedCards(card);
 
         Assertions.assertEquals(card, boardAdvanced.getExtractedCards().get(0));

@@ -33,7 +33,7 @@ public class ExchangeTwoHallDiningTest {
             e.printStackTrace();
         }
 
-        ExchangeTwoHallDining card = new ExchangeTwoHallDining(boardAdvanced);
+        ExchangeTwoHallDining card = new ExchangeTwoHallDining(CharacterCardEnumeration.EXCHANGE_TWO_HALL_DINING, boardAdvanced);
 
         for (int i = 0; i < 7; i++) {
             try {

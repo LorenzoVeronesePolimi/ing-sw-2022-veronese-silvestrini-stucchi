@@ -19,8 +19,8 @@ public class TakeProfessorOnEquity extends AbstractCharacterCard{
      * Constructor of the card. It sets the price.
      * @param boardAdvanced The object modified by the card.
      */
-    public  TakeProfessorOnEquity(BoardAdvanced boardAdvanced){
-        super(2);
+    public  TakeProfessorOnEquity(CharacterCardEnumeration type, BoardAdvanced boardAdvanced){
+        super(type,2);
 
         this.boardAdvanced = boardAdvanced;
     }

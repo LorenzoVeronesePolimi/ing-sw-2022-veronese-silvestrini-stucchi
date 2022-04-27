@@ -19,8 +19,8 @@ public class ReduceColourInDining extends AbstractCharacterCard{
      * Constructor of the card. It sets the price and the bag.
      * @param boardAdvanced The object modified by the card.
      */
-    public ReduceColourInDining(BoardAdvanced boardAdvanced){
-        super(3);
+    public ReduceColourInDining(CharacterCardEnumeration type, BoardAdvanced boardAdvanced){
+        super(type,3);
         bag = boardAdvanced.getBag();
         this.boardAdvanced = boardAdvanced;
     }

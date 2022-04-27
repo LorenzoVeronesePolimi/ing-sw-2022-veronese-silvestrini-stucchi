@@ -11,8 +11,8 @@ public class TwoExtraIslands extends AbstractCharacterCard{
     /**
      * Constructor of the card. It sets the price.
      */
-    public TwoExtraIslands(){
-        super(1);
+    public TwoExtraIslands(CharacterCardEnumeration type){
+        super(type,1);
     }
 
     /**

@@ -33,7 +33,7 @@ public class FakeMNMovementTest {
             e.printStackTrace();
         }
 
-        FakeMNMovement card = new FakeMNMovement(boardAdvanced);
+        FakeMNMovement card = new FakeMNMovement(CharacterCardEnumeration.FAKE_MN_MOVEMENT, boardAdvanced);
         boardAdvanced.setExtractedCards(card);
 
         for(int i=0; i<7; i++) {

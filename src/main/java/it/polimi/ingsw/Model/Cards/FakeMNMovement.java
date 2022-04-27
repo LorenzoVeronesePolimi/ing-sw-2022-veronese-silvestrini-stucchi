@@ -19,8 +19,8 @@ public class FakeMNMovement extends AbstractCharacterCard{
      * Constructor of the card.
      * @param boardAdvanced The object modified by the card.
      */
-    public FakeMNMovement(BoardAdvanced boardAdvanced){
-        super(3);
+    public FakeMNMovement(CharacterCardEnumeration type, BoardAdvanced boardAdvanced){
+        super(type,3);
 
         this.boardAdvanced = boardAdvanced;
     }

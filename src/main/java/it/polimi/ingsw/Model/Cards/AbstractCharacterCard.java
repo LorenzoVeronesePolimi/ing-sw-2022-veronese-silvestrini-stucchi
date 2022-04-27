@@ -10,6 +10,7 @@ import java.util.List;
  */
 
 public abstract class AbstractCharacterCard {
+    private final CharacterCardEnumeration type;
     private final int basePrice;
     private final List<Coin> addedPrice;
 
@@ -17,9 +18,10 @@ public abstract class AbstractCharacterCard {
      * Constructor
      * @param price is the initial cost of the card
      */
-    protected AbstractCharacterCard(int price) {
-        basePrice = price;
-        addedPrice = new ArrayList<>();
+    protected AbstractCharacterCard(CharacterCardEnumeration type, int price) {
+        this.type = type;
+        this.basePrice = price;
+        this.addedPrice = new ArrayList<>();
     }
 
     /**
@@ -36,5 +38,9 @@ public abstract class AbstractCharacterCard {
      */
     public int getCurrentPrice(){
         return basePrice + addedPrice.size();
+    }
+
+    public CharacterCardEnumeration getType() {
+        return type;
     }
 }

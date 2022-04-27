@@ -13,8 +13,8 @@ public class TowerNoValue extends AbstractCharacterCard {
      * Constructor of the card. It sets the price.
      * @param boardAdvanced The object modified by the card.
      */
-    public TowerNoValue(BoardAdvanced boardAdvanced) {
-        super(3);
+    public TowerNoValue(CharacterCardEnumeration type, BoardAdvanced boardAdvanced) {
+        super(type,3);
 
         this.boardAdvanced = boardAdvanced;
     }

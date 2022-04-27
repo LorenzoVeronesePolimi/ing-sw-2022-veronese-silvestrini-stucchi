@@ -33,7 +33,7 @@ public class ReduceColourInDiningTest {
             e.printStackTrace();
         }
 
-        ReduceColourInDining card = new ReduceColourInDining(boardAdvanced);
+        ReduceColourInDining card = new ReduceColourInDining(CharacterCardEnumeration.REDUCE_COLOUR_IN_DINING, boardAdvanced);
         boardAdvanced.setExtractedCards(card);
 
         for(int i=0; i<7; i++) {

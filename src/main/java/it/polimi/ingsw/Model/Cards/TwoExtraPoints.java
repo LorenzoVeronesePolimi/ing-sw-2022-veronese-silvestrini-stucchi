@@ -13,8 +13,8 @@ public class TwoExtraPoints extends AbstractCharacterCard{
      * Constructor of the card. It sets the price.
      * @param boardAdvanced The object modified by the card.
      */
-    public TwoExtraPoints(BoardAdvanced boardAdvanced){
-        super(2);
+    public TwoExtraPoints(CharacterCardEnumeration type, BoardAdvanced boardAdvanced){
+        super(type,2);
         this.boardAdvanced = boardAdvanced;
     }
 

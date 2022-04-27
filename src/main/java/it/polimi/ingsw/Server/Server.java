@@ -22,7 +22,7 @@ public class Server {
 
     public Server() throws IOException {
         this.serverSocket = new ServerSocket(PORT);
-        controller = new Controller();
+        this.controller = new Controller();
     }
 
     public Controller getController() {
@@ -31,7 +31,6 @@ public class Server {
 
     public void run(){
         System.out.println("Server is running");
-
 
         while(true){
             try {

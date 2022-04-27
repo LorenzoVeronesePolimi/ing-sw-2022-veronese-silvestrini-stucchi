@@ -15,8 +15,8 @@ public class ExcludeColourFromCounting extends AbstractCharacterCard{
      * Constructor of the card.
      * @param boardAdvanced The object modified by the card.
      */
-    public ExcludeColourFromCounting(BoardAdvanced boardAdvanced){
-        super(3);
+    public ExcludeColourFromCounting(CharacterCardEnumeration type, BoardAdvanced boardAdvanced){
+        super(type,3);
         this.boardAdvanced = boardAdvanced;
     }
 

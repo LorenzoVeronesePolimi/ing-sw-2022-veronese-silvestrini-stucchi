@@ -34,7 +34,7 @@ public class PlaceOneStudentTest {
 
         PlaceOneStudent card = null;
         try {
-            card = new PlaceOneStudent(boardAdvanced);
+            card = new PlaceOneStudent(CharacterCardEnumeration.PLACE_ONE_STUDENT, boardAdvanced);
         } catch (StudentNotFoundException e) {
             e.printStackTrace();
         }
@@ -46,7 +46,7 @@ public class PlaceOneStudentTest {
         Assertions.assertTrue(boardAdvanced.getArchipelago(6).howManyStudents().get(SPColour.GREEN) == 0);
         Assertions.assertTrue(boardAdvanced.getArchipelago(6).howManyStudents().get(SPColour.YELLOW) == 0);
 
-        if(card.getCardStudents().stream().anyMatch(x -> x.getColour().equals(SPColour.BLUE))){
+        if(card.getStudentsOnCard().stream().anyMatch(x -> x.getColour().equals(SPColour.BLUE))){
             try {
                 boardAdvanced.usePlaceOneStudent(p1,SPColour.BLUE,6, 0);
                 Assertions.assertTrue(boardAdvanced.getArchipelago(6).howManyStudents().get(SPColour.BLUE) == 1);

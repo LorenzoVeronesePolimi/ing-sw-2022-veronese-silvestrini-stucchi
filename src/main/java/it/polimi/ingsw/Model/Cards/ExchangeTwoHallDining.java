@@ -25,8 +25,8 @@ public class ExchangeTwoHallDining extends AbstractCharacterCard{
      * Constructor of the card.
      * @param boardAdvanced The object modified by the card.
      */
-    public ExchangeTwoHallDining(BoardAdvanced boardAdvanced){
-        super(1);
+    public ExchangeTwoHallDining(CharacterCardEnumeration type, BoardAdvanced boardAdvanced){
+        super(type,1);
         this.boardAdvanced=boardAdvanced;
     }
 

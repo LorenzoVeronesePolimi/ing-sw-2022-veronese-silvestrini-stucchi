@@ -10,8 +10,8 @@ import it.polimi.ingsw.Model.Exceptions.ExceededNumberForbidFlagException;
 public class ForbidIsland extends AbstractCharacterCard{
     private final BoardAdvanced boardAdvanced;
 
-    public ForbidIsland(BoardAdvanced boardAdvanced){
-        super(2);
+    public ForbidIsland(CharacterCardEnumeration type, BoardAdvanced boardAdvanced){
+        super(type,2);
         this.boardAdvanced = boardAdvanced;
     }
 
