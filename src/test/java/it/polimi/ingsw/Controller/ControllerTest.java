@@ -53,7 +53,10 @@ public class ControllerTest {
         /*-----MessageCreateMatch-----*/
         //ERRORS IN FORMAT
         //Error because of wrong name ("")
-      
+
+        Assertions.assertNotNull(controller.getControllerInput());
+        Assertions.assertNotNull(controller.getControllerIntegrity());
+
         MessageCreateMatch m1Err1 = new MessageCreateMatch("", "white", 2, true, view);
         controller.update(m1Err1);
         Assertions.assertEquals("Invalid format", outContent.toString().trim());

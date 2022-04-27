@@ -50,6 +50,8 @@ public class PlayerTest {
         assertEquals(PlayerColour.GRAY, tested.getColour());
     }
 
+
+
     @Test
     public void getHandLength() {
         Player testedPlayer = new Player("nickname", PlayerColour.BLACK);

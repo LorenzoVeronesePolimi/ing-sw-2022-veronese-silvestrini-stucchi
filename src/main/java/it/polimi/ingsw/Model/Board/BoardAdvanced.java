@@ -100,6 +100,10 @@ public class BoardAdvanced extends Observable implements Board {
         return bank;
     }
 
+    public SPColour getColourToExclude() {
+        return colourToExclude;
+    }
+
     public List<Archipelago> getArchiList(){
         return new ArrayList<>(this.board.archipelagos);
     }

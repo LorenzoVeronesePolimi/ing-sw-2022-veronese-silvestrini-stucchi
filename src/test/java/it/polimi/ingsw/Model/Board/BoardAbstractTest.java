@@ -43,6 +43,8 @@ class BoardAbstractTest {
         //check if there are 12 archipelagos
         Assertions.assertEquals(12, b2.archipelagos.size());
 
+        Assertions.assertEquals(10, b2.players.get(1).getPlayerHand().size());
+
         //check each archipelago
         Assertions.assertEquals(this.b2.archipelagos.get(0), this.b2.getArchipelago(0));
         Assertions.assertEquals(this.b2.archipelagos.get(1), this.b2.getArchipelago(1));

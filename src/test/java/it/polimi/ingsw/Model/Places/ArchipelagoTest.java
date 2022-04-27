@@ -51,6 +51,11 @@ public class ArchipelagoTest {
     }
 
     @Test
+    public void getIslandsTest(){
+        Archipelago tested = new Archipelago();
+        Assertions.assertEquals(1, tested.getIslands().size());
+    }
+    @Test
     void getForbidFlag(){
         Archipelago tested = new Archipelago();
         assertTrue(tested.getForbidFlag() == 0);

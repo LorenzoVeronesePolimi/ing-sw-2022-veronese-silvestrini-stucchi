@@ -41,6 +41,8 @@ public class ExchangeThreeStudentsTest {
             e.printStackTrace();
         }
 
+        Assertions.assertEquals(CharacterCardEnumeration.EXCHANGE_THREE_STUDENTS, card.getType());
+
         for (int i = 0; i < 7; i++) {
             try {
                 boardAdvanced.getSchools().get(0).removeStudentHall(boardAdvanced.getSchools().get(0).getStudentsHall().get(0).getColour());
