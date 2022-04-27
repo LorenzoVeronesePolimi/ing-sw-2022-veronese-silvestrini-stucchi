@@ -17,6 +17,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * This class implements all the methods that the controller can call to change the model state
+ * (to make the moves that the client asks)
+ */
 public abstract class BoardAbstract implements Board{
     protected List<School> schools;   //list of all school in the game (one for each player)
     protected List<Player> players;   //list of all players in the game (in order)
@@ -31,6 +35,13 @@ public abstract class BoardAbstract implements Board{
 
 
     //--------------------------------------------------INITIALIZATION OF BOARD
+
+    /**
+     * Constructor of the board: it builds 12 archipelagos (1 island each), one mother nature, one bag
+     * (that builds all the students and professors of the game)
+     * @param players list of players of the game
+     * @throws ExceedingAssistantCardNumberException
+     */
     public BoardAbstract(List<Player> players) throws ExceedingAssistantCardNumberException {
         this.archipelagos = new ArrayList<>();
 

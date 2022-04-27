@@ -14,10 +14,19 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * This class represents the card that has this effect:
+ * the player can exchange up to three students between the one that he has in the hall and the one that
+ * are in placed on the card.
+ */
 public class ExchangeThreeStudents extends AbstractCharacterCard{
     private final BoardAdvanced boardAdvanced;
     private final List<Student> students;
 
+    /**
+     * Constructor of the card.
+     * @param boardAdvanced The object modified by the card.
+     */
     public ExchangeThreeStudents(BoardAdvanced boardAdvanced) throws StudentNotFoundException {
         super(1);
 
@@ -26,10 +35,26 @@ public class ExchangeThreeStudents extends AbstractCharacterCard{
         this.boardAdvanced = boardAdvanced;
     }
 
+    /**
+     *
+     * @return a copy of the list of students that are on the card at the moment
+     */
     public List<Student> getStudents(){
         return new ArrayList<>(this.students);
     }
 
+    /**
+     * This method activates the effect of the card.
+     * @param player is the player that activates the card
+     * @param hallStudents is the list of students that are in the player's hall that he wants to exchange
+     * @param exchangeStudents is the list of students that are on the card that the players wants to exchange
+     * @throws WrongNumberOfStudentsTransferException if the players tries to exchange more than three students
+     * or gives two lists of students of different size
+     * @throws StudentNotFoundException if is there is not a student of the requested colour in the hall or
+     * on the card
+     * @throws ExceededMaxStudentsHallException if players tries to place in the hall more students
+     * than what he is allowed
+     */
     public void useEffect(Player player, List<SPColour> hallStudents, List<SPColour> exchangeStudents) throws
             WrongNumberOfStudentsTransferException, StudentNotFoundException, ExceededMaxStudentsHallException {
 
