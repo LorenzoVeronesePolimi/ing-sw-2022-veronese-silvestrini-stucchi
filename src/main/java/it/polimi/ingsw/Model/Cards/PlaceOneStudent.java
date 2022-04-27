@@ -6,6 +6,7 @@ import it.polimi.ingsw.Model.Enumerations.SPColour;
 import it.polimi.ingsw.Model.Exceptions.StudentNotFoundException;
 import it.polimi.ingsw.Model.Pawns.Student;
 
+import java.io.Serializable;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -15,7 +16,7 @@ import java.util.stream.Collectors;
  * When a player activates this card, he can choose a student on this card and place it on an archipelago. Then,
  * a new student is extracted from the bag and put on the card.
  */
-public class PlaceOneStudent extends AbstractCharacterCard{
+public class PlaceOneStudent extends AbstractCharacterCard implements Serializable {
     private final BoardAdvanced boardAdvanced;
     private final List<Student> fourStudents;
     private final Bag bag;

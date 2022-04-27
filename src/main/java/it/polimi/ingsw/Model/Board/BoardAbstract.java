@@ -20,7 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-public abstract class BoardAbstract extends Observable implements Board, Serializable {
+public abstract class BoardAbstract extends Observable<SerializedBoardAbstract> implements Board {
     protected List<School> schools;   //list of all school in the game (one for each player)
     protected List<Player> players;   //list of all players in the game (in order)
     protected Map<Player, School> playerSchool;   //map of players and their relative school

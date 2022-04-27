@@ -6,12 +6,14 @@ import it.polimi.ingsw.Model.Enumerations.SPColour;
 import it.polimi.ingsw.Model.Exceptions.StudentNotFoundException;
 import it.polimi.ingsw.Model.Places.School.School;
 
+import java.io.Serializable;
+
 /**
  * This class represents the card with this effect:
  * a colour of students is chosen. Every player has to put in the bag 3 students of that colour from the dining room.
  * If a player has 2 or fewer students, he will put in the bag the ones he has.
  */
-public class ReduceColourInDining extends AbstractCharacterCard{
+public class ReduceColourInDining extends AbstractCharacterCard implements Serializable {
     private final BoardAdvanced boardAdvanced;
     private final Bag bag;
 

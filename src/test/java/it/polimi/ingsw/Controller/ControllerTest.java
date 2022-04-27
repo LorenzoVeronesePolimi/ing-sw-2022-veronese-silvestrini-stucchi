@@ -13,8 +13,6 @@ import it.polimi.ingsw.Model.Places.School.SchoolAdvanced;
 import it.polimi.ingsw.Server.Server;
 import it.polimi.ingsw.Server.SocketClientConnectionCLI;
 import it.polimi.ingsw.View.ServerView;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -55,7 +53,7 @@ public class ControllerTest {
         /*-----MessageCreateMatch-----*/
         //ERRORS IN FORMAT
         //Error because of wrong name ("")
-
+      
         MessageCreateMatch m1Err1 = new MessageCreateMatch("", "white", 2, true, view);
         controller.update(m1Err1);
         Assertions.assertEquals("Invalid format", outContent.toString().trim());
@@ -419,6 +417,7 @@ public class ControllerTest {
         MessageCCTwoExtraIslands mcc12 = new MessageCCTwoExtraIslands(1, controller.getCurrentPlayer().getNickname());
         controller.update(mcc12);
         Assertions.assertEquals("", outContent.toString().trim());
+
     }
 
     private void resetOutput(){

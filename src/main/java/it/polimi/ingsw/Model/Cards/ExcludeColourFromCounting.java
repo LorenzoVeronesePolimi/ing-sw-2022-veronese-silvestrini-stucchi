@@ -3,12 +3,14 @@ package it.polimi.ingsw.Model.Cards;
 import it.polimi.ingsw.Model.Board.BoardAdvanced;
 import it.polimi.ingsw.Model.Enumerations.SPColour;
 
+import java.io.Serializable;
+
 /**
  * This class represents the card that has this effect:
  * the player chooses a colour and, for that turn, during the influence computation, that
  * colour won't be considered
  */
-public class ExcludeColourFromCounting extends AbstractCharacterCard{
+public class ExcludeColourFromCounting extends AbstractCharacterCard implements Serializable {
     private final BoardAdvanced boardAdvanced;
 
     /**

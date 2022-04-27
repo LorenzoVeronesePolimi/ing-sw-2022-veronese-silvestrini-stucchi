@@ -7,14 +7,18 @@ import it.polimi.ingsw.Messages.INMessage.Message;
 import it.polimi.ingsw.Messages.INMessage.MessageAddPlayer;
 import it.polimi.ingsw.Messages.OUTMessages.OUTMessage;
 import it.polimi.ingsw.Messages.OUTMessages.OUTMessageInfo;
+import it.polimi.ingsw.Model.Board.SerializedBoardAbstract;
 import it.polimi.ingsw.Observer.Observable;
 import it.polimi.ingsw.Observer.Observer;
 import it.polimi.ingsw.Server.ClientConnection;
+import it.polimi.ingsw.Server.SocketClientConnectionCLI;
 
 /*
  This class observe the Model. (Observer<JSON> or Observer<CustomObject> ... )
  */
-public class ServerView implements Observer {
+public class ServerView implements Observer<SerializedBoardAbstract> {
+
+    private SocketClientConnectionCLI socketClientConnectionCLI;
     /*
         Inner class created to divide the flow in two:
             - client -> model modification (managed byt this inner class)
@@ -47,16 +51,17 @@ public class ServerView implements Observer {
         }
     }
 
-    public ServerView(ClientConnection connection, Controller controller) {
+    public ServerView(SocketClientConnectionCLI connection, Controller controller) {
         ConnectionListener connectionListener = new ConnectionListener(this);
         connection.addObserver(connectionListener);
         connectionListener.addObserver(controller);
+        this.socketClientConnectionCLI = connection;
     }
 
     //TODO: this should not be a Object message but instead a JSON or something, because it's received from the model itself
     @Override
-    public void update(Object message) {
-
+    public void update(SerializedBoardAbstract message) {
+        this.socketClientConnectionCLI.asyncSendModel(message);
     }
 
     // Messages generated from the ServerView and not the controller

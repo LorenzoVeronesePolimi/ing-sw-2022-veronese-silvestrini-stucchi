@@ -5,6 +5,7 @@ import it.polimi.ingsw.Model.Enumerations.PlayerColour;
 import it.polimi.ingsw.Model.Exceptions.ExceedingAssistantCardNumberException;
 import it.polimi.ingsw.Model.Exceptions.NoAssistantCardException;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,7 +13,7 @@ import java.util.List;
  * Represents the player of the game.
  * A player has a nickname, a hand of Assistant cards and a colour.
  */
-public class Player {
+public class Player implements Serializable {
     private final String nickname;
     private final List<AssistantCard> playerHand;
     private AssistantCard lastCard;

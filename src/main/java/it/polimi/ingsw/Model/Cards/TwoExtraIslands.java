@@ -2,11 +2,13 @@ package it.polimi.ingsw.Model.Cards;
 
 import it.polimi.ingsw.Model.Player;
 
+import java.io.Serializable;
+
 /**
  * This class represents the card with this effect:
  * the player can move Mother Nature up to two additional archipelagos than is indicated in the assistant card played.
  */
-public class TwoExtraIslands extends AbstractCharacterCard{
+public class TwoExtraIslands extends AbstractCharacterCard implements Serializable {
 
     /**
      * Constructor of the card. It sets the price.

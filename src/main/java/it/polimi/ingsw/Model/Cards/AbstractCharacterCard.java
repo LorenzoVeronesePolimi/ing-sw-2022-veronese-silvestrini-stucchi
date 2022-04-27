@@ -2,6 +2,7 @@ package it.polimi.ingsw.Model.Cards;
 
 import it.polimi.ingsw.Model.Pawns.Coin;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -9,7 +10,7 @@ import java.util.List;
  * this class models the Character Card entity, for games in advanced mode
  */
 
-public abstract class AbstractCharacterCard {
+public abstract class AbstractCharacterCard implements Serializable {
     private final CharacterCardEnumeration type;
     private final int basePrice;
     private final List<Coin> addedPrice;

@@ -7,6 +7,7 @@ import it.polimi.ingsw.Model.Pawns.Professor;
 import it.polimi.ingsw.Model.Pawns.Student;
 import it.polimi.ingsw.Model.Pawns.Tower;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -17,7 +18,7 @@ import java.util.List;
  * Also, a school can contain professors in relation to the status of the match and accordingly to the rules of the game.
  * It is divided in a hall, in a dining room -with places for students and professors- and in a place to put towers.
  */
-public class School {
+public class School implements Serializable {
     protected final Player player;
 
     protected final int numMaxStudentsHall;

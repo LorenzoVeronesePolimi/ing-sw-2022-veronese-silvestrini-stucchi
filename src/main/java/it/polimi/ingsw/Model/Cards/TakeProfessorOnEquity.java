@@ -6,12 +6,14 @@ import it.polimi.ingsw.Model.Exceptions.*;
 import it.polimi.ingsw.Model.Places.School.School;
 import it.polimi.ingsw.Model.Player;
 
+import java.io.Serializable;
+
 /**
  * This class represents the card with this effect:
  * during this turn, the player takes control of the professors even if he has the same number of students in the
  * school as the current owner of the professor.
  */
-public class TakeProfessorOnEquity extends AbstractCharacterCard{
+public class TakeProfessorOnEquity extends AbstractCharacterCard implements Serializable {
     private final SPColour[] availableColours = {SPColour.BLUE, SPColour.PINK, SPColour.RED, SPColour.GREEN, SPColour.YELLOW};
     private final BoardAdvanced boardAdvanced;
 

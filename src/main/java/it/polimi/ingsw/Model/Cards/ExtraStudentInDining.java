@@ -9,6 +9,7 @@ import it.polimi.ingsw.Model.Pawns.Student;
 import it.polimi.ingsw.Model.Places.School.School;
 import it.polimi.ingsw.Model.Player;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -18,7 +19,7 @@ import java.util.stream.Collectors;
  * the player chooses one student from the four that are on the card, and places it in
  * his dining Room, then a student is extracted from the bag and added to the card .
  */
-public class ExtraStudentInDining extends AbstractCharacterCard{
+public class ExtraStudentInDining extends AbstractCharacterCard implements Serializable {
     final BoardAdvanced boardAdvanced;
     final Bag bag;
     private final List<Student> students;

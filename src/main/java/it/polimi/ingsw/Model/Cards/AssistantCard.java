@@ -1,12 +1,14 @@
 package it.polimi.ingsw.Model.Cards;
 
+import java.io.Serializable;
+
 /**
  * This class models the entity of the assistant card.
  * For each hand, every player chooses one of his assistant cards (he initially has 10 of them): the
  * choice will determine the order of play. During his turn, the player will be allowed to move mother
  * nature up to the number of archipelagos that are written on the card that he chose.
  */
-public class AssistantCard {
+public class AssistantCard implements Serializable {
     private int motherNatureMovement;
     private final int turnPriority;
 

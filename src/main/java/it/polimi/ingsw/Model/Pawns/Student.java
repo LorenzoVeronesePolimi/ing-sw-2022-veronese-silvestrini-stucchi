@@ -2,11 +2,13 @@ package it.polimi.ingsw.Model.Pawns;
 
 import it.polimi.ingsw.Model.Enumerations.SPColour;
 
+import java.io.Serializable;
+
 /**
  * This class represents a student in the game.
  * It has a specific colour.
  */
-public class Student {
+public class Student implements Serializable {
     private final SPColour colour;
 
     /**

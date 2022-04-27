@@ -2,11 +2,13 @@ package it.polimi.ingsw.Model.Pawns;
 
 import it.polimi.ingsw.Model.Player;
 
+import java.io.Serializable;
+
 /**
  * This class represents the entity of a tower, that is used to mark the archipelagos that have been
  * conquered, and by whom.
  */
-public class Tower {
+public class Tower implements Serializable {
     private final Player player;
 
     /**

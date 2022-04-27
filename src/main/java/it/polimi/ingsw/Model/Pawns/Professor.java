@@ -2,10 +2,13 @@ package it.polimi.ingsw.Model.Pawns;
 
 import it.polimi.ingsw.Model.Enumerations.SPColour;
 
+import java.awt.*;
+import java.io.Serializable;
+
 /**
  * This class represent the entity of the professor, which has a colour.
  */
-public class Professor {
+public class Professor implements Serializable {
     private final SPColour colour;
 
     /**

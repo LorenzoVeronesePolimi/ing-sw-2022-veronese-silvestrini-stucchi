@@ -2,11 +2,13 @@ package it.polimi.ingsw.Model.Cards;
 
 import it.polimi.ingsw.Model.Board.BoardAdvanced;
 
+import java.io.Serializable;
+
 /**
  * This class represents the card with this effect:
  * when resolving a conquering on an archipelago, towers do not count towards influence.
  */
-public class TowerNoValue extends AbstractCharacterCard {
+public class TowerNoValue extends AbstractCharacterCard implements Serializable {
     private final BoardAdvanced boardAdvanced;
 
     /**

@@ -3,6 +3,7 @@ package it.polimi.ingsw.Server;
 import it.polimi.ingsw.Controller.Controller;
 import it.polimi.ingsw.Messages.INMessage.Message;
 import it.polimi.ingsw.Messages.OUTMessages.OUTMessage;
+import it.polimi.ingsw.Model.Board.SerializedBoardAbstract;
 import it.polimi.ingsw.View.ServerView;
 
 import java.io.IOException;
@@ -114,10 +115,19 @@ public class SocketClientConnectionCLI extends ClientConnection implements Runna
             out.reset();
             out.writeObject(message);
             out.flush();
-        } catch(IOException e){
+        } catch(IOException | NullPointerException e){
             System.err.println(e.getMessage());
         }
+    }
 
+    public synchronized void sendModel(SerializedBoardAbstract message) {
+        try {
+            out.reset();
+            out.writeObject(message);
+            out.flush();
+        } catch(IOException | NullPointerException e){
+            System.err.println(e.getMessage());
+        }
     }
 
     @Override
@@ -140,5 +150,8 @@ public class SocketClientConnectionCLI extends ClientConnection implements Runna
 
     public void asyncSend(final OUTMessage message){
         new Thread(() -> send(message)).start();
+    }
+    public void asyncSendModel(SerializedBoardAbstract message){
+        new Thread(() -> sendModel(message)).start();
     }
 }

@@ -3,6 +3,7 @@ package it.polimi.ingsw.Model.Places;
 import it.polimi.ingsw.Model.Exceptions.ExceededMaxStudentsCloudException;
 import it.polimi.ingsw.Model.Pawns.Student;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,7 +17,7 @@ import java.util.List;
  * the cloud, while adding them means filling completely the cloud. The cloud has NUMMAXSTUDENTS or zero students on
  * itself.
  */
-public class Cloud {
+public class Cloud implements Serializable {
     private final int NUMMAXSTUDENS;
     private final List<Student> students;
 

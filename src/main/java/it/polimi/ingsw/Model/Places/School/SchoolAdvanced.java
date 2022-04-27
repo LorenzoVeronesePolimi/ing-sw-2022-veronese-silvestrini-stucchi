@@ -4,13 +4,14 @@ import it.polimi.ingsw.Model.Exceptions.CoinNotFoundException;
 import it.polimi.ingsw.Model.Pawns.Coin;
 import it.polimi.ingsw.Model.Player;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * This class extends the School class, adding methods that manage the coin aspect of the Advanced mode.
  */
-public class SchoolAdvanced extends School{
+public class SchoolAdvanced extends School implements Serializable {
     private final List<Coin> coins = new ArrayList<>();
 
     /**

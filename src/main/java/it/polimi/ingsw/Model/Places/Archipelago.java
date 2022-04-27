@@ -8,6 +8,7 @@ import it.polimi.ingsw.Model.Pawns.Student;
 import it.polimi.ingsw.Model.Pawns.Tower;
 import it.polimi.ingsw.Model.Player;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -34,7 +35,7 @@ import java.util.Map;
  * on object island. During the game, two contiguous archipelagos that have the same owner can be
  * merged is a single archipelago.
  */
-public class Archipelago {
+public class Archipelago implements Serializable {
     private final List<Island> islands;
     private Player owner; //has this Archipelago been taken by any player?
     // studentsData: is a Map which matches each SPColour with how many Students of that SPColour the Archipelago

@@ -2,11 +2,13 @@ package it.polimi.ingsw.Model.Cards;
 
 import it.polimi.ingsw.Model.Board.BoardAdvanced;
 
+import java.io.Serializable;
+
 /**
  * This class represents the card with this effect:
  * during the influence calculation, the current player has two additional point given.
  */
-public class TwoExtraPoints extends AbstractCharacterCard{
+public class TwoExtraPoints extends AbstractCharacterCard implements Serializable {
     private final BoardAdvanced boardAdvanced;
 
     /**

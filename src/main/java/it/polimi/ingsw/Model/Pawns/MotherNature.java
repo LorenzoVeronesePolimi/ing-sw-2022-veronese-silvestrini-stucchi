@@ -2,10 +2,13 @@ package it.polimi.ingsw.Model.Pawns;
 
 import it.polimi.ingsw.Model.Places.Archipelago;
 
+import java.awt.*;
+import java.io.Serializable;
+
 /**
  * This class represents Mother Nature, and it's position in the board.
  */
-public class MotherNature {
+public class MotherNature implements Serializable {
     private Archipelago currentPosition;
 
     /**

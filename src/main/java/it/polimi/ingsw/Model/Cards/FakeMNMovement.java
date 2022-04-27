@@ -7,12 +7,14 @@ import it.polimi.ingsw.Model.Exceptions.InvalidTowerNumberException;
 import it.polimi.ingsw.Model.Exceptions.TowerNotFoundException;
 import it.polimi.ingsw.Model.Player;
 
+import java.io.Serializable;
+
 /**
  * This class represents the card that has this effect:
  * the player chooses an archipelago and tries to conquer it as if mother nature has ended her movement on that archipelago.
  * After that, the round continues normally.
  */
-public class FakeMNMovement extends AbstractCharacterCard{
+public class FakeMNMovement extends AbstractCharacterCard implements Serializable {
     private final BoardAdvanced boardAdvanced;
 
     /**

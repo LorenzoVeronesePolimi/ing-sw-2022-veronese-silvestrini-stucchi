@@ -3,11 +3,13 @@ package it.polimi.ingsw.Model.Cards;
 import it.polimi.ingsw.Model.Board.BoardAdvanced;
 import it.polimi.ingsw.Model.Exceptions.ExceededNumberForbidFlagException;
 
+import java.io.Serializable;
+
 /**
  * This class represents the card with this effect:
  * in setup, 4 no Entry tiles are placed on the card.
  */
-public class ForbidIsland extends AbstractCharacterCard{
+public class ForbidIsland extends AbstractCharacterCard implements Serializable {
     private final BoardAdvanced boardAdvanced;
 
     public ForbidIsland(CharacterCardEnumeration type, BoardAdvanced boardAdvanced){

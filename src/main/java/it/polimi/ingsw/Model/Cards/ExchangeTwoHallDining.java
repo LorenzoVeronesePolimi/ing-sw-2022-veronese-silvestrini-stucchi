@@ -10,6 +10,7 @@ import it.polimi.ingsw.Model.Pawns.Student;
 import it.polimi.ingsw.Model.Places.School.School;
 import it.polimi.ingsw.Model.Player;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,7 +19,7 @@ import java.util.List;
  * the player can exchange up to two students between the one that he has in the dining
  * room and the one that are in the hall.
  */
-public class ExchangeTwoHallDining extends AbstractCharacterCard{
+public class ExchangeTwoHallDining extends AbstractCharacterCard implements Serializable {
     private final BoardAdvanced boardAdvanced;
 
     /**

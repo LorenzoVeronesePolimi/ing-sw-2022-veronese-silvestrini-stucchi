@@ -5,12 +5,13 @@ import it.polimi.ingsw.Model.Exceptions.AnotherTowerException;
 import it.polimi.ingsw.Model.Pawns.Student;
 import it.polimi.ingsw.Model.Pawns.Tower;
 
+import java.io.Serializable;
 import java.util.*;
 
 /**
  * This class represents the island in the game. The island can contain only one tower at the time, plus many students.
  */
-public class Island {
+public class Island implements Serializable {
     private final Set<Student> students;
     private Tower tower;
 
