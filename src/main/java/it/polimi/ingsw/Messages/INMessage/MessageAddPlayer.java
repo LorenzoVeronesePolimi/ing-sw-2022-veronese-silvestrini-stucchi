@@ -8,13 +8,13 @@ import it.polimi.ingsw.View.ServerView;
 public class MessageAddPlayer extends Message {
     private final String nickname;
     private final String colour;
-    //private final ServerView serverView;
+    private final ServerView serverView;
 
-    public MessageAddPlayer(String nickname, String colour){//, ServerView serverView
+    public MessageAddPlayer(String nickname, String colour, ServerView serverView){
         super(INMessageType.ADD_PLAYER);
         this.nickname = nickname;
         this.colour = colour;
-        //this.serverView = serverView;
+        this.serverView = serverView;
     }
 
     public String getNickname() {
@@ -25,9 +25,9 @@ public class MessageAddPlayer extends Message {
         return colour;
     }
 
-    /*public ServerView getServerView() {
+    public ServerView getServerView() {
         return serverView;
-    }*/
+    }
 
     @Override
     public boolean checkInput(ControllerInput controller) {
