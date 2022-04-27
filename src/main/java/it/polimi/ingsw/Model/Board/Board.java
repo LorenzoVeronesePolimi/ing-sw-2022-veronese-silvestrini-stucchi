@@ -54,5 +54,5 @@ public interface Board {
 
     void useAssistantCard(Player player, int turnPriority) throws AssistantCardAlreadyPlayedTurnException, NoAssistantCardException;
 
-
+    void notifyPlayers();
 }

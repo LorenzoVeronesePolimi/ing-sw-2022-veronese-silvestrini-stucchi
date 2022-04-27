@@ -59,7 +59,7 @@ public abstract class BoardAbstract extends Observable implements Board, Seriali
         this.initializePlayersHands();
         this.placeMotherNatureInitialBoard();
         this.placeStudentInitialBoard();
-
+        notifyPlayers();
     }
 
     private void initializePlayersHands() throws ExceedingAssistantCardNumberException {
@@ -113,20 +113,6 @@ public abstract class BoardAbstract extends Observable implements Board, Seriali
         return this.archipelagos.get(archipelagoIndex).howManyStudents();
     }
 
-    // Find the School where the Professor is in
-    public School whereIsProfessor(SPColour colour){
-        for(School s: schools) {
-            for(Professor p: s.getProfessors()) {
-                if(p.getColour().equals(colour)) {
-                    return s;
-                }
-            }
-        }
-
-        // This happens when the Professor I'm looking for is in the Bag
-        return null;
-    }
-
     // Returns the Archipelago's index where MotherNature is positioned
     public int whereIsMotherNature(){
         return archipelagos.indexOf(mn.getCurrentPosition());
@@ -151,11 +137,13 @@ public abstract class BoardAbstract extends Observable implements Board, Seriali
 
     //--------------------------------------------------PAWNS MOVEMENTS
     public void moveMotherNature(int mnMoves){
-            mn.putInPosition(archipelagos.get((whereIsMotherNature() + mnMoves) % archipelagos.size()));
+        mn.putInPosition(archipelagos.get((whereIsMotherNature() + mnMoves) % archipelagos.size()));
+        notifyPlayers();
     }
 
     public void moveMotherNatureInArchipelagoIndex(int index){
         mn.putInPosition(archipelagos.get(index));
+        notifyPlayers();
     }
 
     public void moveStudentSchoolToArchipelagos(Player player, SPColour colour, int archipelagoIndex) throws StudentNotFoundException {
@@ -166,6 +154,7 @@ public abstract class BoardAbstract extends Observable implements Board, Seriali
             Student toBeMoved = currentSchool.removeStudentHall(colour);
             archipelagos.get(archipelagoIndex).addStudent(toBeMoved);
         }
+        notifyPlayers();
     }
 
     public void moveStudentCloudToSchool(Player player, int cloudIndex) throws ExceededMaxStudentsHallException {
@@ -180,6 +169,7 @@ public abstract class BoardAbstract extends Observable implements Board, Seriali
                 currentSchool.addStudentHall(s);
             }
         }
+        notifyPlayers();
     }
 
     public void moveStudentHallToDiningRoom(Player player, SPColour colour) throws
@@ -191,6 +181,7 @@ public abstract class BoardAbstract extends Observable implements Board, Seriali
         Student toBeMoved = currentSchool.removeStudentHall(colour);
         currentSchool.addStudentDiningRoom(toBeMoved);
         this.conquerProfessor(player, colour); //has the movement of the Student caused the conquering of the Professor?
+        notifyPlayers();
     }
 
     public void moveStudentBagToCloud() throws ExceededMaxStudentsCloudException, StudentNotFoundException {
@@ -200,6 +191,7 @@ public abstract class BoardAbstract extends Observable implements Board, Seriali
             toBePlaced = bag.extractStudents(numStudents);
             c.fill(toBePlaced);
         }
+        notifyPlayers();
     }
 
     public void moveStudentBagToSchool(int numStudents) throws StudentNotFoundException, ExceededMaxStudentsHallException {
@@ -211,6 +203,7 @@ public abstract class BoardAbstract extends Observable implements Board, Seriali
                 s.addStudentHall(student);
             }
         }
+        notifyPlayers();
     }
 
     public void moveProfessor(Player destinationPlayer, SPColour colour) throws NoProfessorBagException, ProfessorNotFoundException {
@@ -228,6 +221,7 @@ public abstract class BoardAbstract extends Observable implements Board, Seriali
         }
 
         receiverSchool.addProfessor(toBeMoved);
+        notifyPlayers();
     }
 
 
@@ -245,6 +239,20 @@ public abstract class BoardAbstract extends Observable implements Board, Seriali
         }
 
         return false;
+    }
+
+    // Find the School where the Professor is in
+    public School whereIsProfessor(SPColour colour){
+        for(School s: schools) {
+            for(Professor p: s.getProfessors()) {
+                if(p.getColour().equals(colour)) {
+                    return s;
+                }
+            }
+        }
+
+        // This happens when the Professor I'm looking for is in the Bag
+        return null;
     }
 
     public void conquerProfessor(Player currentPlayer, SPColour colour) throws NoProfessorBagException, ProfessorNotFoundException {
@@ -268,6 +276,8 @@ public abstract class BoardAbstract extends Observable implements Board, Seriali
 
             challengerSchool.addProfessor(removed);
         }
+
+        notifyPlayers();
     }
 
 
@@ -285,6 +295,8 @@ public abstract class BoardAbstract extends Observable implements Board, Seriali
             //let's merge Archipelagos
             this.mergeArchipelagos();
         }
+
+        notifyPlayers();
     }
 
     // true if the current Player (who moved MotherNature) will conquer the Archipelago, false otherwise
@@ -427,5 +439,13 @@ public abstract class BoardAbstract extends Observable implements Board, Seriali
         }
 
         player.useAssistantCard(turnPriority);
+        notifyPlayers();
+    }
+
+    @Override
+    public void notifyPlayers() {
+        SerializedBoardAbstract serializedBoardAbstract =
+                new SerializedBoardAbstract(this.archipelagos, this.clouds, this.mn, this.playerSchool);
+        notify(serializedBoardAbstract);
     }
 }
