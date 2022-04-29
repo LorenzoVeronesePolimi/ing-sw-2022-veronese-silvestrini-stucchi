@@ -36,6 +36,9 @@ public class SerializedBoardAbstract implements Serializable {
             if(!school.getPlayer().getNickname().equals(nickname)) {
                 this.schools.add(new School(school));
             }
+            else{
+                this.schools.add(school);
+            }
         }
     }
 
