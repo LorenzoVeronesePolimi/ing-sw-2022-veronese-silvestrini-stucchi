@@ -262,6 +262,7 @@ public class Controller implements Observer<Message> {
 
         Player player = new Player(message.getNicknameFirstPlayer(), colourFirstPlayer);
         this.players.add(player);
+        serverView.setPlayerNickname(message.getNicknameFirstPlayer());
         this.serverViews.add(serverView);
 
         controllerState.setState(State.WAITING_PLAYERS);
@@ -302,6 +303,7 @@ public class Controller implements Observer<Message> {
         // No integrity to check
         Player player = new Player(nickname, colour);
         this.players.add(player);
+        serverView.setPlayerNickname(message.getNickname());
         this.serverViews.add(serverView);
 
         if(this.players.size() == numPlayers){ // The requested number of players has been reached: let's go on

@@ -572,7 +572,7 @@ public class BoardAdvanced extends Observable implements Board {
     public void notifyPlayers() {
         SerializedBoardAdvanced serializedBoardAdvanced =
                 new SerializedBoardAdvanced(this.board.archipelagos, this.board.clouds, this.board.mn,
-                        this.board.playerSchool, this.colourToExclude, this.extractedCards);
+                        this.board.schools, this.colourToExclude, this.extractedCards);
         notify(serializedBoardAdvanced);
     }
 }

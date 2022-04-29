@@ -15,7 +15,7 @@ import java.util.List;
  */
 public class Player implements Serializable {
     private final String nickname;
-    private final List<AssistantCard> playerHand;
+    private List<AssistantCard> playerHand;
     private AssistantCard lastCard;
     private final PlayerColour colour;
 
@@ -29,6 +29,16 @@ public class Player implements Serializable {
         this.colour = colour;
         playerHand = new ArrayList<>();
     }
+
+
+    // Constructor called when hiding player information in network communication
+    public Player(Player player) {
+        this.nickname = player.nickname;
+        this.colour = player.colour;
+        if(player.lastCard != null)
+            this.lastCard = new AssistantCard(player.lastCard);
+    }
+
 
     /**
      * @return The nickname of the player.

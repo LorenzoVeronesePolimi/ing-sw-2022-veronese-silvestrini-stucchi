@@ -7,6 +7,7 @@ import it.polimi.ingsw.Model.Places.School.School;
 import it.polimi.ingsw.Model.Player;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -14,28 +15,43 @@ public class SerializedBoardAbstract implements Serializable {
     private List<Archipelago> archipelagos;
     private List<Cloud> clouds;
     private MotherNature mn;
-    private Map<Player, School> playerSchool;
+    private List<School> schools;
 
-    public SerializedBoardAbstract(List<Archipelago> archipelagos, List<Cloud> clouds, MotherNature mn, Map<Player, School> playerSchool) {
+    public SerializedBoardAbstract(List<Archipelago> archipelagos, List<Cloud> clouds, MotherNature mn, List<School> schools) {
         this.archipelagos = archipelagos;
         this.clouds = clouds;
         this.mn = mn;
-        this.playerSchool = playerSchool;
+        this.schools = schools;
+    }
+
+    public SerializedBoardAbstract(List<Archipelago> archipelagos, List<Cloud> clouds, MotherNature mn, List<School> schoolList, String nickname) {
+        this.archipelagos = archipelagos;
+        this.clouds = clouds;
+        this.mn = mn;
+        this.schools = new ArrayList<>();
+
+        // Hiding opponent information
+        // Here we have to clone the schools -> clone the player (removing the playerHand)
+        for(School school : schoolList) {
+            if(!school.getPlayer().getNickname().equals(nickname)) {
+                this.schools.add(new School(school));
+            }
+        }
     }
 
     public List<Archipelago> getArchipelagos() {
-        return archipelagos;
+        return this.archipelagos;
     }
 
     public List<Cloud> getClouds() {
-        return clouds;
+        return this.clouds;
     }
 
     public MotherNature getMn() {
-        return mn;
+        return this.mn;
     }
 
-    public Map<Player, School> getPlayerSchool() {
-        return playerSchool;
+    public List<School> getSchools() {
+        return schools;
     }
 }

@@ -445,7 +445,7 @@ public abstract class BoardAbstract extends Observable<SerializedBoardAbstract> 
     @Override
     public void notifyPlayers() {
         SerializedBoardAbstract serializedBoardAbstract =
-                new SerializedBoardAbstract(this.archipelagos, this.clouds, this.mn, this.playerSchool);
+                new SerializedBoardAbstract(this.archipelagos, this.clouds, this.mn, this.schools);
         notify(serializedBoardAbstract);
     }
 }

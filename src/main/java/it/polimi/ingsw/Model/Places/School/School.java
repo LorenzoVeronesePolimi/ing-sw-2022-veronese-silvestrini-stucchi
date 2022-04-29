@@ -19,10 +19,10 @@ import java.util.List;
  * It is divided in a hall, in a dining room -with places for students and professors- and in a place to put towers.
  */
 public class School implements Serializable {
-    protected final Player player;
+    protected Player player;
 
-    protected final int numMaxStudentsHall;
-    protected final int numMaxTowers;
+    protected transient int numMaxStudentsHall;
+    protected transient int numMaxTowers;
     protected final List<Student> studentsHall;
     protected final List<Student> studentsDiningRed;
     protected final List<Student> studentsDiningPink;
@@ -58,6 +58,18 @@ public class School implements Serializable {
             Tower t = new Tower(player);
             towers.add(t);
         }
+    }
+
+    public School(School school) {
+        this.player = new Player(school.player);
+        this.studentsHall = school.studentsHall;
+        this.studentsDiningBlue = school.studentsDiningBlue;
+        this.studentsDiningPink = school.studentsDiningPink;
+        this.studentsDiningRed = school.studentsDiningRed;
+        this.studentsDiningGreen = school.studentsDiningGreen;
+        this.studentsDiningYellow = school.studentsDiningYellow;
+        this.professors = school.professors;
+        this.towers = school.towers;
     }
 
     /**

@@ -16,8 +16,17 @@ public class SerializedBoardAdvanced extends SerializedBoardAbstract implements 
     private SPColour colourToExclude;
     private List<AbstractCharacterCard> extractedCards;
 
-    public SerializedBoardAdvanced(List<Archipelago> archipelagos, List<Cloud> clouds, MotherNature mn, Map<Player, School> playerSchool, SPColour colourToExclude, List<AbstractCharacterCard> extractedCards) {
-        super(archipelagos, clouds, mn, playerSchool);
+    public SerializedBoardAdvanced(List<Archipelago> archipelagos, List<Cloud> clouds, MotherNature mn,
+                                   List<School> schoolList, SPColour colourToExclude, List<AbstractCharacterCard> extractedCards) {
+        super(archipelagos, clouds, mn, schoolList);
+        this.colourToExclude = colourToExclude;
+        this.extractedCards = extractedCards;
+    }
+
+    public SerializedBoardAdvanced(List<Archipelago> archipelagos, List<Cloud> clouds, MotherNature mn,
+                                   List<School> schoolList, SPColour colourToExclude,
+                                   List<AbstractCharacterCard> extractedCards, String nickname) {
+        super(archipelagos, clouds, mn, schoolList, nickname);
         this.colourToExclude = colourToExclude;
         this.extractedCards = extractedCards;
     }

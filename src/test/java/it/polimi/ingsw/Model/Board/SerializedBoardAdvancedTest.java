@@ -42,11 +42,11 @@ public class SerializedBoardAdvancedTest {
             e.printStackTrace();
         }
 
-        SerializedBoardAdvanced serializedBoard = new SerializedBoardAdvanced(b2.archipelagos, b2.clouds, b2.mn, b2.playerSchool, boardAdvanced.getColourToExclude(), boardAdvanced.getExtractedCards());
+        SerializedBoardAdvanced serializedBoard = new SerializedBoardAdvanced(b2.archipelagos, b2.clouds, b2.mn, b2.schools, boardAdvanced.getColourToExclude(), boardAdvanced.getExtractedCards());
         Assertions.assertEquals(b2.archipelagos, serializedBoard.getArchipelagos());
         Assertions.assertEquals(b2.clouds, serializedBoard.getClouds());
         Assertions.assertEquals(b2.mn, serializedBoard.getMn());
-        Assertions.assertEquals(b2.playerSchool, serializedBoard.getPlayerSchool());
+        Assertions.assertEquals(b2.schools, serializedBoard.getSchools());
         Assertions.assertEquals(boardAdvanced.getColourToExclude(),serializedBoard.getColourToExclude());
         Assertions.assertEquals(boardAdvanced.getExtractedCards(), serializedBoard.getExtractedCards());
     }

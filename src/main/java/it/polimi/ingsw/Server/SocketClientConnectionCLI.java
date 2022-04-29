@@ -72,20 +72,31 @@ public class SocketClientConnectionCLI extends ClientConnection implements Runna
         this.serverView = new ServerView(this, controller);
     }
 
+    public ServerView getServerView() {
+        return serverView;
+    }
+
     @Override
     public void run() {
+        String read;
         try{
+            // TODO: consider the case of wrong input
             // CLI o GUI
             send(serverView.CLIorGUI());
+            read = (String) in.readObject();
+            notify(read);
+
             if(firstPlayer) {
                 send(serverView.manageFirstPlayer(this));
+                read = (String) in.readObject();
+                notify(read);
             } else {
                 //send("Attendi!");
             }
+
             send(serverView.chooseName());
-
-
-            String read;
+            read = (String) in.readObject();
+            notify(read);
 
             //server.lobby(this, this.nickname);
             while(isActive()){

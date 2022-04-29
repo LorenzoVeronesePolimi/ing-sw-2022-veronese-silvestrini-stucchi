@@ -8,6 +8,7 @@ import it.polimi.ingsw.Messages.INMessage.MessageAddPlayer;
 import it.polimi.ingsw.Messages.OUTMessages.OUTMessage;
 import it.polimi.ingsw.Messages.OUTMessages.OUTMessageInfo;
 import it.polimi.ingsw.Model.Board.SerializedBoardAbstract;
+import it.polimi.ingsw.Model.Board.SerializedBoardAdvanced;
 import it.polimi.ingsw.Observer.Observable;
 import it.polimi.ingsw.Observer.Observer;
 import it.polimi.ingsw.Server.ClientConnection;
@@ -19,6 +20,7 @@ import it.polimi.ingsw.Server.SocketClientConnectionCLI;
 public class ServerView implements Observer<SerializedBoardAbstract> {
 
     private SocketClientConnectionCLI socketClientConnectionCLI;
+    private String playerNickname;
     /*
         Inner class created to divide the flow in two:
             - client -> model modification (managed byt this inner class)
@@ -61,7 +63,16 @@ public class ServerView implements Observer<SerializedBoardAbstract> {
     //TODO: this should not be a Object message but instead a JSON or something, because it's received from the model itself
     @Override
     public void update(SerializedBoardAbstract message) {
-        this.socketClientConnectionCLI.asyncSendModel(message);
+        if(message instanceof SerializedBoardAbstract) {
+            this.socketClientConnectionCLI.asyncSendModel(new SerializedBoardAbstract(message.getArchipelagos(),
+                    message.getClouds(), message.getMn(), message.getSchools(), this.playerNickname));
+        }
+
+        if(message instanceof SerializedBoardAdvanced) {
+            this.socketClientConnectionCLI.asyncSendModel(new SerializedBoardAdvanced(message.getArchipelagos(),
+                    message.getClouds(), message.getMn(), message.getSchools(), ((SerializedBoardAdvanced) message).getColourToExclude(),
+                    ((SerializedBoardAdvanced) message).getExtractedCards(), this.playerNickname));
+        }
     }
 
     // Messages generated from the ServerView and not the controller
@@ -75,5 +86,9 @@ public class ServerView implements Observer<SerializedBoardAbstract> {
 
     public OUTMessage chooseName() {
         return new OUTMessageInfo("What's your name?", OUTMessageType.ASK_NICKNAME);
+    }
+
+    public void setPlayerNickname(String nickname) {
+        this.playerNickname = nickname;
     }
 }

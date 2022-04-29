@@ -30,9 +30,11 @@ public class ControllerTest {
     private final PrintStream originalOut = System.out;
     private final PrintStream originalErr = System.err;
     static Socket socket;
-    static ServerView view;
+    static SocketClientConnectionCLI conn1;
+    static SocketClientConnectionCLI conn2;
+    static ServerView view1;
+    static ServerView view2;
     static Server server;
-    static boolean started = false;
 
     static {
         try {
@@ -43,8 +45,12 @@ public class ControllerTest {
 
         controller = server.getController();
         System.setOut(new PrintStream(outContent));
-        view = new ServerView(new SocketClientConnectionCLI(server, controller), controller);
+        conn1 = new SocketClientConnectionCLI(server, controller);
+        view1 = conn1.getServerView();
+        conn2 = new SocketClientConnectionCLI(server, controller);
+        view2 = conn2.getServerView();
 
+        //view = new ServerView(new SocketClientConnectionCLI(server, controller), controller);
 
     }
 
@@ -57,28 +63,28 @@ public class ControllerTest {
         Assertions.assertNotNull(controller.getControllerInput());
         Assertions.assertNotNull(controller.getControllerIntegrity());
 
-        MessageCreateMatch m1Err1 = new MessageCreateMatch("", "white", 2, true, view);
+        MessageCreateMatch m1Err1 = new MessageCreateMatch("", "white", 2, true, view1);
         controller.update(m1Err1);
         Assertions.assertEquals("Invalid format", outContent.toString().trim());
         //Error because of wrong colour
         this.resetOutput();
-        MessageCreateMatch m1Err2 = new MessageCreateMatch("First", "brown", 2, true, view);
+        MessageCreateMatch m1Err2 = new MessageCreateMatch("First", "brown", 2, true, view1);
         controller.update(m1Err2);
         Assertions.assertEquals("Invalid format", outContent.toString().trim());
         //ERRORS IN STATE
         this.resetOutput();
-        MessageAddPlayer m1Err3 = new MessageAddPlayer("Second", "white", view);
+        MessageAddPlayer m1Err3 = new MessageAddPlayer("Second", "white", view2);
         controller.update(m1Err3);
         Assertions.assertEquals("You can't do that now", outContent.toString().trim());
         //ERRORS IN INTEGRITY
         //Error because of wrong numPlayers
         this.resetOutput();
-        MessageCreateMatch m1Err4 = new MessageCreateMatch("First", "white", 5, true, view);
+        MessageCreateMatch m1Err4 = new MessageCreateMatch("First", "white", 5, true, view1);
         controller.update(m1Err4);
         Assertions.assertEquals("Error", outContent.toString().trim());
         //OK
         this.resetOutput();
-        MessageCreateMatch m1 = new MessageCreateMatch("First", "white", 2, true, view);
+        MessageCreateMatch m1 = new MessageCreateMatch("First", "white", 2, true, view1);
         controller.update(m1);
         Assertions.assertEquals("", outContent.toString().trim());
         Assertions.assertEquals(State.WAITING_PLAYERS, controller.getControllerState().getState());
@@ -88,33 +94,33 @@ public class ControllerTest {
         /*-----MessageAddPlayer-----*/
         //ERRORS IN FORMAT
         //Error because of wrong name ("")
-        MessageAddPlayer m2Err1 = new MessageAddPlayer("", "black", view);
+        MessageAddPlayer m2Err1 = new MessageAddPlayer("", "black", view2);
         controller.update(m2Err1);
         Assertions.assertEquals("Invalid format", outContent.toString().trim());
         //Error because of wrong colour
         this.resetOutput();
-        MessageAddPlayer m2Err2 = new MessageAddPlayer("Second", "brown", view);
+        MessageAddPlayer m2Err2 = new MessageAddPlayer("Second", "brown", view2);
         controller.update(m2Err2);
         Assertions.assertEquals("Invalid format", outContent.toString().trim());
         //ERRORS IN STATE
         this.resetOutput();
-        MessageCreateMatch m2Err3 = new MessageCreateMatch("Second", "white", 2, true, view);
+        MessageCreateMatch m2Err3 = new MessageCreateMatch("Second", "white", 2, true, view2);
         controller.update(m2Err3);
         Assertions.assertEquals("You can't do that now", outContent.toString().trim());
         //ERRORS IN CONTROLLER
         //Same colour as before
         this.resetOutput();
-        MessageAddPlayer m2Err4 = new MessageAddPlayer("Second", "white", view);
+        MessageAddPlayer m2Err4 = new MessageAddPlayer("Second", "white", view2);
         controller.update(m2Err4);
         Assertions.assertEquals("Error", outContent.toString().trim());
         //Same colour as before
         this.resetOutput();
-        MessageAddPlayer m2Err5 = new MessageAddPlayer("First", "black", view);
+        MessageAddPlayer m2Err5 = new MessageAddPlayer("First", "black", view2);
         controller.update(m2Err5);
         Assertions.assertEquals("Error", outContent.toString().trim());
         //OK
         this.resetOutput();
-        MessageAddPlayer m2 = new MessageAddPlayer("Second", "black", view);
+        MessageAddPlayer m2 = new MessageAddPlayer("Second", "black", view2);
         controller.update(m2);
         Assertions.assertEquals("This Cloud has too many Students", outContent.toString().trim());
         Assertions.assertEquals(State.PLANNING2, controller.getControllerState().getState());
@@ -147,7 +153,7 @@ public class ControllerTest {
         Assertions.assertEquals("Error", outContent.toString().trim());
         //OK
         this.resetOutput();
-        MessageAssistantCard m3 = new MessageAssistantCard("First", 5, 10);
+        MessageAssistantCard m3 = new MessageAssistantCard("First", 5, 9);
         controller.update(m3);
         Assertions.assertEquals("", outContent.toString().trim());
         Assertions.assertEquals(State.PLANNING2, controller.getControllerState().getState());

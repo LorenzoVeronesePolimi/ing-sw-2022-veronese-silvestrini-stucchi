@@ -31,10 +31,10 @@ public class SerializedBoardAbstractTest {
     }
     @Test
     public void SerializedBoardAbstractTest(){
-        SerializedBoardAbstract serializedBoard = new SerializedBoardAbstract(b2.archipelagos, b2.clouds, b2.mn, b2.playerSchool);
+        SerializedBoardAbstract serializedBoard = new SerializedBoardAbstract(b2.archipelagos, b2.clouds, b2.mn, b2.schools);
         Assertions.assertEquals(b2.archipelagos, serializedBoard.getArchipelagos());
         Assertions.assertEquals(b2.clouds, serializedBoard.getClouds());
         Assertions.assertEquals(b2.mn, serializedBoard.getMn());
-        Assertions.assertEquals(b2.playerSchool, serializedBoard.getPlayerSchool());
+        Assertions.assertEquals(b2.schools, serializedBoard.getSchools());
     }
 }

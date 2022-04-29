@@ -22,6 +22,11 @@ public class AssistantCard implements Serializable {
         this.turnPriority = turnPriority;
     }
 
+    public AssistantCard(AssistantCard lastCard) {
+        this.motherNatureMovement = lastCard.motherNatureMovement;
+        this.turnPriority = lastCard.turnPriority;
+    }
+
     /**
      *
      * @return the number of movements that mother nature can do choosing this card
