@@ -20,9 +20,9 @@ public class MessageAssistantCard extends Message{
         return this.nicknamePlayer;
     }
 
-    public int getMotherNatureMovement() {
+    /*public int getMotherNatureMovement() {
         return motherNatureMovement;
-    }
+    } unused*/
 
     public int getTurnPriority() {
         return turnPriority;

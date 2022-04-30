@@ -27,9 +27,9 @@ import org.junit.jupiter.api.Assertions;
 public class ControllerTest {
     static Controller controller;
     private static ByteArrayOutputStream outContent = new ByteArrayOutputStream();
-    private final PrintStream originalOut = System.out;
-    private final PrintStream originalErr = System.err;
-    static Socket socket;
+    //private final PrintStream originalOut = System.out;
+    //private final PrintStream originalErr = System.err;
+    //static Socket socket;
     static SocketClientConnectionCLI conn1;
     static SocketClientConnectionCLI conn2;
     static ServerView view1;
@@ -59,7 +59,6 @@ public class ControllerTest {
         /*-----MessageCreateMatch-----*/
         //ERRORS IN FORMAT
         //Error because of wrong name ("")
-
         Assertions.assertNotNull(controller.getControllerInput());
         Assertions.assertNotNull(controller.getControllerIntegrity());
 

@@ -13,6 +13,7 @@ import it.polimi.ingsw.Model.Enumerations.SPColour;
 import it.polimi.ingsw.Model.Exceptions.*;
 import it.polimi.ingsw.Model.Player;
 import it.polimi.ingsw.Observer.Observer;
+import it.polimi.ingsw.View.Exceptions.NoCharacterCardException;
 import it.polimi.ingsw.View.ServerView;
 
 import java.awt.*;
@@ -91,6 +92,15 @@ public class Controller implements Observer<Message> {
     public void setCharacterCardUsed(boolean newValue){
         this.characterCardUsed = newValue;
     }
+
+    /* To be used if we want the client to write only "characterCard" when he use one CC
+    public List<AbstractCharacterCard> getExtractedCharacterCards() throws NoCharacterCardException{
+        if(this.boardAdvanced == null){
+            throw new NoCharacterCardException();
+        }
+
+        return this.boardAdvanced.getExtractedCards();
+    }*/
 
     /*I RECEIVED A MESSAGE => I need to:
      * Know its format: is it a STUDENT_TO_ARCHIPELAGO or something else?
