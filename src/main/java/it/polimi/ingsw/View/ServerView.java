@@ -32,8 +32,6 @@ public class ServerView implements Observer<SerializedBoardAbstract> {
         private ConnectionListener(ServerView serverView) {
             this.serverView = serverView;
         }
-
-
         /*
             This class observe the Connection, and it's observed by the Controller.
             It notifies the controller every time a message is received from the Connection.
@@ -44,12 +42,57 @@ public class ServerView implements Observer<SerializedBoardAbstract> {
         public void update(String messageInput) {
             //Parsing of messages (from String to Message)
             try{
-                Message messageToController = this.serverView.parseStringToMessage(messageInput);
+                Message messageToController = this.parseStringToMessage(messageInput);
                 notify(messageToController);
             } catch(NoCharacterCardException ex){
-                //TODO: send message to the client
+                //TODO: send error message to the client
                 ex.printStackTrace();
             }
+        }
+
+        public Message parseStringToMessage(String input) throws NoCharacterCardException {
+            String[] splitted = input.split(" ");
+            switch (splitted[0]){
+                case "createMatch":
+                    return new MessageCreateMatch(splitted[1], splitted[2], Integer.parseInt(splitted[3]), Boolean.parseBoolean(splitted[4]), this.serverView);
+                case "addPlayer":
+                    return new MessageAddPlayer(splitted[1], splitted[2], this.serverView);
+                case "assistantCard":
+                    return new MessageAssistantCard(splitted[1], Integer.parseInt(splitted[2]),  Integer.parseInt(splitted[3]));
+                case "studentHallToDiningRoom":
+                    return new MessageStudentHallToDiningRoom(splitted[1], splitted[2]);
+                case "studentToArchipelago":
+                    return new MessageStudentToArchipelago(splitted[1], splitted[2], Integer.parseInt(splitted[3]));
+                case "moveMotherNature":
+                    return new MessageMoveMotherNature(splitted[1], Integer.parseInt(splitted[2]));
+                case "studentCloudToSchool":
+                    return new MessageStudentCloudToSchool(splitted[1], Integer.parseInt(splitted[2]));
+                case "exchangeThreeStudents":
+                    return new MessageCCExchangeThreeStudents(Integer.parseInt(splitted[1]), splitted[2], splitted[3], splitted[4], splitted[5], splitted[6], splitted[7], splitted[8]);
+                case "exchangeTwoHallDining":
+                    return new MessageCCExchangeTwoHallDining(Integer.parseInt(splitted[1]), splitted[2], splitted[3], splitted[4], splitted[5], splitted[6]);
+                case "excludeColourFromCounting":
+                    return new MessageCCExcludeColourFromCounting(Integer.parseInt(splitted[1]), splitted[2], splitted[3]);
+                case "extraStudentInDining":
+                    return new MessageCCExtraStudentInDining(Integer.parseInt(splitted[1]), splitted[2], splitted[3]);
+                case "fakeMNMovement":
+                    return new MessageCCFakeMNMovement(Integer.parseInt(splitted[1]), splitted[2], Integer.parseInt(splitted[3]));
+                case "forbidIsland":
+                    return new MessageCCForbidIsland(Integer.parseInt(splitted[1]), splitted[2], Integer.parseInt(splitted[3]));
+                case "placeOneStudent":
+                    return new MessageCCPlaceOneStudent(Integer.parseInt(splitted[1]), splitted[2], splitted[3], Integer.parseInt(splitted[4]));
+                case "reduceColourInDining":
+                    return new MessageCCReduceColourInDining(Integer.parseInt(splitted[1]), splitted[2], splitted[3]);
+                case "takeProfessorOnEquity":
+                    return new MessageCCTakeProfessorOnEquity(Integer.parseInt(splitted[1]), splitted[2]);
+                case "towerNoValue":
+                    return new MessageCCTowerNoValue(Integer.parseInt(splitted[1]), splitted[2]);
+                case "twoExtraIslands":
+                    return new MessageCCTwoExtraIslands(Integer.parseInt(splitted[1]), splitted[2]);
+                case "twoExtraPoints":
+                    return new MessageCCTwoExtraPoints(Integer.parseInt(splitted[1]), splitted[2]);
+            }
+            throw new NoCharacterCardException();
         }
     }
 
@@ -92,48 +135,5 @@ public class ServerView implements Observer<SerializedBoardAbstract> {
         this.playerNickname = nickname;
     }
 
-    public Message parseStringToMessage(String input) throws NoCharacterCardException {
-        String[] splitted = input.split(" ");
-        switch (splitted[0]){
-            case "createMatch":
-                return new MessageCreateMatch(splitted[1], splitted[2], Integer.parseInt(splitted[3]), Boolean.parseBoolean(splitted[4]), this);
-            case "addPlayer":
-                return new MessageAddPlayer(splitted[1], splitted[2], this);
-            case "assistantCard":
-                return new MessageAssistantCard(splitted[1], Integer.parseInt(splitted[2]),  Integer.parseInt(splitted[3]));
-            case "studentHallToDiningRoom":
-                return new MessageStudentHallToDiningRoom(splitted[1], splitted[2]);
-            case "studentToArchipelago":
-                return new MessageStudentToArchipelago(splitted[1], splitted[2], Integer.parseInt(splitted[3]));
-            case "moveMotherNature":
-                return new MessageMoveMotherNature(splitted[1], Integer.parseInt(splitted[2]));
-            case "studentCloudToSchool":
-                return new MessageStudentCloudToSchool(splitted[1], Integer.parseInt(splitted[2]));
-            case "exchangeThreeStudents":
-                return new MessageCCExchangeThreeStudents(Integer.parseInt(splitted[1]), splitted[2], splitted[3], splitted[4], splitted[5], splitted[6], splitted[7], splitted[8]);
-            case "exchangeTwoHallDining":
-                return new MessageCCExchangeTwoHallDining(Integer.parseInt(splitted[1]), splitted[2], splitted[3], splitted[4], splitted[5], splitted[6]);
-            case "excludeColourFromCounting":
-                return new MessageCCExcludeColourFromCounting(Integer.parseInt(splitted[1]), splitted[2], splitted[3]);
-            case "extraStudentInDining":
-                return new MessageCCExtraStudentInDining(Integer.parseInt(splitted[1]), splitted[2], splitted[3]);
-            case "fakeMNMovement":
-                return new MessageCCFakeMNMovement(Integer.parseInt(splitted[1]), splitted[2], Integer.parseInt(splitted[3]));
-            case "forbidIsland":
-                return new MessageCCForbidIsland(Integer.parseInt(splitted[1]), splitted[2], Integer.parseInt(splitted[3]));
-            case "placeOneStudent":
-                return new MessageCCPlaceOneStudent(Integer.parseInt(splitted[1]), splitted[2], splitted[3], Integer.parseInt(splitted[4]));
-            case "reduceColourInDining":
-                return new MessageCCReduceColourInDining(Integer.parseInt(splitted[1]), splitted[2], splitted[3]);
-            case "takeProfessorOnEquity":
-                return new MessageCCTakeProfessorOnEquity(Integer.parseInt(splitted[1]), splitted[2]);
-            case "towerNoValue":
-                return new MessageCCTowerNoValue(Integer.parseInt(splitted[1]), splitted[2]);
-            case "twoExtraIslands":
-                return new MessageCCTwoExtraIslands(Integer.parseInt(splitted[1]), splitted[2]);
-            case "twoExtraPoints":
-                return new MessageCCTwoExtraPoints(Integer.parseInt(splitted[1]), splitted[2]);
-        }
-        throw new NoCharacterCardException();
-    }
+
 }
