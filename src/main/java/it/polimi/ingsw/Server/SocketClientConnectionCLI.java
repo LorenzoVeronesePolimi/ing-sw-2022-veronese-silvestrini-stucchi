@@ -1,7 +1,6 @@
 package it.polimi.ingsw.Server;
 
 import it.polimi.ingsw.Controller.Controller;
-import it.polimi.ingsw.Messages.INMessage.Message;
 import it.polimi.ingsw.Messages.OUTMessages.OUTMessage;
 import it.polimi.ingsw.Model.Board.SerializedBoardAbstract;
 import it.polimi.ingsw.View.ServerView;
@@ -87,7 +86,7 @@ public class SocketClientConnectionCLI extends ClientConnection implements Runna
             notify(read);
 
             if(firstPlayer) {
-                send(serverView.manageFirstPlayer(this));
+                send(serverView.manageFirstPlayer());
                 read = (String) in.readObject();
                 notify(read);
             } else {

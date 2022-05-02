@@ -1,7 +1,6 @@
 package it.polimi.ingsw.View;
 
 import it.polimi.ingsw.Controller.Controller;
-import it.polimi.ingsw.Messages.Enumerations.INMessageType;
 import it.polimi.ingsw.Messages.Enumerations.OUTMessageType;
 import it.polimi.ingsw.Messages.INMessage.*;
 import it.polimi.ingsw.Messages.OUTMessages.OUTMessage;
@@ -10,7 +9,6 @@ import it.polimi.ingsw.Model.Board.SerializedBoardAbstract;
 import it.polimi.ingsw.Model.Board.SerializedBoardAdvanced;
 import it.polimi.ingsw.Observer.Observable;
 import it.polimi.ingsw.Observer.Observer;
-import it.polimi.ingsw.Server.ClientConnection;
 import it.polimi.ingsw.Server.SocketClientConnectionCLI;
 import it.polimi.ingsw.View.Exceptions.NoCharacterCardException;
 
@@ -19,7 +17,7 @@ import it.polimi.ingsw.View.Exceptions.NoCharacterCardException;
  */
 public class ServerView implements Observer<SerializedBoardAbstract> {
 
-    private SocketClientConnectionCLI socketClientConnectionCLI;
+    private final SocketClientConnectionCLI socketClientConnectionCLI;
     private String playerNickname;
     /*
         Inner class created to divide the flow in two:
@@ -106,15 +104,13 @@ public class ServerView implements Observer<SerializedBoardAbstract> {
     //TODO: this should not be a Object message but instead a JSON or something, because it's received from the model itself
     @Override
     public void update(SerializedBoardAbstract message) {
-        if(message instanceof SerializedBoardAbstract) {
-            this.socketClientConnectionCLI.asyncSendModel(new SerializedBoardAbstract(message.getArchipelagos(),
-                    message.getClouds(), message.getMn(), message.getSchools(), this.playerNickname));
-        }
-
         if(message instanceof SerializedBoardAdvanced) {
             this.socketClientConnectionCLI.asyncSendModel(new SerializedBoardAdvanced(message.getArchipelagos(),
                     message.getClouds(), message.getMn(), message.getSchools(), ((SerializedBoardAdvanced) message).getColourToExclude(),
                     ((SerializedBoardAdvanced) message).getExtractedCards(), this.playerNickname));
+        } else {
+            this.socketClientConnectionCLI.asyncSendModel(new SerializedBoardAbstract(message.getArchipelagos(),
+                    message.getClouds(), message.getMn(), message.getSchools(), this.playerNickname));
         }
     }
 
@@ -123,7 +119,7 @@ public class ServerView implements Observer<SerializedBoardAbstract> {
         return new OUTMessageInfo("Select between CLI[0] or GUI[1]:", OUTMessageType.ASK_CLI_GUI);
     }
 
-    public OUTMessage manageFirstPlayer(ClientConnection cc) {
+    public OUTMessage manageFirstPlayer( ) {
         return new OUTMessageInfo("Select the number of players and the modality.", OUTMessageType.ASK_FIRST_PLAYER);
     }
 
