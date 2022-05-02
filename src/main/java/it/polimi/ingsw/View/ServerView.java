@@ -1,10 +1,11 @@
 package it.polimi.ingsw.View;
 
 import it.polimi.ingsw.Controller.Controller;
-import it.polimi.ingsw.Messages.Enumerations.OUTMessageType;
 import it.polimi.ingsw.Messages.INMessage.*;
+import it.polimi.ingsw.Messages.OUTMessages.MessageAskName;
+import it.polimi.ingsw.Messages.OUTMessages.MessageFirstPlayer;
 import it.polimi.ingsw.Messages.OUTMessages.OUTMessage;
-import it.polimi.ingsw.Messages.OUTMessages.OUTMessageInfo;
+import it.polimi.ingsw.Messages.OUTMessages.MessageCLIorGUI;
 import it.polimi.ingsw.Model.Board.SerializedBoardAbstract;
 import it.polimi.ingsw.Model.Board.SerializedBoardAdvanced;
 import it.polimi.ingsw.Observer.Observable;
@@ -40,6 +41,7 @@ public class ServerView implements Observer<SerializedBoardAbstract> {
         public void update(String messageInput) {
             //Parsing of messages (from String to Message)
             try{
+                System.out.println("The message contains: " + messageInput);
                 Message messageToController = this.parseStringToMessage(messageInput);
                 notify(messageToController);
             } catch(NoCharacterCardException ex){
@@ -115,16 +117,16 @@ public class ServerView implements Observer<SerializedBoardAbstract> {
     }
 
     // Messages generated from the ServerView and not the controller
-    public OUTMessage CLIorGUI() {
-        return new OUTMessageInfo("Select between CLI[0] or GUI[1]:", OUTMessageType.ASK_CLI_GUI);
+    public OUTMessage askCLIorGUI() {
+        return new MessageCLIorGUI();
     }
 
-    public OUTMessage manageFirstPlayer( ) {
-        return new OUTMessageInfo("Select the number of players and the modality.", OUTMessageType.ASK_FIRST_PLAYER);
+    public OUTMessage askFirstPlayer( ) {
+        return new MessageFirstPlayer();
     }
 
-    public OUTMessage chooseName() {
-        return new OUTMessageInfo("What's your name?", OUTMessageType.ASK_NICKNAME);
+    public OUTMessage askName() {
+        return new MessageAskName();
     }
 
     public void setPlayerNickname(String nickname) {

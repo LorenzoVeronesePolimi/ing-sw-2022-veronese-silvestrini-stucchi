@@ -58,8 +58,9 @@ public class SocketClientConnectionCLI extends ClientConnection implements Runna
         //controller.addBoardObserver();
 
         try {
-            this.in = new ObjectInputStream(socket.getInputStream());
             this.out = new ObjectOutputStream(socket.getOutputStream());
+            this.out.flush();
+            this.in = new ObjectInputStream(socket.getInputStream());
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -81,21 +82,13 @@ public class SocketClientConnectionCLI extends ClientConnection implements Runna
         try{
             // TODO: consider the case of wrong input
             // CLI o GUI
-            send(serverView.CLIorGUI());
-            read = (String) in.readObject();
-            notify(read);
+            send(serverView.askCLIorGUI());
 
             if(firstPlayer) {
-                send(serverView.manageFirstPlayer());
-                read = (String) in.readObject();
-                notify(read);
+                send(serverView.askFirstPlayer());
             } else {
-                //send("Attendi!");
+                send(serverView.askName());
             }
-
-            send(serverView.chooseName());
-            read = (String) in.readObject();
-            notify(read);
 
             //server.lobby(this, this.nickname);
             while(isActive()){
@@ -127,6 +120,7 @@ public class SocketClientConnectionCLI extends ClientConnection implements Runna
             out.flush();
         } catch(IOException | NullPointerException e){
             System.err.println(e.getMessage());
+            System.out.println("errore");
         }
     }
 

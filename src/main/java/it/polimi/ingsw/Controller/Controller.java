@@ -13,6 +13,7 @@ import it.polimi.ingsw.Model.Enumerations.SPColour;
 import it.polimi.ingsw.Model.Exceptions.*;
 import it.polimi.ingsw.Model.Player;
 import it.polimi.ingsw.Observer.Observer;
+import it.polimi.ingsw.Server.Server;
 import it.polimi.ingsw.View.Exceptions.NoCharacterCardException;
 import it.polimi.ingsw.View.ServerView;
 
@@ -33,6 +34,7 @@ public class Controller implements Observer<Message> {
 
     private int currentPlayerIndex = 0;
     private List<ServerView> serverViews;
+    private Map<String, ServerView> playerNicknameView;
 
     private final ControllerInput controllerInput;
     private final ControllerState controllerState;
