@@ -13,8 +13,8 @@ public class TwoExtraIslands extends AbstractCharacterCard implements Serializab
     /**
      * Constructor of the card. It sets the price.
      */
-    public TwoExtraIslands(CharacterCardEnumeration type){
-        super(type,1);
+    public TwoExtraIslands(){
+        super(CharacterCardEnumeration.TWO_EXTRA_ISLANDS, null,1);
     }
 
     /**

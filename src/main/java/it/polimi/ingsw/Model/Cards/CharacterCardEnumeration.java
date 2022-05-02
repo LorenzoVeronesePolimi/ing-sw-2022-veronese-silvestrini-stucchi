@@ -1,5 +1,8 @@
 package it.polimi.ingsw.Model.Cards;
 
+/**
+ * This class represents the type of each CharacterCard.
+ */
 public enum CharacterCardEnumeration {
     PLACE_ONE_STUDENT,
     TAKE_PROFESSOR_ON_EQUITY,

@@ -14,17 +14,13 @@ import java.io.Serializable;
  * school as the current owner of the professor.
  */
 public class TakeProfessorOnEquity extends AbstractCharacterCard implements Serializable {
-    private final SPColour[] availableColours = {SPColour.BLUE, SPColour.PINK, SPColour.RED, SPColour.GREEN, SPColour.YELLOW};
-    private final BoardAdvanced boardAdvanced;
 
     /**
      * Constructor of the card. It sets the price.
      * @param boardAdvanced The object modified by the card.
      */
-    public  TakeProfessorOnEquity(CharacterCardEnumeration type, BoardAdvanced boardAdvanced){
-        super(type,2);
-
-        this.boardAdvanced = boardAdvanced;
+    public  TakeProfessorOnEquity(BoardAdvanced boardAdvanced){
+        super(CharacterCardEnumeration.TAKE_PROFESSOR_ON_EQUITY, boardAdvanced,2);
     }
 
     /**
@@ -40,6 +36,7 @@ public class TakeProfessorOnEquity extends AbstractCharacterCard implements Seri
     public void useEffect(Player currentPlayer) throws ProfessorNotFoundException, NoProfessorBagException,
             InvalidTowerNumberException, AnotherTowerException, ExceededMaxTowersException, TowerNotFoundException {
 
+        var availableColours = new SPColour[]{SPColour.BLUE, SPColour.PINK, SPColour.RED, SPColour.GREEN, SPColour.YELLOW};
         School currentSchoolPlayer = boardAdvanced.getPlayerSchool(currentPlayer);
 
         for(SPColour colour: availableColours) {

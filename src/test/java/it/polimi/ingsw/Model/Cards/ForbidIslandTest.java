@@ -33,7 +33,7 @@ public class ForbidIslandTest {
             e.printStackTrace();
         }
 
-        ForbidIsland card = new ForbidIsland(CharacterCardEnumeration.FORBID_ISLAND, boardAdvanced);
+        ForbidIsland card = new ForbidIsland(boardAdvanced);
         assert boardAdvanced != null;
         boardAdvanced.setExtractedCards(card);
 

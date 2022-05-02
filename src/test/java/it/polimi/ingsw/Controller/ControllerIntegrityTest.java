@@ -156,9 +156,7 @@ class ControllerIntegrityTest {
         for(Student s : board.getPlayerSchool(players.get(0)).getStudentsHall()) {
             try {
                 board.getPlayerSchool(players.get(0)).moveStudentHallToDiningRoom(s.getColour());
-            } catch (StudentNotFoundException e) {
-                e.printStackTrace();
-            } catch (ExceededMaxStudentsDiningRoomException e) {
+            } catch (StudentNotFoundException | ExceededMaxStudentsDiningRoomException e) {
                 e.printStackTrace();
             }
         }
@@ -215,7 +213,7 @@ class ControllerIntegrityTest {
         List<SPColour> coloursSchool = new ArrayList<>();
         coloursCard.add(SPColour.BLUE); coloursCard.add(SPColour.BLUE);
         try {
-            ExchangeThreeStudents chosenCard = new ExchangeThreeStudents(CharacterCardEnumeration.EXCHANGE_THREE_STUDENTS, boardAdvanced);
+            ExchangeThreeStudents chosenCard = new ExchangeThreeStudents(boardAdvanced);
             assertFalse(controllerIntegrity.checkCCExchangeThreeStudents(players.get(0), coloursCard, coloursSchool, chosenCard));
         } catch (StudentNotFoundException e) {
             e.printStackTrace();
@@ -228,7 +226,7 @@ class ControllerIntegrityTest {
         coloursSchoolOk.add(studentsInSchool.get(0).getColour()); coloursSchoolOk.add(studentsInSchool.get(1).getColour());
         List<SPColour> coloursCardOk = new ArrayList<>();
         try {
-            ExchangeThreeStudents chosenCardOk = new ExchangeThreeStudents(CharacterCardEnumeration.EXCHANGE_THREE_STUDENTS, boardAdvanced);
+            ExchangeThreeStudents chosenCardOk = new ExchangeThreeStudents(boardAdvanced);
             coloursCardOk.add(chosenCardOk.getStudentsOnCard().get(0).getColour()); coloursCardOk.add(chosenCardOk.getStudentsOnCard().get(1).getColour());
             assertTrue(controllerIntegrity.checkCCExchangeThreeStudents(playerOk, coloursCardOk, coloursSchoolOk, chosenCardOk));
         } catch (StudentNotFoundException e) {
@@ -345,7 +343,7 @@ class ControllerIntegrityTest {
 
         // Case index ok
         try {
-            PlaceOneStudent chosenCard = new PlaceOneStudent(CharacterCardEnumeration.PLACE_ONE_STUDENT, boardAdvanced);
+            PlaceOneStudent chosenCard = new PlaceOneStudent(boardAdvanced);
             assertTrue(controllerIntegrity.checkCCPlaceOneStudent(chosenCard.getStudentsOnCard().get(0).getColour(), 1, chosenCard));
         } catch (StudentNotFoundException e) {
             e.printStackTrace();

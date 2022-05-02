@@ -32,7 +32,7 @@ public class TowerNoValueTest {
             e.printStackTrace();
         }
 
-        TowerNoValue card = new TowerNoValue(CharacterCardEnumeration.TOWER_NO_VALUE, boardAdvanced);
+        TowerNoValue card = new TowerNoValue(boardAdvanced);
         boardAdvanced.setExtractedCards(card);
 
         for (int i = 0; i < 7; i++) {

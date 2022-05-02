@@ -35,7 +35,7 @@ public class ExtraStudentInDiningTest {
 
         ExtraStudentInDining card = null;
         try {
-            card = new ExtraStudentInDining(CharacterCardEnumeration.EXTRA_STUDENT_IN_DINING, boardAdvanced);
+            card = new ExtraStudentInDining(boardAdvanced);
         } catch (StudentNotFoundException e) {
             e.printStackTrace();
         }

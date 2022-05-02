@@ -10,11 +10,13 @@ import java.io.Serializable;
  * in setup, 4 no Entry tiles are placed on the card.
  */
 public class ForbidIsland extends AbstractCharacterCard implements Serializable {
-    private final BoardAdvanced boardAdvanced;
 
-    public ForbidIsland(CharacterCardEnumeration type, BoardAdvanced boardAdvanced){
-        super(type,2);
-        this.boardAdvanced = boardAdvanced;
+    /**
+     * Constructor of the card. It sets the price.
+     * @param boardAdvanced The object modified by the card.
+     */
+    public ForbidIsland(BoardAdvanced boardAdvanced){
+        super(CharacterCardEnumeration.FORBID_ISLAND, boardAdvanced,2);
     }
 
     /**

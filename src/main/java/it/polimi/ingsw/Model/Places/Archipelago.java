@@ -139,7 +139,9 @@ public class Archipelago implements Serializable {
         return studentsDataCopy;
     }
 
-    //TODO: javadoc
+    /**
+     * @return The list of Islands composing the archipelago.
+     */
     public List<Island> getIslands() {
         return islands;
     }

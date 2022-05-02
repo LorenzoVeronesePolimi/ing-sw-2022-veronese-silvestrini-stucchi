@@ -15,16 +15,13 @@ import java.io.Serializable;
  * After that, the round continues normally.
  */
 public class FakeMNMovement extends AbstractCharacterCard implements Serializable {
-    private final BoardAdvanced boardAdvanced;
 
     /**
      * Constructor of the card.
      * @param boardAdvanced The object modified by the card.
      */
-    public FakeMNMovement(CharacterCardEnumeration type, BoardAdvanced boardAdvanced){
-        super(type,3);
-
-        this.boardAdvanced = boardAdvanced;
+    public FakeMNMovement(BoardAdvanced boardAdvanced){
+        super(CharacterCardEnumeration.FAKE_MN_MOVEMENT, boardAdvanced,3);
     }
 
     /**

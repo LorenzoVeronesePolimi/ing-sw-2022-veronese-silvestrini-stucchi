@@ -9,15 +9,13 @@ import java.io.Serializable;
  * during the influence calculation, the current player has two additional point given.
  */
 public class TwoExtraPoints extends AbstractCharacterCard implements Serializable {
-    private final BoardAdvanced boardAdvanced;
 
     /**
      * Constructor of the card. It sets the price.
      * @param boardAdvanced The object modified by the card.
      */
-    public TwoExtraPoints(CharacterCardEnumeration type, BoardAdvanced boardAdvanced){
-        super(type,2);
-        this.boardAdvanced = boardAdvanced;
+    public TwoExtraPoints(BoardAdvanced boardAdvanced){
+        super(CharacterCardEnumeration.TWO_EXTRA_POINTS, boardAdvanced, 2);
     }
 
     /**

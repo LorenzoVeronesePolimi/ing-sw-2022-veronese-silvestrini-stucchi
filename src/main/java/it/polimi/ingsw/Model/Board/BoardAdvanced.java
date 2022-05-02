@@ -65,18 +65,18 @@ public class BoardAdvanced extends Observable implements Board {
         }
 
         List<AbstractCharacterCard> cards = new ArrayList<>();
-        cards.add(new PlaceOneStudent(CharacterCardEnumeration.PLACE_ONE_STUDENT, this));
-        cards.add(new TakeProfessorOnEquity(CharacterCardEnumeration.TAKE_PROFESSOR_ON_EQUITY, this));
-        cards.add(new FakeMNMovement(CharacterCardEnumeration.FAKE_MN_MOVEMENT, this));
-        cards.add(new TwoExtraIslands(CharacterCardEnumeration.TWO_EXTRA_ISLANDS));
-        cards.add(new ForbidIsland(CharacterCardEnumeration.FORBID_ISLAND, this));
-        cards.add(new TowerNoValue(CharacterCardEnumeration.TOWER_NO_VALUE, this));
-        cards.add(new ExchangeThreeStudents(CharacterCardEnumeration.EXCHANGE_THREE_STUDENTS, this));
-        cards.add(new TwoExtraPoints(CharacterCardEnumeration.TWO_EXTRA_POINTS, this));
-        cards.add(new ExcludeColourFromCounting(CharacterCardEnumeration.EXCLUDE_COLOUR_FROM_COUNTING, this));
-        cards.add(new ExchangeTwoHallDining(CharacterCardEnumeration.EXCHANGE_TWO_HALL_DINING, this));
-        cards.add(new ExtraStudentInDining(CharacterCardEnumeration.EXTRA_STUDENT_IN_DINING, this));
-        cards.add(new ReduceColourInDining(CharacterCardEnumeration.REDUCE_COLOUR_IN_DINING, this));
+        cards.add(new PlaceOneStudent(this));
+        cards.add(new TakeProfessorOnEquity(this));
+        cards.add(new FakeMNMovement(this));
+        cards.add(new TwoExtraIslands());
+        cards.add(new ForbidIsland(this));
+        cards.add(new TowerNoValue(this));
+        cards.add(new ExchangeThreeStudents(this));
+        cards.add(new TwoExtraPoints(this));
+        cards.add(new ExcludeColourFromCounting(this));
+        cards.add(new ExchangeTwoHallDining(this));
+        cards.add(new ExtraStudentInDining(this));
+        cards.add(new ReduceColourInDining(this));
 
         Collections.shuffle(cards, new Random());
 

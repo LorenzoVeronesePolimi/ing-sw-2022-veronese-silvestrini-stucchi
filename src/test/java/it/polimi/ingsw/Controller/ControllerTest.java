@@ -298,7 +298,7 @@ public class ControllerTest {
 
         /*-----MessageCCExchangeThreeStudents-----*/
         try {
-            controller.getBoardAdvanced().setExtractedCards(new ExchangeThreeStudents(CharacterCardEnumeration.EXCHANGE_THREE_STUDENTS, controller.getBoardAdvanced()));
+            controller.getBoardAdvanced().setExtractedCards(new ExchangeThreeStudents(controller.getBoardAdvanced()));
         } catch (StudentNotFoundException e) {
             e.printStackTrace();
         }
@@ -312,7 +312,7 @@ public class ControllerTest {
         Assertions.assertEquals("", outContent.toString().trim());
 
         /*-----MessageCCExchangeTwoHallDining-----*/
-        controller.getBoardAdvanced().setExtractedCards(new ExchangeTwoHallDining(CharacterCardEnumeration.EXCHANGE_TWO_HALL_DINING, controller.getBoardAdvanced()));
+        controller.getBoardAdvanced().setExtractedCards(new ExchangeTwoHallDining(controller.getBoardAdvanced()));
         controller.setCharacterCardUsed(false);
         colourHall1 = mapSPColourToString(controller.getBoard().getPlayerSchool(controller.getCurrentPlayer()).getStudentsHall().get(0).getColour());
         colourHall2 = mapSPColourToString(controller.getBoard().getPlayerSchool(controller.getCurrentPlayer()).getStudentsHall().get(1).getColour());
@@ -347,7 +347,7 @@ public class ControllerTest {
 
 
         /*-----MessageCCExcludeColourFromCounting-----*/
-        controller.getBoardAdvanced().setExtractedCards(new ExcludeColourFromCounting(CharacterCardEnumeration.EXCLUDE_COLOUR_FROM_COUNTING, controller.getBoardAdvanced()));
+        controller.getBoardAdvanced().setExtractedCards(new ExcludeColourFromCounting(controller.getBoardAdvanced()));
         controller.setCharacterCardUsed(false);
         MessageCCExcludeColourFromCounting mcc3 = new MessageCCExcludeColourFromCounting(1, controller.getCurrentPlayer().getNickname(), "red");
         controller.update(mcc3);
@@ -355,7 +355,7 @@ public class ControllerTest {
 
         /*-----MessageCCExtraStudentInDining-----*/
         try {
-            controller.getBoardAdvanced().setExtractedCards(new ExtraStudentInDining(CharacterCardEnumeration.EXTRA_STUDENT_IN_DINING, controller.getBoardAdvanced()));
+            controller.getBoardAdvanced().setExtractedCards(new ExtraStudentInDining(controller.getBoardAdvanced()));
         } catch (StudentNotFoundException e) {
             e.printStackTrace();
         }
@@ -366,14 +366,14 @@ public class ControllerTest {
         Assertions.assertEquals("", outContent.toString().trim());
 
         /*-----MessageCCFakeMNMovement-----*/
-        controller.getBoardAdvanced().setExtractedCards(new FakeMNMovement(CharacterCardEnumeration.FAKE_MN_MOVEMENT, controller.getBoardAdvanced()));
+        controller.getBoardAdvanced().setExtractedCards(new FakeMNMovement(controller.getBoardAdvanced()));
         controller.setCharacterCardUsed(false);
         MessageCCFakeMNMovement mcc5 = new MessageCCFakeMNMovement(1, controller.getCurrentPlayer().getNickname(), 4);
         controller.update(mcc5);
         Assertions.assertEquals("", outContent.toString().trim());
 
         /*-----MessageCCForbidIsland-----*/
-        controller.getBoardAdvanced().setExtractedCards(new ForbidIsland(CharacterCardEnumeration.EXCLUDE_COLOUR_FROM_COUNTING, controller.getBoardAdvanced()));
+        controller.getBoardAdvanced().setExtractedCards(new ForbidIsland(controller.getBoardAdvanced()));
         controller.setCharacterCardUsed(false);
         MessageCCForbidIsland mcc6 = new MessageCCForbidIsland(1, controller.getCurrentPlayer().getNickname(), 4);
         controller.update(mcc6);
@@ -381,7 +381,7 @@ public class ControllerTest {
 
         /*-----MessageCCPlaceOneStudent-----*/
         try {
-            controller.getBoardAdvanced().setExtractedCards(new PlaceOneStudent(CharacterCardEnumeration.PLACE_ONE_STUDENT, controller.getBoardAdvanced()));
+            controller.getBoardAdvanced().setExtractedCards(new PlaceOneStudent(controller.getBoardAdvanced()));
         } catch (StudentNotFoundException e) {
             e.printStackTrace();
         }
@@ -392,35 +392,35 @@ public class ControllerTest {
         Assertions.assertEquals("", outContent.toString().trim());
 
         /*-----MessageCCReduceColourInDining-----*/
-        controller.getBoardAdvanced().setExtractedCards(new ReduceColourInDining(CharacterCardEnumeration.REDUCE_COLOUR_IN_DINING, controller.getBoardAdvanced()));
+        controller.getBoardAdvanced().setExtractedCards(new ReduceColourInDining(controller.getBoardAdvanced()));
         controller.setCharacterCardUsed(false);
         MessageCCReduceColourInDining mcc8 = new MessageCCReduceColourInDining(1, controller.getCurrentPlayer().getNickname(), "red");
         controller.update(mcc8);
         Assertions.assertEquals("", outContent.toString().trim());
 
         /*-----MessageCCTowerNoValue-----*/
-        controller.getBoardAdvanced().setExtractedCards(new TowerNoValue(CharacterCardEnumeration.TOWER_NO_VALUE, controller.getBoardAdvanced()));
+        controller.getBoardAdvanced().setExtractedCards(new TowerNoValue(controller.getBoardAdvanced()));
         controller.setCharacterCardUsed(false);
         MessageCCTowerNoValue mcc9 = new MessageCCTowerNoValue(1, controller.getCurrentPlayer().getNickname());
         controller.update(mcc9);
         Assertions.assertEquals("", outContent.toString().trim());
 
         /*-----MessageCCTwoExtraPoints-----*/
-        controller.getBoardAdvanced().setExtractedCards(new TwoExtraPoints(CharacterCardEnumeration.TWO_EXTRA_ISLANDS, controller.getBoardAdvanced()));
+        controller.getBoardAdvanced().setExtractedCards(new TwoExtraPoints(controller.getBoardAdvanced()));
         controller.setCharacterCardUsed(false);
         MessageCCTwoExtraPoints mcc10 = new MessageCCTwoExtraPoints(1, controller.getCurrentPlayer().getNickname());
         controller.update(mcc10);
         Assertions.assertEquals("", outContent.toString().trim());
 
         /*-----MessageCCTakeProfessorOnEquity-----*/
-        controller.getBoardAdvanced().setExtractedCards(new TakeProfessorOnEquity(CharacterCardEnumeration.TAKE_PROFESSOR_ON_EQUITY, controller.getBoardAdvanced()));
+        controller.getBoardAdvanced().setExtractedCards(new TakeProfessorOnEquity(controller.getBoardAdvanced()));
         controller.setCharacterCardUsed(false);
         MessageCCTakeProfessorOnEquity mcc11 = new MessageCCTakeProfessorOnEquity(1, controller.getCurrentPlayer().getNickname());
         controller.update(mcc11);
         Assertions.assertEquals("", outContent.toString().trim());
 
         /*-----MessageCCTwoExtraIslands-----*/
-        controller.getBoardAdvanced().setExtractedCards(new TwoExtraIslands(CharacterCardEnumeration.TWO_EXTRA_POINTS));
+        controller.getBoardAdvanced().setExtractedCards(new TwoExtraIslands());
         controller.setCharacterCardUsed(false);
         MessageCCTwoExtraIslands mcc12 = new MessageCCTwoExtraIslands(1, controller.getCurrentPlayer().getNickname());
         controller.update(mcc12);

@@ -77,7 +77,7 @@ public class ArchipelagoTest {
         } catch (ExceededMaxStudentsHallException | StudentNotFoundException | TowerNotFoundException | EmptyCaveauException e) {
             e.printStackTrace();
         }
-        ForbidIsland card= new ForbidIsland(CharacterCardEnumeration.FORBID_ISLAND, boardAdvanced);
+        ForbidIsland card= new ForbidIsland(boardAdvanced);
         try {
             card.useEffect(6);
         } catch (ExceededNumberForbidFlagException e) {
@@ -108,7 +108,7 @@ public class ArchipelagoTest {
         } catch (ExceededMaxStudentsHallException | StudentNotFoundException | TowerNotFoundException | EmptyCaveauException e) {
             e.printStackTrace();
         }
-        TowerNoValue card= new TowerNoValue(CharacterCardEnumeration.TOWER_NO_VALUE, boardAdvanced);
+        TowerNoValue card= new TowerNoValue(boardAdvanced);
         board.moveMotherNature(4);
         card.useEffect();
         assertTrue(boardAdvanced.getArchiList().get(4).getTowerNoValueFlag());

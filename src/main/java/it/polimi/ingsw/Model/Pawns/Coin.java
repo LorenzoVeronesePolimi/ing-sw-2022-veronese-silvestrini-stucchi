@@ -1,6 +1,5 @@
 package it.polimi.ingsw.Model.Pawns;
 
-import java.awt.*;
 import java.io.Serializable;
 
 /**

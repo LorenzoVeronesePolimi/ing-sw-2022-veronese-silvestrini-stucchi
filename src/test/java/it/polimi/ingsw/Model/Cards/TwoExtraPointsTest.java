@@ -32,7 +32,7 @@ public class TwoExtraPointsTest {
             e.printStackTrace();
         }
 
-        TwoExtraPoints card = new TwoExtraPoints(CharacterCardEnumeration.TWO_EXTRA_POINTS, boardAdvanced);
+        TwoExtraPoints card = new TwoExtraPoints(boardAdvanced);
         boardAdvanced.setExtractedCards(card);
 
         for (int i = 0; i < 7; i++) {

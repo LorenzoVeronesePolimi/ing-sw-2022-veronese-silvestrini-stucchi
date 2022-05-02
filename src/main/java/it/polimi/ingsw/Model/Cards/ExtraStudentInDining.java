@@ -20,7 +20,6 @@ import java.util.stream.Collectors;
  * his dining Room, then a student is extracted from the bag and added to the card .
  */
 public class ExtraStudentInDining extends AbstractCharacterCard implements Serializable {
-    final BoardAdvanced boardAdvanced;
     final Bag bag;
     private final List<Student> students;
 
@@ -30,11 +29,10 @@ public class ExtraStudentInDining extends AbstractCharacterCard implements Seria
      * @throws StudentNotFoundException when there are not enough students in the bag, so
      * it is not possible to extract four of them.
      */
-    public ExtraStudentInDining(CharacterCardEnumeration type, BoardAdvanced boardAdvanced) throws StudentNotFoundException {
-        super(type,2);
+    public ExtraStudentInDining(BoardAdvanced boardAdvanced) throws StudentNotFoundException {
+        super(CharacterCardEnumeration.EXTRA_STUDENT_IN_DINING, boardAdvanced,2);
         bag=boardAdvanced.getBag();
         students = new ArrayList<>(bag.extractStudents(4));
-        this.boardAdvanced = boardAdvanced;
     }
 
     /**
@@ -57,15 +55,15 @@ public class ExtraStudentInDining extends AbstractCharacterCard implements Seria
      * of that same colour
      */
     public void useEffect(Player currentPlayer, SPColour cardToDining) throws StudentNotFoundException, ExceededMaxStudentsDiningRoomException {
-        School school=boardAdvanced.getPlayerSchool(currentPlayer);
-        List<Student> s= students.stream().filter(x -> x.getColour().equals(cardToDining)).collect(Collectors.toList());
+        School school = boardAdvanced.getPlayerSchool(currentPlayer);
+        List<Student> s = students.stream().filter(x -> x.getColour().equals(cardToDining)).collect(Collectors.toList());
         List<Student> student;
         if(!s.isEmpty()){
             school.addStudentDiningRoom(students.remove(students.indexOf(s.get(0))));
         }else {
             throw new StudentNotFoundException();
         }
-        student=bag.extractStudents(1);
+        student = bag.extractStudents(1);
         students.add(student.get(0));
     }
 }

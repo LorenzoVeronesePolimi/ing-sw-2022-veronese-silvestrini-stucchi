@@ -21,19 +21,17 @@ import java.util.stream.Collectors;
  * are in placed on the card.
  */
 public class ExchangeThreeStudents extends AbstractCharacterCard implements Serializable {
-    private final BoardAdvanced boardAdvanced;
     private final List<Student> students;
 
     /**
      * Constructor of the card.
      * @param boardAdvanced The object modified by the card.
      */
-    public ExchangeThreeStudents(CharacterCardEnumeration type, BoardAdvanced boardAdvanced) throws StudentNotFoundException {
-        super(type,1);
+    public ExchangeThreeStudents(BoardAdvanced boardAdvanced) throws StudentNotFoundException {
+        super(CharacterCardEnumeration.EXCHANGE_THREE_STUDENTS, boardAdvanced, 1);
 
         Bag bag = boardAdvanced.getBag();
         students = new ArrayList<>(bag.extractStudents(6));
-        this.boardAdvanced = boardAdvanced;
     }
 
     /**

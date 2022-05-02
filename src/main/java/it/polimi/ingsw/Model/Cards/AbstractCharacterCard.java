@@ -1,5 +1,7 @@
 package it.polimi.ingsw.Model.Cards;
 
+import it.polimi.ingsw.Model.Board.BoardAbstract;
+import it.polimi.ingsw.Model.Board.BoardAdvanced;
 import it.polimi.ingsw.Model.Pawns.Coin;
 
 import java.io.Serializable;
@@ -14,13 +16,17 @@ public abstract class AbstractCharacterCard implements Serializable {
     private final CharacterCardEnumeration type;
     private final int basePrice;
     private final List<Coin> addedPrice;
+    protected final BoardAdvanced boardAdvanced;
 
     /**
      * Constructor
+     * @param type
+     * @param boardAdvanced
      * @param price is the initial cost of the card
      */
-    protected AbstractCharacterCard(CharacterCardEnumeration type, int price) {
+    protected AbstractCharacterCard(CharacterCardEnumeration type, BoardAdvanced boardAdvanced, int price) {
         this.type = type;
+        this.boardAdvanced = boardAdvanced;
         this.basePrice = price;
         this.addedPrice = new ArrayList<>();
     }
@@ -41,6 +47,9 @@ public abstract class AbstractCharacterCard implements Serializable {
         return basePrice + addedPrice.size();
     }
 
+    /**
+     * @return The enumeration type of the card.
+     */
     public CharacterCardEnumeration getType() {
         return type;
     }

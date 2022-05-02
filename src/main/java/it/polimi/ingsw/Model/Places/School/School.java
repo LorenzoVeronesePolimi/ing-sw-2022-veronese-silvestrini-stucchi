@@ -60,6 +60,10 @@ public class School implements Serializable {
         }
     }
 
+    /**
+     * This constructor clones the School and calls for constructor of its attributes to clone them.
+     * @param school School that needs to be cloned.
+     */
     public School(School school) {
         this.player = new Player(school.player);
         this.studentsHall = school.studentsHall;
@@ -310,7 +314,7 @@ public class School implements Serializable {
     /**
      * This method transfers a student from the hall to the dining room, based on the student colour.
      * @param colour Colour of the student that needs to be removed from the hall and placed in the dining room.
-     * @throws StudentNotFoundException where there are no strudents of the specified colour in the hall.
+     * @throws StudentNotFoundException where there are no students of the specified colour in the hall.
      * @throws ExceededMaxStudentsDiningRoomException when there are already 10 students of the specified colour in the
      *                                                dining room.
      */

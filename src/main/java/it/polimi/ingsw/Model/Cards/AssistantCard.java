@@ -22,6 +22,10 @@ public class AssistantCard implements Serializable {
         this.turnPriority = turnPriority;
     }
 
+    /**
+     * Constructor that clones the assistant card.
+     * @param lastCard AssistantCard that needs to be cloned.
+     */
     public AssistantCard(AssistantCard lastCard) {
         this.motherNatureMovement = lastCard.motherNatureMovement;
         this.turnPriority = lastCard.turnPriority;

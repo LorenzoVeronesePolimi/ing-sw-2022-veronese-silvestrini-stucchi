@@ -11,15 +11,13 @@ import java.io.Serializable;
  * colour won't be considered
  */
 public class ExcludeColourFromCounting extends AbstractCharacterCard implements Serializable {
-    private final BoardAdvanced boardAdvanced;
 
     /**
      * Constructor of the card.
      * @param boardAdvanced The object modified by the card.
      */
-    public ExcludeColourFromCounting(CharacterCardEnumeration type, BoardAdvanced boardAdvanced){
-        super(type,3);
-        this.boardAdvanced = boardAdvanced;
+    public ExcludeColourFromCounting(BoardAdvanced boardAdvanced){
+        super(CharacterCardEnumeration.EXCLUDE_COLOUR_FROM_COUNTING, boardAdvanced, 3);
     }
 
     /**
@@ -28,7 +26,6 @@ public class ExcludeColourFromCounting extends AbstractCharacterCard implements 
      *
      */
     public void useEffect(SPColour colourToExclude){
-
         boardAdvanced.setColourToExclude(colourToExclude);
     }
 }

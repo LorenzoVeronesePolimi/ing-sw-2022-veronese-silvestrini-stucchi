@@ -817,51 +817,51 @@ public class Controller implements Observer<Message> {
         // is this card corresponding to the index chosen?
         switch(type) {
             case CC_EXCHANGE_THREE_STUDENTS:
-                if (chosenCard instanceof ExchangeThreeStudents) {
+                if (chosenCard.getType().equals(CharacterCardEnumeration.EXCHANGE_THREE_STUDENTS)) {
                     return true;
                 }
             case CC_EXCHANGE_TWO_HALL_DINING:
-                if (chosenCard instanceof ExchangeTwoHallDining) {
+                if (chosenCard.getType().equals(CharacterCardEnumeration.EXCHANGE_TWO_HALL_DINING)) {
                     return true;
                 }
             case CC_EXCLUDE_COLOUR_FROM_COUNTING:
-                if (chosenCard instanceof ExcludeColourFromCounting) {
+                if (chosenCard.getType().equals(CharacterCardEnumeration.EXCLUDE_COLOUR_FROM_COUNTING)) {
                     return true;
                 }
             case CC_EXTRA_STUDENT_IN_DINING:
-                if (chosenCard instanceof ExtraStudentInDining) {
+                if (chosenCard.getType().equals(CharacterCardEnumeration.EXTRA_STUDENT_IN_DINING)) {
                     return true;
                 }
             case CC_FAKE_MN_MOVEMENT:
-                if (chosenCard instanceof FakeMNMovement) {
+                if (chosenCard.getType().equals(CharacterCardEnumeration.FAKE_MN_MOVEMENT)) {
                     return true;
                 }
             case CC_FORBID_ISLAND:
-                if (chosenCard instanceof ForbidIsland) {
+                if (chosenCard.getType().equals(CharacterCardEnumeration.FORBID_ISLAND)) {
                     return true;
                 }
             case CC_PLACE_ONE_STUDENT:
-                if (chosenCard instanceof PlaceOneStudent) {
+                if (chosenCard.getType().equals(CharacterCardEnumeration.PLACE_ONE_STUDENT)) {
                     return true;
                 }
             case CC_REDUCE_COLOUR_IN_DINING:
-                if (chosenCard instanceof ReduceColourInDining) {
+                if (chosenCard.getType().equals(CharacterCardEnumeration.REDUCE_COLOUR_IN_DINING)) {
                     return true;
                 }
             case CC_TAKE_PROFESSOR_ON_EQUITY:
-                if (chosenCard instanceof TakeProfessorOnEquity) {
+                if (chosenCard.getType().equals(CharacterCardEnumeration.TAKE_PROFESSOR_ON_EQUITY)) {
                     return true;
                 }
             case CC_TOWER_NO_VALUE:
-                if (chosenCard instanceof TowerNoValue) {
+                if (chosenCard.getType().equals(CharacterCardEnumeration.TOWER_NO_VALUE)) {
                     return true;
                 }
             case CC_TWO_EXTRA_ISLANDS:
-                if (chosenCard instanceof TwoExtraIslands) {
+                if (chosenCard.getType().equals(CharacterCardEnumeration.TWO_EXTRA_ISLANDS)) {
                     return true;
                 }
             case CC_TWO_EXTRA_POINTS:
-                if (chosenCard instanceof TwoExtraPoints) {
+                if (chosenCard.getType().equals(CharacterCardEnumeration.TWO_EXTRA_POINTS)) {
                     return true;
                 }
         }

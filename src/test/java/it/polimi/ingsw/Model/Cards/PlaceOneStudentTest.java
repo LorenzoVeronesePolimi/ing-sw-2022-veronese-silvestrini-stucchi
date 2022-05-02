@@ -34,7 +34,7 @@ public class PlaceOneStudentTest {
 
         PlaceOneStudent card = null;
         try {
-            card = new PlaceOneStudent(CharacterCardEnumeration.PLACE_ONE_STUDENT, boardAdvanced);
+            card = new PlaceOneStudent(boardAdvanced);
         } catch (StudentNotFoundException e) {
             e.printStackTrace();
         }

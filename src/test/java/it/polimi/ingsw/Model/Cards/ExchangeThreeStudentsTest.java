@@ -36,7 +36,7 @@ public class ExchangeThreeStudentsTest {
 
         ExchangeThreeStudents card = null;
         try {
-            card = new ExchangeThreeStudents(CharacterCardEnumeration.EXCHANGE_THREE_STUDENTS, boardAdvanced);
+            card = new ExchangeThreeStudents(boardAdvanced);
         } catch (StudentNotFoundException e) {
             e.printStackTrace();
         }
@@ -159,7 +159,7 @@ public class ExchangeThreeStudentsTest {
 
         ExchangeThreeStudents card = null;
         try {
-            card = new ExchangeThreeStudents(CharacterCardEnumeration.EXCHANGE_THREE_STUDENTS, boardAdvanced);
+            card = new ExchangeThreeStudents(boardAdvanced);
         } catch (StudentNotFoundException e) {
             e.printStackTrace();
         }

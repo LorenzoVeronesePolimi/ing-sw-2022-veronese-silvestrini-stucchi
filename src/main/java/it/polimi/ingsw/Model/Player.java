@@ -30,7 +30,10 @@ public class Player implements Serializable {
         playerHand = new ArrayList<>();
     }
 
-
+    /**
+     * Constructor of the class Player that clones the lastCart attribute of the class.
+     * @param player Player that needs to be cloned.
+     */
     // Constructor called when hiding player information in network communication
     public Player(Player player) {
         this.nickname = player.nickname;
@@ -68,7 +71,9 @@ public class Player implements Serializable {
         return this.playerHand.size();
     }
 
-    //TODO: javadoc
+    /**
+     * @return The list of AssistantCard possessed by the player.
+     */
     public List<AssistantCard> getPlayerHand() {
         return playerHand;
     }

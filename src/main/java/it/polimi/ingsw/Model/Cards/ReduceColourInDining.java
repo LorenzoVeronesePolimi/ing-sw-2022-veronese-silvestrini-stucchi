@@ -14,17 +14,15 @@ import java.io.Serializable;
  * If a player has 2 or fewer students, he will put in the bag the ones he has.
  */
 public class ReduceColourInDining extends AbstractCharacterCard implements Serializable {
-    private final BoardAdvanced boardAdvanced;
     private final Bag bag;
 
     /**
      * Constructor of the card. It sets the price and the bag.
      * @param boardAdvanced The object modified by the card.
      */
-    public ReduceColourInDining(CharacterCardEnumeration type, BoardAdvanced boardAdvanced){
-        super(type,3);
+    public ReduceColourInDining(BoardAdvanced boardAdvanced){
+        super(CharacterCardEnumeration.REDUCE_COLOUR_IN_DINING, boardAdvanced,3);
         bag = boardAdvanced.getBag();
-        this.boardAdvanced = boardAdvanced;
     }
 
     /**

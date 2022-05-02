@@ -20,15 +20,13 @@ import java.util.List;
  * room and the one that are in the hall.
  */
 public class ExchangeTwoHallDining extends AbstractCharacterCard implements Serializable {
-    private final BoardAdvanced boardAdvanced;
 
     /**
      * Constructor of the card.
      * @param boardAdvanced The object modified by the card.
      */
-    public ExchangeTwoHallDining(CharacterCardEnumeration type, BoardAdvanced boardAdvanced){
-        super(type,1);
-        this.boardAdvanced=boardAdvanced;
+    public ExchangeTwoHallDining(BoardAdvanced boardAdvanced){
+        super(CharacterCardEnumeration.EXCHANGE_TWO_HALL_DINING, boardAdvanced,1);
     }
 
     /**

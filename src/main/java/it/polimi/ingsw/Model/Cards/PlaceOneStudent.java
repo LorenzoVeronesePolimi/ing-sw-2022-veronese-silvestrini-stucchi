@@ -17,7 +17,6 @@ import java.util.stream.Collectors;
  * a new student is extracted from the bag and put on the card.
  */
 public class PlaceOneStudent extends AbstractCharacterCard implements Serializable {
-    private final BoardAdvanced boardAdvanced;
     private final List<Student> fourStudents;
     private final Bag bag;
 
@@ -26,10 +25,8 @@ public class PlaceOneStudent extends AbstractCharacterCard implements Serializab
      * the card.
      * @param boardAdvanced The object modified by the card.
      */
-    public PlaceOneStudent(CharacterCardEnumeration type, BoardAdvanced boardAdvanced) throws StudentNotFoundException {
-        super(type,1);
-
-        this.boardAdvanced = boardAdvanced;
+    public PlaceOneStudent(BoardAdvanced boardAdvanced) throws StudentNotFoundException {
+        super(CharacterCardEnumeration.PLACE_ONE_STUDENT, boardAdvanced,1);
         bag = boardAdvanced.getBag();
         fourStudents = bag.extractStudents(4);
     }

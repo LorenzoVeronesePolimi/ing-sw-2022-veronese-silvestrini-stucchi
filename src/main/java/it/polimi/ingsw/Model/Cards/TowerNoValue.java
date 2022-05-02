@@ -9,16 +9,13 @@ import java.io.Serializable;
  * when resolving a conquering on an archipelago, towers do not count towards influence.
  */
 public class TowerNoValue extends AbstractCharacterCard implements Serializable {
-    private final BoardAdvanced boardAdvanced;
 
     /**
      * Constructor of the card. It sets the price.
      * @param boardAdvanced The object modified by the card.
      */
-    public TowerNoValue(CharacterCardEnumeration type, BoardAdvanced boardAdvanced) {
-        super(type,3);
-
-        this.boardAdvanced = boardAdvanced;
+    public TowerNoValue(BoardAdvanced boardAdvanced) {
+        super(CharacterCardEnumeration.TOWER_NO_VALUE, boardAdvanced,3);
     }
 
     /**
