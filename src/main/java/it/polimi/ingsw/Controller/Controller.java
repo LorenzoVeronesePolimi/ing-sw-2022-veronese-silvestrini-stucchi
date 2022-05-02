@@ -1,6 +1,8 @@
 package it.polimi.ingsw.Controller;
 
+import it.polimi.ingsw.Controller.Enumerations.ControllerErrorType;
 import it.polimi.ingsw.Controller.Enumerations.State;
+import it.polimi.ingsw.Controller.Exceptions.ControllerException;
 import it.polimi.ingsw.Controller.Exceptions.NoPlayerException;
 import it.polimi.ingsw.Messages.Enumerations.INMessageType;
 import it.polimi.ingsw.Messages.INMessage.*;
@@ -13,11 +15,9 @@ import it.polimi.ingsw.Model.Enumerations.SPColour;
 import it.polimi.ingsw.Model.Exceptions.*;
 import it.polimi.ingsw.Model.Player;
 import it.polimi.ingsw.Observer.Observer;
-import it.polimi.ingsw.Server.Server;
-import it.polimi.ingsw.View.Exceptions.NoCharacterCardException;
+import it.polimi.ingsw.Observer.ObserverController;
 import it.polimi.ingsw.View.ServerView;
 
-import java.awt.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -25,7 +25,7 @@ import java.util.Map;
 
 
 // This is the main Controller: it coordinates all the others
-public class Controller implements Observer<Message> {
+public class Controller implements ObserverController<Message> {
     private int numPlayers;
     private boolean advanced;
     private BoardAbstract board;
@@ -114,10 +114,10 @@ public class Controller implements Observer<Message> {
      *   if no: resend
      * Call the Model and applicate the move requested
      * */
-    public void update(Message message) {
+    public void update(Message message) throws ControllerException {
         if(!controllerInput.checkFormat(message)){
             System.out.println("Invalid format");
-            return;
+            throw new ControllerException(ControllerErrorType.FORMAT_ERROR);
         }
 
         if(!controllerState.checkState(message.getType())){

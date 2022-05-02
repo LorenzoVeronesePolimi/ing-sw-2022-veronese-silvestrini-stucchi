@@ -39,6 +39,7 @@ public class Client {
 
     public Thread asyncReadFromSocket(final ObjectInputStream socketIn){
         Thread t = new Thread(() -> {
+            OUTMessage prevMessage = null;
             try {
                 OUTMessage inputObject = (OUTMessage) socketIn.readObject();
                 inputObject.manageMessage(view);
@@ -48,8 +49,25 @@ public class Client {
                 }
 
                 while (isActive()) {
+                    /*
+                        When a message is received it is managed by the view.
+                        Then, this message is saved as prevMessage (in order to manage future errors).
+                        If an error occurs:
+                            - the message sets errorStatus = true
+                            - the client plays the prevMessage (the one that has generated the error)
+                            - the flow continues until next move or error
+                     */
+
                     inputObject = (OUTMessage) socketIn.readObject();
                     inputObject.manageMessage(view);
+
+                    if(view.isErrorStatus()) {
+                        prevMessage.manageMessage(view);
+                        view.setErrorStatus(false);
+                    } else {
+                        prevMessage = inputObject;
+                    }
+
                 }
             } catch (Exception e){
                 setActive(false);

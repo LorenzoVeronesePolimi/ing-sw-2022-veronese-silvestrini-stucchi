@@ -1,14 +1,13 @@
 package it.polimi.ingsw.View;
 
 import it.polimi.ingsw.Controller.Controller;
+import it.polimi.ingsw.Controller.Exceptions.ControllerException;
 import it.polimi.ingsw.Messages.INMessage.*;
-import it.polimi.ingsw.Messages.OUTMessages.MessageAskName;
-import it.polimi.ingsw.Messages.OUTMessages.MessageFirstPlayer;
-import it.polimi.ingsw.Messages.OUTMessages.OUTMessage;
-import it.polimi.ingsw.Messages.OUTMessages.MessageCLIorGUI;
+import it.polimi.ingsw.Messages.OUTMessages.*;
 import it.polimi.ingsw.Model.Board.SerializedBoardAbstract;
 import it.polimi.ingsw.Model.Board.SerializedBoardAdvanced;
 import it.polimi.ingsw.Observer.Observable;
+import it.polimi.ingsw.Observer.ObservableController;
 import it.polimi.ingsw.Observer.Observer;
 import it.polimi.ingsw.Server.SocketClientConnectionCLI;
 import it.polimi.ingsw.View.Exceptions.NoCharacterCardException;
@@ -25,7 +24,7 @@ public class ServerView implements Observer<SerializedBoardAbstract> {
             - client -> model modification (managed byt this inner class)
             - model modified -> client (managed by ServerView)
      */
-    private static class ConnectionListener extends Observable<Message> implements Observer<String> {
+    private static class ConnectionListener extends ObservableController<Message> implements Observer<String> {
         private final ServerView serverView;
 
         private ConnectionListener(ServerView serverView) {
@@ -47,6 +46,8 @@ public class ServerView implements Observer<SerializedBoardAbstract> {
             } catch(NoCharacterCardException ex){
                 //TODO: send error message to the client
                 ex.printStackTrace();
+            } catch (ControllerException e) {
+                this.serverView.manageControllerError();
             }
         }
 
@@ -133,5 +134,7 @@ public class ServerView implements Observer<SerializedBoardAbstract> {
         this.playerNickname = nickname;
     }
 
-
+    public void manageControllerError() {
+        this.socketClientConnectionCLI.asyncSend(new MessageControllerError());
+    }
 }

@@ -5,25 +5,25 @@ import it.polimi.ingsw.Controller.Exceptions.ControllerException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Observable<T> {
+public class ObservableController<T> {
 
-    private final List<Observer<T>> observers = new ArrayList<>();
+    private final List<ObserverController<T>> observers = new ArrayList<>();
 
-    public void addObserver(Observer<T> observer){
+    public void addObserver(ObserverController<T> observer){
         synchronized (observers) {
             observers.add(observer);
         }
     }
 
-    public void removeObserve(Observer<T> observer){
+    public void removeObserve(ObserverController<T> observer){
         synchronized (observers) {
             observers.remove(observer);
         }
     }
 
-    protected void notify(T message) {
+    protected void notify(T message) throws ControllerException {
         synchronized (observers) {
-            for(Observer<T> observer : observers){
+            for(ObserverController<T> observer : observers){
                 observer.update(message);
             }
         }
