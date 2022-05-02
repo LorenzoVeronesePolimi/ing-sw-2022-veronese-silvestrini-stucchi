@@ -5,7 +5,7 @@ import it.polimi.ingsw.Controller.Enumerations.State;
 import it.polimi.ingsw.Controller.Exceptions.ControllerException;
 import it.polimi.ingsw.Controller.Exceptions.NoPlayerException;
 import it.polimi.ingsw.Messages.Enumerations.INMessageType;
-import it.polimi.ingsw.Messages.INMessage.*;
+import it.polimi.ingsw.Messages.INMessages.*;
 import it.polimi.ingsw.Model.Board.BoardAbstract;
 import it.polimi.ingsw.Model.Board.BoardAdvanced;
 import it.polimi.ingsw.Model.Board.BoardFactory;
@@ -14,7 +14,6 @@ import it.polimi.ingsw.Model.Enumerations.PlayerColour;
 import it.polimi.ingsw.Model.Enumerations.SPColour;
 import it.polimi.ingsw.Model.Exceptions.*;
 import it.polimi.ingsw.Model.Player;
-import it.polimi.ingsw.Observer.Observer;
 import it.polimi.ingsw.Observer.ObserverController;
 import it.polimi.ingsw.View.ServerView;
 
@@ -95,7 +94,7 @@ public class Controller implements ObserverController<Message> {
         this.characterCardUsed = newValue;
     }
 
-    /* To be used if we want the client to write only "characterCard" when he use one CC
+    /* To be used if we want the client to write only "characterCard" when he uses one CC
     public List<AbstractCharacterCard> getExtractedCharacterCards() throws NoCharacterCardException{
         if(this.boardAdvanced == null){
             throw new NoCharacterCardException();
@@ -122,11 +121,11 @@ public class Controller implements ObserverController<Message> {
 
         if(!controllerState.checkState(message.getType())){
             System.out.println("You can't do that now");
-            return;
+            throw new ControllerException(ControllerErrorType.STATE_ERROR);
         }
 
         if(!message.manageMessage(this)){
-            System.out.println("Error");
+            throw new ControllerException(ControllerErrorType.INTEGRITY_ERROR);
         }
 
         //check if I have to make some automatic action (=>PIANIFICATION1)
@@ -272,9 +271,9 @@ public class Controller implements ObserverController<Message> {
             return false;
         }
 
-        Player player = new Player(message.getNicknameFirstPlayer(), colourFirstPlayer);
+        Player player = new Player(message.getNickname(), colourFirstPlayer);
         this.players.add(player);
-        serverView.setPlayerNickname(message.getNicknameFirstPlayer());
+        serverView.setPlayerNickname(message.getNickname());
         this.serverViews.add(serverView);
 
         controllerState.setState(State.WAITING_PLAYERS);
@@ -327,7 +326,7 @@ public class Controller implements ObserverController<Message> {
     }
 
     public boolean manageAssistantCard(MessageAssistantCard message){
-        String nicknamePlayer = message.getNicknamePlayer();
+        String nicknamePlayer = message.getNickname();
         int turnPriority = message.getTurnPriority();
 
         // Is him the currentPlayer? Can he use that AssistantCard?
@@ -351,7 +350,7 @@ public class Controller implements ObserverController<Message> {
     }
 
     public boolean manageStudentHallToDiningRoom(MessageStudentHallToDiningRoom message){
-        String nicknamePlayer = message.getNicknamePlayer();
+        String nicknamePlayer = message.getNickname();
         SPColour studentColour = mapStringToSPColour(message.getColour());
 
         if(!isCurrentPlayer(nicknamePlayer)){return false;}
@@ -385,7 +384,7 @@ public class Controller implements ObserverController<Message> {
     }
 
     public boolean manageStudentToArchipelago(MessageStudentToArchipelago message){
-        String nicknamePlayer = message.getNicknamePlayer();
+        String nicknamePlayer = message.getNickname();
         SPColour studentColour = mapStringToSPColour(message.getColour());
         int destinationArchipelagoIndex = message.getDestArchipelagoIndex();
 
@@ -410,7 +409,7 @@ public class Controller implements ObserverController<Message> {
     }
 
     public boolean manageMoveMotherNature(MessageMoveMotherNature message){
-        String nicknamePlayer = message.getNicknamePlayer();
+        String nicknamePlayer = message.getNickname();
         int moves = message.getMoves();
 
         if(!isCurrentPlayer(nicknamePlayer)){return false;}
@@ -429,7 +428,7 @@ public class Controller implements ObserverController<Message> {
     }
 
     public boolean manageStudentCloudToSchool(MessageStudentCloudToSchool message){
-        String nicknamePlayer = message.getNicknamePlayer();
+        String nicknamePlayer = message.getNickname();
         int indexCloud = message.getIndexCloud();
 
         if(!isCurrentPlayer(nicknamePlayer)){return false;}
@@ -456,7 +455,7 @@ public class Controller implements ObserverController<Message> {
     //--------------------------------------------------CHARACTER CARDS
     public boolean manageCCExchangeThreeStudents(MessageCCExchangeThreeStudents message){
         int indexCard = message.getIndexCard();
-        String nicknamePlayer = message.getNicknamePlayer();
+        String nicknamePlayer = message.getNickname();
         List<SPColour> coloursCard = this.mapListStringToColour(message.getColoursCard());
         List<SPColour> coloursHall = this.mapListStringToColour(message.getColoursHall());
 
@@ -488,7 +487,7 @@ public class Controller implements ObserverController<Message> {
 
     public boolean manageCCExchangeTwoHallDining(MessageCCExchangeTwoHallDining message){
         int indexCard = message.getIndexCard();
-        String nicknamePlayer = message.getNicknamePlayer();
+        String nicknamePlayer = message.getNickname();
         List<SPColour> coloursHall = this.mapListStringToColour(message.getColoursHall());
         List<SPColour> coloursDiningRoom = this.mapListStringToColour(message.getColoursDiningRoom());
 
@@ -519,7 +518,7 @@ public class Controller implements ObserverController<Message> {
 
     public boolean manageCCExcludeColourFromCounting(MessageCCExcludeColourFromCounting message){
         int indexCard = message.getIndexCard();
-        String nicknamePlayer = message.getNicknamePlayer();
+        String nicknamePlayer = message.getNickname();
         SPColour colourToExclude = this.mapStringToSPColour(message.getColourToExclude());
 
         if(!isCurrentPlayer(nicknamePlayer)){return false;}
@@ -551,7 +550,7 @@ public class Controller implements ObserverController<Message> {
 
     public boolean manageCCExtraStudentInDining(MessageCCExtraStudentInDining message){
         int indexCard = message.getIndexCard();
-        String nicknamePlayer = message.getNicknamePlayer();
+        String nicknamePlayer = message.getNickname();
         SPColour colourToMove = mapStringToSPColour(message.getColourToMove());
 
         if(!isCurrentPlayer(nicknamePlayer)){return false;}
@@ -581,7 +580,7 @@ public class Controller implements ObserverController<Message> {
 
     public boolean manageCCFakeMNMovement(MessageCCFakeMNMovement message){
         int indexCard = message.getIndexCard();
-        String nicknamePlayer = message.getNicknamePlayer();
+        String nicknamePlayer = message.getNickname();
         int fakeMNPosition = message.getFakeMNPosition();
 
         if(!isCurrentPlayer(nicknamePlayer)){return false;}
@@ -613,7 +612,7 @@ public class Controller implements ObserverController<Message> {
 
     public boolean manageCCForbidIsland(MessageCCForbidIsland message){
         int indexCard = message.getIndexCard();
-        String nicknamePlayer = message.getNicknamePlayer();
+        String nicknamePlayer = message.getNickname();
         int archipelagoIndexToForbid = message.getArchipelagoIndexToForbid();
 
         if(!isCurrentPlayer(nicknamePlayer)){return false;}
@@ -641,7 +640,7 @@ public class Controller implements ObserverController<Message> {
 
     public boolean manageCCPlaceOneStudent(MessageCCPlaceOneStudent message){
         int indexCard = message.getIndexCard();
-        String nicknamePlayer = message.getNicknamePlayer();
+        String nicknamePlayer = message.getNickname();
         SPColour colourToMove = mapStringToSPColour(message.getColourToMove());
         int archipelagoIndexDestination = message.getArchipelagoIndexDest();
 
@@ -672,7 +671,7 @@ public class Controller implements ObserverController<Message> {
 
     public boolean manageCCReduceColourInDining(MessageCCReduceColourInDining message){
         int indexCard = message.getIndexCard();
-        String nicknamePlayer = message.getNicknamePlayer();
+        String nicknamePlayer = message.getNickname();
         SPColour colourToReduce = mapStringToSPColour(message.getColourToReduce());
 
         if(!isCurrentPlayer(nicknamePlayer)){return false;}
@@ -701,7 +700,7 @@ public class Controller implements ObserverController<Message> {
 
     public boolean manageCCTowerNoValue(MessageCCTowerNoValue message){
         int indexCard = message.getIndexCard();
-        String nicknamePlayer = message.getNicknamePlayer();
+        String nicknamePlayer = message.getNickname();
 
         if(!isCurrentPlayer(nicknamePlayer)){return false;}
 
@@ -728,7 +727,7 @@ public class Controller implements ObserverController<Message> {
 
     public boolean manageCCTwoExtraPoints(MessageCCTwoExtraPoints message){
         int indexCard = message.getIndexCard();
-        String nicknamePlayer = message.getNicknamePlayer();
+        String nicknamePlayer = message.getNickname();
 
         if(!isCurrentPlayer(nicknamePlayer)){return false;}
 
@@ -755,7 +754,7 @@ public class Controller implements ObserverController<Message> {
 
     public boolean manageCCTakeProfessorOnEquity(MessageCCTakeProfessorOnEquity message){
         int indexCard = message.getIndexCard();
-        String nicknamePlayer = message.getNicknamePlayer();
+        String nicknamePlayer = message.getNickname();
 
         if(!isCurrentPlayer(nicknamePlayer)){return false;}
 
@@ -788,7 +787,7 @@ public class Controller implements ObserverController<Message> {
 
     public boolean manageCCTwoExtraIslands(MessageCCTwoExtraIslands message){
         int indexCard = message.getIndexCard();
-        String nicknamePlayer = message.getNicknamePlayer();
+        String nicknamePlayer = message.getNickname();
 
         if(!isCurrentPlayer(nicknamePlayer)){return false;}
 

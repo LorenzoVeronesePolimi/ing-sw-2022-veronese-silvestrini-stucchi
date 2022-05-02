@@ -22,6 +22,8 @@ public abstract class ClientView {
         this.errorStatus = errorStatus;
     }
 
+    public abstract void printErrorMessage();
+
     public abstract void askCLIorGUI();
     public abstract void askNickName();
     public abstract void askFirstPlayerInfo();

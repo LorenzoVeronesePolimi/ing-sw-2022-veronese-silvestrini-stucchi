@@ -1,4 +1,4 @@
-package it.polimi.ingsw.Messages.INMessage;
+package it.polimi.ingsw.Messages.INMessages;
 
 import it.polimi.ingsw.Controller.Controller;
 import it.polimi.ingsw.Controller.ControllerInput;
@@ -6,17 +6,11 @@ import it.polimi.ingsw.Controller.ControllerInput;
 import static it.polimi.ingsw.Messages.Enumerations.INMessageType.MOVE_MOTHER_NATURE;
 
 public class MessageMoveMotherNature extends Message{
-    private final String nicknamePlayer;
     private final int moves;
 
     public MessageMoveMotherNature(String nicknamePlayer, int moves){
-        super(MOVE_MOTHER_NATURE);
-        this.nicknamePlayer = nicknamePlayer;
+        super(MOVE_MOTHER_NATURE, nicknamePlayer);
         this.moves = moves;
-    }
-
-    public String getNicknamePlayer() {
-        return nicknamePlayer;
     }
 
     public int getMoves() {
@@ -25,7 +19,7 @@ public class MessageMoveMotherNature extends Message{
 
     @Override
     public boolean checkInput(ControllerInput controller) {
-        return (controller.checkNickname(this.nicknamePlayer) &&
+        return (controller.checkNickname(this.nickname) &&
                 controller.checkMotherNatureMovement(this.moves));
     }
 

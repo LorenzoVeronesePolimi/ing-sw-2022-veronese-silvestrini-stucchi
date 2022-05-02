@@ -1,4 +1,4 @@
-package it.polimi.ingsw.Messages.INMessage;
+package it.polimi.ingsw.Messages.INMessages;
 
 import it.polimi.ingsw.Controller.Controller;
 import it.polimi.ingsw.Controller.ControllerInput;
@@ -6,18 +6,13 @@ import it.polimi.ingsw.Controller.ControllerInput;
 import static it.polimi.ingsw.Messages.Enumerations.INMessageType.CC_EXTRA_STUDENT_IN_DINING;
 
 public class MessageCCExtraStudentInDining extends MessageCC{
-    private final String nicknamePlayer;
     private final String colourToMove;
 
     public MessageCCExtraStudentInDining(int indexCard, String nicknamePlayer, String colourToMove){
-        super(CC_EXTRA_STUDENT_IN_DINING, indexCard);
-        this.nicknamePlayer = nicknamePlayer;
+        super(CC_EXTRA_STUDENT_IN_DINING, nicknamePlayer, indexCard);
         this.colourToMove = colourToMove;
     }
 
-    public String getNicknamePlayer() {
-        return nicknamePlayer;
-    }
 
     public String getColourToMove() {
         return colourToMove;
@@ -26,7 +21,7 @@ public class MessageCCExtraStudentInDining extends MessageCC{
     @Override
     public boolean checkInput(ControllerInput controller) {
         return (controller.checkIndexCard(this.indexCard) &&
-                controller.checkNickname(this.nicknamePlayer)) &&
+                controller.checkNickname(this.nickname)) &&
                 controller.checkStudentColour(this.colourToMove);
     }
 

@@ -1,4 +1,4 @@
-package it.polimi.ingsw.Messages.INMessage;
+package it.polimi.ingsw.Messages.INMessages;
 
 import it.polimi.ingsw.Controller.Controller;
 import it.polimi.ingsw.Controller.ControllerInput;
@@ -7,8 +7,8 @@ import it.polimi.ingsw.Messages.Enumerations.INMessageType;
 public abstract class MessageCC extends Message{
     final int indexCard;
 
-    public MessageCC(INMessageType type, int indexCard){
-        super(type);
+    public MessageCC(INMessageType type, String nickname, int indexCard){
+        super(type, nickname);
         this.indexCard = indexCard - 1;
     }
 

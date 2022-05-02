@@ -41,8 +41,8 @@ public class Client {
         Thread t = new Thread(() -> {
             OUTMessage prevMessage = null;
             try {
-                OUTMessage inputObject = (OUTMessage) socketIn.readObject();
-                inputObject.manageMessage(view);
+                OUTMessage inputMessage = (OUTMessage) socketIn.readObject();
+                inputMessage.manageMessage(view);
 
                 if(CLIorGUI) {
                     view = new GUIView(this);
@@ -58,14 +58,14 @@ public class Client {
                             - the flow continues until next move or error
                      */
 
-                    inputObject = (OUTMessage) socketIn.readObject();
-                    inputObject.manageMessage(view);
+                    inputMessage = (OUTMessage) socketIn.readObject();
+                    inputMessage.manageMessage(view);
 
                     if(view.isErrorStatus()) {
                         prevMessage.manageMessage(view);
                         view.setErrorStatus(false);
                     } else {
-                        prevMessage = inputObject;
+                        prevMessage = inputMessage;
                     }
 
                 }

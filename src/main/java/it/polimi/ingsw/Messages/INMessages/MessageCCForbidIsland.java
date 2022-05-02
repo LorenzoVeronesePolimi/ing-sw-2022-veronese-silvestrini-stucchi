@@ -1,4 +1,4 @@
-package it.polimi.ingsw.Messages.INMessage;
+package it.polimi.ingsw.Messages.INMessages;
 
 import it.polimi.ingsw.Controller.Controller;
 import it.polimi.ingsw.Controller.ControllerInput;
@@ -6,18 +6,13 @@ import it.polimi.ingsw.Controller.ControllerInput;
 import static it.polimi.ingsw.Messages.Enumerations.INMessageType.CC_FORBID_ISLAND;
 
 public class MessageCCForbidIsland extends MessageCC{
-    private final String nicknamePlayer;
     private final int archipelagoIndexToForbid;
 
     public MessageCCForbidIsland(int indexCard, String nicknamePlayer, int archipelagoIndexToForbid){
-        super(CC_FORBID_ISLAND, indexCard);
-        this.nicknamePlayer = nicknamePlayer;
+        super(CC_FORBID_ISLAND, nicknamePlayer, indexCard);
         this.archipelagoIndexToForbid = archipelagoIndexToForbid;
     }
 
-    public String getNicknamePlayer() {
-        return nicknamePlayer;
-    }
 
     public int getArchipelagoIndexToForbid() {
         return archipelagoIndexToForbid;
@@ -26,7 +21,7 @@ public class MessageCCForbidIsland extends MessageCC{
     @Override
     public boolean checkInput(ControllerInput controller) {
         return (controller.checkIndexCard(this.indexCard) &&
-                controller.checkNickname(this.nicknamePlayer) &&
+                controller.checkNickname(this.nickname) &&
                 controller.checkDestinationArchipelagoIndex(this.archipelagoIndexToForbid));
     }
 

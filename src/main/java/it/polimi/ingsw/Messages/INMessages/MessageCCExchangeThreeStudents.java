@@ -1,4 +1,4 @@
-package it.polimi.ingsw.Messages.INMessage;
+package it.polimi.ingsw.Messages.INMessages;
 
 import it.polimi.ingsw.Controller.Controller;
 import it.polimi.ingsw.Controller.ControllerInput;
@@ -9,7 +9,6 @@ import java.util.List;
 import static it.polimi.ingsw.Messages.Enumerations.INMessageType.CC_EXCHANGE_THREE_STUDENTS;
 
 public class MessageCCExchangeThreeStudents extends MessageCC{
-    private final String nicknamePlayer;
     private final String colourCard1;
     private final String colourCard2;
     private final String colourCard3;
@@ -20,18 +19,13 @@ public class MessageCCExchangeThreeStudents extends MessageCC{
 
     public MessageCCExchangeThreeStudents(int indexCard, String nicknamePlayer, String colourCard1, String colourCard2,
                                           String colourCard3, String colourHall1, String colourHall2, String colourHall3){
-        super(CC_EXCHANGE_THREE_STUDENTS, indexCard);
-        this.nicknamePlayer = nicknamePlayer;
+        super(CC_EXCHANGE_THREE_STUDENTS, nicknamePlayer, indexCard);
         this.colourCard1 = colourCard1;
         this.colourCard2 = colourCard2;
         this.colourCard3 = colourCard3;
         this.colourHall1 = colourHall1;
         this.colourHall2 = colourHall2;
         this.colourHall3 = colourHall3;
-    }
-
-    public String getNicknamePlayer() {
-        return nicknamePlayer;
     }
 
     public List<String> getColoursCard(){
@@ -57,7 +51,7 @@ public class MessageCCExchangeThreeStudents extends MessageCC{
     @Override
     public boolean checkInput(ControllerInput controller) {
         return (controller.checkIndexCard(this.indexCard) &&
-                controller.checkNickname(this.nicknamePlayer) &&
+                controller.checkNickname(this.nickname) &&
                 controller.checkMultipleStudentColour(this.getColoursCard()) &&
                 controller.checkMultipleStudentColour(this.getColoursHall()));
     }

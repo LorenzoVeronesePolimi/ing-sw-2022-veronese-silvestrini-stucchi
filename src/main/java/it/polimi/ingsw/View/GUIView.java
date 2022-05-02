@@ -9,6 +9,11 @@ public class GUIView extends ClientView {
     }
 
     @Override
+    public void printErrorMessage() {
+
+    }
+
+    @Override
     public void askCLIorGUI() {
 
     }

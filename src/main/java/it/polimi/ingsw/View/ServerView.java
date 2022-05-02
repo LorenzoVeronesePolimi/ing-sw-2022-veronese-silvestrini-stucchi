@@ -2,11 +2,10 @@ package it.polimi.ingsw.View;
 
 import it.polimi.ingsw.Controller.Controller;
 import it.polimi.ingsw.Controller.Exceptions.ControllerException;
-import it.polimi.ingsw.Messages.INMessage.*;
+import it.polimi.ingsw.Messages.INMessages.*;
 import it.polimi.ingsw.Messages.OUTMessages.*;
 import it.polimi.ingsw.Model.Board.SerializedBoardAbstract;
 import it.polimi.ingsw.Model.Board.SerializedBoardAdvanced;
-import it.polimi.ingsw.Observer.Observable;
 import it.polimi.ingsw.Observer.ObservableController;
 import it.polimi.ingsw.Observer.Observer;
 import it.polimi.ingsw.Server.SocketClientConnectionCLI;

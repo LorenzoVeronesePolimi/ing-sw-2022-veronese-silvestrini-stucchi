@@ -15,6 +15,6 @@ public class MessageControllerError extends OUTMessage{
     @Override
     public void manageMessage(ClientView view) {
         view.setErrorStatus(true);
-        //view.printErrorMessage();
+        view.printErrorMessage();
     }
 }

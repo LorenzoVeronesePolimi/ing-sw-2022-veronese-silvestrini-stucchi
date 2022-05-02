@@ -1,6 +1,6 @@
 package it.polimi.ingsw.Controller;
 
-import it.polimi.ingsw.Messages.INMessage.Message;
+import it.polimi.ingsw.Messages.INMessages.Message;
 
 import java.util.List;
 
