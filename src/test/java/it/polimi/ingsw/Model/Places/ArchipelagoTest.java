@@ -5,7 +5,6 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import it.polimi.ingsw.Model.Board.BoardAdvanced;
 import it.polimi.ingsw.Model.Board.BoardTwo;
-import it.polimi.ingsw.Model.Cards.CharacterCardEnumeration;
 import it.polimi.ingsw.Model.Cards.ForbidIsland;
 import it.polimi.ingsw.Model.Cards.TowerNoValue;
 import it.polimi.ingsw.Model.Enumerations.PlayerColour;

@@ -1,4 +1,4 @@
-package it.polimi.ingsw.Model.Cards;
+package it.polimi.ingsw.Model.Enumerations;
 
 /**
  * This class represents the type of each CharacterCard.

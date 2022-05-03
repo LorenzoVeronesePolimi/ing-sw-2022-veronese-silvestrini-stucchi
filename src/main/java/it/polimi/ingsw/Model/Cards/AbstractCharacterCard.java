@@ -1,7 +1,7 @@
 package it.polimi.ingsw.Model.Cards;
 
-import it.polimi.ingsw.Model.Board.BoardAbstract;
 import it.polimi.ingsw.Model.Board.BoardAdvanced;
+import it.polimi.ingsw.Model.Enumerations.CharacterCardEnumeration;
 import it.polimi.ingsw.Model.Pawns.Coin;
 
 import java.io.Serializable;

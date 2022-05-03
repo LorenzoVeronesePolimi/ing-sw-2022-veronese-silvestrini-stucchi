@@ -21,13 +21,12 @@ public class Client {
     private ObjectInputStream socketIn;
     private ObjectOutputStream socketOut;
     private boolean CLIorGUI = false;
+    private boolean active = true;
 
     public Client(String ip, int port){
         this.ip = ip;
         this.port = port;
     }
-
-    private boolean active = true;
 
     public synchronized boolean isActive(){
         return active;

@@ -51,8 +51,6 @@ public interface Board {
     boolean checkIfConquerable(Player currentPlayer);
     Player computeWinner(Player owner, Player challenger, Archipelago archipelago);
     int computeInfluenceOfPlayer(Player player, Archipelago archipelago);
-
     void useAssistantCard(Player player, int turnPriority) throws AssistantCardAlreadyPlayedTurnException, NoAssistantCardException;
-
     void notifyPlayers();
 }
