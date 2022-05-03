@@ -45,6 +45,8 @@ public class Controller implements ObserverController<Message> {
     private final int NUM_STUDENTS_TO_MOVE_TWO_PLAYERS = 3;
     private final int NUM_STUDENTS_TO_MOVE_THREE_PLAYERS = 4;
 
+    boolean just_started = true; //true until the very first PLANNING1 has still not been reached
+
     private boolean characterCardUsed = false; //true when a CC has been used
 
     public Controller(){
@@ -131,14 +133,18 @@ public class Controller implements ObserverController<Message> {
 
         //check if I have to make some automatic action (=>PIANIFICATION1)
         if(controllerState.getState() == State.PLANNING1){
-            //TODO: surrounded with try catch just to remove errors. It needs to be checked before leaving it like that
-            controllerState.setState(State.PLANNING2);
-            try {
-                this.board.moveStudentBagToCloud();
-            } catch (ExceededMaxStudentsCloudException | StudentNotFoundException e) {
-                return; //case of first turn, in which clouds are filled immediately
+            if(this.just_started){
+                controllerState.setState(State.PLANNING2);
+                this.just_started = false;
             }
-
+            else{
+                controllerState.setState(State.PLANNING2);
+                try {
+                    this.board.moveStudentBagToCloud();
+                } catch (ExceededMaxStudentsCloudException | StudentNotFoundException e) {
+                    return; //case of first turn, in which clouds are filled immediately
+                }
+            }
         }
     }
 
