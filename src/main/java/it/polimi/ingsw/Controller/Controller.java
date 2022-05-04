@@ -59,7 +59,11 @@ public class Controller implements ObserverController<Message> {
 
     public Player getCurrentPlayer(){
         return this.players.get(this.currentPlayerIndex);
-    } //TODO
+    }
+
+    public int getCurrentPlayerIndex(){
+        return this.currentPlayerIndex;
+    }
 
     public List<Player> getPlayers(){
         return new ArrayList<>(this.players);
@@ -273,7 +277,6 @@ public class Controller implements ObserverController<Message> {
         this.players = orderedPlayerList;
     }
 
-    // TODO: maybe divide the CreateMatch and addPlayer even for the first player
     public boolean manageCreateMatch(MessageCreateMatch message){
         this.numPlayers = message.getNumPlayers();
         this.advanced = message.isAdvanced();
@@ -490,10 +493,8 @@ public class Controller implements ObserverController<Message> {
                 return true;
             }
 
-        } catch(WrongNumberOfStudentsTransferException | StudentNotFoundException | ExceededMaxStudentsHallException ex){
+        } catch(WrongNumberOfStudentsTransferException | StudentNotFoundException | ExceededMaxStudentsHallException | CoinNotFoundException | EmptyCaveauException | ExceededMaxNumCoinException ex){
             return false;
-        } catch (CoinNotFoundException | EmptyCaveauException | ExceededMaxNumCoinException e) {
-            e.printStackTrace();
         }
 
         return false;
@@ -832,53 +833,29 @@ public class Controller implements ObserverController<Message> {
         // is this card corresponding to the index chosen?
         switch(type) {
             case CC_EXCHANGE_THREE_STUDENTS:
-                if (chosenCard.getType().equals(CharacterCardEnumeration.EXCHANGE_THREE_STUDENTS)) {
-                    return true;
-                }
+                return chosenCard.getType() == CharacterCardEnumeration.EXCHANGE_THREE_STUDENTS;
             case CC_EXCHANGE_TWO_HALL_DINING:
-                if (chosenCard.getType().equals(CharacterCardEnumeration.EXCHANGE_TWO_HALL_DINING)) {
-                    return true;
-                }
+                return chosenCard.getType() == CharacterCardEnumeration.EXCHANGE_TWO_HALL_DINING;
             case CC_EXCLUDE_COLOUR_FROM_COUNTING:
-                if (chosenCard.getType().equals(CharacterCardEnumeration.EXCLUDE_COLOUR_FROM_COUNTING)) {
-                    return true;
-                }
+                return chosenCard.getType().equals(CharacterCardEnumeration.EXCLUDE_COLOUR_FROM_COUNTING);
             case CC_EXTRA_STUDENT_IN_DINING:
-                if (chosenCard.getType().equals(CharacterCardEnumeration.EXTRA_STUDENT_IN_DINING)) {
-                    return true;
-                }
+                return chosenCard.getType().equals(CharacterCardEnumeration.EXTRA_STUDENT_IN_DINING);
             case CC_FAKE_MN_MOVEMENT:
-                if (chosenCard.getType().equals(CharacterCardEnumeration.FAKE_MN_MOVEMENT)) {
-                    return true;
-                }
+                return chosenCard.getType().equals(CharacterCardEnumeration.FAKE_MN_MOVEMENT);
             case CC_FORBID_ISLAND:
-                if (chosenCard.getType().equals(CharacterCardEnumeration.FORBID_ISLAND)) {
-                    return true;
-                }
+                return chosenCard.getType().equals(CharacterCardEnumeration.FORBID_ISLAND);
             case CC_PLACE_ONE_STUDENT:
-                if (chosenCard.getType().equals(CharacterCardEnumeration.PLACE_ONE_STUDENT)) {
-                    return true;
-                }
+                return chosenCard.getType().equals(CharacterCardEnumeration.PLACE_ONE_STUDENT);
             case CC_REDUCE_COLOUR_IN_DINING:
-                if (chosenCard.getType().equals(CharacterCardEnumeration.REDUCE_COLOUR_IN_DINING)) {
-                    return true;
-                }
+                return chosenCard.getType().equals(CharacterCardEnumeration.REDUCE_COLOUR_IN_DINING);
             case CC_TAKE_PROFESSOR_ON_EQUITY:
-                if (chosenCard.getType().equals(CharacterCardEnumeration.TAKE_PROFESSOR_ON_EQUITY)) {
-                    return true;
-                }
+                return chosenCard.getType().equals(CharacterCardEnumeration.TAKE_PROFESSOR_ON_EQUITY);
             case CC_TOWER_NO_VALUE:
-                if (chosenCard.getType().equals(CharacterCardEnumeration.TOWER_NO_VALUE)) {
-                    return true;
-                }
+                return chosenCard.getType().equals(CharacterCardEnumeration.TOWER_NO_VALUE);
             case CC_TWO_EXTRA_ISLANDS:
-                if (chosenCard.getType().equals(CharacterCardEnumeration.TWO_EXTRA_ISLANDS)) {
-                    return true;
-                }
+                return chosenCard.getType().equals(CharacterCardEnumeration.TWO_EXTRA_ISLANDS);
             case CC_TWO_EXTRA_POINTS:
-                if (chosenCard.getType().equals(CharacterCardEnumeration.TWO_EXTRA_POINTS)) {
-                    return true;
-                }
+                return chosenCard.getType().equals(CharacterCardEnumeration.TWO_EXTRA_POINTS);
         }
         return false;
     }
