@@ -36,6 +36,7 @@ import java.util.Map;
  * merged is a single archipelago.
  */
 public class Archipelago implements Serializable {
+    private static final long serialVersionUID = 1L;
     private final List<Island> islands;
     private Player owner; //has this Archipelago been taken by any player?
     // studentsData: is a Map which matches each SPColour with how many Students of that SPColour the Archipelago

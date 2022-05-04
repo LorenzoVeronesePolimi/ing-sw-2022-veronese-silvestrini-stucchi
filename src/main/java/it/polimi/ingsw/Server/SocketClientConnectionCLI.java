@@ -99,7 +99,7 @@ public class SocketClientConnectionCLI extends ClientConnection implements Runna
         } catch (NoSuchElementException e) {
             System.err.println("Error! " + e.getMessage());
         } catch (IOException | ClassNotFoundException e) {
-            throw new RuntimeException(e);
+            e.printStackTrace();
         } finally {
             close();
         }

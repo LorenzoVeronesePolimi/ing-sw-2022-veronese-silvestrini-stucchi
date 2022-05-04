@@ -6,6 +6,8 @@ import it.polimi.ingsw.View.ClientView;
 import java.io.Serializable;
 
 public class MessageCLIorGUI extends OUTMessage implements Serializable {
+    private static final long serialVersionUID = 1L;
+
     public MessageCLIorGUI() {
         super(OUTMessageType.ASK_CLI_GUI);
     }

@@ -28,4 +28,6 @@ public abstract class ClientView {
     public abstract void askNickName();
     public abstract void askFirstPlayerInfo();
 
+    //TODO: just for test
+    public abstract void printCustom(String err);
 }

@@ -12,6 +12,7 @@ import java.util.*;
  * This class represents the island in the game. The island can contain only one tower at the time, plus many students.
  */
 public class Island implements Serializable {
+    private static final long serialVersionUID = 1L;
     private final Set<Student> students;
     private Tower tower;
 

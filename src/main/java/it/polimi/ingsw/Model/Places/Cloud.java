@@ -18,6 +18,7 @@ import java.util.List;
  * itself.
  */
 public class Cloud implements Serializable {
+    private static final long serialVersionUID = 1L;
     private final int NUMMAXSTUDENS;
     private final List<Student> students;
 

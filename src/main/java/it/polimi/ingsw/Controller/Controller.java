@@ -27,7 +27,7 @@ import java.util.Map;
 // This is the main Controller: it coordinates all the others
 public class Controller implements ObserverController<Message> {
     private int numPlayers;
-    private boolean advanced;
+    private boolean advanced = false;
     private BoardAbstract board;
     private BoardAdvanced boardAdvanced; //null if advanced=0
     private List<Player> players; //ordered
@@ -240,7 +240,14 @@ public class Controller implements ObserverController<Message> {
             this.numStudentsToMoveCurrent = NUM_STUDENTS_TO_MOVE_TWO_PLAYERS;
         }
 
+        System.out.println("init match");
         this.addBoardObserver();
+        System.out.println("add obs");
+        if(this.isAdvanced())
+            this.boardAdvanced.notifyPlayers();
+        else
+            this.board.notifyPlayers();
+        System.out.println("notify");
     }
 
     private void changeTurnOrder(){
@@ -879,7 +886,8 @@ public class Controller implements ObserverController<Message> {
     public void addBoardObserver() {
         for(ServerView s : serverViews) {
             this.board.addObserver(s);
-            this.boardAdvanced.addObserver(s);
+            if(isAdvanced())
+                this.boardAdvanced.addObserver(s);
         }
     }
 }

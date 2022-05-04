@@ -14,6 +14,7 @@ import java.util.List;
  * A player has a nickname, a hand of Assistant cards and a colour.
  */
 public class Player implements Serializable {
+    private static final long serialVersionUID = 1L;
     private final String nickname;
     private List<AssistantCard> playerHand;
     private AssistantCard lastCard;

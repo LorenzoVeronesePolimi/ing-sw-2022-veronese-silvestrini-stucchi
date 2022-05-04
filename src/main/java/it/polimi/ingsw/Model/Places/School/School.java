@@ -19,6 +19,7 @@ import java.util.List;
  * It is divided in a hall, in a dining room -with places for students and professors- and in a place to put towers.
  */
 public class School implements Serializable {
+    private static final long serialVersionUID = 1L;
     protected Player player;
 
     protected transient int numMaxStudentsHall;

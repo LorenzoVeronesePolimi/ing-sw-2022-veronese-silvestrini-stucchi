@@ -9,6 +9,7 @@ import java.io.Serializable;
  * This class represent the entity of the professor, which has a colour.
  */
 public class Professor implements Serializable {
+    private static final long serialVersionUID = 1L;
     private final SPColour colour;
 
     /**

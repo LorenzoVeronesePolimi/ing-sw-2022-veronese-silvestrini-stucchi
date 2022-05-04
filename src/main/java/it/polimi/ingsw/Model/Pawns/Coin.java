@@ -7,4 +7,5 @@ import java.io.Serializable;
  * characterCard
  */
 public class Coin implements Serializable {
+    private static final long serialVersionUID = 1L;
 }

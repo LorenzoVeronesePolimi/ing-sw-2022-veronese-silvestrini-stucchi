@@ -21,7 +21,7 @@ import java.util.stream.Collectors;
  * his dining Room, then a student is extracted from the bag and added to the card .
  */
 public class ExtraStudentInDining extends AbstractCharacterCard implements Serializable {
-    final Bag bag;
+    final transient Bag bag;
     private final List<Student> students;
 
     /**

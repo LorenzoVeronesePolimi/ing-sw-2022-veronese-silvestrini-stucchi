@@ -54,7 +54,7 @@ public class ServerView implements Observer<SerializedBoardAbstract> {
             String[] splitted = input.split(" ");
             switch (splitted[0]){
                 case "createMatch":
-                    this.serverView.setPlayerNickname(splitted[1]); //not a problem id error: I'll re-set it
+                    this.serverView.setPlayerNickname(splitted[1]); //not a problem id< error: I'll re-set it
                     return new MessageCreateMatch(splitted[1], splitted[2], Integer.parseInt(splitted[3]), Boolean.parseBoolean(splitted[4]), this.serverView);
                 case "addPlayer":
                     this.serverView.setPlayerNickname(splitted[1]); //not a problem id error: I'll re-set it

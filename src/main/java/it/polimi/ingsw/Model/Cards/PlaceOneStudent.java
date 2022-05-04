@@ -19,7 +19,7 @@ import java.util.stream.Collectors;
  */
 public class PlaceOneStudent extends AbstractCharacterCard implements Serializable {
     private final List<Student> fourStudents;
-    private final Bag bag;
+    private transient final Bag bag;
 
     /**
      * Constructor of the card. It sets the price and the bag. Also, it extracts 4 student from the bag and place them on

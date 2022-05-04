@@ -9,6 +9,7 @@ import java.io.Serializable;
  * It has a specific colour.
  */
 public class Student implements Serializable {
+    private static final long serialVersionUID = 1L;
     private final SPColour colour;
 
     /**

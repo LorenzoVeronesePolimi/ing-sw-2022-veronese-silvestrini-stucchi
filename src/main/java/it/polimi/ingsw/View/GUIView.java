@@ -27,4 +27,10 @@ public class GUIView extends ClientView {
     public void askFirstPlayerInfo() {
 
     }
+
+    //TODO: just for test
+    @Override
+    public void printCustom(String err) {
+
+    }
 }

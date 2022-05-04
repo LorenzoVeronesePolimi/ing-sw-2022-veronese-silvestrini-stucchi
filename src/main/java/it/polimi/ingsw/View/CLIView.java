@@ -13,9 +13,15 @@ public class CLIView extends ClientView {
 
     @Override
     public void printErrorMessage() {
-        System.out.println("\n--------------------");
-        System.out.println("Oh no! There's something wrong: try again!");
-        System.out.println("--------------------\n");
+        System.err.println("\n----------------------------------------");
+        System.err.println("Oh no! There's something wrong: try again!");
+        System.err.println("----------------------------------------\n");
+    }
+
+    public void printCustom(String err) {
+        System.err.println("\n----------------------------------------");
+        System.err.println(err);
+        System.err.println("----------------------------------------\n");
     }
 
     @Override

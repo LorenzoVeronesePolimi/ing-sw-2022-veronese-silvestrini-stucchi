@@ -9,6 +9,7 @@ import java.io.Serializable;
  * conquered, and by whom.
  */
 public class Tower implements Serializable {
+    private static final long serialVersionUID = 1L;
     private final Player player;
 
     /**

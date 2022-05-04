@@ -9,6 +9,7 @@ import java.io.Serializable;
  * This class represents Mother Nature, and it's position in the board.
  */
 public class MotherNature implements Serializable {
+    private static final long serialVersionUID = 1L;
     private Archipelago currentPosition;
 
     /**

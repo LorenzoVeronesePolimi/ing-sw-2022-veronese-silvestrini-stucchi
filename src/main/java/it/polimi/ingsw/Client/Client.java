@@ -1,6 +1,8 @@
 package it.polimi.ingsw.Client;
 
 import it.polimi.ingsw.Messages.OUTMessages.OUTMessage;
+import it.polimi.ingsw.Model.Board.SerializedBoardAbstract;
+import it.polimi.ingsw.Model.Board.SerializedBoardAdvanced;
 import it.polimi.ingsw.View.CLIView;
 import it.polimi.ingsw.View.ClientView;
 import it.polimi.ingsw.View.GUIView;
@@ -40,14 +42,17 @@ public class Client {
         Thread t = new Thread(() -> {
             OUTMessage prevMessage = null;
             try {
-                OUTMessage inputMessage = (OUTMessage) socketIn.readObject();
-                inputMessage.manageMessage(view);
+                Object inputMessage = socketIn.readObject();
+
+                if(inputMessage instanceof OUTMessage)
+                    ((OUTMessage)inputMessage).manageMessage(view);
 
                 if(CLIorGUI) {
                     view = new GUIView(this);
                 }
 
                 while (isActive()) {
+                    view.printCustom("attesa");
                     /*
                         When a message is received it is managed by the view.
                         Then, this message is saved as prevMessage (in order to manage future errors).
@@ -57,14 +62,29 @@ public class Client {
                             - the flow continues until next move or error
                      */
 
-                    inputMessage = (OUTMessage) socketIn.readObject();
-                    inputMessage.manageMessage(view);
+                    inputMessage = socketIn.readObject();
 
-                    if(view.isErrorStatus()) {
-                        prevMessage.manageMessage(view);
-                        view.setErrorStatus(false);
+                    if(inputMessage instanceof OUTMessage) {
+                        ((OUTMessage)inputMessage).manageMessage(view);
+
+                        if (view.isErrorStatus()) {
+                            prevMessage.manageMessage(view);
+                            view.setErrorStatus(false);
+                        } else {
+                            prevMessage = (OUTMessage) inputMessage;
+                        }
                     } else {
-                        prevMessage = inputMessage;
+                        SerializedBoardAbstract serializedBoard;
+                        if(inputMessage instanceof SerializedBoardAbstract) {
+                            serializedBoard = (SerializedBoardAbstract) inputMessage;
+                            view.printCustom("model standard");
+                        }
+                        else {
+                            serializedBoard = (SerializedBoardAdvanced) inputMessage;
+                            view.printCustom("model advanced");
+                        }
+
+                        //view.printCustom("model");
                     }
 
                 }

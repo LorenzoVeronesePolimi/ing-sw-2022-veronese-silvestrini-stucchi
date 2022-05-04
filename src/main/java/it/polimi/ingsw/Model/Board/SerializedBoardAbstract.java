@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.Map;
 
 public class SerializedBoardAbstract implements Serializable {
+    private static final long serialVersionUID = 1L;
     private List<Archipelago> archipelagos;
     private List<Cloud> clouds;
     private MotherNature mn;

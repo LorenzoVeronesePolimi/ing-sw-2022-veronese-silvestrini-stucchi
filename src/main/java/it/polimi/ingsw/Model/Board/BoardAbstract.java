@@ -20,7 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-public abstract class BoardAbstract extends Observable<SerializedBoardAbstract> implements Board {
+public abstract class BoardAbstract extends Observable implements Board {
     protected List<School> schools;   //list of all school in the game (one for each player)
     protected List<Player> players;   //list of all players in the game (in order)
     protected Map<Player, School> playerSchool;   //map of players and their relative school
@@ -59,7 +59,7 @@ public abstract class BoardAbstract extends Observable<SerializedBoardAbstract> 
         this.initializePlayersHands();
         this.placeMotherNatureInitialBoard();
         this.placeStudentInitialBoard();
-        notifyPlayers();
+        //notifyPlayers();
     }
 
     private void initializePlayersHands() throws ExceedingAssistantCardNumberException {
@@ -191,7 +191,7 @@ public abstract class BoardAbstract extends Observable<SerializedBoardAbstract> 
             toBePlaced = bag.extractStudents(numStudents);
             c.fill(toBePlaced);
         }
-        notifyPlayers();
+        //notifyPlayers();
     }
 
     public void moveStudentBagToSchool(int numStudents) throws StudentNotFoundException, ExceededMaxStudentsHallException {
@@ -203,7 +203,7 @@ public abstract class BoardAbstract extends Observable<SerializedBoardAbstract> 
                 s.addStudentHall(student);
             }
         }
-        notifyPlayers();
+        //notifyPlayers();
     }
 
     public void moveProfessor(Player destinationPlayer, SPColour colour) throws NoProfessorBagException, ProfessorNotFoundException {

@@ -13,10 +13,11 @@ import java.util.List;
  */
 
 public abstract class AbstractCharacterCard implements Serializable {
+    private static final long serialVersionUID = 1L;
     private final CharacterCardEnumeration type;
     private final int basePrice;
     private final List<Coin> addedPrice;
-    protected final BoardAdvanced boardAdvanced;
+    protected transient final BoardAdvanced boardAdvanced;
 
     /**
      * Constructor

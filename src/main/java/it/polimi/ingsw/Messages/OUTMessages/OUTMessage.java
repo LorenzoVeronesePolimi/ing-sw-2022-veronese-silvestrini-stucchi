@@ -6,6 +6,7 @@ import it.polimi.ingsw.View.ClientView;
 import java.io.Serializable;
 
 public abstract class OUTMessage implements Serializable {
+    private static final long serialVersionUID = 1L;
     private final OUTMessageType type;  // It describes correctly what needs to be done by assigning an enumeration
 
     public OUTMessage(OUTMessageType type) {

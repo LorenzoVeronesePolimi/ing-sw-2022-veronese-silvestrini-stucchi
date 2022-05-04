@@ -13,6 +13,7 @@ import java.util.List;
 import java.util.Map;
 
 public class SerializedBoardAdvanced extends SerializedBoardAbstract implements Serializable {
+    private static final long serialVersionUID = 1L;
     private SPColour colourToExclude;
     private List<AbstractCharacterCard> extractedCards;
 
