@@ -310,22 +310,35 @@ public class Controller implements ObserverController<Message> {
 
         // Check colour not already chosen (or chosen only one time for GameFour)
         if(this.numPlayers == 4){
-            int numSameColour = 0;
-            for(Player p : this.players){
-                if(p.getColour() == colour){
-                    numSameColour++;
+            long numSameColour = 0;
+            // check for how many player already have the chosen colour
+            numSameColour = this.players.stream().filter(x -> x.getColour().equals(colour)).count();
+
+            // if no one has the chosen colour, check if there are not already two players with different colour
+            // this can happen if player1->black
+            //                    player2->white
+            //                    player3->gray --> ERROR
+            if(numSameColour == 0) {
+                if(this.players.stream().filter(x -> x.getColour().equals(PlayerColour.WHITE)).count() > 0) {
+                    if(this.players.stream().filter(x -> x.getColour().equals(PlayerColour.BLACK)).count() > 0 ||
+                        this.players.stream().filter(x -> x.getColour().equals(PlayerColour.GRAY)).count() > 0) {
+                        return false;
+                    }
+                } else if(this.players.stream().filter(x -> x.getColour().equals(PlayerColour.BLACK)).count() > 0) {
+                    if(this.players.stream().filter(x -> x.getColour().equals(PlayerColour.GRAY)).count() > 0) {
+                        return false;
+                    }
                 }
             }
+
+            // check is the chosen colour has already been chosen by two players
             if(numSameColour >= 2){
                 return false;
             }
         }
         else{
-            for(Player p : this.players){
-                if(p.getColour() == colour){
-                    return false;
-                }
-            }
+            if(this.players.stream().filter(x->x.getColour().equals(colour)).count() > 0)
+                return false;
         }
 
         // No integrity to check

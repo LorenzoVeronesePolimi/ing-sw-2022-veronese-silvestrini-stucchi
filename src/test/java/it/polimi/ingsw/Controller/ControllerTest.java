@@ -588,20 +588,10 @@ public class ControllerTest {
         //ADD PLAYER 4
         // Colour not permitted
         MessageAddPlayer mb4Err1 = new MessageAddPlayer("Fourth", "black", view4);
-        try {
-            controller.update(mb4Err1);
-        } catch (ControllerException e) {
-            e.printStackTrace();
-        }
         Assertions.assertThrows(ControllerException.class, () -> controller.update(mb4Err1));
 
         // Colour not permitted
         MessageAddPlayer mb4Err2 = new MessageAddPlayer("Fourth", "gray", view4);
-        try {
-            controller.update(mb4Err2);
-        } catch (ControllerException e) {
-            e.printStackTrace();
-        }
         Assertions.assertThrows(ControllerException.class, () -> controller.update(mb4Err2));
 
         //ok
