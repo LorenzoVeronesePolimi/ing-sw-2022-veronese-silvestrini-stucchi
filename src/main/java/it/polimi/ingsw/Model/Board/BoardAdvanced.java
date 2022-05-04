@@ -94,6 +94,13 @@ public class BoardAdvanced extends Observable implements Board {
         extractedCards.add(c);
     }
 
+    // For testing
+    public void setExtractedCardsTwo(AbstractCharacterCard c1, AbstractCharacterCard c2){
+        extractedCards.clear();
+        extractedCards.add(c1);
+        extractedCards.add(c2);
+    }
+
     public Bag getBag(){return this.board.bag;}
 
     public Bank getBank() {

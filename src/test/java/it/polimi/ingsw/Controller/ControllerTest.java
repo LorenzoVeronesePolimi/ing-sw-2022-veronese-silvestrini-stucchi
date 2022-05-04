@@ -29,14 +29,18 @@ import javax.naming.ldap.Control;
 
 public class ControllerTest {
     static Controller controller;
-    private static ByteArrayOutputStream outContent = new ByteArrayOutputStream();
+    //private static ByteArrayOutputStream outContent = new ByteArrayOutputStream();
     //private final PrintStream originalOut = System.out;
     //private final PrintStream originalErr = System.err;
     //static Socket socket;
     static SocketClientConnectionCLI conn1;
     static SocketClientConnectionCLI conn2;
+    static SocketClientConnectionCLI conn3;
+    static SocketClientConnectionCLI conn4;
     static ServerView view1;
     static ServerView view2;
+    static ServerView view3;
+    static ServerView view4;
     static Server server;
 
     static {
@@ -47,11 +51,16 @@ public class ControllerTest {
         }
 
         controller = server.getController();
-        System.setOut(new PrintStream(outContent));
+        //System.setOut(new PrintStream(outContent));
         conn1 = new SocketClientConnectionCLI(server, controller);
         view1 = conn1.getServerView();
         conn2 = new SocketClientConnectionCLI(server, controller);
         view2 = conn2.getServerView();
+        conn3 = new SocketClientConnectionCLI(server, controller);
+        view3 = conn1.getServerView();
+        conn4 = new SocketClientConnectionCLI(server, controller);
+        view4 = conn2.getServerView();
+
 
         //view = new ServerView(new SocketClientConnectionCLI(server, controller), controller);
 
@@ -65,18 +74,17 @@ public class ControllerTest {
         Assertions.assertNotNull(controller.getControllerInput());
         Assertions.assertNotNull(controller.getControllerIntegrity());
 
-
         MessageCreateMatch m1Err1 = new MessageCreateMatch("", "white", 2, true, view1);
         Assertions.assertThrows(ControllerException.class, () -> controller.update(m1Err1));
         //Assertions.assertEquals("Invalid format", outContent.toString().trim());
 
         //Error because of wrong colour
-        this.resetOutput();
+        //this.resetOutput();
         MessageCreateMatch m1Err2 = new MessageCreateMatch("First", "brown", 2, true, view1);
         Assertions.assertThrows(ControllerException.class, ()-> controller.update(m1Err2));
         //Assertions.assertEquals("Invalid format", outContent.toString().trim());
 
-        this.resetOutput();
+
         try {
             controller.update(m1Err2);
         } catch (ControllerException e) {
@@ -84,12 +92,10 @@ public class ControllerTest {
         }
 
         //ERRORS IN STATE
-        this.resetOutput();
         MessageAddPlayer m1Err3 = new MessageAddPlayer("Second", "white", view2);
         Assertions.assertThrows(ControllerException.class, () -> controller.update(m1Err3));
         //Assertions.assertEquals("You can't do that now", outContent.toString().trim());
 
-        this.resetOutput();
         try {
             controller.update(m1Err3);
         } catch (ControllerException e) {
@@ -98,12 +104,10 @@ public class ControllerTest {
 
         //ERRORS IN INTEGRITY
         //Error because of wrong numPlayers
-        this.resetOutput();
         MessageCreateMatch m1Err4 = new MessageCreateMatch("First", "white", 5, true, view1);
         Assertions.assertThrows(ControllerException.class, () -> controller.update(m1Err4));
         //Assertions.assertEquals("Error", outContent.toString().trim());
 
-        this.resetOutput();
         try {
             controller.update(m1Err4);
         } catch (ControllerException e) {
@@ -111,14 +115,13 @@ public class ControllerTest {
         }
 
         //OK
-        this.resetOutput();
         MessageCreateMatch m1 = new MessageCreateMatch("First", "white", 2, true, view1);
         try {
             controller.update(m1);
         } catch (ControllerException e) {
             e.printStackTrace();
         }
-        Assertions.assertEquals("", outContent.toString().trim());
+        //Assertions.assertEquals("", outContent.toString().trim());
         Assertions.assertEquals(State.WAITING_PLAYERS, controller.getControllerState().getState());
         Assertions.assertEquals("First", controller.getPlayers().get(0).getNickname());
         Assertions.assertTrue(controller.isAdvanced());
@@ -131,32 +134,27 @@ public class ControllerTest {
         //Assertions.assertEquals("Invalid format", outContent.toString().trim());
 
         //Error because of wrong colour
-        this.resetOutput();
         MessageAddPlayer m2Err2 = new MessageAddPlayer("Second", "brown", view2);
         Assertions.assertThrows(ControllerException.class, () -> controller.update(m2Err2));
         //Assertions.assertEquals("Invalid format", outContent.toString().trim());
 
         //ERRORS IN STATE
-        this.resetOutput();
         MessageCreateMatch m2Err3 = new MessageCreateMatch("Second", "white", 2, true, view2);
         Assertions.assertThrows(ControllerException.class, () -> controller.update(m2Err3));
         //Assertions.assertEquals("You can't do that now", outContent.toString().trim());
 
         //ERRORS IN CONTROLLER
         //Same colour as before
-        this.resetOutput();
         MessageAddPlayer m2Err4 = new MessageAddPlayer("Second", "white", view2);
         Assertions.assertThrows(ControllerException.class, () -> controller.update(m2Err4));
         //Assertions.assertEquals("Error", outContent.toString().trim());
 
-        //Same colour as before
-        this.resetOutput();
+        //Same name as before
         MessageAddPlayer m2Err5 = new MessageAddPlayer("First", "black", view2);
         Assertions.assertThrows(ControllerException.class, () -> controller.update(m2Err5));
         //Assertions.assertEquals("Error", outContent.toString().trim());
 
         //OK
-        this.resetOutput();
         MessageAddPlayer m2 = new MessageAddPlayer("Second", "black", view2);
         try {
             controller.update(m2);
@@ -169,70 +167,58 @@ public class ControllerTest {
         Assertions.assertTrue(controller.isAdvanced());
 
 
-        /*-----MessageAssistantCard-----*/
+        /*-----MessageAssistantCard 1-----*/
         //ERRORS IN FORMAT
         //Error because of wrong name ("")
-        this.resetOutput();
         MessageAssistantCard m3Err1 = new MessageAssistantCard("", 5, 10);
         Assertions.assertThrows(ControllerException.class, () -> controller.update(m3Err1));
-        //Assertions.assertEquals("Invalid format", outContent.toString().trim());
 
         //Error because of wrong motherNatureMovement
-        this.resetOutput();
         MessageAssistantCard m3Err2 = new MessageAssistantCard("First", 9, 10);
         Assertions.assertThrows(ControllerException.class, () -> controller.update(m3Err2));
-        //Assertions.assertEquals("Invalid format", outContent.toString().trim());
 
         //Error because of wrong turnPriority
-        this.resetOutput();
         MessageAssistantCard m3Err3 = new MessageAssistantCard("First", 5, -1);
         Assertions.assertThrows(ControllerException.class, () -> controller.update(m3Err3));
-        //Assertions.assertEquals("Invalid format", outContent.toString().trim());
 
         //ERRORS IN CONTROLLER
         //Not current player
-        this.resetOutput();
         MessageAssistantCard m3Err4 = new MessageAssistantCard("Second", 5, 10);
         Assertions.assertThrows(ControllerException.class, () -> controller.update(m3Err4));
-        //Assertions.assertEquals("Error", outContent.toString().trim());
 
         //OK
-        this.resetOutput();
         MessageAssistantCard m3 = new MessageAssistantCard("First", 5, 9);
         try {
             controller.update(m3);
         } catch (ControllerException e) {
             e.printStackTrace();
         }
-        Assertions.assertEquals("", outContent.toString().trim());
+        //Assertions.assertEquals("", outContent.toString().trim());
         Assertions.assertEquals(State.PLANNING2, controller.getControllerState().getState());
         Assertions.assertEquals("Second", controller.getCurrentPlayer().getNickname());
+        Assertions.assertEquals(1, controller.getCurrentPlayerIndex());
         Assertions.assertTrue(controller.isAdvanced());
 
-        /*-----MessageAssistantCard-----*/
+        /*-----MessageAssistantCard 2-----*/
         //ERRORS IN CONTROLLER
         //Not current player
-        this.resetOutput();
         MessageAssistantCard m4Err1 = new MessageAssistantCard("First", 1, 1);
         Assertions.assertThrows(ControllerException.class, () -> controller.update(m4Err1));
-        //Assertions.assertEquals("Error", outContent.toString().trim());
 
         //Same card as First
-        this.resetOutput();
         MessageAssistantCard m4Err2 = new MessageAssistantCard("First", 5, 10);
         Assertions.assertThrows(ControllerException.class, () -> controller.update(m4Err2));
-        //Assertions.assertEquals("Error", outContent.toString().trim());
 
         //OK
-        this.resetOutput();
         MessageAssistantCard m4 = new MessageAssistantCard("Second", 1, 1);
         try {
             controller.update(m4);
         } catch (ControllerException e) {
             e.printStackTrace();
         }
-        Assertions.assertEquals("", outContent.toString().trim());
         Assertions.assertEquals(State.ACTION1, controller.getControllerState().getState());
+        Assertions.assertEquals(0, controller.getCurrentPlayerIndex());
+        Assertions.assertEquals("Second", controller.getCurrentPlayer().getNickname());
         Assertions.assertTrue(controller.isAdvanced());
 
         /*-----MessageStudentHallToDiningRoom 1-----*/
@@ -241,13 +227,10 @@ public class ControllerTest {
 
         //ERRORS IN CONTROLLER
         //Not current player
-        this.resetOutput();
         MessageStudentHallToDiningRoom m5Err1 = new MessageStudentHallToDiningRoom("First", "red");
         Assertions.assertThrows(ControllerException.class, () -> controller.update(m5Err1));
-        //Assertions.assertEquals("Error", outContent.toString().trim());
 
         //OK
-        this.resetOutput();
         MessageStudentHallToDiningRoom m5 = new MessageStudentHallToDiningRoom(controller.getCurrentPlayer().getNickname(), colourToMove);
         Assertions.assertEquals(controller.getNumStudentsToMoveCurrent(), 3);
         try {
@@ -255,7 +238,6 @@ public class ControllerTest {
         } catch (ControllerException e) {
             e.printStackTrace();
         }
-        Assertions.assertEquals("", outContent.toString().trim());
         Assertions.assertEquals(controller.getNumStudentsToMoveCurrent(), 2);
         Assertions.assertEquals(State.ACTION1, controller.getControllerState().getState());
 
@@ -265,13 +247,10 @@ public class ControllerTest {
 
         //ERRORS IN CONTROLLER
         //Not current player
-        this.resetOutput();
         MessageStudentHallToDiningRoom m6Err1 = new MessageStudentHallToDiningRoom("First", "red");
         Assertions.assertThrows(ControllerException.class, () -> controller.update(m6Err1));
-        //Assertions.assertEquals("Error", outContent.toString().trim());
 
         //OK
-        this.resetOutput();
         MessageStudentHallToDiningRoom m6 = new MessageStudentHallToDiningRoom(controller.getCurrentPlayer().getNickname(), colourToMove);
         Assertions.assertEquals(controller.getNumStudentsToMoveCurrent(), 2);
         try {
@@ -279,7 +258,6 @@ public class ControllerTest {
         } catch (ControllerException e) {
             e.printStackTrace();
         }
-        Assertions.assertEquals("", outContent.toString().trim());
         Assertions.assertEquals(controller.getNumStudentsToMoveCurrent(), 1);
         Assertions.assertEquals(State.ACTION1, controller.getControllerState().getState());
 
@@ -288,26 +266,19 @@ public class ControllerTest {
         colourToMove = mapSPColourToString(controller.getBoard().getPlayerSchool(controller.getCurrentPlayer()).getStudentsHall().get(0).getColour());
 
         //Not possibile archipelago
-        this.resetOutput();
         MessageStudentToArchipelago m7Err1 = new MessageStudentToArchipelago(controller.getCurrentPlayer().getNickname(), colourToMove, 13);
         Assertions.assertThrows(ControllerException.class, () -> controller.update(m7Err1));
-        //Assertions.assertEquals("Invalid format", outContent.toString().trim());
 
         //ERRORS IN CONTROLLER
         //Not current player
-        this.resetOutput();
         MessageStudentToArchipelago m7Err2 = new MessageStudentToArchipelago("First", colourToMove, 10);
         Assertions.assertThrows(ControllerException.class, () -> controller.update(m7Err2));
-        //Assertions.assertEquals("Error", outContent.toString().trim());
 
         //Not existing playerNickname
-        this.resetOutput();
         MessageStudentToArchipelago m7Err3 = new MessageStudentToArchipelago("Not Existing", colourToMove, 10);
         Assertions.assertThrows(ControllerException.class, () -> controller.update(m7Err3));
-        //Assertions.assertEquals("No player with that nickname\r\nError", outContent.toString().trim()); gives error
 
         //OK
-        this.resetOutput();
         MessageStudentToArchipelago m7 = new MessageStudentToArchipelago(controller.getCurrentPlayer().getNickname(), colourToMove, 10);
         Assertions.assertEquals(controller.getNumStudentsToMoveCurrent(), 1);
         try {
@@ -315,65 +286,51 @@ public class ControllerTest {
         } catch (ControllerException e) {
             e.printStackTrace();
         }
-        Assertions.assertEquals("", outContent.toString().trim());
         Assertions.assertEquals(controller.getNumStudentsToMoveCurrent(), 3);
         Assertions.assertEquals(State.ACTION2, controller.getControllerState().getState());
 
         /*-----MessageMoveMotherNature-----*/
         //Not possibile number of moves
-        this.resetOutput();
         MessageMoveMotherNature m8Err1 = new MessageMoveMotherNature(controller.getCurrentPlayer().getNickname(), 13);
         Assertions.assertThrows(ControllerException.class, () -> controller.update(m8Err1));
-        //Assertions.assertEquals("Invalid format", outContent.toString().trim());
 
         //ERRORS IN CONTROLLER
         //Not current player
-        this.resetOutput();
         MessageMoveMotherNature m8Err2 = new MessageMoveMotherNature("First", 1);
         Assertions.assertThrows(ControllerException.class, () -> controller.update(m8Err2));
-        //Assertions.assertEquals("Error", outContent.toString().trim());
 
         //Not integrity possible number of moves
-        this.resetOutput();
         MessageMoveMotherNature m8Err3 = new MessageMoveMotherNature(controller.getCurrentPlayer().getNickname(), 2);
         Assertions.assertThrows(ControllerException.class, () -> controller.update(m8Err3));
-        //Assertions.assertEquals("Error", outContent.toString().trim());
 
         //OK
-        this.resetOutput();
         MessageMoveMotherNature m8 = new MessageMoveMotherNature(controller.getCurrentPlayer().getNickname(), 1);
         try {
             controller.update(m8);
         } catch (ControllerException e) {
             e.printStackTrace();
         }
-        Assertions.assertEquals("", outContent.toString().trim());
         Assertions.assertEquals(State.ACTION3, controller.getControllerState().getState());
 
         /*-----MessageStudentCloudToSchool-----*/
         //Not existing cloud
-        this.resetOutput();
         MessageStudentCloudToSchool m9Err1 = new MessageStudentCloudToSchool(controller.getCurrentPlayer().getNickname(), 5);
         Assertions.assertThrows(ControllerException.class, () -> controller.update(m9Err1));
-        //Assertions.assertEquals("Invalid format", outContent.toString().trim());
 
         //ERRORS IN CONTROLLER
         //Not current player
-        this.resetOutput();
         MessageStudentCloudToSchool m9Err2 = new MessageStudentCloudToSchool("First", 1);
         Assertions.assertThrows(ControllerException.class, () -> controller.update(m9Err2));
-        //Assertions.assertEquals("Error", outContent.toString().trim());
 
         //OK
-        this.resetOutput();
         MessageStudentCloudToSchool m9 = new MessageStudentCloudToSchool(controller.getCurrentPlayer().getNickname(), 1);
         try {
             controller.update(m9);
         } catch (ControllerException e) {
             e.printStackTrace();
         }
-        Assertions.assertEquals("", outContent.toString().trim());
         Assertions.assertEquals(State.ACTION1, controller.getControllerState().getState());
+        Assertions.assertEquals(1, controller.getCurrentPlayerIndex());
         Assertions.assertEquals("First", controller.getCurrentPlayer().getNickname());
 
         //Give lots of Coins to the player to test CharacterCards
@@ -391,6 +348,7 @@ public class ControllerTest {
         } catch (StudentNotFoundException e) {
             e.printStackTrace();
         }
+
         controller.setCharacterCardUsed(false);
         String colourCard1 = mapSPColourToString(((ExchangeThreeStudents) controller.getBoardAdvanced().getExtractedCards().get(0)).getStudentsOnCard().get(0).getColour());
         String colourCard2 = mapSPColourToString(((ExchangeThreeStudents) controller.getBoardAdvanced().getExtractedCards().get(0)).getStudentsOnCard().get(1).getColour());
@@ -402,7 +360,32 @@ public class ControllerTest {
         } catch (ControllerException e) {
             e.printStackTrace();
         }
-        Assertions.assertEquals("", outContent.toString().trim());
+
+        //ERRORS
+        //Not current Player
+        controller.setCharacterCardUsed(false);
+        MessageCCExchangeThreeStudents mcc1Err1 = new MessageCCExchangeThreeStudents(1, "Second", colourCard1, colourCard2, "-", colourHall1, colourHall2, "-");
+        Assertions.assertThrows(ControllerException.class, () -> controller.update(mcc1Err1));
+
+        //CC used
+        controller.setCharacterCardUsed(true);
+        MessageCCExchangeThreeStudents mcc1Err2 = new MessageCCExchangeThreeStudents(1, controller.getCurrentPlayer().getNickname(), colourCard1, colourCard2, "-", colourHall1, colourHall2, "-");
+        Assertions.assertThrows(ControllerException.class, () -> controller.update(mcc1Err2));
+
+        //Not right CC
+        controller.setCharacterCardUsed(false);
+        ExchangeThreeStudents c1;
+        ExchangeTwoHallDining c2;
+        try {
+            c1 = new ExchangeThreeStudents(controller.getBoardAdvanced());
+            c2 = new ExchangeTwoHallDining(controller.getBoardAdvanced());
+            controller.getBoardAdvanced().setExtractedCardsTwo(c1, c2);
+            MessageCCExchangeThreeStudents mcc1Err3 = new MessageCCExchangeThreeStudents(2, controller.getCurrentPlayer().getNickname(), colourCard1, colourCard2, "-", colourHall1, colourHall2, "-");
+            System.out.println(mcc1Err3.getIndexCard());
+            Assertions.assertThrows(ControllerException.class, () -> controller.update(mcc1Err3));
+        } catch (StudentNotFoundException e) {
+            e.printStackTrace();
+        }
 
         /*-----MessageCCExchangeTwoHallDining-----*/
         controller.getBoardAdvanced().setExtractedCards(new ExchangeTwoHallDining(controller.getBoardAdvanced()));
@@ -421,8 +404,19 @@ public class ControllerTest {
         } catch (ControllerException e) {
             e.printStackTrace();
         }
-        Assertions.assertEquals("", outContent.toString().trim());
 
+        //ERRORS
+        //Not current Player
+        controller.setCharacterCardUsed(false);
+        MessageCCExchangeTwoHallDining mcc2Err1 = new MessageCCExchangeTwoHallDining(1, "Second", colourHall1, colourHall2, "red", "red");
+        Assertions.assertThrows(ControllerException.class, () -> controller.update(mcc2Err1));
+
+        //CC used
+        controller.setCharacterCardUsed(true);
+        MessageCCExchangeTwoHallDining mcc2Err2 = new MessageCCExchangeTwoHallDining(1, controller.getCurrentPlayer().getNickname(), colourHall1, colourHall2, "red", "red");
+        Assertions.assertThrows(ControllerException.class, () -> controller.update(mcc2Err2));
+
+        //prepare next
         try {
             controller.getBoardAdvanced().getBank().getCoin();
             controller.getBoardAdvanced().getBank().getCoin();
@@ -452,7 +446,6 @@ public class ControllerTest {
         } catch (ControllerException e) {
             e.printStackTrace();
         }
-        Assertions.assertEquals("", outContent.toString().trim());
 
         /*-----MessageCCExtraStudentInDining-----*/
         try {
@@ -468,7 +461,6 @@ public class ControllerTest {
         } catch (ControllerException e) {
             e.printStackTrace();
         }
-        Assertions.assertEquals("", outContent.toString().trim());
 
         /*-----MessageCCFakeMNMovement-----*/
         controller.getBoardAdvanced().setExtractedCards(new FakeMNMovement(controller.getBoardAdvanced()));
@@ -479,7 +471,6 @@ public class ControllerTest {
         } catch (ControllerException e) {
             e.printStackTrace();
         }
-        Assertions.assertEquals("", outContent.toString().trim());
 
         /*-----MessageCCForbidIsland-----*/
         controller.getBoardAdvanced().setExtractedCards(new ForbidIsland(controller.getBoardAdvanced()));
@@ -490,7 +481,6 @@ public class ControllerTest {
         } catch (ControllerException e) {
             e.printStackTrace();
         }
-        Assertions.assertEquals("", outContent.toString().trim());
 
         /*-----MessageCCPlaceOneStudent-----*/
         try {
@@ -506,7 +496,6 @@ public class ControllerTest {
         } catch (ControllerException e) {
             e.printStackTrace();
         }
-        Assertions.assertEquals("", outContent.toString().trim());
 
         /*-----MessageCCReduceColourInDining-----*/
         controller.getBoardAdvanced().setExtractedCards(new ReduceColourInDining(controller.getBoardAdvanced()));
@@ -517,7 +506,6 @@ public class ControllerTest {
         } catch (ControllerException e) {
             e.printStackTrace();
         }
-        Assertions.assertEquals("", outContent.toString().trim());
 
         /*-----MessageCCTowerNoValue-----*/
         controller.getBoardAdvanced().setExtractedCards(new TowerNoValue(controller.getBoardAdvanced()));
@@ -528,7 +516,6 @@ public class ControllerTest {
         } catch (ControllerException e) {
             e.printStackTrace();
         }
-        Assertions.assertEquals("", outContent.toString().trim());
 
         /*-----MessageCCTwoExtraPoints-----*/
         controller.getBoardAdvanced().setExtractedCards(new TwoExtraPoints(controller.getBoardAdvanced()));
@@ -539,7 +526,6 @@ public class ControllerTest {
         } catch (ControllerException e) {
             e.printStackTrace();
         }
-        Assertions.assertEquals("", outContent.toString().trim());
 
         /*-----MessageCCTakeProfessorOnEquity-----*/
         controller.getBoardAdvanced().setExtractedCards(new TakeProfessorOnEquity(controller.getBoardAdvanced()));
@@ -550,7 +536,6 @@ public class ControllerTest {
         } catch (ControllerException e) {
             e.printStackTrace();
         }
-        Assertions.assertEquals("", outContent.toString().trim());
 
         /*-----MessageCCTwoExtraIslands-----*/
         controller.getBoardAdvanced().setExtractedCards(new TwoExtraIslands());
@@ -561,13 +546,74 @@ public class ControllerTest {
         } catch (ControllerException e) {
             e.printStackTrace();
         }
-        Assertions.assertEquals("", outContent.toString().trim());
 
-    }
 
-    private void resetOutput(){
-        outContent = new ByteArrayOutputStream();
-        System.setOut(new PrintStream(outContent));
+
+        //**********CASE BOARD NOT ADVANCED (4 players)**********
+        this.controller = new Controller();
+        //CREATE MATCH
+        MessageCreateMatch mb1 = new MessageCreateMatch("First", "white", 4, false, view1);
+        try {
+            controller.update(mb1);
+        } catch (ControllerException e) {
+            e.printStackTrace();
+        }
+        //Assertions.assertEquals("", outContent.toString().trim());
+        Assertions.assertEquals(State.WAITING_PLAYERS, controller.getControllerState().getState());
+        Assertions.assertEquals("First", controller.getPlayers().get(0).getNickname());
+        Assertions.assertFalse(controller.isAdvanced());
+
+        //ADD PLAYER 2
+        MessageAddPlayer mb2 = new MessageAddPlayer("Second", "black", view2);
+        try {
+            controller.update(mb2);
+        } catch (ControllerException e) {
+            e.printStackTrace();
+        }
+        Assertions.assertEquals(State.WAITING_PLAYERS, controller.getControllerState().getState());
+        Assertions.assertEquals("Second", controller.getPlayers().get(1).getNickname());
+        Assertions.assertFalse(controller.isAdvanced());
+
+        //ADD PLAYER 3
+        MessageAddPlayer mb3 = new MessageAddPlayer("Third", "black", view3);
+        try {
+            controller.update(mb3);
+        } catch (ControllerException e) {
+            e.printStackTrace();
+        }
+        Assertions.assertEquals(State.WAITING_PLAYERS, controller.getControllerState().getState());
+        Assertions.assertEquals("Third", controller.getPlayers().get(2).getNickname());
+        Assertions.assertFalse(controller.isAdvanced());
+
+        //ADD PLAYER 4
+        // Colour not permitted
+        MessageAddPlayer mb4Err1 = new MessageAddPlayer("Fourth", "black", view4);
+        try {
+            controller.update(mb4Err1);
+        } catch (ControllerException e) {
+            e.printStackTrace();
+        }
+        Assertions.assertThrows(ControllerException.class, () -> controller.update(mb4Err1));
+
+        // Colour not permitted
+        MessageAddPlayer mb4Err2 = new MessageAddPlayer("Fourth", "gray", view4);
+        try {
+            controller.update(mb4Err2);
+        } catch (ControllerException e) {
+            e.printStackTrace();
+        }
+        Assertions.assertThrows(ControllerException.class, () -> controller.update(mb4Err2));
+
+        //ok
+        MessageAddPlayer mb4 = new MessageAddPlayer("Fourth", "white", view4);
+        try {
+            controller.update(mb4);
+        } catch (ControllerException e) {
+            e.printStackTrace();
+        }
+        Assertions.assertEquals(State.PLANNING2, controller.getControllerState().getState());
+        Assertions.assertEquals("Fourth", controller.getPlayers().get(3).getNickname());
+        Assertions.assertFalse(controller.isAdvanced());
     }
 
     private String mapSPColourToString(SPColour c){
