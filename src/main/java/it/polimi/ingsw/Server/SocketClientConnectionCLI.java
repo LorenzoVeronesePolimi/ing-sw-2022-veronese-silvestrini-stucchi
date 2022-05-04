@@ -3,6 +3,7 @@ package it.polimi.ingsw.Server;
 import it.polimi.ingsw.Controller.Controller;
 import it.polimi.ingsw.Messages.OUTMessages.OUTMessage;
 import it.polimi.ingsw.Model.Board.SerializedBoardAbstract;
+import it.polimi.ingsw.Model.Board.SerializedBoardAdvanced;
 import it.polimi.ingsw.View.ServerView;
 
 import java.io.IOException;
@@ -126,6 +127,15 @@ public class SocketClientConnectionCLI extends ClientConnection implements Runna
 
     public synchronized void sendModel(SerializedBoardAbstract message) {
         try {
+            if (message != null) {
+                if(message.getType().equalsIgnoreCase("advanced")) {
+                    //System.out.println("sendModel advanced");
+                } else if(message.getType().equalsIgnoreCase("standard")) {
+                    //System.out.println("sendModel abstract");
+                } else {
+                    //System.out.println("Errore sendModel");
+                }
+            }
             out.reset();
             out.writeObject(message);
             out.flush();

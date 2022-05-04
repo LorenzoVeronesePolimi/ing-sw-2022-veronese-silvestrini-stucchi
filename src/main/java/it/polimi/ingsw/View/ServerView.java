@@ -109,12 +109,14 @@ public class ServerView implements Observer<SerializedBoardAbstract> {
     @Override
     public void update(SerializedBoardAbstract message) {
         if(message instanceof SerializedBoardAdvanced) {
-            this.socketClientConnectionCLI.asyncSendModel(new SerializedBoardAdvanced(message.getArchipelagos(),
+            SerializedBoardAdvanced finalMessage = new SerializedBoardAdvanced(message.getArchipelagos(),
                     message.getClouds(), message.getMn(), message.getSchools(), ((SerializedBoardAdvanced) message).getColourToExclude(),
-                    ((SerializedBoardAdvanced) message).getExtractedCards(), this.playerNickname));
+                    ((SerializedBoardAdvanced) message).getExtractedCards(), this.playerNickname);
+            this.socketClientConnectionCLI.asyncSendModel(finalMessage);
         } else {
-            this.socketClientConnectionCLI.asyncSendModel(new SerializedBoardAbstract(message.getArchipelagos(),
-                    message.getClouds(), message.getMn(), message.getSchools(), this.playerNickname));
+            SerializedBoardAbstract finalMessage = new SerializedBoardAbstract(message.getArchipelagos(),
+                    message.getClouds(), message.getMn(), message.getSchools(), this.playerNickname);
+            this.socketClientConnectionCLI.asyncSendModel(finalMessage);
         }
     }
 

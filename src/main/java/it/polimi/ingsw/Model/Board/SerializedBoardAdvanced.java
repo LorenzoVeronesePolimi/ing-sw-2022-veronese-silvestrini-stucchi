@@ -20,6 +20,7 @@ public class SerializedBoardAdvanced extends SerializedBoardAbstract implements 
     public SerializedBoardAdvanced(List<Archipelago> archipelagos, List<Cloud> clouds, MotherNature mn,
                                    List<School> schoolList, SPColour colourToExclude, List<AbstractCharacterCard> extractedCards) {
         super(archipelagos, clouds, mn, schoolList);
+        super.type = "advanced";
         this.colourToExclude = colourToExclude;
         this.extractedCards = extractedCards;
     }
@@ -28,6 +29,7 @@ public class SerializedBoardAdvanced extends SerializedBoardAbstract implements 
                                    List<School> schoolList, SPColour colourToExclude,
                                    List<AbstractCharacterCard> extractedCards, String nickname) {
         super(archipelagos, clouds, mn, schoolList, nickname);
+        super.type = "advanced";
         this.colourToExclude = colourToExclude;
         this.extractedCards = extractedCards;
     }

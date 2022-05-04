@@ -74,17 +74,16 @@ public class Client {
                             prevMessage = (OUTMessage) inputMessage;
                         }
                     } else {
-                        SerializedBoardAbstract serializedBoard;
-                        if(inputMessage instanceof SerializedBoardAbstract) {
+                        SerializedBoardAbstract serializedBoard = (SerializedBoardAbstract) inputMessage;
+                        if(serializedBoard.getType().equalsIgnoreCase("standard")) {
                             serializedBoard = (SerializedBoardAbstract) inputMessage;
                             view.printCustom("model standard");
-                        }
-                        else {
+                        } else if(serializedBoard.getType().equalsIgnoreCase("advanced")) {
                             serializedBoard = (SerializedBoardAdvanced) inputMessage;
                             view.printCustom("model advanced");
+                        } else {
+                            view.printCustom("Client error");
                         }
-
-                        //view.printCustom("model");
                     }
 
                 }

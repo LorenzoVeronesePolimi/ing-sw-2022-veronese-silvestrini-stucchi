@@ -13,12 +13,14 @@ import java.util.Map;
 
 public class SerializedBoardAbstract implements Serializable {
     private static final long serialVersionUID = 1L;
+    protected String type;
     private List<Archipelago> archipelagos;
     private List<Cloud> clouds;
     private MotherNature mn;
     private List<School> schools;
 
     public SerializedBoardAbstract(List<Archipelago> archipelagos, List<Cloud> clouds, MotherNature mn, List<School> schools) {
+        this.type = "standard";
         this.archipelagos = archipelagos;
         this.clouds = clouds;
         this.mn = mn;
@@ -26,6 +28,7 @@ public class SerializedBoardAbstract implements Serializable {
     }
 
     public SerializedBoardAbstract(List<Archipelago> archipelagos, List<Cloud> clouds, MotherNature mn, List<School> schoolList, String nickname) {
+        this.type = "standard";
         this.archipelagos = archipelagos;
         this.clouds = clouds;
         this.mn = mn;
@@ -41,6 +44,10 @@ public class SerializedBoardAbstract implements Serializable {
                 this.schools.add(school);
             }
         }
+    }
+
+    public String getType() {
+        return type;
     }
 
     public List<Archipelago> getArchipelagos() {
