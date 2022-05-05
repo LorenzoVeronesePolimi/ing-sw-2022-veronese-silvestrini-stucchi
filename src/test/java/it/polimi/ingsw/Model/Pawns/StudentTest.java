@@ -36,13 +36,7 @@ public class StudentTest {
     void toStringTest() {
         testedStudent = new Student(SPColour.YELLOW);
 
-        assertEquals("Student{" +
-                "colour=" + SPColour.YELLOW +
-                '}', testedStudent.toString());
-
-        assertEquals("Student{" +
-                "colour=" + testedStudent.getColour() +
-                '}', testedStudent.toString());
+        assertEquals( ""+SPColour.YELLOW , testedStudent.toString());
 
     }
 }

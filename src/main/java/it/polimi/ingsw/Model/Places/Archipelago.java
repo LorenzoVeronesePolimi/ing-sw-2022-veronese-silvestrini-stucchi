@@ -258,10 +258,9 @@ public class Archipelago implements Serializable {
         if (this.islands.get(0).getTower() == null){
             numTowers = 0;
         } else{ numTowers = this.islands.size();}
-        return "Archipelago{" +
-                "studentsData=" + studentsData +
-                ", owner=" + owner +
-                ", numTowers=" + numTowers +
-                '}';
+        return
+                "owner=" + (owner==null?"nobody":owner) +
+                ", number of towers=" + numTowers +
+                ", students on archipelago=" + studentsData;
     }
 }

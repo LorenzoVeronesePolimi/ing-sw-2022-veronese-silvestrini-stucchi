@@ -79,8 +79,6 @@ public class Cloud implements Serializable {
      */
     @Override
     public String toString() {
-        return "Cloud{" +
-                "students=" + students +
-                '}';
+        return "students=" + students;
     }
 }

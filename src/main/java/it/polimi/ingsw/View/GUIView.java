@@ -2,6 +2,7 @@ package it.polimi.ingsw.View;
 
 import it.polimi.ingsw.Client.Client;
 import it.polimi.ingsw.Messages.OUTMessages.OUTMessage;
+import it.polimi.ingsw.Model.Board.SerializedBoardAbstract;
 
 public class GUIView extends ClientView {
     public GUIView(Client client) {
@@ -25,6 +26,11 @@ public class GUIView extends ClientView {
 
     @Override
     public void askFirstPlayerInfo() {
+
+    }
+
+    @Override
+    public void showBoard(SerializedBoardAbstract serializedBoardAbstract) {
 
     }
 

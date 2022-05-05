@@ -413,17 +413,15 @@ public class SchoolTest {
         Player p = new Player("owner", PlayerColour.WHITE);
         School school = new School(p,7,8);
 
-        Assertions.assertEquals("School{" +
-                "player=" + school.getPlayer() +
-                ", studentsHall=" + school.getStudentsHall() +
-                ", studentsDiningRed=" + school.getListStudentColour(SPColour.RED) +
-                ", studentsDiningPink=" + school.getListStudentColour(SPColour.PINK) +
-                ", studentsDiningGreen=" + school.getListStudentColour(SPColour.GREEN) +
-                ", studentsDiningYellow=" + school.getListStudentColour(SPColour.YELLOW) +
-                ", studentsDiningBlue=" + school.getListStudentColour(SPColour.BLUE) +
-                ", professors=" + school.getProfessors() +
-                ", towers=" + school.getTowers() +
-                '}', school.toString());
+        Assertions.assertEquals(school.getPlayer() +
+                "\n\t Hall=" + school.getStudentsHall() +
+                "\n\t Dining=[RED=" + school.getListStudentColour(SPColour.RED).size() +
+                ", PINK=" + school.getListStudentColour(SPColour.PINK).size() +
+                ", GREEN=" + school.getListStudentColour(SPColour.GREEN).size() +
+                ", YELLOW=" + school.getListStudentColour(SPColour.YELLOW).size() +
+                ", BLUE=" + school.getListStudentColour(SPColour.BLUE).size() +
+                "]\n\t professors=" + school.getProfessors() +
+                "\t towers=" + school.getTowers().size(), school.toString());
 
     }
 }

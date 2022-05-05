@@ -395,16 +395,14 @@ public class School implements Serializable {
      */
     @Override
     public String toString() {
-        return "School{" +
-                "player=" + player +
-                ", studentsHall=" + studentsHall +
-                ", studentsDiningRed=" + studentsDiningRed +
-                ", studentsDiningPink=" + studentsDiningPink +
-                ", studentsDiningGreen=" + studentsDiningGreen +
-                ", studentsDiningYellow=" + studentsDiningYellow +
-                ", studentsDiningBlue=" + studentsDiningBlue +
-                ", professors=" + professors +
-                ", towers=" + towers +
-                '}';
+        return   player +
+                "\n\t Hall=" + studentsHall +
+                "\n\t Dining=[RED=" + studentsDiningRed.size() +
+                ", PINK=" + studentsDiningPink.size() +
+                ", GREEN=" + studentsDiningGreen.size() +
+                ", YELLOW=" + studentsDiningYellow.size() +
+                ", BLUE=" + studentsDiningBlue.size() +
+                "]\n\t professors=" + professors +
+                "\t towers=" + towers.size();
     }
 }

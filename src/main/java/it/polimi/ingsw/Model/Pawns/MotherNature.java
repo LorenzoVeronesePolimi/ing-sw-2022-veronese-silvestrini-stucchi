@@ -27,4 +27,5 @@ public class MotherNature implements Serializable {
     public Archipelago getCurrentPosition() {
         return this.currentPosition;
     }
+
 }

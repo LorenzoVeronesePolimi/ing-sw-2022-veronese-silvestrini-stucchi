@@ -36,13 +36,9 @@ public class ProfessorTest {
     void toStringTest() {
         testedProfessor = new Professor(SPColour.YELLOW);
 
-        assertEquals("Professor{" +
-                "colour=" + SPColour.YELLOW +
-                '}', testedProfessor.toString());
+        assertEquals(""+SPColour.YELLOW, testedProfessor.toString());
 
-        assertEquals("Professor{" +
-                "colour=" + testedProfessor.getColour() +
-                '}', testedProfessor.toString());
+        assertEquals(""+testedProfessor.getColour(), testedProfessor.toString());
 
     }
 }

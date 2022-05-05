@@ -142,9 +142,7 @@ public class PlayerTest {
     public void toStringTest() {
         Player testedPlayer = new Player("nickname", PlayerColour.BLACK);
 
-        assertEquals("Player{" +
-                "nickname='" + testedPlayer.getNickname() + '\'' +
-                ", colour=" + testedPlayer.getColour() +
-                '}', testedPlayer.toString());
+        assertEquals("nickname=" + testedPlayer.getNickname() +
+                ", colour=" + testedPlayer.getColour(), testedPlayer.toString());
     }
 }

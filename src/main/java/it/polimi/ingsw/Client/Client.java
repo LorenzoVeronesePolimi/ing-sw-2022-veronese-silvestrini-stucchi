@@ -52,7 +52,7 @@ public class Client {
                 }
 
                 while (isActive()) {
-                    view.printCustom("attesa");
+                    //view.printCustom("attesa");
                     /*
                         When a message is received it is managed by the view.
                         Then, this message is saved as prevMessage (in order to manage future errors).
@@ -77,13 +77,15 @@ public class Client {
                         SerializedBoardAbstract serializedBoard = (SerializedBoardAbstract) inputMessage;
                         if(serializedBoard.getType().equalsIgnoreCase("standard")) {
                             serializedBoard = (SerializedBoardAbstract) inputMessage;
-                            view.printCustom("model standard");
+                            //view.printCustom("model standard");
                         } else if(serializedBoard.getType().equalsIgnoreCase("advanced")) {
                             serializedBoard = (SerializedBoardAdvanced) inputMessage;
-                            view.printCustom("model advanced");
+                            //view.printCustom("model advanced");
                         } else {
-                            view.printCustom("Client error");
+                            //view.printCustom("Client error");
                         }
+
+                        view.showBoard(serializedBoard);
                     }
 
                 }

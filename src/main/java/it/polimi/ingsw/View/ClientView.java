@@ -2,6 +2,7 @@ package it.polimi.ingsw.View;
 
 import it.polimi.ingsw.Client.Client;
 import it.polimi.ingsw.Messages.OUTMessages.OUTMessage;
+import it.polimi.ingsw.Model.Board.SerializedBoardAbstract;
 
 import java.util.Scanner;
 
@@ -27,6 +28,8 @@ public abstract class ClientView {
     public abstract void askCLIorGUI();
     public abstract void askNickName();
     public abstract void askFirstPlayerInfo();
+
+    public abstract void showBoard(SerializedBoardAbstract serializedBoardAbstract);
 
     //TODO: just for test
     public abstract void printCustom(String err);

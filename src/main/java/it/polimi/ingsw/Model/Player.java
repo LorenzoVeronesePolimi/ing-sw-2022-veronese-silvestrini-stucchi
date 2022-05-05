@@ -126,9 +126,7 @@ public class Player implements Serializable {
      */
     @Override
     public String toString() {
-        return "Player{" +
-                "nickname='" + nickname + '\'' +
-                ", colour=" + colour +
-                '}';
+        return "nickname=" + nickname +
+                ", colour=" + colour ;
     }
 }

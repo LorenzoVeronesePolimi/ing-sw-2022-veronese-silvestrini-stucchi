@@ -48,9 +48,7 @@ public class CloudTest {
     void toStringTest() {
         System.out.println(testedCloud.toString());
 
-        assertEquals("Cloud{" +
-                "students=" + testedCloud.getStudents() +
-                '}', testedCloud.toString());
+        assertEquals("students="+testedCloud.getStudents() , testedCloud.toString());
 
         List<Student> students = new ArrayList<>();
         students.add(new Student(SPColour.RED));
@@ -67,9 +65,7 @@ public class CloudTest {
 
         System.out.println(testedCloud.toString());
 
-        assertEquals("Cloud{" +
-                "students=" + testedCloud.getStudents() +
-                '}', testedCloud.toString());
+        assertEquals("students=" + testedCloud.getStudents() , testedCloud.toString());
     }
 
     @Test

@@ -2,6 +2,8 @@ package it.polimi.ingsw.View;
 
 import it.polimi.ingsw.Client.Client;
 import it.polimi.ingsw.Messages.OUTMessages.OUTMessage;
+import it.polimi.ingsw.Model.Board.SerializedBoardAbstract;
+import it.polimi.ingsw.Model.Board.SerializedBoardAdvanced;
 import it.polimi.ingsw.View.ClientView;
 
 import java.rmi.ConnectIOException;
@@ -90,5 +92,34 @@ public class CLIView extends ClientView {
         gameMode = gameMode.equalsIgnoreCase("Y") ? "true" : "false";
 
         client.asyncWriteToSocket("createMatch " + nickname + " " + colour + " " + numPlayers + " " + gameMode);
+    }
+
+    @Override
+    public void showBoard(SerializedBoardAbstract serializedBoardAbstract) {
+        System.out.println("Clouds: ");
+        for(int i=0; i<serializedBoardAbstract.getClouds().size(); i++) {
+            System.out.print(i + ": ");
+            System.out.println(serializedBoardAbstract.getClouds().get(i).toString());
+        }
+
+        if(serializedBoardAbstract.getType().equals("standard")) {
+            System.out.println("Archipelagos: ");
+            for (int i = 0; i < serializedBoardAbstract.getArchipelagos().size(); i++) {
+                System.out.print(i + ": ");
+                System.out.print(serializedBoardAbstract.getArchipelagos().get(i).toString());
+                if (serializedBoardAbstract.getMn().getCurrentPosition().equals(serializedBoardAbstract.getArchipelagos().get(i))) {
+                    System.out.println("\tMother nature is here!");
+                } else {
+                    System.out.println();
+                }
+            }
+
+            System.out.println("Schools: ");
+            for (int i = 0; i < serializedBoardAbstract.getSchools().size(); i++) {
+                System.out.println(serializedBoardAbstract.getSchools().get(i).toString());
+            }
+
+        }
+
     }
 }

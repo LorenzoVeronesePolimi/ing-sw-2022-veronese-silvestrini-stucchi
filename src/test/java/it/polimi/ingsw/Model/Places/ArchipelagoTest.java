@@ -230,11 +230,9 @@ public class ArchipelagoTest {
     public void toStringTest() {
         Archipelago tested = new Archipelago();
 
-        assertEquals("Archipelago{" +
-                "studentsData=" + tested.howManyStudents() +
-                ", owner=" + tested.getOwner() +
-                ", numTowers=" + 0 +
-                '}', tested.toString());
+        assertEquals("owner=" + (tested.getOwner()==null?"nobody":tested.getOwner()) +
+                ", number of towers=" + 0 +
+                ", students on archipelago=" + tested.howManyStudents(), tested.toString());
         Player p = new Player("conqueror", PlayerColour.WHITE);
         Tower tower = new Tower(p);
         List<Tower> towers = new ArrayList<>();
@@ -244,11 +242,9 @@ public class ArchipelagoTest {
         } catch (InvalidTowerNumberException | AnotherTowerException e) {
             e.printStackTrace();
         }
-        assertEquals("Archipelago{" +
-                "studentsData=" + tested.howManyStudents() +
-                ", owner=" + tested.getOwner() +
-                ", numTowers=" + tested.getNumIslands() +
-                '}', tested.toString());
+        assertEquals("owner=" + (tested.getOwner()==null?"nobody":tested.getOwner()) +
+                ", number of towers=" + 1 +
+                ", students on archipelago=" + tested.howManyStudents(), tested.toString());
     }
 }
 

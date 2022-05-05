@@ -118,7 +118,7 @@ public class Controller implements ObserverController<Message> {
      *   if no: resend
      * Does this message respect the rules (ex. I can't move MotherNature of 6 plates)?
      *   if no: resend
-     * Call the Model and applicate the move requested
+     * Call the Model and apply the move requested
      * */
     public void update(Message message) throws ControllerException {
         if(!controllerInput.checkFormat(message)){
