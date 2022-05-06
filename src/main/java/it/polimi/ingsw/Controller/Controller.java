@@ -221,12 +221,12 @@ public class Controller implements ObserverController<Message> {
     }
 
     private void initMatch(){
-        if(numPlayers==4){
+        /*if(numPlayers==4){
             if(!players.get(0).getColour().equals(players.get(1).getColour())){
                 Player park;
                 if(!players.get(0).getColour().equals(players.get(2).getColour())){
                     park = players.remove(3);
-                    players.add(3,players.remove(1));
+                    players.add(3,players.remove(1)); // ERROREEEEEEEE
                 }
                 else{
                     park = players.remove(2);
@@ -234,7 +234,7 @@ public class Controller implements ObserverController<Message> {
                 }
                 players.add(1, park);
             }
-        }
+        }*/
         BoardFactory factory = new BoardFactory(this.players);
         this.board = factory.createBoard();
 
@@ -369,7 +369,7 @@ public class Controller implements ObserverController<Message> {
             this.initMatch();
             controllerState.setState(State.PLANNING1);
         }
-        else {
+        else if(this.players.size() < numPlayers) {
             List<PlayerColour> playerColourList = players.stream().map(x -> x.getColour()).collect(Collectors.toList());
             server.askPlayerInfo(playerColourList, numPlayers);
         }

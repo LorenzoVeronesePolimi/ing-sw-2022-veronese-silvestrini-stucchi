@@ -60,6 +60,14 @@ public class Server {
         socketConnections.get(alreadyin).send(new MessageAskName(list, numPlayers));
     }
 
+    public void reserServer() {
+        alreadyin = 0;
+    }
+
+    public void addConnection(SocketClientConnectionCLI clientConnectionCLI) {
+        socketConnections.add(clientConnectionCLI);
+    }
+
     /*
     public synchronized void lobby(ClientConnection c, String name){
         List<String> keys = new ArrayList<>(waitingConnection.keySet());

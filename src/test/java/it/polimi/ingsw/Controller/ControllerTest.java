@@ -53,12 +53,16 @@ public class ControllerTest {
         controller = server.getController();
         //System.setOut(new PrintStream(outContent));
         conn1 = new SocketClientConnectionCLI(server, controller);
+        server.addConnection(conn1);
         view1 = conn1.getServerView();
         conn2 = new SocketClientConnectionCLI(server, controller);
+        server.addConnection(conn2);
         view2 = conn2.getServerView();
         conn3 = new SocketClientConnectionCLI(server, controller);
+        server.addConnection(conn3);
         view3 = conn1.getServerView();
         conn4 = new SocketClientConnectionCLI(server, controller);
+        server.addConnection(conn4);
         view4 = conn2.getServerView();
 
 
@@ -550,7 +554,8 @@ public class ControllerTest {
 
 
         //**********CASE BOARD NOT ADVANCED (4 players)**********
-        this.controller = new Controller(server);
+        server.reserServer();
+        ControllerTest.controller = new Controller(server);
         //CREATE MATCH
         MessageCreateMatch mb1 = new MessageCreateMatch("First", "white", 4, false, view1);
         try {

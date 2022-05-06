@@ -38,7 +38,6 @@ public class BoardFour extends BoardAbstract {
                 s = new School(players.get(i), 7, 8);
             } else {
                 s = new School(players.get(i), 7, 0);
-
             }
 
             this.schools.add(s);
