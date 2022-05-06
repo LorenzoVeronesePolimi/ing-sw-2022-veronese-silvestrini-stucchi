@@ -3,6 +3,9 @@ package it.polimi.ingsw.View;
 import it.polimi.ingsw.Client.Client;
 import it.polimi.ingsw.Messages.OUTMessages.OUTMessage;
 import it.polimi.ingsw.Model.Board.SerializedBoardAbstract;
+import it.polimi.ingsw.Model.Enumerations.PlayerColour;
+
+import java.util.List;
 
 public class GUIView extends ClientView {
     public GUIView(Client client) {
@@ -20,7 +23,7 @@ public class GUIView extends ClientView {
     }
 
     @Override
-    public void askNickName() {
+    public void askNickName(List<PlayerColour> list, int numPlayer) {
 
     }
 

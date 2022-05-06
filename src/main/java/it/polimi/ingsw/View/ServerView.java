@@ -137,10 +137,6 @@ public class ServerView implements Observer<SerializedBoardAbstract> {
         return new MessageFirstPlayer();
     }
 
-    public OUTMessage askName() {
-        return new MessageAskName();
-    }
-
     public void manageControllerError() {
         this.socketClientConnectionCLI.asyncSend(new MessageControllerError());
     }

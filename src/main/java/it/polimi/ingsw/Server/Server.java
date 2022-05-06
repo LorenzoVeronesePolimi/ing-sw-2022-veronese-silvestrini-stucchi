@@ -1,6 +1,8 @@
 package it.polimi.ingsw.Server;
 
 import it.polimi.ingsw.Controller.Controller;
+import it.polimi.ingsw.Messages.OUTMessages.MessageAskName;
+import it.polimi.ingsw.Model.Enumerations.PlayerColour;
 
 import java.io.IOException;
 import java.net.ServerSocket;
@@ -17,7 +19,7 @@ public class Server {
     private Map<String, ClientConnection> waitingConnection = new HashMap<>();
     private Map<ClientConnection, ClientConnection> playingConnection = new HashMap<>();
     private int connections = 0;
-    private int areadyin =0; //number of players that have already given information about nick & colour
+    private int alreadyin =0; //number of players that have already given information about nick & colour
     private List<SocketClientConnectionCLI> socketConnections = new ArrayList<>();
 
     private Controller controller;
@@ -51,6 +53,11 @@ public class Server {
                 System.out.println("Connection Error!");
             }
         }
+    }
+
+    public void askPlayerInfo(List<PlayerColour> list, int numPlayers){
+        alreadyin++;
+        socketConnections.get(alreadyin).send(new MessageAskName(list, numPlayers));
     }
 
     /*

@@ -24,14 +24,14 @@ public class School implements Serializable {
 
     protected transient int numMaxStudentsHall;
     protected transient int numMaxTowers;
-    protected final List<Student> studentsHall;
-    protected final List<Student> studentsDiningRed;
-    protected final List<Student> studentsDiningPink;
-    protected final List<Student> studentsDiningGreen;
-    protected final List<Student> studentsDiningYellow;
-    protected final List<Student> studentsDiningBlue;
-    protected final List<Professor> professors;
-    protected final List<Tower> towers;
+    protected List<Student> studentsHall;
+    protected List<Student> studentsDiningRed;
+    protected List<Student> studentsDiningPink;
+    protected List<Student> studentsDiningGreen;
+    protected List<Student> studentsDiningYellow;
+    protected List<Student> studentsDiningBlue;
+    protected List<Professor> professors;
+    protected List<Tower> towers;
 
     /**
      * This method create a school and creates a certain amount of towers accordingly to the rules of the specific match.

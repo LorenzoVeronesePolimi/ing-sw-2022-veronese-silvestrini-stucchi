@@ -26,6 +26,14 @@ public class SchoolAdvanced extends School implements Serializable {
     }
     public SchoolAdvanced(SchoolAdvanced schoolAdvanced) {
         super(new Player(schoolAdvanced.player), schoolAdvanced.numMaxStudentsHall, schoolAdvanced.numMaxTowers);
+        super.studentsHall = schoolAdvanced.studentsHall;
+        super.studentsDiningBlue = schoolAdvanced.studentsDiningBlue;
+        super.studentsDiningPink = schoolAdvanced.studentsDiningPink;
+        super.studentsDiningRed = schoolAdvanced.studentsDiningRed;
+        super.studentsDiningGreen = schoolAdvanced.studentsDiningGreen;
+        super.studentsDiningYellow = schoolAdvanced.studentsDiningYellow;
+        super.professors = schoolAdvanced.professors;
+        super.towers = schoolAdvanced.towers;
         this.coins=schoolAdvanced.coins;
     }
 

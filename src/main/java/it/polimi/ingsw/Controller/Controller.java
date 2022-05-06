@@ -1,5 +1,6 @@
 package it.polimi.ingsw.Controller;
 
+import com.sun.management.GarbageCollectionNotificationInfo;
 import it.polimi.ingsw.Controller.Enumerations.ControllerErrorType;
 import it.polimi.ingsw.Controller.Enumerations.State;
 import it.polimi.ingsw.Controller.Exceptions.ControllerException;
@@ -19,10 +20,8 @@ import it.polimi.ingsw.Observer.ObserverController;
 import it.polimi.ingsw.Server.Server;
 import it.polimi.ingsw.View.ServerView;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.stream.Collectors;
 
 
 // This is the main Controller: it coordinates all the others
@@ -222,6 +221,20 @@ public class Controller implements ObserverController<Message> {
     }
 
     private void initMatch(){
+        if(numPlayers==4){
+            if(!players.get(0).getColour().equals(players.get(1).getColour())){
+                Player park;
+                if(!players.get(0).getColour().equals(players.get(2).getColour())){
+                    park = players.remove(3);
+                    players.add(3,players.remove(1));
+                }
+                else{
+                    park = players.remove(2);
+                    players.add(2,players.remove(1));
+                }
+                players.add(1, park);
+            }
+        }
         BoardFactory factory = new BoardFactory(this.players);
         this.board = factory.createBoard();
 
@@ -298,6 +311,8 @@ public class Controller implements ObserverController<Message> {
 
         controllerState.setState(State.WAITING_PLAYERS);
 
+        server.askPlayerInfo(new ArrayList<>(Collections.singletonList(colourFirstPlayer)), numPlayers);
+
         return true;
     }
 
@@ -354,7 +369,10 @@ public class Controller implements ObserverController<Message> {
             this.initMatch();
             controllerState.setState(State.PLANNING1);
         }
-
+        else {
+            List<PlayerColour> playerColourList = players.stream().map(x -> x.getColour()).collect(Collectors.toList());
+            server.askPlayerInfo(playerColourList, numPlayers);
+        }
         return true;
     }
 

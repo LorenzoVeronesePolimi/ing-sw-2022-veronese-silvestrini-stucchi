@@ -87,8 +87,6 @@ public class SocketClientConnectionCLI extends ClientConnection implements Runna
 
             if(firstPlayer) {
                 send(serverView.askFirstPlayer());
-            } else {
-                send(serverView.askName());
             }
 
             //server.lobby(this, this.nickname);
