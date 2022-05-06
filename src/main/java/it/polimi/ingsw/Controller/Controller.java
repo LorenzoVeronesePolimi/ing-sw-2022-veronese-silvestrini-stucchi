@@ -221,20 +221,20 @@ public class Controller implements ObserverController<Message> {
     }
 
     private void initMatch(){
-        /*if(numPlayers==4){
+        if(numPlayers==4){
             if(!players.get(0).getColour().equals(players.get(1).getColour())){
                 Player park;
                 if(!players.get(0).getColour().equals(players.get(2).getColour())){
                     park = players.remove(3);
-                    players.add(3,players.remove(1)); // ERROREEEEEEEE
+                    players.add(players.size()-1,players.remove(1));
                 }
                 else{
                     park = players.remove(2);
-                    players.add(2,players.remove(1));
+                    players.add(players.size()-2,players.remove(1));
                 }
                 players.add(1, park);
             }
-        }*/
+        }
         BoardFactory factory = new BoardFactory(this.players);
         this.board = factory.createBoard();
 
