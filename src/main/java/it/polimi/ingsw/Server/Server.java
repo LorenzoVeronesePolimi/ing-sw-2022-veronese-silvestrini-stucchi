@@ -17,12 +17,14 @@ public class Server {
     private Map<String, ClientConnection> waitingConnection = new HashMap<>();
     private Map<ClientConnection, ClientConnection> playingConnection = new HashMap<>();
     private int connections = 0;
+    private int areadyin =0; //number of players that have already given information about nick & colour
+    private List<SocketClientConnectionCLI> socketConnections = new ArrayList<>();
 
     private Controller controller;
 
     public Server() throws IOException {
         this.serverSocket = new ServerSocket(PORT);
-        this.controller = new Controller();
+        this.controller = new Controller(this);
     }
 
     public Controller getController() {
@@ -38,6 +40,7 @@ public class Server {
                 connections++;
                 System.out.println("Ready for the new connection - " + connections);
                 SocketClientConnectionCLI socketConnection = new SocketClientConnectionCLI(newSocket, this, controller);
+                socketConnections.add(socketConnection);
 
                 if(connections == 1) {
                     socketConnection.setFirstPlayerAction();

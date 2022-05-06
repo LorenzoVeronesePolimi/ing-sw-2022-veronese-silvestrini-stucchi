@@ -4,6 +4,7 @@ import it.polimi.ingsw.Model.Pawns.MotherNature;
 import it.polimi.ingsw.Model.Places.Archipelago;
 import it.polimi.ingsw.Model.Places.Cloud;
 import it.polimi.ingsw.Model.Places.School.School;
+import it.polimi.ingsw.Model.Places.School.SchoolAdvanced;
 import it.polimi.ingsw.Model.Player;
 
 import java.io.Serializable;
@@ -38,7 +39,12 @@ public class SerializedBoardAbstract implements Serializable {
         // Here we have to clone the schools -> clone the player (removing the playerHand)
         for(School school : schoolList) {
             if(!school.getPlayer().getNickname().equals(nickname)) {
-                this.schools.add(new School(school));
+                if(school instanceof SchoolAdvanced) {
+                    this.schools.add(new SchoolAdvanced((SchoolAdvanced) school));
+                }
+                else{
+                    this.schools.add(new School(school));
+                }
             }
             else{
                 this.schools.add(school);

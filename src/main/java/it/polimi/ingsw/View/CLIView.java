@@ -73,16 +73,25 @@ public class CLIView extends ClientView {
         } while (nickname.equals(""));
 
         do {
-            //TODO: manage game 4
-            System.out.println("What colour would you like [Black/White/Gray]:");
-            colour = input.nextLine();
-        } while (!colour.equalsIgnoreCase("black") && !colour.equalsIgnoreCase("white") &&
-                !colour.equalsIgnoreCase("gray"));
-
-        do {
             System.out.println("Select number of players [2 - 3 - 4]:");
             numPlayers = input.nextLine();
         } while (!numPlayers.equals("2") && !numPlayers.equals("3") && !numPlayers.equals("4"));
+
+        if(Integer.parseInt(numPlayers)==2){
+            do {
+                System.out.println("What colour would you like [Black/White]:");
+                colour = input.nextLine();
+            } while (!colour.equalsIgnoreCase("black") && !colour.equalsIgnoreCase("white"));
+        }
+        else{
+            do {
+                //TODO: manage game 4
+
+                System.out.println("What colour would you like [Black/White/Gray]:");
+                colour = input.nextLine();
+            } while (!colour.equalsIgnoreCase("black") && !colour.equalsIgnoreCase("white") &&
+                    !colour.equalsIgnoreCase("gray"));
+        }
 
         do {
             System.out.println("Do you want to play in ADVANCED mode? [Y/N]:");
@@ -119,6 +128,29 @@ public class CLIView extends ClientView {
                 System.out.println(serializedBoardAbstract.getSchools().get(i).toString());
             }
 
+        }
+        else{
+            SerializedBoardAdvanced serializedBoardAdvanced = (SerializedBoardAdvanced)serializedBoardAbstract;
+            if(serializedBoardAdvanced.getColourToExclude()!=null){
+                System.out.println("Colour to exclude: "+ serializedBoardAdvanced.getColourToExclude().toString());
+            }
+            System.out.println("Archipelagos: ");
+            for (int i = 0; i < serializedBoardAdvanced.getArchipelagos().size(); i++) {
+                System.out.print(i + ": ");
+                System.out.print(serializedBoardAdvanced.getArchipelagos().get(i).toString());
+                if (serializedBoardAdvanced.getMn().getCurrentPosition().equals(serializedBoardAdvanced.getArchipelagos().get(i))) {
+                    System.out.print("\tMother nature is here!");
+                }
+                if(serializedBoardAdvanced.getArchipelagos().get(i).getForbidFlag()>0) {
+                    System.out.print("Forbidden conquer!");
+                }
+                System.out.println();
+            }
+
+            System.out.println("Schools: ");
+            for (int i = 0; i < serializedBoardAdvanced.getSchools().size(); i++) {
+                System.out.println(serializedBoardAdvanced.getSchools().get(i).toString());
+            }
         }
 
     }

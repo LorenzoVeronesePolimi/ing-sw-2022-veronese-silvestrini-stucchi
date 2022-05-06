@@ -16,6 +16,7 @@ import it.polimi.ingsw.Model.Enumerations.SPColour;
 import it.polimi.ingsw.Model.Exceptions.*;
 import it.polimi.ingsw.Model.Player;
 import it.polimi.ingsw.Observer.ObserverController;
+import it.polimi.ingsw.Server.Server;
 import it.polimi.ingsw.View.ServerView;
 
 import java.util.ArrayList;
@@ -26,6 +27,7 @@ import java.util.Map;
 
 // This is the main Controller: it coordinates all the others
 public class Controller implements ObserverController<Message> {
+    private Server server;
     private int numPlayers;
     private boolean advanced = false;
     private BoardAbstract board;
@@ -49,7 +51,8 @@ public class Controller implements ObserverController<Message> {
 
     private boolean characterCardUsed = false; //true when a CC has been used
 
-    public Controller(){
+    public Controller(Server server){
+        this.server = server;
         this.players = new ArrayList<>();
         this.controllerInput = new ControllerInput();
         this.controllerState = new ControllerState();

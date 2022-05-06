@@ -12,7 +12,7 @@ import java.util.List;
  * This class extends the School class, adding methods that manage the coin aspect of the Advanced mode.
  */
 public class SchoolAdvanced extends School implements Serializable {
-    private final List<Coin> coins = new ArrayList<>();
+    private List<Coin> coins = new ArrayList<>();
 
     /**
      * The constructor created a schoolAdvanced by creating a normal School.
@@ -23,6 +23,10 @@ public class SchoolAdvanced extends School implements Serializable {
      */
     public SchoolAdvanced(Player player, int numStudentsHall, int numTowers) {
         super(player, numStudentsHall, numTowers);
+    }
+    public SchoolAdvanced(SchoolAdvanced schoolAdvanced) {
+        super(new Player(schoolAdvanced.player), schoolAdvanced.numMaxStudentsHall, schoolAdvanced.numMaxTowers);
+        this.coins=schoolAdvanced.coins;
     }
 
     /**
@@ -53,6 +57,20 @@ public class SchoolAdvanced extends School implements Serializable {
      */
     public int getNumCoins(){
         return coins.size();
+    }
+
+    @Override
+    public String toString() {
+        return   player +
+                "\n\t Hall=" + studentsHall +
+                "\n\t Dining=[RED=" + studentsDiningRed.size() +
+                ", PINK=" + studentsDiningPink.size() +
+                ", GREEN=" + studentsDiningGreen.size() +
+                ", YELLOW=" + studentsDiningYellow.size() +
+                ", BLUE=" + studentsDiningBlue.size() +
+                "]\n\t professors=" + professors +
+                "\t towers=" + towers.size() +
+                "\t coins=" + coins.size();
     }
 
 }

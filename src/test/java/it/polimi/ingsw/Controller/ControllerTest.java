@@ -550,7 +550,7 @@ public class ControllerTest {
 
 
         //**********CASE BOARD NOT ADVANCED (4 players)**********
-        this.controller = new Controller();
+        this.controller = new Controller(server);
         //CREATE MATCH
         MessageCreateMatch mb1 = new MessageCreateMatch("First", "white", 4, false, view1);
         try {
