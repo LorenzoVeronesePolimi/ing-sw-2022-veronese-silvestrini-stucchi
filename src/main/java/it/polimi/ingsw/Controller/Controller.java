@@ -1,6 +1,5 @@
 package it.polimi.ingsw.Controller;
 
-import com.sun.management.GarbageCollectionNotificationInfo;
 import it.polimi.ingsw.Controller.Enumerations.ControllerErrorType;
 import it.polimi.ingsw.Controller.Enumerations.State;
 import it.polimi.ingsw.Controller.Exceptions.ControllerException;
@@ -26,7 +25,7 @@ import java.util.stream.Collectors;
 
 // This is the main Controller: it coordinates all the others
 public class Controller implements ObserverController<Message> {
-    private Server server;
+    private final Server server;
     private int numPlayers;
     private boolean advanced = false;
     private BoardAbstract board;
@@ -34,8 +33,7 @@ public class Controller implements ObserverController<Message> {
     private List<Player> players; //ordered
 
     private int currentPlayerIndex = 0;
-    private List<ServerView> serverViews;
-    private Map<String, ServerView> playerNicknameView;
+    private final List<ServerView> serverViews;
 
     private final ControllerInput controllerInput;
     private final ControllerState controllerState;
@@ -337,13 +335,13 @@ public class Controller implements ObserverController<Message> {
             //                    player2->white
             //                    player3->gray --> ERROR
             if(numSameColour == 0) {
-                if(this.players.stream().filter(x -> x.getColour().equals(PlayerColour.WHITE)).count() > 0) {
-                    if(this.players.stream().filter(x -> x.getColour().equals(PlayerColour.BLACK)).count() > 0 ||
-                        this.players.stream().filter(x -> x.getColour().equals(PlayerColour.GRAY)).count() > 0) {
+                if(this.players.stream().anyMatch(x -> x.getColour().equals(PlayerColour.WHITE))) {
+                    if(this.players.stream().anyMatch(x -> x.getColour().equals(PlayerColour.BLACK)) ||
+                            this.players.stream().anyMatch(x -> x.getColour().equals(PlayerColour.GRAY))) {
                         return false;
                     }
-                } else if(this.players.stream().filter(x -> x.getColour().equals(PlayerColour.BLACK)).count() > 0) {
-                    if(this.players.stream().filter(x -> x.getColour().equals(PlayerColour.GRAY)).count() > 0) {
+                } else if(this.players.stream().anyMatch(x -> x.getColour().equals(PlayerColour.BLACK))) {
+                    if(this.players.stream().anyMatch(x -> x.getColour().equals(PlayerColour.GRAY))) {
                         return false;
                     }
                 }
@@ -355,7 +353,7 @@ public class Controller implements ObserverController<Message> {
             }
         }
         else{
-            if(this.players.stream().filter(x->x.getColour().equals(colour)).count() > 0)
+            if(this.players.stream().anyMatch(x -> x.getColour().equals(colour)))
                 return false;
         }
 
@@ -370,7 +368,7 @@ public class Controller implements ObserverController<Message> {
             controllerState.setState(State.PLANNING1);
         }
         else if(this.players.size() < numPlayers) {
-            List<PlayerColour> playerColourList = players.stream().map(x -> x.getColour()).collect(Collectors.toList());
+            List<PlayerColour> playerColourList = players.stream().map(Player::getColour).collect(Collectors.toList());
             server.askPlayerInfo(playerColourList, numPlayers);
         }
         return true;

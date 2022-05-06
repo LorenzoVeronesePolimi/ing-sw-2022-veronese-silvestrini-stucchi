@@ -96,6 +96,7 @@ public class CLIView extends ClientView {
 
             if(colourList.size()==3){
                 colour=(black==2)? "WHITE" : "BLACK";
+                System.out.println("Your colour is " + colour);
             }
             if(colourList.size()==2){
                 if(black==1 || white==1){
@@ -106,6 +107,7 @@ public class CLIView extends ClientView {
                 }
                 else{
                     colour=(black==2)? "WHITE" : "BLACK";
+                    System.out.println("Your colour is " + colour);
                 }
             }
             if(colourList.size()==1){
@@ -114,7 +116,6 @@ public class CLIView extends ClientView {
                     colour = input.nextLine();
                 } while (!colour.equalsIgnoreCase("BLACK") && !colour.equalsIgnoreCase("WHITE"));
             }
-            System.out.println("Your colour is " + colour);
 
         }
 
@@ -212,6 +213,9 @@ public class CLIView extends ClientView {
                 System.out.println(serializedBoardAdvanced.getSchools().get(i).toString());
             }
         }
+
+        //TODO: AssistantCard and CharacterCard
+        //TODO: Ask for next move (if it's the correct turn, maybe)
 
     }
 }

@@ -607,7 +607,8 @@ public class ControllerTest {
             e.printStackTrace();
         }
         Assertions.assertEquals(State.PLANNING2, controller.getControllerState().getState());
-        Assertions.assertEquals("Fourth", controller.getPlayers().get(3).getNickname());
+        // After reordering
+        Assertions.assertEquals("Second", controller.getPlayers().get(3).getNickname());
         Assertions.assertFalse(controller.isAdvanced());
     }
 

@@ -10,15 +10,13 @@ import it.polimi.ingsw.View.GUIView;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.NoSuchElementException;
-import java.util.Scanner;
 
 public class Client {
 
-    private String ip;
-    private int port;
+    private final String ip;
+    private final int port;
     private ClientView view;
     private ObjectInputStream socketIn;
     private ObjectOutputStream socketOut;
@@ -50,9 +48,10 @@ public class Client {
                 if(CLIorGUI) {
                     view = new GUIView(this);
                 }
+                view.printCustom("Stai per essere connesso, attendi!");
 
                 while (isActive()) {
-                    //view.printCustom("attesa");
+                    //view.printCustom("Attendi!");
                     /*
                         When a message is received it is managed by the view.
                         Then, this message is saved as prevMessage (in order to manage future errors).
@@ -74,6 +73,8 @@ public class Client {
                             prevMessage = (OUTMessage) inputMessage;
                         }
                     } else {
+                        System.out.println("\n\t The current board is this:");
+
                         SerializedBoardAbstract serializedBoard = (SerializedBoardAbstract) inputMessage;
                         if(serializedBoard.getType().equalsIgnoreCase("standard")) {
                             serializedBoard = (SerializedBoardAbstract) inputMessage;
