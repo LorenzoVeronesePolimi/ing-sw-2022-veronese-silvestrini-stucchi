@@ -8,7 +8,10 @@ import it.polimi.ingsw.Model.Enumerations.PlayerColour;
 import it.polimi.ingsw.View.ClientView;
 
 import java.rmi.ConnectIOException;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Locale;
+import java.util.Set;
 
 public class CLIView extends ClientView {
     public CLIView(Client client) {
@@ -162,6 +165,64 @@ public class CLIView extends ClientView {
         gameMode = gameMode.equalsIgnoreCase("Y") ? "true" : "false";
 
         client.asyncWriteToSocket("createMatch " + nickname + " " + colour + " " + numPlayers + " " + gameMode);
+    }
+
+    // This asks the player what AssistantCard does he want to use
+    public void askAssistantCard(){
+        int[] cardsMotherNatureMoves= {1, 1, 2, 2, 3, 3, 4, 4, 5, 5}; //TODO: check if these values ar correct
+        int turnPriority;
+
+        do {
+            System.out.println("Choose the turn priority of the card you want to use: ");
+            turnPriority = Integer.parseInt(input.nextLine());
+        } while (turnPriority < 1 || turnPriority > 10);
+
+        // turnPriority is enough to identify the card: assign motherNatureMovement automatically
+        client.asyncWriteToSocket("assistantCard " + cardsMotherNatureMoves[turnPriority - 1] + " " + turnPriority);
+    }
+
+    // This asks the player to move a student during the ACTION1 state
+    public void askAction1(){
+        Set<String> possibleColours = new HashSet<String>();
+        possibleColours.add("pink"); possibleColours.add("red"); possibleColours.add("yellow"); possibleColours.add("blue"); possibleColours.add("green");
+        String command;
+        String colour;
+
+        do {
+            System.out.println("Is ACTION1. What do you want to do? [studentHallToDiningRoom/studentToArchipelago] ");
+            command = input.nextLine();
+        } while (!command.equals("studentHallToDiningRoom") && !command.equals("studentToArchipelago"));
+
+        do {
+            System.out.println("Choose the colour's student to move: ");
+            colour = input.nextLine();
+        } while (!possibleColours.contains(colour.toLowerCase(Locale.ROOT)));
+
+        if(command.equals("studentHallToDiningRoom")){ //studentHallToDiningRoom
+            client.asyncWriteToSocket(command + " " + colour);
+        }
+        else{ //studentToArchipelago
+            int destArchipelagoIndex;
+
+            do {
+                System.out.println("Choose the index of the destination archipelago [0 to 11]: ");
+                destArchipelagoIndex = Integer.parseInt(input.nextLine());
+            } while (destArchipelagoIndex < 0 || destArchipelagoIndex > 11);
+
+            client.asyncWriteToSocket(command + " " + colour + " " + destArchipelagoIndex);
+        }
+    }
+
+    // This asks the player how much does he want to move Mother Nature
+    public void askMoveMotherNature(){
+        int moves;
+
+        do {
+            System.out.println("Is Action2: how much do you want to move Mother Nature? ");
+            moves = Integer.parseInt(input.nextLine());
+        } while (moves < 0 || moves > 6); //TODO: check the max value
+
+        client.asyncWriteToSocket("moveMotherNature " + moves);
     }
 
     @Override
