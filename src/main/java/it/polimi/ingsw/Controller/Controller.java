@@ -120,6 +120,11 @@ public class Controller implements ObserverController<Message> {
      *   if no: resend
      * Call the Model and apply the move requested
      * */
+    /**
+     * Controller is observer of ServerView, so it's awaken by its notify
+     * @param message is INMessage coming from the ServerView. It contains the user action
+     * @throws ControllerException if the action made is not possible.
+     */
     public void update(Message message) throws ControllerException {
         if(!controllerInput.checkFormat(message)){
             System.out.println("Invalid format");
@@ -154,6 +159,11 @@ public class Controller implements ObserverController<Message> {
 
     //associate the String to its SPColour. Note that I'm sure this association exists, since I made a control
     // in ControllerInput (checkStudentColour())
+    /**
+     * Convert String -> SPColour
+     * @param s is the string to be mapped.
+     * @return mapped SPColour or null of s="-"
+     */
     private SPColour mapStringToSPColour(String s){
         switch(s.toLowerCase()){
             case "red":
@@ -170,7 +180,12 @@ public class Controller implements ObserverController<Message> {
         return null; //possible only in case of "-"
     }
 
-    //this eliminates all "-"s and converts the others
+    /**
+     * Convert List<String> -> List<SPColour>
+     * @param colours are the Strings to convert
+     * @return mapped strings. It eliminates all "-" strings, so the returned List might be smaller
+     *      than the input one
+     */
     private List<SPColour> mapListStringToColour(List<String> colours){
         List<SPColour> converted = new ArrayList<>();
 
@@ -183,6 +198,11 @@ public class Controller implements ObserverController<Message> {
         return converted;
     }
 
+    /**
+     * Convert String -> PlayerColour
+     * @param s is the string to be mapped
+     * @return mapped PlayerColour
+     */
     private PlayerColour mapStringToPlayerColour(String s){
         switch(s.toLowerCase()){
             case "white":
@@ -192,9 +212,14 @@ public class Controller implements ObserverController<Message> {
             case "gray":
                 return PlayerColour.GRAY;
         }
-        return null; //possible only in case of "-"
+        return null; //impossible
     }
 
+    /**
+     * Convert String -> Player
+     * @param s is the string to be mapped
+     * @return mapped Player
+     */
     private Player mapStringToPlayer(String s) throws NoPlayerException{
         for(Player p : this.players){
             if(p.getNickname().equals(s)){
@@ -205,7 +230,11 @@ public class Controller implements ObserverController<Message> {
         throw new NoPlayerException();
     }
 
-    // checks if nickname is the current Player
+    /**
+     * Check if nickname is the current Player
+     * @param nickname is the string to be checked
+     * @return true if it's the current player, false otherwise
+     */
     private boolean isCurrentPlayer(String nickname){
         try{
             Player player = this.mapStringToPlayer(nickname);
@@ -218,6 +247,9 @@ public class Controller implements ObserverController<Message> {
         return false;
     }
 
+    /**
+     * Initialize the Board and BoardAdvances (eventually) and set observers
+     */
     private void initMatch(){
         if(numPlayers==4){
             if(!players.get(0).getColour().equals(players.get(1).getColour())){
@@ -268,6 +300,9 @@ public class Controller implements ObserverController<Message> {
         System.out.println("notify");
     }
 
+    /**
+     * Change order of Players in players according to the AssistantCards they played
+     */
     private void changeTurnOrder(){
         Map<Player, Integer> values = new HashMap<>();
 
@@ -291,6 +326,10 @@ public class Controller implements ObserverController<Message> {
         this.players = orderedPlayerList;
     }
 
+    /**
+     * @param message incomingMessage
+     * @return true if the actions has been done, false other-ways
+     */
     public boolean manageCreateMatch(MessageCreateMatch message){
         this.numPlayers = message.getNumPlayers();
         this.advanced = message.isAdvanced();
@@ -314,6 +353,10 @@ public class Controller implements ObserverController<Message> {
         return true;
     }
 
+    /**
+     * @param message incomingMessage
+     * @return true if the actions has been done, false other-ways
+     */
     public boolean manageAddPlayer(MessageAddPlayer message){
         String nickname = message.getNickname();
         PlayerColour colour = mapStringToPlayerColour(message.getColour());
@@ -374,6 +417,10 @@ public class Controller implements ObserverController<Message> {
         return true;
     }
 
+    /**
+     * @param message incomingMessage
+     * @return true if the actions has been done, false other-ways
+     */
     public boolean manageAssistantCard(MessageAssistantCard message){
         String nicknamePlayer = message.getNickname();
         int turnPriority = message.getTurnPriority();
@@ -398,6 +445,10 @@ public class Controller implements ObserverController<Message> {
         return true;
     }
 
+    /**
+     * @param message incomingMessage
+     * @return true if the actions has been done, false other-ways
+     */
     public boolean manageStudentHallToDiningRoom(MessageStudentHallToDiningRoom message){
         String nicknamePlayer = message.getNickname();
         SPColour studentColour = mapStringToSPColour(message.getColour());
@@ -432,6 +483,10 @@ public class Controller implements ObserverController<Message> {
         return false;
     }
 
+    /**
+     * @param message incomingMessage
+     * @return true if the actions has been done, false other-ways
+     */
     public boolean manageStudentToArchipelago(MessageStudentToArchipelago message){
         String nicknamePlayer = message.getNickname();
         SPColour studentColour = mapStringToSPColour(message.getColour());
@@ -457,6 +512,10 @@ public class Controller implements ObserverController<Message> {
         return false;
     }
 
+    /**
+     * @param message incomingMessage
+     * @return true if the actions has been done, false other-ways
+     */
     public boolean manageMoveMotherNature(MessageMoveMotherNature message){
         String nicknamePlayer = message.getNickname();
         int moves = message.getMoves();
@@ -476,6 +535,10 @@ public class Controller implements ObserverController<Message> {
         return false;
     }
 
+    /**
+     * @param message incomingMessage
+     * @return true if the actions has been done, false other-ways
+     */
     public boolean manageStudentCloudToSchool(MessageStudentCloudToSchool message){
         String nicknamePlayer = message.getNickname();
         int indexCloud = message.getIndexCloud();
@@ -502,6 +565,10 @@ public class Controller implements ObserverController<Message> {
     }
 
     //--------------------------------------------------CHARACTER CARDS
+    /**
+     * @param message incomingMessage
+     * @return true if the actions has been done, false other-ways
+     */
     public boolean manageCCExchangeThreeStudents(MessageCCExchangeThreeStudents message){
         int indexCard = message.getIndexCard();
         String nicknamePlayer = message.getNickname();
@@ -532,6 +599,10 @@ public class Controller implements ObserverController<Message> {
         return false;
     }
 
+    /**
+     * @param message incomingMessage
+     * @return true if the actions has been done, false other-ways
+     */
     public boolean manageCCExchangeTwoHallDining(MessageCCExchangeTwoHallDining message){
         int indexCard = message.getIndexCard();
         String nicknamePlayer = message.getNickname();
@@ -563,6 +634,10 @@ public class Controller implements ObserverController<Message> {
         return false;
     }
 
+    /**
+     * @param message incomingMessage
+     * @return true if the actions has been done, false other-ways
+     */
     public boolean manageCCExcludeColourFromCounting(MessageCCExcludeColourFromCounting message){
         int indexCard = message.getIndexCard();
         String nicknamePlayer = message.getNickname();
@@ -595,6 +670,10 @@ public class Controller implements ObserverController<Message> {
         return false;
     }
 
+    /**
+     * @param message incomingMessage
+     * @return true if the actions has been done, false other-ways
+     */
     public boolean manageCCExtraStudentInDining(MessageCCExtraStudentInDining message){
         int indexCard = message.getIndexCard();
         String nicknamePlayer = message.getNickname();
@@ -625,6 +704,10 @@ public class Controller implements ObserverController<Message> {
         return false;
     }
 
+    /**
+     * @param message incomingMessage
+     * @return true if the actions has been done, false other-ways
+     */
     public boolean manageCCFakeMNMovement(MessageCCFakeMNMovement message){
         int indexCard = message.getIndexCard();
         String nicknamePlayer = message.getNickname();
@@ -657,6 +740,10 @@ public class Controller implements ObserverController<Message> {
         return false;
     }
 
+    /**
+     * @param message incomingMessage
+     * @return true if the actions has been done, false other-ways
+     */
     public boolean manageCCForbidIsland(MessageCCForbidIsland message){
         int indexCard = message.getIndexCard();
         String nicknamePlayer = message.getNickname();
@@ -685,6 +772,10 @@ public class Controller implements ObserverController<Message> {
         return false;
     }
 
+    /**
+     * @param message incomingMessage
+     * @return true if the actions has been done, false other-ways
+     */
     public boolean manageCCPlaceOneStudent(MessageCCPlaceOneStudent message){
         int indexCard = message.getIndexCard();
         String nicknamePlayer = message.getNickname();
@@ -716,6 +807,10 @@ public class Controller implements ObserverController<Message> {
         return false;
     }
 
+    /**
+     * @param message incomingMessage
+     * @return true if the actions has been done, false other-ways
+     */
     public boolean manageCCReduceColourInDining(MessageCCReduceColourInDining message){
         int indexCard = message.getIndexCard();
         String nicknamePlayer = message.getNickname();
@@ -745,6 +840,10 @@ public class Controller implements ObserverController<Message> {
         return false;
     }
 
+    /**
+     * @param message incomingMessage
+     * @return true if the actions has been done, false other-ways
+     */
     public boolean manageCCTowerNoValue(MessageCCTowerNoValue message){
         int indexCard = message.getIndexCard();
         String nicknamePlayer = message.getNickname();
@@ -772,6 +871,10 @@ public class Controller implements ObserverController<Message> {
         return false;
     }
 
+    /**
+     * @param message incomingMessage
+     * @return true if the actions has been done, false other-ways
+     */
     public boolean manageCCTwoExtraPoints(MessageCCTwoExtraPoints message){
         int indexCard = message.getIndexCard();
         String nicknamePlayer = message.getNickname();
@@ -799,6 +902,10 @@ public class Controller implements ObserverController<Message> {
         return false;
     }
 
+    /**
+     * @param message incomingMessage
+     * @return true if the actions has been done, false other-ways
+     */
     public boolean manageCCTakeProfessorOnEquity(MessageCCTakeProfessorOnEquity message){
         int indexCard = message.getIndexCard();
         String nicknamePlayer = message.getNickname();
@@ -832,6 +939,10 @@ public class Controller implements ObserverController<Message> {
         return false;
     }
 
+    /**
+     * @param message incomingMessage
+     * @return true if the actions has been done, false other-ways
+     */
     public boolean manageCCTwoExtraIslands(MessageCCTwoExtraIslands message){
         int indexCard = message.getIndexCard();
         String nicknamePlayer = message.getNickname();
@@ -859,6 +970,12 @@ public class Controller implements ObserverController<Message> {
         return false;
     }
 
+    /**
+     * Check if the index chosen matches to the CharacterCard whose command has been given
+     * @param type of the message received
+     * @param indexCard index of the CC chosen among the extracted cards
+     * @return true the index matches, false other-ways
+     */
     private boolean isRightMapIndexToCharacterCard(INMessageType type, int indexCard){
         AbstractCharacterCard chosenCard = this.boardAdvanced.getExtractedCards().get(indexCard);
 

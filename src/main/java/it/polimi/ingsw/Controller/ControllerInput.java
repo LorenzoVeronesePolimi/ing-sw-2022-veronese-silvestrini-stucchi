@@ -11,6 +11,11 @@ public class ControllerInput {
 
     public ControllerInput(){}
 
+    /**
+     * Call the right method to check the message received
+     * @param arg message received
+     * @return true if the format is ok, false other-ways
+     */
     public boolean checkFormat(Object arg){
         if(!(arg instanceof Message)){
             return false;
@@ -21,11 +26,18 @@ public class ControllerInput {
         return message.checkInput(this);
     }
 
+    /**
+     * @param nickname nickname to check
+     * @return true if it's not void, false other-ways
+     */
     public boolean checkNickname(String nickname){
         return !(nickname.equals(""));
     }
 
-    //This checks ONLY the format of the word
+    /**
+     * @param c colour to check
+     * @return true if it's one of the given colours, false other-ways
+     */
     public boolean checkPlayerColour(String c){
         String[] possibleColours = {"white", "black", "gray"};
         for(String s : possibleColours){
@@ -34,15 +46,26 @@ public class ControllerInput {
         return false;
     }
 
+    /**
+     * @param m number of moves requested
+     * @return true if the number is possible, false other-ways
+     */
     public boolean checkMotherNatureMovement(int m){
         return (m >= 0 && m <= 7);
     }
 
+    /**
+     * @param p priority of the AssistantCard played
+     * @return true if the number is possible, false other-ways
+     */
     public boolean checkTurnPriority(int p){
         return (p >= 1 && p <= 10);
     }
 
-    // Check if the colour in the message (a String) is possible
+    /**
+     * @param c colour to check
+     * @return true if it's one of the given colours, false other-ways
+     */
     public boolean checkStudentColour(String c){
         String[] possibleColours = {"red", "pink", "blue", "yellow", "green"};
         for(String s : possibleColours){
@@ -51,6 +74,10 @@ public class ControllerInput {
         return false;
     }
 
+    /**
+     * @param colours colours to check
+     * @return true if all colours are ok in format, false other-ways
+     */
     public boolean checkMultipleStudentColour(List<String> colours){
         for(String c : colours){
             if(!(this.checkStudentColour(c) || c.equals("-"))){return false;} //I accept "-" for Character Cards
@@ -58,15 +85,26 @@ public class ControllerInput {
         return true;
     }
 
-    // Check if the destination Archipelago is possible
+    /**
+     * @param i index of the destination archipelago
+     * @return true if the index is possible, false other-ways
+     */
     public boolean checkDestinationArchipelagoIndex(int i){
         return (i >= 0 && i <= MAX_NUM_ARCHIPELAGOS);
     }
 
+    /**
+     * @param i index of the cloud
+     * @return true if the index is possible, false other-ways
+     */
     public boolean checkCloudIndex(int i){
         return (i >= 0 && i <=3);
     }
 
+    /**
+     * @param i index of the CharacterCard
+     * @return true if the index is possible, false other-ways
+     */
     public boolean checkIndexCard(int i){
         return (i >= 0 && i <= 2);
     }
