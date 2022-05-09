@@ -59,4 +59,9 @@ public class PlaceOneStudent extends AbstractCharacterCard implements Serializab
         s = bag.extractStudents(1);
         fourStudents.add(s.get(0));
     }
+
+    @Override
+    public String toString() {
+        return "Place One Student";
+    }
 }

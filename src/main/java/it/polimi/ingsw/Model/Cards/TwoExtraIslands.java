@@ -25,4 +25,9 @@ public class TwoExtraIslands extends AbstractCharacterCard implements Serializab
     public void useEffect(Player player){
         player.getLastCard().extendMnMovement();
     }
+
+    @Override
+    public String toString() {
+        return "Two Extra Islands";
+    }
 }

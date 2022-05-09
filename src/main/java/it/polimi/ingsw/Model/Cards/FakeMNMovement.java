@@ -44,4 +44,9 @@ public class FakeMNMovement extends AbstractCharacterCard implements Serializabl
         boardAdvanced.tryToConquer(currentPlayer); //if conquerable -> conquer
         boardAdvanced.moveMotherNatureInArchipelagoIndex(mnRealPosition);
     }
+
+    @Override
+    public String toString() {
+        return "Fake MN Movement";
+    }
 }

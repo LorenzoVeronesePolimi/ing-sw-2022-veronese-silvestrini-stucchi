@@ -54,4 +54,7 @@ public abstract class AbstractCharacterCard implements Serializable {
     public CharacterCardEnumeration getType() {
         return type;
     }
+
+    @Override
+    public abstract String toString();
 }

@@ -1,9 +1,12 @@
 package it.polimi.ingsw.View;
 
 import it.polimi.ingsw.Client.Client;
+import it.polimi.ingsw.Controller.Enumerations.State;
 import it.polimi.ingsw.Messages.OUTMessages.OUTMessage;
 import it.polimi.ingsw.Model.Board.SerializedBoardAbstract;
 import it.polimi.ingsw.Model.Board.SerializedBoardAdvanced;
+import it.polimi.ingsw.Model.Cards.AbstractCharacterCard;
+import it.polimi.ingsw.Model.Cards.AssistantCard;
 import it.polimi.ingsw.Model.Enumerations.PlayerColour;
 import it.polimi.ingsw.View.ClientView;
 
@@ -17,6 +20,9 @@ import static it.polimi.ingsw.View.CLIColours.ANSI_RED;
 import static it.polimi.ingsw.View.CLIColours.ANSI_RESET;
 
 public class CLIView extends ClientView {
+
+    private String playerNick;
+
     public CLIView(Client client) {
         super(client);
     }
@@ -29,9 +35,9 @@ public class CLIView extends ClientView {
     }
 
     public void printCustom(String err) {
-        System.err.println("\n----------------------------------------");
-        System.err.println(err);
-        System.err.println("----------------------------------------\n");
+        System.out.println("\n----------------------------------------");
+        System.out.println(err);
+        System.out.println("----------------------------------------\n");
     }
 
     @Override
@@ -56,6 +62,7 @@ public class CLIView extends ClientView {
         do {
             System.out.println("Write your nickname:");
             nickname = input.nextLine();
+            this.playerNick = nickname;
         } while (nickname.equals(""));
 
         if(numPlayer==2){
@@ -138,6 +145,7 @@ public class CLIView extends ClientView {
         do {
             System.out.println("Write your nickname:");
             nickname = input.nextLine();
+            this.playerNick = nickname;
         } while (nickname.equals(""));
 
         do {
@@ -170,6 +178,80 @@ public class CLIView extends ClientView {
         client.asyncWriteToSocket("createMatch " + nickname + " " + colour + " " + numPlayers + " " + gameMode);
     }
 
+    @Override
+    public void showBoard(SerializedBoardAbstract serializedBoardAbstract) {
+        System.out.println("Clouds: ");
+        for(int i=0; i<serializedBoardAbstract.getClouds().size(); i++) {
+            System.out.print(i + ": ");
+            System.out.println(serializedBoardAbstract.getClouds().get(i).toString());
+        }
+
+        if(serializedBoardAbstract.getType().equals("standard")) {
+            System.out.println("Archipelagos: ");
+            for (int i = 0; i < serializedBoardAbstract.getArchipelagos().size(); i++) {
+                System.out.print(i + ": ");
+                System.out.print(serializedBoardAbstract.getArchipelagos().get(i).toString());
+                if (serializedBoardAbstract.getMn().getCurrentPosition().equals(serializedBoardAbstract.getArchipelagos().get(i))) {
+                    System.out.println("\tMother nature is here!");
+                } else {
+                    System.out.println();
+                }
+            }
+
+            printSchool(serializedBoardAbstract);
+
+        }
+        else{
+            SerializedBoardAdvanced serializedBoardAdvanced = (SerializedBoardAdvanced)serializedBoardAbstract;
+            if(serializedBoardAdvanced.getColourToExclude()!=null){
+                System.out.println("Colour to exclude: "+ serializedBoardAdvanced.getColourToExclude().toString());
+            }
+            System.out.println("Archipelagos: ");
+            for (int i = 0; i < serializedBoardAdvanced.getArchipelagos().size(); i++) {
+                System.out.print(i + ": ");
+                System.out.print(serializedBoardAdvanced.getArchipelagos().get(i).toString());
+                if (serializedBoardAdvanced.getMn().getCurrentPosition().equals(serializedBoardAdvanced.getArchipelagos().get(i))) {
+                    System.out.print("\tMother nature is here!");
+                }
+                if(serializedBoardAdvanced.getArchipelagos().get(i).getForbidFlag()>0) {
+                    System.out.print("Forbidden conquer!");
+                }
+                System.out.println();
+            }
+
+            printSchool(serializedBoardAdvanced);
+            printExtractedCC(serializedBoardAdvanced);
+        }
+
+        //TODO: Ask for next move (if it's the correct turn, maybe)
+
+        if(this.playerNick.equals(serializedBoardAbstract.getCurrentPlayer().getNickname())) {
+            System.out.println("\nIT'S YOUR TURN! MAKE A MOVE!");
+            manageNextMove(serializedBoardAbstract);
+        } else {
+            System.out.println("\nIT'S " + serializedBoardAbstract.getCurrentPlayer().getNickname() + "'s TURN! WAIT...");
+        }
+    }
+
+    private void manageNextMove(SerializedBoardAbstract serializedBoardAbstract) {
+        System.out.println(serializedBoardAbstract.getCurrentState());
+        switch(serializedBoardAbstract.getCurrentState()){
+            case PLANNING2:
+                askAssistantCard();
+                break;
+            case ACTION1:
+                askAction1();
+                break;
+            case ACTION2:
+                //askAction2();
+                break;
+            case ACTION3:
+                //askAction3();
+                break;
+
+        }
+    }
+
     // This asks the player what AssistantCard does he want to use
     public void askAssistantCard(){
         int[] cardsMotherNatureMoves= {1, 1, 2, 2, 3, 3, 4, 4, 5, 5};
@@ -197,7 +279,7 @@ public class CLIView extends ClientView {
         } while (!command.equals("studentHallToDiningRoom") && !command.equals("studentToArchipelago"));
 
         do {
-            System.out.println("Choose the colour's student to move: ");
+            System.out.println("Choose the colour's student to move from hall: ");
             colour = input.nextLine();
         } while (!possibleColours.contains(colour.toLowerCase()));
 
@@ -208,7 +290,7 @@ public class CLIView extends ClientView {
             int destArchipelagoIndex;
 
             do {
-                System.out.println("Choose the index of the destination archipelago [0 to 11]: ");
+                System.out.println("Choose the index of the destination archipelago: ");
                 destArchipelagoIndex = Integer.parseInt(input.nextLine());
             } while (destArchipelagoIndex < 0 || destArchipelagoIndex > 11);
 
@@ -228,59 +310,59 @@ public class CLIView extends ClientView {
         client.asyncWriteToSocket("moveMotherNature " + moves);
     }
 
-    @Override
-    public void showBoard(SerializedBoardAbstract serializedBoardAbstract) {
-        System.out.println("Clouds: ");
-        for(int i=0; i<serializedBoardAbstract.getClouds().size(); i++) {
-            System.out.print(i + ": ");
-            System.out.println(serializedBoardAbstract.getClouds().get(i).toString());
+
+    private void printSchool(SerializedBoardAbstract serializedBoardAbstract) {
+        System.out.println("Schools: ");
+        for (int i = 0; i < serializedBoardAbstract.getSchools().size(); i++) {
+            System.out.println(serializedBoardAbstract.getSchools().get(i).toString());
+            printCards(serializedBoardAbstract, i);
         }
+    }
 
-        if(serializedBoardAbstract.getType().equals("standard")) {
-            System.out.println("Archipelagos: ");
-            for (int i = 0; i < serializedBoardAbstract.getArchipelagos().size(); i++) {
-                System.out.print(i + ": ");
-                System.out.print(serializedBoardAbstract.getArchipelagos().get(i).toString());
-                if (serializedBoardAbstract.getMn().getCurrentPosition().equals(serializedBoardAbstract.getArchipelagos().get(i))) {
-                    System.out.println("\tMother nature is here!");
-                } else {
-                    System.out.println();
+    private void printCards(SerializedBoardAbstract serializedBoardAbstract, int i) {
+        if(this.playerNick.equals(serializedBoardAbstract.getSchools().get(i).getPlayer().getNickname())) {
+            if(serializedBoardAbstract.getSchools().get(i).getPlayer().getPlayerHand().size() != 0) {
+                int size = serializedBoardAbstract.getSchools().get(i).getPlayer().getPlayerHand().size();
+
+                System.out.print("Your assistant cards (Turn priority, Mother nature movements): [");
+                for (int j = 0; j < size; j++) {
+                    AssistantCard card = serializedBoardAbstract.getSchools().get(i).getPlayer().getPlayerHand().get(j);
+                    System.out.print(card.toString());
+
+                    if (j == size - 1) {
+                        System.out.println("]");
+                    } else {
+                        System.out.print("; ");
+                    }
                 }
+            } else {
+                System.out.println("There are not assistant cards anymore!");
             }
 
-            System.out.println("Schools: ");
-            for (int i = 0; i < serializedBoardAbstract.getSchools().size(); i++) {
-                System.out.println(serializedBoardAbstract.getSchools().get(i).toString());
+        } else {
+            if (serializedBoardAbstract.getSchools().get(i).getPlayer().getLastCard() != null) {
+                System.out.print("Last card played (Turn priority, Mother nature movements): [");
+                System.out.print(serializedBoardAbstract.getSchools().get(i).getPlayer().getLastCard().toString());
+                System.out.println("]");
+            } else {
+                System.out.println("There is no last card!");
             }
 
         }
-        else{
-            SerializedBoardAdvanced serializedBoardAdvanced = (SerializedBoardAdvanced)serializedBoardAbstract;
-            if(serializedBoardAdvanced.getColourToExclude()!=null){
-                System.out.println("Colour to exclude: "+ serializedBoardAdvanced.getColourToExclude().toString());
-            }
-            System.out.println("Archipelagos: ");
-            for (int i = 0; i < serializedBoardAdvanced.getArchipelagos().size(); i++) {
-                System.out.print(i + ": ");
-                System.out.print(serializedBoardAdvanced.getArchipelagos().get(i).toString());
-                if (serializedBoardAdvanced.getMn().getCurrentPosition().equals(serializedBoardAdvanced.getArchipelagos().get(i))) {
-                    System.out.print("\tMother nature is here!");
-                }
-                if(serializedBoardAdvanced.getArchipelagos().get(i).getForbidFlag()>0) {
-                    System.out.print("Forbidden conquer!");
-                }
-                System.out.println();
-            }
+    }
 
-            System.out.println("Schools: ");
-            for (int i = 0; i < serializedBoardAdvanced.getSchools().size(); i++) {
-                System.out.println(serializedBoardAdvanced.getSchools().get(i).toString());
+    private void printExtractedCC(SerializedBoardAdvanced serializedBoardAdvanced) {
+        int size = serializedBoardAdvanced.getExtractedCards().size();
+
+        System.out.print("Extracted character cards: [");
+        for(int i = 0; i < serializedBoardAdvanced.getExtractedCards().size(); i++) {
+            System.out.print(serializedBoardAdvanced.getExtractedCards().get(i).toString());
+
+            if(i == size - 1) {
+                System.out.println("]");
+            } else {
+                System.out.print(", ");
             }
         }
-
-
-        //TODO: AssistantCard and CharacterCard
-        //TODO: Ask for next move (if it's the correct turn, maybe)
-
     }
 }

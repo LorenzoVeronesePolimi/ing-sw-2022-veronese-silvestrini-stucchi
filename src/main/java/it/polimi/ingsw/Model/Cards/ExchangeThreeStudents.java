@@ -88,4 +88,9 @@ public class ExchangeThreeStudents extends AbstractCharacterCard implements Seri
 
         students.addAll(hallToCard);
     }
+
+    @Override
+    public String toString() {
+        return "Exchange Three Students";
+    }
 }

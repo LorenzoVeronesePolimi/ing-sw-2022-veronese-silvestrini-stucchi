@@ -67,4 +67,9 @@ public class ExtraStudentInDining extends AbstractCharacterCard implements Seria
         student = bag.extractStudents(1);
         students.add(student.get(0));
     }
+
+    @Override
+    public String toString() {
+        return "Extra Student In Dining";
+    }
 }

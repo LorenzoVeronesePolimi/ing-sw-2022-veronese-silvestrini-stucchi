@@ -155,6 +155,12 @@ public class Controller implements ObserverController<Message> {
                     return; //case of first turn, in which clouds are filled immediately
                 }
             }
+
+            if(this.isAdvanced())
+                this.boardAdvanced.notifyPlayers();
+            else
+                this.board.notifyPlayers();
+            System.out.println("notify");
         }
     }
 
@@ -294,11 +300,6 @@ public class Controller implements ObserverController<Message> {
         System.out.println("init match");
         this.addBoardObserver();
         System.out.println("add obs");
-        if(this.isAdvanced())
-            this.boardAdvanced.notifyPlayers();
-        else
-            this.board.notifyPlayers();
-        System.out.println("notify");
     }
 
     /**

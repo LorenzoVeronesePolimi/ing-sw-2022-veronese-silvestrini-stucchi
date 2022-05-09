@@ -31,4 +31,9 @@ public class ForbidIsland extends AbstractCharacterCard implements Serializable 
         else
             throw new ExceededNumberForbidFlagException();
     }
+
+    @Override
+    public String toString() {
+        return "Forbid Island";
+    }
 }

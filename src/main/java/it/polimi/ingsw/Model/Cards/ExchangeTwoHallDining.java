@@ -77,4 +77,9 @@ public class ExchangeTwoHallDining extends AbstractCharacterCard implements Seri
             currentPlayerSchool.addStudentDiningRoom(s);
         }
     }
+
+    @Override
+    public String toString() {
+        return "Exchange Two Hall Dining";
+    }
 }

@@ -25,4 +25,9 @@ public class TwoExtraPoints extends AbstractCharacterCard implements Serializabl
     public void useEffect() {
         boardAdvanced.setTwoExtraPointsFlag(true);
     }
+
+    @Override
+    public String toString() {
+        return "Two Extra Points";
+    }
 }

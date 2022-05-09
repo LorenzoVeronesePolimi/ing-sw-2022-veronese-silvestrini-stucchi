@@ -62,4 +62,9 @@ public class TakeProfessorOnEquity extends AbstractCharacterCard implements Seri
             }
         }
     }
+
+    @Override
+    public String toString() {
+        return "Take Professor On Equity";
+    }
 }

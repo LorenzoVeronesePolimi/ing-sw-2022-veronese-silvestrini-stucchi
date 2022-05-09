@@ -54,4 +54,8 @@ public class AssistantCard implements Serializable {
     public void extendMnMovement(){
         this.motherNatureMovement+=2;
     }
+
+    public String toString() {
+        return "(" + this.turnPriority + ", " + this.motherNatureMovement + ")";
+    }
 }
