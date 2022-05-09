@@ -18,6 +18,7 @@ public class ServerView implements Observer<SerializedBoardAbstract> {
 
     private final SocketClientConnectionCLI socketClientConnectionCLI;
     private String playerNickname;
+    private Controller controller;
     /*
         Inner class created to divide the flow in two:
             - client -> model modification (managed byt this inner class)
@@ -101,6 +102,7 @@ public class ServerView implements Observer<SerializedBoardAbstract> {
     public ServerView(SocketClientConnectionCLI connection, Controller controller) {
         ConnectionListener connectionListener = new ConnectionListener(this);
         connection.addObserver(connectionListener);
+        this.controller = controller;
         connectionListener.addObserver(controller);
         this.socketClientConnectionCLI = connection;
     }
@@ -108,16 +110,19 @@ public class ServerView implements Observer<SerializedBoardAbstract> {
     //TODO: this should not be a Object message but instead a JSON or something, because it's received from the model itself
     @Override
     public void update(SerializedBoardAbstract message) {
+        SerializedBoardAbstract finalMessage;
         if(message instanceof SerializedBoardAdvanced) {
-            SerializedBoardAdvanced finalMessage = new SerializedBoardAdvanced(message.getArchipelagos(),
+            finalMessage = new SerializedBoardAdvanced(message.getArchipelagos(),
                     message.getClouds(), message.getMn(), message.getSchools(), ((SerializedBoardAdvanced) message).getColourToExclude(),
                     ((SerializedBoardAdvanced) message).getExtractedCards(), this.playerNickname);
-            this.socketClientConnectionCLI.asyncSendModel(finalMessage);
         } else {
-            SerializedBoardAbstract finalMessage = new SerializedBoardAbstract(message.getArchipelagos(),
+            finalMessage = new SerializedBoardAbstract(message.getArchipelagos(),
                     message.getClouds(), message.getMn(), message.getSchools(), this.playerNickname);
-            this.socketClientConnectionCLI.asyncSendModel(finalMessage);
         }
+
+        finalMessage.setCurrentState(this.controller.getControllerState().getState());
+        finalMessage.setCurrentPlayer(this.controller.getCurrentPlayer());
+        this.socketClientConnectionCLI.asyncSendModel(finalMessage);
     }
 
     protected String getPlayerNickname(){

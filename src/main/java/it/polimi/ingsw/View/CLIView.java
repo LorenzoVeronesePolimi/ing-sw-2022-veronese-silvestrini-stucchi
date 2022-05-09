@@ -13,6 +13,9 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Set;
 
+import static it.polimi.ingsw.View.CLIColours.ANSI_RED;
+import static it.polimi.ingsw.View.CLIColours.ANSI_RESET;
+
 public class CLIView extends ClientView {
     public CLIView(Client client) {
         super(client);
@@ -169,7 +172,7 @@ public class CLIView extends ClientView {
 
     // This asks the player what AssistantCard does he want to use
     public void askAssistantCard(){
-        int[] cardsMotherNatureMoves= {1, 1, 2, 2, 3, 3, 4, 4, 5, 5}; //TODO: check if these values ar correct
+        int[] cardsMotherNatureMoves= {1, 1, 2, 2, 3, 3, 4, 4, 5, 5};
         int turnPriority;
 
         do {
@@ -196,7 +199,7 @@ public class CLIView extends ClientView {
         do {
             System.out.println("Choose the colour's student to move: ");
             colour = input.nextLine();
-        } while (!possibleColours.contains(colour.toLowerCase(Locale.ROOT)));
+        } while (!possibleColours.contains(colour.toLowerCase()));
 
         if(command.equals("studentHallToDiningRoom")){ //studentHallToDiningRoom
             client.asyncWriteToSocket(command + " " + colour);
@@ -220,7 +223,7 @@ public class CLIView extends ClientView {
         do {
             System.out.println("Is Action2: how much do you want to move Mother Nature? ");
             moves = Integer.parseInt(input.nextLine());
-        } while (moves < 0 || moves > 6); //TODO: check the max value
+        } while (moves < 0 || moves > 7);
 
         client.asyncWriteToSocket("moveMotherNature " + moves);
     }
@@ -274,6 +277,7 @@ public class CLIView extends ClientView {
                 System.out.println(serializedBoardAdvanced.getSchools().get(i).toString());
             }
         }
+
 
         //TODO: AssistantCard and CharacterCard
         //TODO: Ask for next move (if it's the correct turn, maybe)

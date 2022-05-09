@@ -33,6 +33,7 @@ public abstract class BoardAbstract extends Observable implements Board {
 
 
 
+
     //--------------------------------------------------INITIALIZATION OF BOARD
 
     /**

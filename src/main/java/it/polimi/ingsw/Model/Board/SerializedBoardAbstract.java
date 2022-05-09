@@ -1,5 +1,6 @@
 package it.polimi.ingsw.Model.Board;
 
+import it.polimi.ingsw.Controller.Enumerations.State;
 import it.polimi.ingsw.Model.Pawns.MotherNature;
 import it.polimi.ingsw.Model.Places.Archipelago;
 import it.polimi.ingsw.Model.Places.Cloud;
@@ -19,6 +20,8 @@ public class SerializedBoardAbstract implements Serializable {
     private List<Cloud> clouds;
     private MotherNature mn;
     private List<School> schools;
+    private State currentState;
+    private Player currentPlayer;
 
     public SerializedBoardAbstract(List<Archipelago> archipelagos, List<Cloud> clouds, MotherNature mn, List<School> schools) {
         this.type = "standard";
@@ -71,4 +74,14 @@ public class SerializedBoardAbstract implements Serializable {
     public List<School> getSchools() {
         return schools;
     }
+
+    public State getCurrentState(){return this.currentState;}
+
+    public Player getCurrentPlayer() {
+        return currentPlayer;
+    }
+
+    public void setCurrentState(State newState){this.currentState = newState;}
+
+    public void setCurrentPlayer(Player currentPlayer){this.currentPlayer = currentPlayer;}
 }
