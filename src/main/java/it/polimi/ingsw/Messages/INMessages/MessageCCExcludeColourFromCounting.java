@@ -5,11 +5,11 @@ import it.polimi.ingsw.Controller.ControllerInput;
 
 import static it.polimi.ingsw.Messages.Enumerations.INMessageType.CC_EXCLUDE_COLOUR_FROM_COUNTING;
 
-public class MessageCCExcludeColourFromCounting extends MessageCC{
+public class MessageCCExcludeColourFromCounting extends Message{
     private final String colourToExclude;
 
-    public MessageCCExcludeColourFromCounting(int indexCard, String nicknamePlayer, String colourToExclude){
-        super(CC_EXCLUDE_COLOUR_FROM_COUNTING, nicknamePlayer, indexCard);
+    public MessageCCExcludeColourFromCounting(String nicknamePlayer, String colourToExclude){
+        super(CC_EXCLUDE_COLOUR_FROM_COUNTING, nicknamePlayer);
         this.colourToExclude = colourToExclude;
     }
 
@@ -19,8 +19,7 @@ public class MessageCCExcludeColourFromCounting extends MessageCC{
 
     @Override
     public boolean checkInput(ControllerInput controller) {
-        return (controller.checkIndexCard(this.indexCard) &&
-                controller.checkNickname(this.nickname)) &&
+        return (controller.checkNickname(this.nickname)) &&
                 controller.checkStudentColour(this.colourToExclude);
     }
 

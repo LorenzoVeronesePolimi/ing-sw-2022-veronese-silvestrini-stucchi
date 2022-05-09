@@ -5,16 +5,10 @@ import it.polimi.ingsw.Controller.ControllerInput;
 import it.polimi.ingsw.Messages.Enumerations.INMessageType;
 
 public abstract class MessageCC extends Message{
-    final int indexCard;
-
-    public MessageCC(INMessageType type, String nickname, int indexCard){
+    public MessageCC(INMessageType type, String nickname){
         super(type, nickname);
-        this.indexCard = indexCard - 1;
     }
 
-    public int getIndexCard() {
-        return indexCard;
-    }
 
     public abstract boolean checkInput(ControllerInput controller);
 

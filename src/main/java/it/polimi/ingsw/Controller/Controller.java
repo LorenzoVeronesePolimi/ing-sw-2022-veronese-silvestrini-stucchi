@@ -17,6 +17,7 @@ import it.polimi.ingsw.Model.Exceptions.*;
 import it.polimi.ingsw.Model.Player;
 import it.polimi.ingsw.Observer.ObserverController;
 import it.polimi.ingsw.Server.Server;
+import it.polimi.ingsw.View.Exceptions.NoCharacterCardException;
 import it.polimi.ingsw.View.ServerView;
 
 import java.util.*;
@@ -570,7 +571,12 @@ public class Controller implements ObserverController<Message> {
      * @return true if the actions has been done, false other-ways
      */
     public boolean manageCCExchangeThreeStudents(MessageCCExchangeThreeStudents message){
-        int indexCard = message.getIndexCard();
+        int indexCard;
+        try {
+            indexCard = this.ccTypeToIndex(message.getType());
+        } catch (NoCharacterCardException e) {
+            return false;
+        }
         String nicknamePlayer = message.getNickname();
         List<SPColour> coloursCard = this.mapListStringToColour(message.getColoursCard());
         List<SPColour> coloursHall = this.mapListStringToColour(message.getColoursHall());
@@ -578,8 +584,6 @@ public class Controller implements ObserverController<Message> {
         if(!isCurrentPlayer(nicknamePlayer)){return false;}
 
         if(isCharacterCardUsed()){return false;}
-
-        if(!isRightMapIndexToCharacterCard(message.getType(), indexCard)){return false;}
 
         try{
             if(controllerIntegrity.checkCCExchangeThreeStudents(getCurrentPlayer(), coloursCard, coloursHall,
@@ -604,7 +608,12 @@ public class Controller implements ObserverController<Message> {
      * @return true if the actions has been done, false other-ways
      */
     public boolean manageCCExchangeTwoHallDining(MessageCCExchangeTwoHallDining message){
-        int indexCard = message.getIndexCard();
+        int indexCard;
+        try {
+            indexCard = this.ccTypeToIndex(message.getType());
+        } catch (NoCharacterCardException e) {
+            return false;
+        }
         String nicknamePlayer = message.getNickname();
         List<SPColour> coloursHall = this.mapListStringToColour(message.getColoursHall());
         List<SPColour> coloursDiningRoom = this.mapListStringToColour(message.getColoursDiningRoom());
@@ -612,8 +621,6 @@ public class Controller implements ObserverController<Message> {
         if(!isCurrentPlayer(nicknamePlayer)){return false;}
 
         if(isCharacterCardUsed()){return false;}
-
-        if(!isRightMapIndexToCharacterCard(message.getType(), indexCard)){return false;}
 
         try {
             if(controllerIntegrity.checkCCExchangeTwoHallDining(getCurrentPlayer(), coloursHall, coloursDiningRoom)){
@@ -639,15 +646,18 @@ public class Controller implements ObserverController<Message> {
      * @return true if the actions has been done, false other-ways
      */
     public boolean manageCCExcludeColourFromCounting(MessageCCExcludeColourFromCounting message){
-        int indexCard = message.getIndexCard();
+        int indexCard;
+        try {
+            indexCard = this.ccTypeToIndex(message.getType());
+        } catch (NoCharacterCardException e) {
+            return false;
+        }
         String nicknamePlayer = message.getNickname();
         SPColour colourToExclude = this.mapStringToSPColour(message.getColourToExclude());
 
         if(!isCurrentPlayer(nicknamePlayer)){return false;}
 
         if(isCharacterCardUsed()){return false;}
-
-        if(!isRightMapIndexToCharacterCard(message.getType(), indexCard)){return false;}
 
         if(controllerIntegrity.checkCCGeneric()){
             try {
@@ -675,15 +685,18 @@ public class Controller implements ObserverController<Message> {
      * @return true if the actions has been done, false other-ways
      */
     public boolean manageCCExtraStudentInDining(MessageCCExtraStudentInDining message){
-        int indexCard = message.getIndexCard();
+        int indexCard;
+        try {
+            indexCard = this.ccTypeToIndex(message.getType());
+        } catch (NoCharacterCardException e) {
+            return false;
+        }
         String nicknamePlayer = message.getNickname();
         SPColour colourToMove = mapStringToSPColour(message.getColourToMove());
 
         if(!isCurrentPlayer(nicknamePlayer)){return false;}
 
         if(isCharacterCardUsed()){return false;}
-
-        if(!isRightMapIndexToCharacterCard(message.getType(), indexCard)){return false;}
 
         if(controllerIntegrity.checkCCGeneric()){
             try {
@@ -709,15 +722,18 @@ public class Controller implements ObserverController<Message> {
      * @return true if the actions has been done, false other-ways
      */
     public boolean manageCCFakeMNMovement(MessageCCFakeMNMovement message){
-        int indexCard = message.getIndexCard();
+        int indexCard;
+        try {
+            indexCard = this.ccTypeToIndex(message.getType());
+        } catch (NoCharacterCardException e) {
+            return false;
+        }
         String nicknamePlayer = message.getNickname();
         int fakeMNPosition = message.getFakeMNPosition();
 
         if(!isCurrentPlayer(nicknamePlayer)){return false;}
 
         if(isCharacterCardUsed()){return false;}
-
-        if(!isRightMapIndexToCharacterCard(message.getType(), indexCard)){return false;}
 
         if(controllerIntegrity.checkCCFakeMNMovement(fakeMNPosition)){
             try {
@@ -745,15 +761,18 @@ public class Controller implements ObserverController<Message> {
      * @return true if the actions has been done, false other-ways
      */
     public boolean manageCCForbidIsland(MessageCCForbidIsland message){
-        int indexCard = message.getIndexCard();
+        int indexCard;
+        try {
+            indexCard = this.ccTypeToIndex(message.getType());
+        } catch (NoCharacterCardException e) {
+            return false;
+        }
         String nicknamePlayer = message.getNickname();
         int archipelagoIndexToForbid = message.getArchipelagoIndexToForbid();
 
         if(!isCurrentPlayer(nicknamePlayer)){return false;}
 
         if(isCharacterCardUsed()){return false;}
-
-        if(!isRightMapIndexToCharacterCard(message.getType(), indexCard)){return false;}
 
         if(controllerIntegrity.checkCCForbidIsland(archipelagoIndexToForbid)){
             try {
@@ -777,7 +796,12 @@ public class Controller implements ObserverController<Message> {
      * @return true if the actions has been done, false other-ways
      */
     public boolean manageCCPlaceOneStudent(MessageCCPlaceOneStudent message){
-        int indexCard = message.getIndexCard();
+        int indexCard;
+        try {
+            indexCard = this.ccTypeToIndex(message.getType());
+        } catch (NoCharacterCardException e) {
+            return false;
+        }
         String nicknamePlayer = message.getNickname();
         SPColour colourToMove = mapStringToSPColour(message.getColourToMove());
         int archipelagoIndexDestination = message.getArchipelagoIndexDest();
@@ -785,8 +809,6 @@ public class Controller implements ObserverController<Message> {
         if(!isCurrentPlayer(nicknamePlayer)){return false;}
 
         if(isCharacterCardUsed()){return false;}
-
-        if(!isRightMapIndexToCharacterCard(message.getType(), indexCard)){return false;}
 
         try {
             PlaceOneStudent chosenCard = (PlaceOneStudent)this.boardAdvanced.getExtractedCards().get(indexCard);
@@ -812,15 +834,18 @@ public class Controller implements ObserverController<Message> {
      * @return true if the actions has been done, false other-ways
      */
     public boolean manageCCReduceColourInDining(MessageCCReduceColourInDining message){
-        int indexCard = message.getIndexCard();
+        int indexCard;
+        try {
+            indexCard = this.ccTypeToIndex(message.getType());
+        } catch (NoCharacterCardException e) {
+            return false;
+        }
         String nicknamePlayer = message.getNickname();
         SPColour colourToReduce = mapStringToSPColour(message.getColourToReduce());
 
         if(!isCurrentPlayer(nicknamePlayer)){return false;}
 
         if(isCharacterCardUsed()){return false;}
-
-        if(!isRightMapIndexToCharacterCard(message.getType(), indexCard)){return false;}
 
         try {
             if(controllerIntegrity.checkCCGeneric()) {
@@ -845,14 +870,17 @@ public class Controller implements ObserverController<Message> {
      * @return true if the actions has been done, false other-ways
      */
     public boolean manageCCTowerNoValue(MessageCCTowerNoValue message){
-        int indexCard = message.getIndexCard();
+        int indexCard;
+        try {
+            indexCard = this.ccTypeToIndex(message.getType());
+        } catch (NoCharacterCardException e) {
+            return false;
+        }
         String nicknamePlayer = message.getNickname();
 
         if(!isCurrentPlayer(nicknamePlayer)){return false;}
 
         if(isCharacterCardUsed()){return false;}
-
-        if(!isRightMapIndexToCharacterCard(message.getType(), indexCard)){return false;}
 
         if(controllerIntegrity.checkCCGeneric()){
             try {
@@ -876,14 +904,17 @@ public class Controller implements ObserverController<Message> {
      * @return true if the actions has been done, false other-ways
      */
     public boolean manageCCTwoExtraPoints(MessageCCTwoExtraPoints message){
-        int indexCard = message.getIndexCard();
+        int indexCard;
+        try {
+            indexCard = this.ccTypeToIndex(message.getType());
+        } catch (NoCharacterCardException e) {
+            return false;
+        }
         String nicknamePlayer = message.getNickname();
 
         if(!isCurrentPlayer(nicknamePlayer)){return false;}
 
         if(isCharacterCardUsed()){return false;}
-
-        if(!isRightMapIndexToCharacterCard(message.getType(), indexCard)){return false;}
 
         if(controllerIntegrity.checkCCGeneric()){
             try {
@@ -907,14 +938,17 @@ public class Controller implements ObserverController<Message> {
      * @return true if the actions has been done, false other-ways
      */
     public boolean manageCCTakeProfessorOnEquity(MessageCCTakeProfessorOnEquity message){
-        int indexCard = message.getIndexCard();
+        int indexCard;
+        try {
+            indexCard = this.ccTypeToIndex(message.getType());
+        } catch (NoCharacterCardException e) {
+            return false;
+        }
         String nicknamePlayer = message.getNickname();
 
         if(!isCurrentPlayer(nicknamePlayer)){return false;}
 
         if(isCharacterCardUsed()){return false;}
-
-        if(!isRightMapIndexToCharacterCard(message.getType(), indexCard)){return false;}
 
         try {
             if(controllerIntegrity.checkCCGeneric()){
@@ -944,14 +978,17 @@ public class Controller implements ObserverController<Message> {
      * @return true if the actions has been done, false other-ways
      */
     public boolean manageCCTwoExtraIslands(MessageCCTwoExtraIslands message){
-        int indexCard = message.getIndexCard();
+        int indexCard;
+        try {
+            indexCard = this.ccTypeToIndex(message.getType());
+        } catch (NoCharacterCardException e) {
+            return false;
+        }
         String nicknamePlayer = message.getNickname();
 
         if(!isCurrentPlayer(nicknamePlayer)){return false;}
 
         if(isCharacterCardUsed()){return false;}
-
-        if(!isRightMapIndexToCharacterCard(message.getType(), indexCard)){return false;}
 
         if(controllerIntegrity.checkCCGeneric()){
             try {
@@ -971,11 +1008,71 @@ public class Controller implements ObserverController<Message> {
     }
 
     /**
-     * Check if the index chosen matches to the CharacterCard whose command has been given
+     * Check if the type of CCCard chosen exists among extracted CCCards
      * @param type of the message received
-     * @param indexCard index of the CC chosen among the extracted cards
-     * @return true the index matches, false other-ways
+     * @return int of the CCCard among the extracted CCCards
+     * @throws NoCharacterCardException if there is no right CCCard
      */
+    private int ccTypeToIndex(INMessageType type) throws NoCharacterCardException {
+        List<AbstractCharacterCard> extractedCards = this.boardAdvanced.getExtractedCards();
+        for(int i = 0; i < extractedCards.size(); i++){
+            switch(extractedCards.get(i).getType()){
+                case EXCHANGE_THREE_STUDENTS:
+                    if(type == INMessageType.CC_EXCHANGE_THREE_STUDENTS){
+                        return i;
+                    }
+                case EXCHANGE_TWO_HALL_DINING:
+                    if(type == INMessageType.CC_EXCHANGE_TWO_HALL_DINING){
+                        return i;
+                    }
+                case EXCLUDE_COLOUR_FROM_COUNTING:
+                    if(type == INMessageType.CC_EXCLUDE_COLOUR_FROM_COUNTING){
+                        return i;
+                    }
+                case EXTRA_STUDENT_IN_DINING:
+                    if(type == INMessageType.CC_EXTRA_STUDENT_IN_DINING){
+                        return i;
+                    }
+                case FAKE_MN_MOVEMENT:
+                    if(type == INMessageType.CC_FAKE_MN_MOVEMENT){
+                        return i;
+                    }
+                case FORBID_ISLAND:
+                    if(type == INMessageType.CC_FORBID_ISLAND){
+                        return i;
+                    }
+                case PLACE_ONE_STUDENT:
+                    if(type == INMessageType.CC_PLACE_ONE_STUDENT){
+                        return i;
+                    }
+                case REDUCE_COLOUR_IN_DINING:
+                    if(type == INMessageType.CC_REDUCE_COLOUR_IN_DINING){
+                        return i;
+                    }
+                case TAKE_PROFESSOR_ON_EQUITY:
+                    if(type == INMessageType.CC_TAKE_PROFESSOR_ON_EQUITY){
+                        return i;
+                    }
+                case TOWER_NO_VALUE:
+                    if(type == INMessageType.CC_TOWER_NO_VALUE){
+                        return i;
+                    }
+                case TWO_EXTRA_ISLANDS:
+                    if(type == INMessageType.CC_TWO_EXTRA_ISLANDS){
+                        return i;
+                    }
+                case TWO_EXTRA_POINTS:
+                    if(type == INMessageType.CC_TWO_EXTRA_POINTS){
+                        return i;
+                    }
+            }
+        }
+
+        throw new NoCharacterCardException();
+    }
+
+
+    /*
     private boolean isRightMapIndexToCharacterCard(INMessageType type, int indexCard){
         AbstractCharacterCard chosenCard = this.boardAdvanced.getExtractedCards().get(indexCard);
 
@@ -1007,7 +1104,7 @@ public class Controller implements ObserverController<Message> {
                 return chosenCard.getType().equals(CharacterCardEnumeration.TWO_EXTRA_POINTS);
         }
         return false;
-    }
+    }*/
 
     public void addBoardObserver() {
         for(ServerView s : serverViews) {

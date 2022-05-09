@@ -5,16 +5,15 @@ import it.polimi.ingsw.Controller.ControllerInput;
 
 import static it.polimi.ingsw.Messages.Enumerations.INMessageType.CC_TWO_EXTRA_POINTS;
 
-public class MessageCCTwoExtraPoints extends MessageCC{
+public class MessageCCTwoExtraPoints extends Message{
 
-    public MessageCCTwoExtraPoints(int indexCard, String nicknamePlayer) {
-        super(CC_TWO_EXTRA_POINTS, nicknamePlayer, indexCard);
+    public MessageCCTwoExtraPoints(String nicknamePlayer) {
+        super(CC_TWO_EXTRA_POINTS, nicknamePlayer);
     }
 
     @Override
     public boolean checkInput(ControllerInput controller) {
-        return (controller.checkIndexCard(this.indexCard) &&
-                controller.checkNickname(this.nickname));
+        return (controller.checkNickname(this.nickname));
     }
 
     @Override

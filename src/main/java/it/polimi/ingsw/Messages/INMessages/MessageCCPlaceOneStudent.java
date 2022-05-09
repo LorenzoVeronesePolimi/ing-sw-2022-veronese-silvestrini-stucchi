@@ -5,12 +5,12 @@ import it.polimi.ingsw.Controller.ControllerInput;
 
 import static it.polimi.ingsw.Messages.Enumerations.INMessageType.CC_PLACE_ONE_STUDENT;
 
-public class MessageCCPlaceOneStudent extends MessageCC{
+public class MessageCCPlaceOneStudent extends Message{
     private final String colourToMove;
     private final int archipelagoIndexDest;
 
-    public MessageCCPlaceOneStudent(int indexCard, String nicknamePlayer, String colourToMove, int archipelagoIndexDest) {
-        super(CC_PLACE_ONE_STUDENT, nicknamePlayer, indexCard);
+    public MessageCCPlaceOneStudent(String nicknamePlayer, String colourToMove, int archipelagoIndexDest) {
+        super(CC_PLACE_ONE_STUDENT, nicknamePlayer);
         this.colourToMove = colourToMove;
         this.archipelagoIndexDest = archipelagoIndexDest;
     }
@@ -25,8 +25,7 @@ public class MessageCCPlaceOneStudent extends MessageCC{
 
     @Override
     public boolean checkInput(ControllerInput controller) {
-        return (controller.checkIndexCard(this.indexCard) &&
-                controller.checkNickname(this.nickname) &&
+        return (controller.checkNickname(this.nickname) &&
                 controller.checkStudentColour(this.colourToMove) &&
                 controller.checkDestinationArchipelagoIndex(this.archipelagoIndexDest));
     }

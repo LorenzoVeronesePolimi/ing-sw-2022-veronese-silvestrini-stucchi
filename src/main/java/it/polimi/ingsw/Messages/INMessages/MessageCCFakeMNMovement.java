@@ -5,11 +5,11 @@ import it.polimi.ingsw.Controller.ControllerInput;
 
 import static it.polimi.ingsw.Messages.Enumerations.INMessageType.CC_FAKE_MN_MOVEMENT;
 
-public class MessageCCFakeMNMovement extends MessageCC{
+public class MessageCCFakeMNMovement extends Message{
     private final int fakeMNPosition;
 
-    public MessageCCFakeMNMovement(int indexCard, String nicknamePlayer, int fakeMNPosition){
-        super(CC_FAKE_MN_MOVEMENT, nicknamePlayer, indexCard);
+    public MessageCCFakeMNMovement(String nicknamePlayer, int fakeMNPosition){
+        super(CC_FAKE_MN_MOVEMENT, nicknamePlayer);
         this.fakeMNPosition = fakeMNPosition;
     }
 
@@ -19,8 +19,7 @@ public class MessageCCFakeMNMovement extends MessageCC{
 
     @Override
     public boolean checkInput(ControllerInput controller) {
-        return (controller.checkIndexCard(this.indexCard) &&
-                controller.checkNickname(this.nickname) &&
+        return (controller.checkNickname(this.nickname) &&
                 controller.checkDestinationArchipelagoIndex(this.fakeMNPosition));
     }
 

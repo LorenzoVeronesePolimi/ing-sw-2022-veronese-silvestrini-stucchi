@@ -5,16 +5,15 @@ import it.polimi.ingsw.Controller.ControllerInput;
 
 import static it.polimi.ingsw.Messages.Enumerations.INMessageType.CC_TAKE_PROFESSOR_ON_EQUITY;
 
-public class MessageCCTakeProfessorOnEquity extends MessageCC{
+public class MessageCCTakeProfessorOnEquity extends Message{
 
-    public MessageCCTakeProfessorOnEquity(int indexCard, String nicknamePlayer){
-        super(CC_TAKE_PROFESSOR_ON_EQUITY, nicknamePlayer, indexCard);
+    public MessageCCTakeProfessorOnEquity(String nicknamePlayer){
+        super(CC_TAKE_PROFESSOR_ON_EQUITY, nicknamePlayer);
     }
 
     @Override
     public boolean checkInput(ControllerInput controller) {
-        return (controller.checkIndexCard(this.indexCard) &&
-                controller.checkNickname(this.nickname));
+        return (controller.checkNickname(this.nickname));
     }
 
     @Override

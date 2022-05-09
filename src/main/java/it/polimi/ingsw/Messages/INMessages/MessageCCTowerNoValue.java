@@ -5,16 +5,15 @@ import it.polimi.ingsw.Controller.ControllerInput;
 
 import static it.polimi.ingsw.Messages.Enumerations.INMessageType.CC_TOWER_NO_VALUE;
 
-public class MessageCCTowerNoValue extends MessageCC{
+public class MessageCCTowerNoValue extends Message{
 
-    public MessageCCTowerNoValue(int indexCard, String nicknamePlayer) {
-        super(CC_TOWER_NO_VALUE, nicknamePlayer, indexCard);
+    public MessageCCTowerNoValue(String nicknamePlayer) {
+        super(CC_TOWER_NO_VALUE, nicknamePlayer);
     }
 
     @Override
     public boolean checkInput(ControllerInput controller) {
-        return (controller.checkIndexCard(this.indexCard) &&
-                controller.checkNickname(this.nickname));
+        return (controller.checkNickname(this.nickname));
     }
 
     @Override
