@@ -375,6 +375,8 @@ public class ControllerTest {
         controller.setCharacterCardUsed(true);
         MessageCCExchangeThreeStudents mcc1Err2 = new MessageCCExchangeThreeStudents(controller.getCurrentPlayer().getNickname(), colourCard1, colourCard2, "-", colourHall1, colourHall2, "-");
         Assertions.assertThrows(ControllerException.class, () -> controller.update(mcc1Err2));
+
+        //TODO:
         /*
         //Not right CC
         controller.setCharacterCardUsed(false);
