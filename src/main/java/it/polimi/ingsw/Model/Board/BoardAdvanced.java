@@ -393,7 +393,7 @@ public class BoardAdvanced extends Observable implements Board {
             }
         }
 
-        notifyPlayers();
+        //notifyPlayers();
     }
 
     public void setColourToExclude(SPColour colourToExclude){

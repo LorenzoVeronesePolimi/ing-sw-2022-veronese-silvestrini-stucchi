@@ -278,7 +278,7 @@ public abstract class BoardAbstract extends Observable implements Board {
             challengerSchool.addProfessor(removed);
         }
 
-        notifyPlayers();
+        //notifyPlayers();
     }
 
 
