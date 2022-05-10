@@ -31,7 +31,11 @@ public class Controller implements ObserverController<Message> {
     private boolean advanced = false;
     private BoardAbstract board;
     private BoardAdvanced boardAdvanced; //null if advanced=0
+    private List<Player> sitPlayers; //contains initial order
     private List<Player> players; //ordered
+    private Player precomputedPlayer;
+    private int iteratorAC = 0; //this takes into account the number of AC played
+    private State precomputedState = State.PLANNING1;
 
     private int currentPlayerIndex = 0;
     private final List<ServerView> serverViews;
@@ -52,10 +56,19 @@ public class Controller implements ObserverController<Message> {
     public Controller(Server server){
         this.server = server;
         this.players = new ArrayList<>();
+        this.sitPlayers = new ArrayList<>();
         this.controllerInput = new ControllerInput();
         this.controllerState = new ControllerState();
         this.controllerIntegrity = new ControllerIntegrity();
         this.serverViews = new ArrayList<>();
+    }
+
+    public Player getPrecomputedPlayer() {
+        return precomputedPlayer;
+    }
+
+    public State getPrecomputedState() {
+        return precomputedState;
     }
 
     public Player getCurrentPlayer(){
@@ -145,10 +158,12 @@ public class Controller implements ObserverController<Message> {
         if(controllerState.getState() == State.PLANNING1){
             if(this.just_started){
                 controllerState.setState(State.PLANNING2);
+                this.precomputedState = State.PLANNING2;
                 this.just_started = false;
             }
             else{
                 controllerState.setState(State.PLANNING2);
+                this.precomputedState = State.PLANNING2;
                 try {
                     this.board.moveStudentBagToCloud();
                 } catch (ExceededMaxStudentsCloudException | StudentNotFoundException e) {
@@ -258,6 +273,9 @@ public class Controller implements ObserverController<Message> {
      * Initialize the Board and BoardAdvances (eventually) and set observers
      */
     private void initMatch(){
+        this.sitPlayers.addAll(this.players);
+        this.precomputedPlayer = this.sitPlayers.get(0);
+        
         if(numPlayers==4){
             if(!players.get(0).getColour().equals(players.get(1).getColour())){
                 Player park;
@@ -300,6 +318,37 @@ public class Controller implements ObserverController<Message> {
         System.out.println("init match");
         this.addBoardObserver();
         System.out.println("add obs");
+    }
+
+    private List<Player> precomputeTurnOrder(List<Player> list, int turnPriority){
+        Map<Player, Integer> values = new HashMap<>();
+
+        for(int i = 0; i < list.size() - 1; i++){
+            values.put(list.get(i), list.get(i).getLastCard().getTurnPriority());
+        }
+        values.put(list.get(list.size() - 1), turnPriority);
+
+        List<Player> orderedPlayerList = new ArrayList<>();
+        while (values.size() > 0) {
+            Map.Entry<Player, Integer> min = null;
+            for (Map.Entry<Player, Integer> e : values.entrySet()) {
+                if (min == null || min.getValue() > e.getValue()) {
+                    min = e;
+                }
+            }
+            Player minPlayer = min.getKey();
+            orderedPlayerList.add(minPlayer);
+            values.remove(minPlayer);
+        }
+
+        return orderedPlayerList;
+    }
+
+    private int computeNextACIndex(){
+        if(currentPlayerIndex < this.numPlayers - 1) {
+            return this.currentPlayerIndex + 1;
+        }
+        return 0;
     }
 
     /**
@@ -349,6 +398,7 @@ public class Controller implements ObserverController<Message> {
         this.serverViews.add(serverView);
 
         controllerState.setState(State.WAITING_PLAYERS);
+        this.precomputedState = State.WAITING_PLAYERS;
 
         server.askPlayerInfo(new ArrayList<>(Collections.singletonList(colourFirstPlayer)), numPlayers);
 
@@ -410,6 +460,7 @@ public class Controller implements ObserverController<Message> {
 
         if(this.players.size() == numPlayers){ // The requested number of players has been reached: let's go on
             this.initMatch();
+            this.precomputedState = State.PLANNING1;
             controllerState.setState(State.PLANNING1);
         }
         else if(this.players.size() < numPlayers) {
@@ -431,18 +482,37 @@ public class Controller implements ObserverController<Message> {
         if(!isCurrentPlayer(nicknamePlayer)){return false;}
         controllerIntegrity.checkAssistantCard(this.players, this.currentPlayerIndex, getCurrentPlayer(), turnPriority);
 
+        //precompute
+        if(this.iteratorAC == 0){
+            this.currentPlayerIndex = this.sitPlayers.indexOf(this.precomputedPlayer); //precomputedPlayer was set in the last Cloud
+        }
+
+        if(this.iteratorAC < this.numPlayers - 1){
+            this.precomputedPlayer = this.sitPlayers.get(this.computeNextACIndex());
+        }
+        else{
+            List<Player> precomputedNextPlayersList = precomputeTurnOrder(this.players, turnPriority);
+            this.precomputedPlayer = precomputedNextPlayersList.get(0);
+            this.precomputedState = State.ACTION1;
+        }
+        this.iteratorAC++;
+
         // Remove the card from his hand
         try{
             board.useAssistantCard(getCurrentPlayer(), turnPriority);
-        } catch(AssistantCardAlreadyPlayedTurnException | NoAssistantCardException ex){return false;} // card already used or no AssistantCard present
+        } catch(AssistantCardAlreadyPlayedTurnException | NoAssistantCardException ex){
+            this.iteratorAC --;
+            return false;
+        } // card already used or no AssistantCard present
 
         // Go on within the turn
-        this.currentPlayerIndex++;
+        this.currentPlayerIndex = this.sitPlayers.indexOf(this.precomputedPlayer);
 
-        if(this.currentPlayerIndex == this.players.size()){ //last player: all players has played their AssistantCard. No I can set the order
+        if(this.iteratorAC == this.numPlayers){ //last player: all players has played their AssistantCard. No I can set the order
             this.changeTurnOrder(); // reset the order of the Players according to the values of the AssistantCards
             this.currentPlayerIndex = 0; // the new turn will start
             controllerState.setState(State.ACTION1);
+            iteratorAC = 0;
         }
         return true;
     }
@@ -456,6 +526,11 @@ public class Controller implements ObserverController<Message> {
         SPColour studentColour = mapStringToSPColour(message.getColour());
 
         if(!isCurrentPlayer(nicknamePlayer)){return false;}
+
+        if(this.numStudentsToMoveCurrent == 1 || // all possible Students are going to be moved
+                this.board.getPlayerSchool(getCurrentPlayer()).getStudentsHall().size() == 1){
+            this.precomputedState = State.ACTION2;
+        }
 
         if(controllerIntegrity.checkStudentHallToDiningRoom(getCurrentPlayer(), studentColour)){
             if(this.advanced){
@@ -495,6 +570,11 @@ public class Controller implements ObserverController<Message> {
         int destinationArchipelagoIndex = message.getDestArchipelagoIndex();
 
         if(!isCurrentPlayer(nicknamePlayer)){return false;}
+
+        if(this.numStudentsToMoveCurrent == 1 || // all possible Students are going to be moved
+                this.board.getPlayerSchool(getCurrentPlayer()).getStudentsHall().size() == 1){
+            this.precomputedState = State.ACTION2;
+        }
 
         if(controllerIntegrity.checkStudentToArchipelago(getCurrentPlayer(), studentColour, destinationArchipelagoIndex)){
             try {
@@ -547,6 +627,13 @@ public class Controller implements ObserverController<Message> {
 
         if(!isCurrentPlayer(nicknamePlayer)){return false;}
 
+        if(this.currentPlayerIndex == this.players.size() - 1){ //all Players made their move => new turn
+            this.precomputedState = State.PLANNING1;
+        }
+        else{
+            this.precomputedState = State.ACTION1;
+        }
+
         if(controllerIntegrity.checkStudentCloudToSchool(getCurrentPlayer(), indexCloud)){
             try{
                 board.moveStudentCloudToSchool(getCurrentPlayer(), indexCloud);
@@ -556,7 +643,7 @@ public class Controller implements ObserverController<Message> {
             this.currentPlayerIndex++;
             if(this.currentPlayerIndex >= this.players.size()){ //all Players made their move => new turn
                 controllerState.setState(State.PLANNING1);
-                this.currentPlayerIndex = 0;
+                this.precomputedPlayer = players.get(0); //this will be used in the first iteration of manageAssistantCard
             }
             else{
                 controllerState.setState(State.ACTION1);
