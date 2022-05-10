@@ -222,8 +222,7 @@ public class ControllerTest {
         }
         Assertions.assertEquals(State.ACTION1, controller.getControllerState().getState());
         Assertions.assertEquals(0, controller.getCurrentPlayerIndex());
-        //TODO:verify this... may be second instead
-        Assertions.assertEquals("First", controller.getCurrentPlayer().getNickname());
+        Assertions.assertEquals("Second", controller.getCurrentPlayer().getNickname());
         Assertions.assertTrue(controller.isAdvanced());
 
         /*-----MessageStudentHallToDiningRoom 1-----*/
@@ -233,8 +232,7 @@ public class ControllerTest {
         //ERRORS IN CONTROLLER
         //Not current player
         MessageStudentHallToDiningRoom m5Err1 = new MessageStudentHallToDiningRoom("First", "red");
-        //TODO: why doesnt work
-        //Assertions.assertThrows(ControllerException.class, () -> controller.update(m5Err1));
+        Assertions.assertThrows(ControllerException.class, () -> controller.update(m5Err1));
 
         //OK
         MessageStudentHallToDiningRoom m5 = new MessageStudentHallToDiningRoom(controller.getCurrentPlayer().getNickname(), colourToMove);
@@ -254,8 +252,7 @@ public class ControllerTest {
         //ERRORS IN CONTROLLER
         //Not current player
         MessageStudentHallToDiningRoom m6Err1 = new MessageStudentHallToDiningRoom("First", "red");
-        //TODO: why?
-        //Assertions.assertThrows(ControllerException.class, () -> controller.update(m6Err1));
+        Assertions.assertThrows(ControllerException.class, () -> controller.update(m6Err1));
 
         //OK
         MessageStudentHallToDiningRoom m6 = new MessageStudentHallToDiningRoom(controller.getCurrentPlayer().getNickname(), colourToMove);
@@ -279,8 +276,7 @@ public class ControllerTest {
         //ERRORS IN CONTROLLER
         //Not current player
         MessageStudentToArchipelago m7Err2 = new MessageStudentToArchipelago("First", colourToMove, 10);
-        //TODO:
-        //Assertions.assertThrows(ControllerException.class, () -> controller.update(m7Err2));
+        Assertions.assertThrows(ControllerException.class, () -> controller.update(m7Err2));
 
         //Not existing playerNickname
         MessageStudentToArchipelago m7Err3 = new MessageStudentToArchipelago("Not Existing", colourToMove, 10);
@@ -305,13 +301,11 @@ public class ControllerTest {
         //ERRORS IN CONTROLLER
         //Not current player
         MessageMoveMotherNature m8Err2 = new MessageMoveMotherNature("First", 1);
-        //TODO:
-        //Assertions.assertThrows(ControllerException.class, () -> controller.update(m8Err2));
+        Assertions.assertThrows(ControllerException.class, () -> controller.update(m8Err2));
 
         //Not integrity possible number of moves
         MessageMoveMotherNature m8Err3 = new MessageMoveMotherNature(controller.getCurrentPlayer().getNickname(), 2);
-        //TODO:
-        //Assertions.assertThrows(ControllerException.class, () -> controller.update(m8Err3));
+        Assertions.assertThrows(ControllerException.class, () -> controller.update(m8Err3));
 
         //OK
         MessageMoveMotherNature m8 = new MessageMoveMotherNature(controller.getCurrentPlayer().getNickname(), 1);
@@ -330,8 +324,7 @@ public class ControllerTest {
         //ERRORS IN CONTROLLER
         //Not current player
         MessageStudentCloudToSchool m9Err2 = new MessageStudentCloudToSchool("First", 1);
-        //TODO:
-        //Assertions.assertThrows(ControllerException.class, () -> controller.update(m9Err2));
+        Assertions.assertThrows(ControllerException.class, () -> controller.update(m9Err2));
 
         //OK
         MessageStudentCloudToSchool m9 = new MessageStudentCloudToSchool(controller.getCurrentPlayer().getNickname(), 1);
@@ -342,8 +335,7 @@ public class ControllerTest {
         }
         Assertions.assertEquals(State.ACTION1, controller.getControllerState().getState());
         Assertions.assertEquals(1, controller.getCurrentPlayerIndex());
-        //TODO:
-        //Assertions.assertEquals("First", controller.getCurrentPlayer().getNickname());
+        Assertions.assertEquals("First", controller.getCurrentPlayer().getNickname());
 
         //Give lots of Coins to the player to test CharacterCards
         List<Coin> coins = new ArrayList<>();

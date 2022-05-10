@@ -8,16 +8,17 @@ import it.polimi.ingsw.Model.Board.SerializedBoardAdvanced;
 import it.polimi.ingsw.Model.Cards.AbstractCharacterCard;
 import it.polimi.ingsw.Model.Cards.AssistantCard;
 import it.polimi.ingsw.Model.Enumerations.PlayerColour;
+import it.polimi.ingsw.Model.Places.Archipelago;
 import it.polimi.ingsw.View.ClientView;
 
+import java.awt.*;
 import java.rmi.ConnectIOException;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Set;
 
-import static it.polimi.ingsw.View.CLIColours.ANSI_RED;
-import static it.polimi.ingsw.View.CLIColours.ANSI_RESET;
+import static it.polimi.ingsw.View.CLIColours.*;
 
 public class CLIView extends ClientView {
 
@@ -131,6 +132,7 @@ public class CLIView extends ClientView {
             }
 
         }
+        System.out.println(ANSI_RED + "Please, wait for other players to connect!" + ANSI_RESET);
 
         client.asyncWriteToSocket("addPlayer " + nickname + " " + colour);
     }
@@ -175,6 +177,7 @@ public class CLIView extends ClientView {
 
         gameMode = gameMode.equalsIgnoreCase("Y") ? "true" : "false";
 
+        System.out.println(ANSI_RED + "Please, wait for other players to connect!" + ANSI_RESET);
         client.asyncWriteToSocket("createMatch " + nickname + " " + colour + " " + numPlayers + " " + gameMode);
     }
 
@@ -190,13 +193,14 @@ public class CLIView extends ClientView {
         if(serializedBoardAbstract.getType().equals("standard")) {
             System.out.println("Archipelagos: ");
             for (int i = 0; i < serializedBoardAbstract.getArchipelagos().size(); i++) {
-                System.out.print(i + ": ");
-                System.out.print(serializedBoardAbstract.getArchipelagos().get(i).toString());
+                colourArchipelago(serializedBoardAbstract, i, serializedBoardAbstract.getArchipelagos(), serializedBoardAbstract);
                 if (serializedBoardAbstract.getMn().getCurrentPosition().equals(serializedBoardAbstract.getArchipelagos().get(i))) {
                     System.out.println("\tMother nature is here!");
                 } else {
                     System.out.println();
                 }
+
+               removeColourArchipelago(serializedBoardAbstract, i);
             }
 
             printSchool(serializedBoardAbstract);
@@ -205,12 +209,12 @@ public class CLIView extends ClientView {
         else{
             SerializedBoardAdvanced serializedBoardAdvanced = (SerializedBoardAdvanced)serializedBoardAbstract;
             if(serializedBoardAdvanced.getColourToExclude()!=null){
-                System.out.println("Colour to exclude: "+ serializedBoardAdvanced.getColourToExclude().toString());
+                System.out.println(ANSI_RED + "Colour to exclude: "+ serializedBoardAdvanced.getColourToExclude().toString() + ANSI_RESET);
             }
             System.out.println("Archipelagos: ");
             for (int i = 0; i < serializedBoardAdvanced.getArchipelagos().size(); i++) {
-                System.out.print(i + ": ");
-                System.out.print(serializedBoardAdvanced.getArchipelagos().get(i).toString());
+                colourArchipelago(serializedBoardAbstract, i, serializedBoardAdvanced.getArchipelagos(), serializedBoardAdvanced);
+
                 if (serializedBoardAdvanced.getMn().getCurrentPosition().equals(serializedBoardAdvanced.getArchipelagos().get(i))) {
                     System.out.print("\tMother nature is here!");
                 }
@@ -218,24 +222,31 @@ public class CLIView extends ClientView {
                     System.out.print("Forbidden conquer!");
                 }
                 System.out.println();
+
+                removeColourArchipelago(serializedBoardAbstract, i);
             }
 
             printSchool(serializedBoardAdvanced);
             printExtractedCC(serializedBoardAdvanced);
         }
 
-        //TODO: Ask for next move (if it's the correct turn, maybe)
+        printWaitTurn(serializedBoardAbstract);
+    }
 
+    private void printWaitTurn(SerializedBoardAbstract serializedBoardAbstract) {
+        System.out.print(ANSI_RED);
         if(this.playerNick.equals(serializedBoardAbstract.getCurrentPlayer().getNickname())) {
             System.out.println("\nIT'S YOUR TURN! MAKE A MOVE!");
+            System.out.print(ANSI_RESET);
+
             manageNextMove(serializedBoardAbstract);
         } else {
             System.out.println("\nIT'S " + serializedBoardAbstract.getCurrentPlayer().getNickname() + "'s TURN! WAIT...");
         }
+        System.out.print(ANSI_RESET);
     }
 
     private void manageNextMove(SerializedBoardAbstract serializedBoardAbstract) {
-        System.out.println(serializedBoardAbstract.getCurrentState());
         switch(serializedBoardAbstract.getCurrentState()){
             case PLANNING2:
                 askAssistantCard();
@@ -315,8 +326,12 @@ public class CLIView extends ClientView {
     private void printSchool(SerializedBoardAbstract serializedBoardAbstract) {
         System.out.println("Schools: ");
         for (int i = 0; i < serializedBoardAbstract.getSchools().size(); i++) {
+            colourSchool(serializedBoardAbstract, i);
+
             System.out.println(serializedBoardAbstract.getSchools().get(i).toString());
             printCards(serializedBoardAbstract, i);
+
+            removeColourSchool(serializedBoardAbstract, i);
         }
     }
 
@@ -371,6 +386,36 @@ public class CLIView extends ClientView {
             } else {
                 System.out.print(", ");
             }
+        }
+    }
+
+    private void colourArchipelago(SerializedBoardAbstract serializedBoardAbstract, int i, List<Archipelago> archipelagos, SerializedBoardAbstract serializedBoardAdvanced) {
+        if(serializedBoardAbstract.getMn().getCurrentPosition().equals(serializedBoardAbstract.getArchipelagos().get(i))) {
+            System.out.print(ANSI_RED);
+        }
+        if(serializedBoardAbstract.getArchipelagos().get(i).getOwner() != null) {
+            System.out.print(ANSI_YELLOW);
+        }
+
+        System.out.print(i + ": ");
+        System.out.print(archipelagos.get(i).toString());
+    }
+
+    private void removeColourArchipelago(SerializedBoardAbstract serializedBoardAbstract, int i) {
+        if(serializedBoardAbstract.getMn().getCurrentPosition().equals(serializedBoardAbstract.getArchipelagos().get(i))) {
+            System.out.print(ANSI_RESET);
+        }
+    }
+
+    private void colourSchool(SerializedBoardAbstract serializedBoardAbstract, int i) {
+        if(this.playerNick.equals(serializedBoardAbstract.getSchools().get(i).getPlayer().getNickname())) {
+            System.out.print(ANSI_CYAN);
+        }
+    }
+
+    private void removeColourSchool(SerializedBoardAbstract serializedBoardAbstract, int i) {
+        if(this.playerNick.equals(serializedBoardAbstract.getSchools().get(i).getPlayer().getNickname())) {
+            System.out.print(ANSI_RESET);
         }
     }
 }

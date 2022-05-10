@@ -49,7 +49,7 @@ public class Client {
                 if(this.CLIorGUI) {
                     this.view = new GUIView(this);
                 }
-                this.view.printCustom("Stai per essere connesso, attendi!");
+                this.view.printCustom("You will be connected soon, wait!");
 
                 while (isActive()) {
                     //view.printCustom("Attendi!");

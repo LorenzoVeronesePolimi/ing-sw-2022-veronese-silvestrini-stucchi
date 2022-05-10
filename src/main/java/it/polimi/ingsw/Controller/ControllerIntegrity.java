@@ -63,7 +63,7 @@ public class ControllerIntegrity {
         return (numPlayers >= 2 && numPlayers <= 4);
     }
 
-    public boolean checkAssistantCard(List<Player> players, int currentPlayerIndex, Player player, int turnPriority){
+    public boolean checkAssistantCard(List<Player> sitPlayers, int currentPlayerIndex, Player player, int turnPriority){
         //no other player used it or I have no choice
         if(player.getHandLength() == 1){ // only one AssistantCard in hand: he has no alternative
             return true;
@@ -72,8 +72,8 @@ public class ControllerIntegrity {
             if(currentPlayerIndex == 0){ // Base case: every Player controlled. No other Player used that AssistantCard
                 return true;
             }
-            if(players.get(0).getLastCard().getTurnPriority() != turnPriority){ // the first Player didn't use that card: let's check the others
-                return this.checkAssistantCard(players.subList(1, players.size()), currentPlayerIndex - 1, player, turnPriority);
+            if(sitPlayers.get(0).getLastCard().getTurnPriority() != turnPriority){ // the first Player didn't use that card: let's check the others
+                return this.checkAssistantCard(sitPlayers.subList(1, sitPlayers.size()), currentPlayerIndex - 1, player, turnPriority);
             }
             else{ // another Player used that card
                 return false;
