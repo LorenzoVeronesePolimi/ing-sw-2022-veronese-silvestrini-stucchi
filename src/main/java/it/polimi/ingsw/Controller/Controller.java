@@ -71,7 +71,7 @@ public class Controller implements ObserverController<Message> {
     }
 
     public Player getCurrentPlayer(){
-        return this.players.get(this.currentPlayerIndex);
+        return this.sitPlayers.get(this.currentPlayerIndex);
     }
 
     public int getCurrentPlayerIndex(){
@@ -289,7 +289,12 @@ public class Controller implements ObserverController<Message> {
                 }
                 players.add(1, park);
             }
+            /*
+            this.sitPlayers.addAll(this.players);
+            this.precomputedPlayer = this.sitPlayers.get(0);
+             */
         }
+
         BoardFactory factory = new BoardFactory(this.players);
         this.board = factory.createBoard();
 
@@ -477,16 +482,20 @@ public class Controller implements ObserverController<Message> {
     public boolean manageAssistantCard(MessageAssistantCard message){
         String nicknamePlayer = message.getNickname();
         int turnPriority = message.getTurnPriority();
+        System.out.println("cindex:" + getCurrentPlayer().getNickname());
+        System.out.println("nick:" + nicknamePlayer);
 
         // Is him the currentPlayer? Can he use that AssistantCard?
-        if(!isCurrentPlayer(nicknamePlayer)){return false;}
-        controllerIntegrity.checkAssistantCard(this.players, this.currentPlayerIndex, getCurrentPlayer(), turnPriority);
+        if(!isCurrentPlayer(nicknamePlayer)){
+            System.out.println("here");
+            return false;}
+        controllerIntegrity.checkAssistantCard(this.sitPlayers, this.currentPlayerIndex, getCurrentPlayer(), turnPriority);
 
         //precompute
         if(this.iteratorAC == 0){
             this.currentPlayerIndex = this.sitPlayers.indexOf(this.precomputedPlayer); //precomputedPlayer was set in the last Cloud
         }
-
+        System.out.println("iter 0");
         if(this.iteratorAC < this.numPlayers - 1){
             this.precomputedPlayer = this.sitPlayers.get(this.computeNextACIndex());
         }
@@ -496,18 +505,19 @@ public class Controller implements ObserverController<Message> {
             this.precomputedState = State.ACTION1;
         }
         this.iteratorAC++;
-
+        System.out.println("iter not 0");
         // Remove the card from his hand
         try{
             board.useAssistantCard(getCurrentPlayer(), turnPriority);
         } catch(AssistantCardAlreadyPlayedTurnException | NoAssistantCardException ex){
             this.iteratorAC --;
+            System.out.println("catch");
             return false;
         } // card already used or no AssistantCard present
-
+        System.out.println("after card");
         // Go on within the turn
         this.currentPlayerIndex = this.sitPlayers.indexOf(this.precomputedPlayer);
-
+        System.out.println("after cind update");
         if(this.iteratorAC == this.numPlayers){ //last player: all players has played their AssistantCard. No I can set the order
             this.changeTurnOrder(); // reset the order of the Players according to the values of the AssistantCards
             this.currentPlayerIndex = 0; // the new turn will start

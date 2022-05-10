@@ -277,7 +277,7 @@ public class CLIView extends ClientView {
         do {
             System.out.println("Is ACTION1. What do you want to do? [studentHallToDiningRoom/studentToArchipelago] ");
             command = input.nextLine();
-        } while (!command.equals("studentHallToDiningRoom") && !command.equals("studentToArchipelago"));
+        } while (!command.equalsIgnoreCase("studentHallToDiningRoom") && !command.equalsIgnoreCase("studentToArchipelago"));
 
         do {
             System.out.println("Choose the colour's student to move from hall: ");

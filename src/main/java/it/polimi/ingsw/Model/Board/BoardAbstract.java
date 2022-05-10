@@ -434,8 +434,10 @@ public abstract class BoardAbstract extends Observable implements Board {
         // control that no previous Player used that (but if it's his last card, let him use it)
         int currentPlayerIndex = this.players.indexOf(player);
         for(int i = 0; i < currentPlayerIndex; i++){
-            if(players.get(i).getLastCard().getTurnPriority() == turnPriority && player.getHandLength() > 1) {
-                throw new AssistantCardAlreadyPlayedTurnException();
+            if(players.get(i).getLastCard() != null) {
+                if (players.get(i).getLastCard().getTurnPriority() == turnPriority && player.getHandLength() > 1) {
+                    throw new AssistantCardAlreadyPlayedTurnException();
+                }
             }
         }
 
