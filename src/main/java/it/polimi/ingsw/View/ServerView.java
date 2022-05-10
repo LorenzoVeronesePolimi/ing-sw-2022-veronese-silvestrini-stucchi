@@ -18,7 +18,7 @@ public class ServerView implements Observer<SerializedBoardAbstract> {
 
     private final SocketClientConnectionCLI socketClientConnectionCLI;
     private String playerNickname;
-    private Controller controller;
+    private final Controller controller;
     /*
         Inner class created to divide the flow in two:
             - client -> model modification (managed byt this inner class)
@@ -52,40 +52,40 @@ public class ServerView implements Observer<SerializedBoardAbstract> {
         }
 
         public Message parseStringToMessage(String input) throws NoCharacterCardException {
-            String[] splitted = input.split(" ");
-            switch (splitted[0]){
+            String[] split = input.split(" ");
+            switch (split[0]){
                 case "createMatch":
-                    this.serverView.setPlayerNickname(splitted[1]); //not a problem id< error: I'll re-set it
-                    return new MessageCreateMatch(splitted[1], splitted[2], Integer.parseInt(splitted[3]), Boolean.parseBoolean(splitted[4]), this.serverView);
+                    this.serverView.setPlayerNickname(split[1]); //not a problem id< error: I'll re-set it
+                    return new MessageCreateMatch(split[1], split[2], Integer.parseInt(split[3]), Boolean.parseBoolean(split[4]), this.serverView);
                 case "addPlayer":
-                    this.serverView.setPlayerNickname(splitted[1]); //not a problem id error: I'll re-set it
-                    return new MessageAddPlayer(splitted[1], splitted[2], this.serverView);
+                    this.serverView.setPlayerNickname(split[1]); //not a problem id error: I'll re-set it
+                    return new MessageAddPlayer(split[1], split[2], this.serverView);
                 case "assistantCard":
-                    return new MessageAssistantCard(serverView.getPlayerNickname(), Integer.parseInt(splitted[1]),  Integer.parseInt(splitted[2]));
+                    return new MessageAssistantCard(serverView.getPlayerNickname(), Integer.parseInt(split[1]),  Integer.parseInt(split[2]));
                 case "studentHallToDiningRoom":
-                    return new MessageStudentHallToDiningRoom(serverView.getPlayerNickname(), splitted[1]);
+                    return new MessageStudentHallToDiningRoom(serverView.getPlayerNickname(), split[1]);
                 case "studentToArchipelago":
-                    return new MessageStudentToArchipelago(serverView.getPlayerNickname(), splitted[1], Integer.parseInt(splitted[2]));
+                    return new MessageStudentToArchipelago(serverView.getPlayerNickname(), split[1], Integer.parseInt(split[2]));
                 case "moveMotherNature":
-                    return new MessageMoveMotherNature(serverView.getPlayerNickname(), Integer.parseInt(splitted[1]));
+                    return new MessageMoveMotherNature(serverView.getPlayerNickname(), Integer.parseInt(split[1]));
                 case "studentCloudToSchool":
-                    return new MessageStudentCloudToSchool(serverView.getPlayerNickname(), Integer.parseInt(splitted[1]));
+                    return new MessageStudentCloudToSchool(serverView.getPlayerNickname(), Integer.parseInt(split[1]));
                 case "exchangeThreeStudents":
-                    return new MessageCCExchangeThreeStudents(serverView.getPlayerNickname(), splitted[1], splitted[2], splitted[3], splitted[4], splitted[5], splitted[6]);
+                    return new MessageCCExchangeThreeStudents(serverView.getPlayerNickname(), split[1], split[2], split[3], split[4], split[5], split[6]);
                 case "exchangeTwoHallDining":
-                    return new MessageCCExchangeTwoHallDining(serverView.getPlayerNickname(), splitted[1], splitted[2], splitted[3], splitted[4]);
+                    return new MessageCCExchangeTwoHallDining(serverView.getPlayerNickname(), split[1], split[2], split[3], split[4]);
                 case "excludeColourFromCounting":
-                    return new MessageCCExcludeColourFromCounting(serverView.getPlayerNickname(), splitted[1]);
+                    return new MessageCCExcludeColourFromCounting(serverView.getPlayerNickname(), split[1]);
                 case "extraStudentInDining":
-                    return new MessageCCExtraStudentInDining(serverView.getPlayerNickname(), splitted[1]);
+                    return new MessageCCExtraStudentInDining(serverView.getPlayerNickname(), split[1]);
                 case "fakeMNMovement":
-                    return new MessageCCFakeMNMovement(serverView.getPlayerNickname(), Integer.parseInt(splitted[1]));
+                    return new MessageCCFakeMNMovement(serverView.getPlayerNickname(), Integer.parseInt(split[1]));
                 case "forbidIsland":
-                    return new MessageCCForbidIsland(serverView.getPlayerNickname(), Integer.parseInt(splitted[1]));
+                    return new MessageCCForbidIsland(serverView.getPlayerNickname(), Integer.parseInt(split[1]));
                 case "placeOneStudent":
-                    return new MessageCCPlaceOneStudent(serverView.getPlayerNickname(), splitted[1], Integer.parseInt(splitted[2]));
+                    return new MessageCCPlaceOneStudent(serverView.getPlayerNickname(), split[1], Integer.parseInt(split[2]));
                 case "reduceColourInDining":
-                    return new MessageCCReduceColourInDining(serverView.getPlayerNickname(), splitted[1]);
+                    return new MessageCCReduceColourInDining(serverView.getPlayerNickname(), split[1]);
                 case "takeProfessorOnEquity":
                     return new MessageCCTakeProfessorOnEquity(serverView.getPlayerNickname());
                 case "towerNoValue":

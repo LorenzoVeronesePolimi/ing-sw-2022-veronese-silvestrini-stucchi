@@ -180,6 +180,7 @@ public class CLIView extends ClientView {
 
     @Override
     public void showBoard(SerializedBoardAbstract serializedBoardAbstract) {
+        System.out.flush();
         System.out.println("Clouds: ");
         for(int i=0; i<serializedBoardAbstract.getClouds().size(); i++) {
             System.out.print(i + ": ");
@@ -240,10 +241,10 @@ public class CLIView extends ClientView {
                 askAssistantCard();
                 break;
             case ACTION1:
-                askAction1();
+                askMoveStudents();
                 break;
             case ACTION2:
-                //askAction2();
+                askMoveMotherNature();
                 break;
             case ACTION3:
                 //askAction3();
@@ -253,7 +254,7 @@ public class CLIView extends ClientView {
     }
 
     // This asks the player what AssistantCard does he want to use
-    public void askAssistantCard(){
+    private void askAssistantCard(){
         int[] cardsMotherNatureMoves= {1, 1, 2, 2, 3, 3, 4, 4, 5, 5};
         int turnPriority;
 
@@ -267,7 +268,7 @@ public class CLIView extends ClientView {
     }
 
     // This asks the player to move a student during the ACTION1 state
-    public void askAction1(){
+    private void askMoveStudents(){
         Set<String> possibleColours = new HashSet<String>();
         possibleColours.add("pink"); possibleColours.add("red"); possibleColours.add("yellow"); possibleColours.add("blue"); possibleColours.add("green");
         String command;
@@ -299,11 +300,11 @@ public class CLIView extends ClientView {
     }
 
     // This asks the player how much does he want to move Mother Nature
-    public void askMoveMotherNature(){
+    private void askMoveMotherNature(){
         int moves;
 
         do {
-            System.out.println("Is Action2: how much do you want to move Mother Nature? ");
+            System.out.println("Is Action2: How much do you want to move Mother Nature? ");
             moves = Integer.parseInt(input.nextLine());
         } while (moves < 0 || moves > 7);
 
@@ -334,6 +335,13 @@ public class CLIView extends ClientView {
                     } else {
                         System.out.print("; ");
                     }
+                }
+
+                if(serializedBoardAbstract.getSchools().get(i).getPlayer().getLastCard() != null) {
+                    System.out.println("Last card played: [(" +
+                            serializedBoardAbstract.getSchools().get(i).getPlayer().getLastCard().getTurnPriority() +
+                            ", " + serializedBoardAbstract.getSchools().get(i).getPlayer().getLastCard().getMotherNatureMovement() +
+                            ")]");
                 }
             } else {
                 System.out.println("There are not assistant cards anymore!");

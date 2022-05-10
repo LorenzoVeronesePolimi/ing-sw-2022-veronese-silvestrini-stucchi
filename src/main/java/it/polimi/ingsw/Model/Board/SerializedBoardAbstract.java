@@ -7,11 +7,11 @@ import it.polimi.ingsw.Model.Places.Cloud;
 import it.polimi.ingsw.Model.Places.School.School;
 import it.polimi.ingsw.Model.Places.School.SchoolAdvanced;
 import it.polimi.ingsw.Model.Player;
+import it.polimi.ingsw.View.ClientView;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 public class SerializedBoardAbstract implements Serializable {
     private static final long serialVersionUID = 1L;
@@ -84,4 +84,8 @@ public class SerializedBoardAbstract implements Serializable {
     public void setCurrentState(State newState){this.currentState = newState;}
 
     public void setCurrentPlayer(Player currentPlayer){this.currentPlayer = currentPlayer;}
+
+    public void manageMessage(ClientView view) {
+        view.showBoard(this);
+    }
 }

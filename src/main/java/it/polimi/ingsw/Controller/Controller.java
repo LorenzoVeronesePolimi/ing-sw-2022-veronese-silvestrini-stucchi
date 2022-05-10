@@ -10,7 +10,6 @@ import it.polimi.ingsw.Model.Board.BoardAbstract;
 import it.polimi.ingsw.Model.Board.BoardAdvanced;
 import it.polimi.ingsw.Model.Board.BoardFactory;
 import it.polimi.ingsw.Model.Cards.*;
-import it.polimi.ingsw.Model.Enumerations.CharacterCardEnumeration;
 import it.polimi.ingsw.Model.Enumerations.PlayerColour;
 import it.polimi.ingsw.Model.Enumerations.SPColour;
 import it.polimi.ingsw.Model.Exceptions.*;
@@ -151,6 +150,7 @@ public class Controller implements ObserverController<Message> {
         }
 
         if(!message.manageMessage(this)){
+            System.out.println("Integrity error");
             throw new ControllerException(ControllerErrorType.INTEGRITY_ERROR);
         }
 
@@ -602,7 +602,13 @@ public class Controller implements ObserverController<Message> {
         String nicknamePlayer = message.getNickname();
         int moves = message.getMoves();
 
-        if(!isCurrentPlayer(nicknamePlayer)){return false;}
+        this.precomputedState = State.ACTION3;
+
+
+        if(!isCurrentPlayer(nicknamePlayer)){
+            this.precomputedState = State.ACTION2;
+            return false;
+        }
 
         if(controllerIntegrity.checkMoveMotherNature(getCurrentPlayer(), moves)){
             board.moveMotherNature(moves);
@@ -637,7 +643,10 @@ public class Controller implements ObserverController<Message> {
         if(controllerIntegrity.checkStudentCloudToSchool(getCurrentPlayer(), indexCloud)){
             try{
                 board.moveStudentCloudToSchool(getCurrentPlayer(), indexCloud);
-            } catch(ExceededMaxStudentsHallException ex){return false;}
+            } catch(ExceededMaxStudentsHallException ex){
+                //TODO: manage state after error
+                return false;
+            }
 
             // change current Player
             this.currentPlayerIndex++;

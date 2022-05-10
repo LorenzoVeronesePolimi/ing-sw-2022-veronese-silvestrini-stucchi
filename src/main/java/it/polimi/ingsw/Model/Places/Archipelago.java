@@ -259,7 +259,7 @@ public class Archipelago implements Serializable {
             numTowers = 0;
         } else{ numTowers = this.islands.size();}
         return
-                "owner=" + (owner==null?"nobody":owner) +
+                "owner=" + (owner==null?"nobody":owner.getNickname()) +
                 ", number of towers=" + numTowers +
                 ", students on archipelago=" + studentsData;
     }

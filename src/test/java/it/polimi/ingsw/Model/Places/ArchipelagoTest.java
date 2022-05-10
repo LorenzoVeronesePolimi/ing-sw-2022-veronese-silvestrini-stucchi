@@ -242,7 +242,7 @@ public class ArchipelagoTest {
         } catch (InvalidTowerNumberException | AnotherTowerException e) {
             e.printStackTrace();
         }
-        assertEquals("owner=" + (tested.getOwner()==null?"nobody":tested.getOwner()) +
+        assertEquals("owner=" + (tested.getOwner()==null?"nobody":tested.getOwner().getNickname()) +
                 ", number of towers=" + 1 +
                 ", students on archipelago=" + tested.howManyStudents(), tested.toString());
     }

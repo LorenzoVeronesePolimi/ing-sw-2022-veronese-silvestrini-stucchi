@@ -22,6 +22,8 @@ public class Client {
     private ObjectOutputStream socketOut;
     private boolean CLIorGUI = false;
     private boolean active = true;
+    private OUTMessage prevErrorOUTMessage = null;
+    private SerializedBoardAbstract prevErrorModelMessage = null;
 
     public Client(String ip, int port){
         this.ip = ip;
@@ -38,17 +40,16 @@ public class Client {
 
     public Thread asyncReadFromSocket(final ObjectInputStream socketIn){
         Thread t = new Thread(() -> {
-            OUTMessage prevMessage = null;
             try {
-                Object inputMessage = socketIn.readObject();
+                Object inputMessage = this.socketIn.readObject();
 
                 if(inputMessage instanceof OUTMessage)
-                    ((OUTMessage)inputMessage).manageMessage(view);
+                    ((OUTMessage)inputMessage).manageMessage(this.view);
 
-                if(CLIorGUI) {
-                    view = new GUIView(this);
+                if(this.CLIorGUI) {
+                    this.view = new GUIView(this);
                 }
-                view.printCustom("Stai per essere connesso, attendi!");
+                this.view.printCustom("Stai per essere connesso, attendi!");
 
                 while (isActive()) {
                     //view.printCustom("Attendi!");
@@ -61,32 +62,43 @@ public class Client {
                             - the flow continues until next move or error
                      */
 
-                    inputMessage = socketIn.readObject();
+                    inputMessage = this.socketIn.readObject();
 
                     if(inputMessage instanceof OUTMessage) {
-                        ((OUTMessage)inputMessage).manageMessage(view);
+                        ((OUTMessage)inputMessage).manageMessage(this.view);
 
-                        if (view.isErrorStatus()) {
-                            prevMessage.manageMessage(view);
-                            view.setErrorStatus(false);
+                        if (this.view.isErrorStatus()) {
+                            if(this.prevErrorOUTMessage != null) {
+                                this.prevErrorOUTMessage.manageMessage(this.view);
+                            } else if(this.prevErrorModelMessage != null) {
+                                this.prevErrorModelMessage.manageMessage(this.view);
+                            }
+
+                            this.view.setErrorStatus(false);
                         } else {
-                            prevMessage = (OUTMessage) inputMessage;
+                            this.prevErrorModelMessage = null;
+                            this.prevErrorOUTMessage = (OUTMessage) inputMessage;
                         }
                     } else {
                         System.out.println("\n\t The current board is this:");
 
                         SerializedBoardAbstract serializedBoard = (SerializedBoardAbstract) inputMessage;
+
+                        // QUESTA PARTE PUO' ESSERE TOLTA, È SOLO PER DEBUG
+                        /*
                         if(serializedBoard.getType().equalsIgnoreCase("standard")) {
-                            serializedBoard = (SerializedBoardAbstract) inputMessage;
-                            //view.printCustom("model standard");
+                            view.printCustom("model standard");
                         } else if(serializedBoard.getType().equalsIgnoreCase("advanced")) {
-                            serializedBoard = (SerializedBoardAdvanced) inputMessage;
-                            //view.printCustom("model advanced");
+                            view.printCustom("model advanced");
                         } else {
                             //view.printCustom("Client error");
                         }
+                         */
+                        //---------------------------------
 
-                        view.showBoard(serializedBoard);
+                        this.prevErrorOUTMessage = null;
+                        this.prevErrorModelMessage = serializedBoard;
+                        serializedBoard.manageMessage(this.view);
                     }
 
                 }
@@ -101,9 +113,9 @@ public class Client {
     public Thread asyncWriteToSocket(String messageToController){
         Thread t = new Thread(() -> {
             try {
-                socketOut.reset();
-                socketOut.writeObject(messageToController);
-                socketOut.flush();
+                this.socketOut.reset();
+                this.socketOut.writeObject(messageToController);
+                this.socketOut.flush();
             } catch(IOException | NullPointerException e){
                 System.err.println(e.getMessage());
             }
@@ -114,23 +126,23 @@ public class Client {
 
     public void run() throws IOException {
         // Connecting
-        Socket socket = new Socket(ip, port);
+        Socket socket = new Socket(this.ip, this.port);
         System.out.println("Connection established");
 
-        socketOut = new ObjectOutputStream(socket.getOutputStream());
-        socketOut.flush();
-        socketIn = new ObjectInputStream(socket.getInputStream());
+        this.socketOut = new ObjectOutputStream(socket.getOutputStream());
+        this.socketOut.flush();
+        this.socketIn = new ObjectInputStream(socket.getInputStream());
 
-        view = new CLIView(this);
+        this.view = new CLIView(this);
 
         try{
-            Thread t0 = asyncReadFromSocket(socketIn);
+            Thread t0 = asyncReadFromSocket(this.socketIn);
             t0.join();
         } catch(InterruptedException | NoSuchElementException e){
             System.out.println("Connection closed from the client side");
         } finally {
-            socketIn.close();
-            socketOut.close();
+            this.socketIn.close();
+            this.socketOut.close();
             socket.close();
         }
     }
