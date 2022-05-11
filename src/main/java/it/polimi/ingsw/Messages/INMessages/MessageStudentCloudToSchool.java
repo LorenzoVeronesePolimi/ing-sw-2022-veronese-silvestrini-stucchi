@@ -10,7 +10,7 @@ public class MessageStudentCloudToSchool extends Message{
 
     public MessageStudentCloudToSchool(String nicknamePlayer, int indexCloud){
         super(STUDENT_CLOUD_TO_SCHOOL, nicknamePlayer);
-        this.indexCloud = indexCloud - 1; //player choose 1, I put 0
+        this.indexCloud = indexCloud; //player choose 1, I put 0
     }
 
     public int getIndexCloud() {

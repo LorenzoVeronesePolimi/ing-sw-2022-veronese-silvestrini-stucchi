@@ -662,11 +662,16 @@ public class Controller implements ObserverController<Message> {
 
         if(!isCurrentPlayer(nicknamePlayer)){return false;}
 
+        System.out.println("pre if");
         if(this.currentPlayerIndex == this.players.size() - 1){ //all Players made their move => new turn
             this.precomputedState = State.PLANNING1;
+            this.precomputedPlayer = players.get(0);
+            System.out.println("ultimo");
         }
         else{
             this.precomputedState = State.ACTION1;
+            this.precomputedPlayer = this.players.get(currentPlayerIndex+1);
+            System.out.println("non ultimo");
         }
 
         if(controllerIntegrity.checkStudentCloudToSchool(getCurrentPlayer(), indexCloud)){
@@ -677,6 +682,7 @@ public class Controller implements ObserverController<Message> {
                 return false;
             }
 
+            System.out.println("nuvola svuotata");
             // change current Player
             this.currentPlayerIndex++;
             if(this.currentPlayerIndex >= this.players.size()){ //all Players made their move => new turn

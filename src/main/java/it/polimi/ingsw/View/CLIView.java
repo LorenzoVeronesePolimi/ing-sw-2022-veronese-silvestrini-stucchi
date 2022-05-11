@@ -132,7 +132,7 @@ public class CLIView extends ClientView {
             }
 
         }
-        System.out.println(ANSI_RED + "Please, wait for other players to connect!" + ANSI_RESET);
+        System.out.println(ANSI_GREEN + "Please, wait for other players to connect!" + ANSI_RESET);
 
         client.asyncWriteToSocket("addPlayer " + nickname + " " + colour);
     }
@@ -177,7 +177,7 @@ public class CLIView extends ClientView {
 
         gameMode = gameMode.equalsIgnoreCase("Y") ? "true" : "false";
 
-        System.out.println(ANSI_RED + "Please, wait for other players to connect!" + ANSI_RESET + "\n");
+        System.out.println(ANSI_GREEN + "Please, wait for other players to connect!" + ANSI_RESET + "\n");
         client.asyncWriteToSocket("createMatch " + nickname + " " + colour + " " + numPlayers + " " + gameMode);
     }
 
@@ -186,8 +186,10 @@ public class CLIView extends ClientView {
         System.out.println("\n\t The Board is this:");
         System.out.println("Clouds: ");
         for(int i=0; i<serializedBoardAbstract.getClouds().size(); i++) {
+            colourCloud(serializedBoardAbstract, i);
             System.out.print(i + ": ");
             System.out.println(serializedBoardAbstract.getClouds().get(i).toString());
+            removeColour();
         }
 
         if(serializedBoardAbstract.getType().equals("standard")) {
@@ -200,7 +202,7 @@ public class CLIView extends ClientView {
                     System.out.println();
                 }
 
-               removeColourArchipelago(serializedBoardAbstract, i);
+               removeColour();
             }
 
             printSchool(serializedBoardAbstract);
@@ -223,7 +225,7 @@ public class CLIView extends ClientView {
                 }
                 System.out.println();
 
-                removeColourArchipelago(serializedBoardAbstract, i);
+                removeColour();
             }
 
             printSchool(serializedBoardAdvanced);
@@ -234,7 +236,7 @@ public class CLIView extends ClientView {
     }
 
     private void printWaitTurn(SerializedBoardAbstract serializedBoardAbstract) {
-        System.out.print(ANSI_RED);
+        System.out.print(ANSI_GREEN);
         if(this.playerNick.equals(serializedBoardAbstract.getCurrentPlayer().getNickname())) {
             System.out.println("\nIT'S YOUR TURN! MAKE A MOVE!");
             System.out.print(ANSI_RESET);
@@ -258,7 +260,7 @@ public class CLIView extends ClientView {
                 askMoveMotherNature();
                 break;
             case ACTION3:
-                //askAction3();
+                askCloudChoice(serializedBoardAbstract);
                 break;
 
         }
@@ -289,6 +291,12 @@ public class CLIView extends ClientView {
             System.out.println("Is ACTION1. What do you want to do? [studentHallToDiningRoom/studentToArchipelago] ");
             command = input.nextLine();
         } while (!command.equalsIgnoreCase("studentHallToDiningRoom") && !command.equalsIgnoreCase("studentToArchipelago"));
+
+        if(command.equalsIgnoreCase("studentHallToDiningRoom")) {
+            command = "studentHallToDiningRoom";
+        } else if(command.equalsIgnoreCase("studentToArchipelago")) {
+            command = "studentToArchipelago";
+        }
 
         do {
             System.out.println("Choose the colour's student to move from hall: ");
@@ -322,6 +330,16 @@ public class CLIView extends ClientView {
         client.asyncWriteToSocket("moveMotherNature " + moves);
     }
 
+    private void askCloudChoice(SerializedBoardAbstract serializedBoardAbstract) {
+        int cloudIndex;
+        do {
+            System.out.println("Is Action3: Which cloud do you choose? ");
+            cloudIndex = Integer.parseInt(input.nextLine());
+        } while (cloudIndex < 0 || cloudIndex > serializedBoardAbstract.getClouds().size());
+        System.out.println(ANSI_RED + cloudIndex + ANSI_RESET);
+        client.asyncWriteToSocket("studentCloudToSchool " + cloudIndex);
+    }
+
 
     private void printSchool(SerializedBoardAbstract serializedBoardAbstract) {
         System.out.println("Schools: ");
@@ -331,7 +349,7 @@ public class CLIView extends ClientView {
             System.out.println(serializedBoardAbstract.getSchools().get(i).toString());
             printCards(serializedBoardAbstract, i);
 
-            removeColourSchool(serializedBoardAbstract, i);
+            removeColour();
         }
     }
 
@@ -389,9 +407,15 @@ public class CLIView extends ClientView {
         }
     }
 
+    private void colourCloud(SerializedBoardAbstract serializedBoardAbstract, int index){
+        if(serializedBoardAbstract.getClouds().get(index).getStudents().size()==0){
+            System.out.print(ANSI_BLACK);
+        }
+    }
+
     private void colourArchipelago(SerializedBoardAbstract serializedBoardAbstract, int i, List<Archipelago> archipelagos, SerializedBoardAbstract serializedBoardAdvanced) {
         if(serializedBoardAbstract.getMn().getCurrentPosition().equals(serializedBoardAbstract.getArchipelagos().get(i))) {
-            System.out.print(ANSI_RED);
+            System.out.print(ANSI_GREEN);
         }
         if(serializedBoardAbstract.getArchipelagos().get(i).getOwner() != null) {
             System.out.print(ANSI_YELLOW);
@@ -401,21 +425,13 @@ public class CLIView extends ClientView {
         System.out.print(archipelagos.get(i).toString());
     }
 
-    private void removeColourArchipelago(SerializedBoardAbstract serializedBoardAbstract, int i) {
-        if(serializedBoardAbstract.getMn().getCurrentPosition().equals(serializedBoardAbstract.getArchipelagos().get(i))) {
-            System.out.print(ANSI_RESET);
-        }
-    }
-
     private void colourSchool(SerializedBoardAbstract serializedBoardAbstract, int i) {
         if(this.playerNick.equals(serializedBoardAbstract.getSchools().get(i).getPlayer().getNickname())) {
             System.out.print(ANSI_CYAN);
         }
     }
 
-    private void removeColourSchool(SerializedBoardAbstract serializedBoardAbstract, int i) {
-        if(this.playerNick.equals(serializedBoardAbstract.getSchools().get(i).getPlayer().getNickname())) {
-            System.out.print(ANSI_RESET);
-        }
+    private void removeColour() {
+        System.out.print(ANSI_RESET);
     }
 }
