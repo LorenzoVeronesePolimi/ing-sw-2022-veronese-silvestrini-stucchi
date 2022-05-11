@@ -111,6 +111,12 @@ public abstract class BoardAbstract extends Observable implements Board {
         return this.archipelagos.get(archipelagoIndex);
     }
 
+    //added for isGameEnded in Controller
+    public int getNumArchipelagos(){return this.archipelagos.size();}
+
+    //added for isGameEnded in Controller
+    public int getNumStudentsInBag(){return this.bag.getNumStudents();}
+
     public Map<SPColour, Integer> getNumStudentsInArchipelago(int archipelagoIndex) {
         return this.archipelagos.get(archipelagoIndex).howManyStudents();
     }

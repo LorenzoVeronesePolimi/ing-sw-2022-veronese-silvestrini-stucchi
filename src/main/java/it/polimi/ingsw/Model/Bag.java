@@ -74,6 +74,11 @@ public class Bag {
         return removedStudents;
     }
 
+    //added for isGameEnded in Controller
+    public int getNumStudents(){
+        return this.students.size();
+    }
+
     /**
      *
      * @param num is the number of students that the caller wants to extract.

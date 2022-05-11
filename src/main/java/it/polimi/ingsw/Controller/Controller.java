@@ -36,6 +36,7 @@ public class Controller implements ObserverController<Message> {
     private int iteratorAC = 0; //this takes into account the number of AC played
     private State precomputedState = State.PLANNING1;
     private List<Integer> usedCards;
+    private boolean gameEnded = false; //true when the game is going to end at the end of the round
 
     private int currentPlayerIndex = 0;
     private final List<ServerView> serverViews;
@@ -62,6 +63,10 @@ public class Controller implements ObserverController<Message> {
         this.controllerState = new ControllerState();
         this.controllerIntegrity = new ControllerIntegrity();
         this.serverViews = new ArrayList<>();
+    }
+
+    public boolean isGameEnded() {
+        return gameEnded;
     }
 
     public Player getPrecomputedPlayer() {
@@ -181,8 +186,10 @@ public class Controller implements ObserverController<Message> {
                         this.boardAdvanced.moveStudentBagToCloud();
                     else
                         this.board.moveStudentBagToCloud();
-                } catch (ExceededMaxStudentsCloudException | StudentNotFoundException e) {
+                } catch (ExceededMaxStudentsCloudException e) {
                     return; //case of first turn, in which clouds are filled immediately
+                } catch (StudentNotFoundException e){ //CASE 2.1 of end of the game
+                    gameEndedBag(this.board.getNumStudentsInBag());
                 }
             }
         }
@@ -514,9 +521,12 @@ public class Controller implements ObserverController<Message> {
             return false;
         }
 
-
         //precompute
         this.precomputeNextPlayer(turnPriority);
+        /*The following will put END in precomputedState if true.
+        * If the action fails, precomputedState will be restored
+        * Else players will know immediately that the game has ended*/
+        this.gameEndedAssistantCards(this.getCurrentSitPlayer().getHandLength() - 1);
 
         // Remove the card from his hand
         try{
@@ -652,7 +662,7 @@ public class Controller implements ObserverController<Message> {
         int moves = message.getMoves();
 
         this.precomputedState = State.ACTION3;
-
+        this.gameEndedArchipelagos(this.board.getNumArchipelagos() - 1);
 
         if(!isCurrentPlayer(nicknamePlayer)){
             this.precomputedState = State.ACTION2;
@@ -677,6 +687,7 @@ public class Controller implements ObserverController<Message> {
                 }
             }
             controllerState.setState(State.ACTION3);
+
             return true;
         }
         return false;
@@ -693,8 +704,13 @@ public class Controller implements ObserverController<Message> {
         if(!isCurrentPlayer(nicknamePlayer)){return false;}
 
         if(this.currentPlayerIndex == this.players.size() - 1){ //all Players made their move => new turn
-            this.precomputedState = State.PLANNING1;
-            this.precomputedPlayer = players.get(0);
+            if(this.gameEnded){ //case game ends at the end of the turn
+                this.precomputedState = State.END;
+            }
+            else{
+                this.precomputedState = State.PLANNING1;
+                this.precomputedPlayer = players.get(0);
+            }
         }
         else{
             this.precomputedState = State.ACTION1;
@@ -718,14 +734,17 @@ public class Controller implements ObserverController<Message> {
                 }
             }
 
-
-
             // change current Player
             this.currentPlayerIndex++;
             if(this.currentPlayerIndex >= this.players.size()){ //all Players made their move => new turn
-                controllerState.setState(State.PLANNING1);
-                this.precomputedPlayer = players.get(0); //this will be used in the first iteration of manageAssistantCard
-                this.currentPlayerIndex = this.sitPlayers.indexOf(this.precomputedPlayer);
+                if(this.gameEnded){ //case game ends at the end of the turn
+                    controllerState.setState(State.END);
+                }
+                else{
+                    controllerState.setState(State.PLANNING1);
+                    this.precomputedPlayer = players.get(0); //this will be used in the first iteration of manageAssistantCard
+                    this.currentPlayerIndex = this.sitPlayers.indexOf(this.precomputedPlayer);
+                }
             }
             else{
                 controllerState.setState(State.ACTION1);
@@ -1277,6 +1296,32 @@ public class Controller implements ObserverController<Message> {
         }
         return false;
     }*/
+
+    private void gameEndedArchipelagos(int numArchipelagos){
+        //CASE 1: 3 Archipelagos remained
+        //this condition has to be checked every time a merge is made
+        //game ends immediately
+        if(numArchipelagos == 3){
+            this.precomputedState = State.END; //game ends immediately
+            controllerState.setState(State.END);
+        }
+    }
+
+    private void gameEndedBag(int numStudentsInBag){
+        //CASE 2.1: no more Students in the Bag
+        //game ends at the end of round
+        if(numStudentsInBag == 0){
+            this.gameEnded = true;
+        }
+    }
+
+    private void gameEndedAssistantCards(int handSize){
+        //CASE 2.2: no more assistant cards
+        //game ends at the end of the round (?)
+        if(handSize == 0){
+            this.gameEnded = true;
+        }
+    }
 
     public void addBoardObserver() {
         for(ServerView s : serverViews) {
