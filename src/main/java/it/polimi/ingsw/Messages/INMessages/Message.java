@@ -2,9 +2,10 @@ package it.polimi.ingsw.Messages.INMessages;
 
 import it.polimi.ingsw.Controller.Controller;
 import it.polimi.ingsw.Controller.ControllerInput;
+import it.polimi.ingsw.Messages.ActiveMessageController;
 import it.polimi.ingsw.Messages.Enumerations.INMessageType;
 
-public abstract class Message {
+public abstract class Message implements ActiveMessageController {
     private final INMessageType type;
     protected final String nickname;
 
@@ -22,5 +23,6 @@ public abstract class Message {
 
     public abstract boolean checkInput(ControllerInput controller);
 
+    @Override
     public abstract boolean manageMessage(Controller controller);
 }

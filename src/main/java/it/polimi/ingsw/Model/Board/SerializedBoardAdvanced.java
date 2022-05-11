@@ -1,5 +1,6 @@
 package it.polimi.ingsw.Model.Board;
 
+import it.polimi.ingsw.Controller.Controller;
 import it.polimi.ingsw.Model.Cards.AbstractCharacterCard;
 import it.polimi.ingsw.Model.Enumerations.SPColour;
 import it.polimi.ingsw.Model.Pawns.MotherNature;

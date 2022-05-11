@@ -177,13 +177,13 @@ public class CLIView extends ClientView {
 
         gameMode = gameMode.equalsIgnoreCase("Y") ? "true" : "false";
 
-        System.out.println(ANSI_RED + "Please, wait for other players to connect!" + ANSI_RESET);
+        System.out.println(ANSI_RED + "Please, wait for other players to connect!" + ANSI_RESET + "\n");
         client.asyncWriteToSocket("createMatch " + nickname + " " + colour + " " + numPlayers + " " + gameMode);
     }
 
     @Override
     public void showBoard(SerializedBoardAbstract serializedBoardAbstract) {
-        System.out.flush();
+        System.out.println("\n\t The Board is this:");
         System.out.println("Clouds: ");
         for(int i=0; i<serializedBoardAbstract.getClouds().size(); i++) {
             System.out.print(i + ": ");

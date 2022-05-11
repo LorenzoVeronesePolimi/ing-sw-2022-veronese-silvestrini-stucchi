@@ -1,6 +1,7 @@
 package it.polimi.ingsw.Model.Board;
 
 import it.polimi.ingsw.Controller.Enumerations.State;
+import it.polimi.ingsw.Messages.ActiveMessageView;
 import it.polimi.ingsw.Model.Pawns.MotherNature;
 import it.polimi.ingsw.Model.Places.Archipelago;
 import it.polimi.ingsw.Model.Places.Cloud;
@@ -13,7 +14,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SerializedBoardAbstract implements Serializable {
+public class SerializedBoardAbstract implements Serializable, ActiveMessageView {
     private static final long serialVersionUID = 1L;
     protected String type;
     private List<Archipelago> archipelagos;
@@ -85,6 +86,7 @@ public class SerializedBoardAbstract implements Serializable {
 
     public void setCurrentPlayer(Player currentPlayer){this.currentPlayer = currentPlayer;}
 
+    @Override
     public void manageMessage(ClientView view) {
         view.showBoard(this);
     }

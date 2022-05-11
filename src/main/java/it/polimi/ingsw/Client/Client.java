@@ -1,5 +1,6 @@
 package it.polimi.ingsw.Client;
 
+import it.polimi.ingsw.Messages.ActiveMessageView;
 import it.polimi.ingsw.Messages.OUTMessages.OUTMessage;
 import it.polimi.ingsw.Model.Board.SerializedBoardAbstract;
 import it.polimi.ingsw.Model.Board.SerializedBoardAdvanced;
@@ -22,8 +23,7 @@ public class Client {
     private ObjectOutputStream socketOut;
     private boolean CLIorGUI = false;
     private boolean active = true;
-    private OUTMessage prevErrorOUTMessage = null;
-    private SerializedBoardAbstract prevErrorModelMessage = null;
+    private ActiveMessageView prevMessage = null;
 
     public Client(String ip, int port){
         this.ip = ip;
@@ -43,8 +43,8 @@ public class Client {
             try {
                 Object inputMessage = this.socketIn.readObject();
 
-                if(inputMessage instanceof OUTMessage)
-                    ((OUTMessage)inputMessage).manageMessage(this.view);
+                if(inputMessage instanceof ActiveMessageView)
+                    ((ActiveMessageView)inputMessage).manageMessage(this.view);
 
                 if(this.CLIorGUI) {
                     this.view = new GUIView(this);
@@ -53,6 +53,7 @@ public class Client {
 
                 while (isActive()) {
                     //view.printCustom("Attendi!");
+
                     /*
                         When a message is received it is managed by the view.
                         Then, this message is saved as prevMessage (in order to manage future errors).
@@ -64,41 +65,17 @@ public class Client {
 
                     inputMessage = this.socketIn.readObject();
 
-                    if(inputMessage instanceof OUTMessage) {
-                        ((OUTMessage)inputMessage).manageMessage(this.view);
+                    if(inputMessage instanceof ActiveMessageView) {
+                        ((ActiveMessageView)inputMessage).manageMessage(this.view);
 
                         if (this.view.isErrorStatus()) {
-                            if(this.prevErrorOUTMessage != null) {
-                                this.prevErrorOUTMessage.manageMessage(this.view);
-                            } else if(this.prevErrorModelMessage != null) {
-                                this.prevErrorModelMessage.manageMessage(this.view);
-                            }
+                            if(prevMessage != null)
+                                prevMessage.manageMessage(this.view);
 
                             this.view.setErrorStatus(false);
                         } else {
-                            this.prevErrorModelMessage = null;
-                            this.prevErrorOUTMessage = (OUTMessage) inputMessage;
+                            prevMessage = (ActiveMessageView) inputMessage;
                         }
-                    } else {
-                        System.out.println("\n\t The current board is this:");
-
-                        SerializedBoardAbstract serializedBoard = (SerializedBoardAbstract) inputMessage;
-
-                        // QUESTA PARTE PUO' ESSERE TOLTA, È SOLO PER DEBUG
-                        /*
-                        if(serializedBoard.getType().equalsIgnoreCase("standard")) {
-                            view.printCustom("model standard");
-                        } else if(serializedBoard.getType().equalsIgnoreCase("advanced")) {
-                            view.printCustom("model advanced");
-                        } else {
-                            //view.printCustom("Client error");
-                        }
-                         */
-                        //---------------------------------
-
-                        this.prevErrorOUTMessage = null;
-                        this.prevErrorModelMessage = serializedBoard;
-                        serializedBoard.manageMessage(this.view);
                     }
 
                 }
