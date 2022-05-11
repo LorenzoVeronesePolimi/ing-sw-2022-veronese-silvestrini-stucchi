@@ -69,7 +69,6 @@ public class ServerView implements Observer<SerializedBoardAbstract> {
                 case "moveMotherNature":
                     return new MessageMoveMotherNature(serverView.getPlayerNickname(), Integer.parseInt(split[1]));
                 case "studentCloudToSchool":
-                    System.out.println("Split1: " + Integer.parseInt(split[1]));
                     return new MessageStudentCloudToSchool(serverView.getPlayerNickname(), Integer.parseInt(split[1]));
                 case "exchangeThreeStudents":
                     return new MessageCCExchangeThreeStudents(serverView.getPlayerNickname(), split[1], split[2], split[3], split[4], split[5], split[6]);

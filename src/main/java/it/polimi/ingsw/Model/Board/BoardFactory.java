@@ -13,7 +13,6 @@ public class BoardFactory {
         this.players.addAll(players);
     }
 
-    //TODO: check if return copy needed
     public BoardAbstract createBoard(){
         try {
             if (this.players.size() == 2) {

@@ -63,6 +63,20 @@ public class ControllerIntegrity {
         return (numPlayers >= 2 && numPlayers <= 4);
     }
 
+    public boolean checkAssistantCard(List<Integer> usedCards, Player currPlayer, int currPriority) {
+        if(currPlayer.getHandLength() == 1){ // only one AssistantCard in hand: he has no alternative
+            return true;
+        } else {
+            if(usedCards.size() > 0) {
+                if (usedCards.contains(currPriority)) {
+                    return false;
+                }
+            }
+        }
+
+        return true;
+    }
+
     public boolean checkAssistantCard(List<Player> sitPlayers, int currentPlayerIndex, Player player, int turnPriority){
         //no other player used it or I have no choice
         if(player.getHandLength() == 1){ // only one AssistantCard in hand: he has no alternative

@@ -35,6 +35,7 @@ public class Controller implements ObserverController<Message> {
     private Player precomputedPlayer;
     private int iteratorAC = 0; //this takes into account the number of AC played
     private State precomputedState = State.PLANNING1;
+    private List<Integer> usedCards;
 
     private int currentPlayerIndex = 0;
     private final List<ServerView> serverViews;
@@ -56,6 +57,7 @@ public class Controller implements ObserverController<Message> {
         this.server = server;
         this.players = new ArrayList<>();
         this.sitPlayers = new ArrayList<>();
+        this.usedCards = new ArrayList<>();
         this.controllerInput = new ControllerInput();
         this.controllerState = new ControllerState();
         this.controllerIntegrity = new ControllerIntegrity();
@@ -164,22 +166,25 @@ public class Controller implements ObserverController<Message> {
                 controllerState.setState(State.PLANNING2);
                 this.precomputedState = State.PLANNING2;
                 this.just_started = false;
+
+                if(this.isAdvanced())
+                    this.boardAdvanced.notifyPlayers();
+                else
+                    this.board.notifyPlayers();
+                System.out.println("notify");
             }
             else{
                 controllerState.setState(State.PLANNING2);
                 this.precomputedState = State.PLANNING2;
                 try {
-                    this.board.moveStudentBagToCloud();
+                    if(isAdvanced())
+                        this.boardAdvanced.moveStudentBagToCloud();
+                    else
+                        this.board.moveStudentBagToCloud();
                 } catch (ExceededMaxStudentsCloudException | StudentNotFoundException e) {
                     return; //case of first turn, in which clouds are filled immediately
                 }
             }
-
-            if(this.isAdvanced())
-                this.boardAdvanced.notifyPlayers();
-            else
-                this.board.notifyPlayers();
-            System.out.println("notify");
         }
     }
 
@@ -504,7 +509,11 @@ public class Controller implements ObserverController<Message> {
             System.out.println("here");
             return false;
         }
-        controllerIntegrity.checkAssistantCard(this.sitPlayers, this.currentPlayerIndex, getCurrentSitPlayer(), turnPriority);
+
+        if(!controllerIntegrity.checkAssistantCard(this.usedCards, getCurrentSitPlayer(), turnPriority)) {
+            return false;
+        }
+
 
         //precompute
         this.precomputeNextPlayer(turnPriority);
@@ -518,6 +527,8 @@ public class Controller implements ObserverController<Message> {
             return false;
         } // card already used or no AssistantCard present
 
+        this.usedCards.add(getCurrentSitPlayer().getLastCard().getTurnPriority());
+
         // Go on within the turn
         this.currentPlayerIndex = this.sitPlayers.indexOf(this.precomputedPlayer);
 
@@ -526,6 +537,7 @@ public class Controller implements ObserverController<Message> {
             this.currentPlayerIndex = 0; // the new turn will start
             controllerState.setState(State.ACTION1);
             iteratorAC = 0;
+            this.usedCards.clear();
         }
         return true;
     }
@@ -606,10 +618,18 @@ public class Controller implements ObserverController<Message> {
         }
 
         if(controllerIntegrity.checkStudentToArchipelago(getCurrentPlayer(), studentColour, destinationArchipelagoIndex)){
-            try {
-                board.moveStudentSchoolToArchipelagos(getCurrentPlayer(), studentColour, destinationArchipelagoIndex);
-            } catch (StudentNotFoundException e) {
-                return false;
+            if(isAdvanced()){
+                try {
+                    boardAdvanced.moveStudentSchoolToArchipelagos(getCurrentPlayer(), studentColour, destinationArchipelagoIndex);
+                } catch (StudentNotFoundException e) {
+                    return false;
+                }
+            } else {
+                try {
+                    board.moveStudentSchoolToArchipelagos(getCurrentPlayer(), studentColour, destinationArchipelagoIndex);
+                } catch (StudentNotFoundException e) {
+                    return false;
+                }
             }
 
             this.numStudentsToMoveCurrent--;
@@ -640,11 +660,21 @@ public class Controller implements ObserverController<Message> {
         }
 
         if(controllerIntegrity.checkMoveMotherNature(getCurrentPlayer(), moves)){
-            board.moveMotherNature(moves);
-            try {
-                board.tryToConquer(getCurrentPlayer());
-            } catch (InvalidTowerNumberException | AnotherTowerException | ExceededMaxTowersException | TowerNotFoundException e) {
-                return false;
+            if(isAdvanced()){
+                boardAdvanced.moveMotherNature(moves);
+                try {
+                    boardAdvanced.tryToConquer(getCurrentPlayer());
+                } catch (InvalidTowerNumberException | AnotherTowerException | ExceededMaxTowersException | TowerNotFoundException e) {
+                    return false;
+                }
+            }else {
+                board.moveMotherNature(moves);
+                try {
+                    board.tryToConquer(getCurrentPlayer());
+                } catch (InvalidTowerNumberException | AnotherTowerException | ExceededMaxTowersException |
+                         TowerNotFoundException e) {
+                    return false;
+                }
             }
             controllerState.setState(State.ACTION3);
             return true;
@@ -662,36 +692,46 @@ public class Controller implements ObserverController<Message> {
 
         if(!isCurrentPlayer(nicknamePlayer)){return false;}
 
-        System.out.println("pre if");
         if(this.currentPlayerIndex == this.players.size() - 1){ //all Players made their move => new turn
             this.precomputedState = State.PLANNING1;
             this.precomputedPlayer = players.get(0);
-            System.out.println("ultimo");
         }
         else{
             this.precomputedState = State.ACTION1;
             this.precomputedPlayer = this.players.get(currentPlayerIndex+1);
-            System.out.println("non ultimo");
         }
 
         if(controllerIntegrity.checkStudentCloudToSchool(getCurrentPlayer(), indexCloud)){
-            try{
-                board.moveStudentCloudToSchool(getCurrentPlayer(), indexCloud);
-            } catch(ExceededMaxStudentsHallException ex){
-                //TODO: manage state after error
-                return false;
+            if(isAdvanced()) {
+                try{
+                    boardAdvanced.moveStudentCloudToSchool(getCurrentPlayer(), indexCloud);
+                } catch(ExceededMaxStudentsHallException ex){
+                    //TODO: manage state after error
+                    return false;
+                }
+            } else {
+                try{
+                    board.moveStudentCloudToSchool(getCurrentPlayer(), indexCloud);
+                } catch(ExceededMaxStudentsHallException ex){
+                    //TODO: manage state after error
+                    return false;
+                }
             }
 
-            System.out.println("nuvola svuotata");
+
+
             // change current Player
             this.currentPlayerIndex++;
             if(this.currentPlayerIndex >= this.players.size()){ //all Players made their move => new turn
                 controllerState.setState(State.PLANNING1);
                 this.precomputedPlayer = players.get(0); //this will be used in the first iteration of manageAssistantCard
+                this.currentPlayerIndex = this.sitPlayers.indexOf(this.precomputedPlayer);
             }
             else{
                 controllerState.setState(State.ACTION1);
             }
+            //TODO: remove some card effects (colourtoexclude, towernovalue...)
+
             return true;
         }
         return false;

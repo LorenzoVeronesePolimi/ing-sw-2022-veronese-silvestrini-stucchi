@@ -55,7 +55,7 @@ public class TwoExtraIslandsTest {
         }
 
         Assertions.assertEquals(0,((SchoolAdvanced)boardAdvanced.getPlayerSchool(p1)).getNumCoins());
-        Assertions.assertEquals(4,p1.getLastCard().getMotherNatureMovement()); //TODO:check assistant card values
+        Assertions.assertEquals(4,p1.getLastCard().getMotherNatureMovement());
 
     }
 }

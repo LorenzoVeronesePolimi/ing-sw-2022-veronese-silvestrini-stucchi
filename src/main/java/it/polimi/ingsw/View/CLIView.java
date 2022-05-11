@@ -233,6 +233,8 @@ public class CLIView extends ClientView {
         }
 
         printWaitTurn(serializedBoardAbstract);
+
+        //TODO: let buy cards in all ACTION*
     }
 
     private void printWaitTurn(SerializedBoardAbstract serializedBoardAbstract) {
@@ -336,7 +338,7 @@ public class CLIView extends ClientView {
             System.out.println("Is Action3: Which cloud do you choose? ");
             cloudIndex = Integer.parseInt(input.nextLine());
         } while (cloudIndex < 0 || cloudIndex > serializedBoardAbstract.getClouds().size());
-        System.out.println(ANSI_RED + cloudIndex + ANSI_RESET);
+
         client.asyncWriteToSocket("studentCloudToSchool " + cloudIndex);
     }
 

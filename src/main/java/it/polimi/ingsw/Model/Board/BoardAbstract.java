@@ -11,6 +11,7 @@ import it.polimi.ingsw.Model.Pawns.Tower;
 import it.polimi.ingsw.Model.Places.Archipelago;
 import it.polimi.ingsw.Model.Places.Cloud;
 import it.polimi.ingsw.Model.Places.School.School;
+import it.polimi.ingsw.Model.Places.School.SchoolAdvanced;
 import it.polimi.ingsw.Model.Player;
 import it.polimi.ingsw.Observer.Observable;
 import org.json.JSONObject;
@@ -66,7 +67,7 @@ public abstract class BoardAbstract extends Observable implements Board {
     private void initializePlayersHands() throws ExceedingAssistantCardNumberException {
         // Create all needed AssistantCards
         List<AssistantCard> cardsCreated = new ArrayList<>();
-        int[] cardsMotherNatureMoves= {1, 1, 2, 2, 3, 3, 4, 4, 5, 5}; //TODO: check if these values ar correct
+        int[] cardsMotherNatureMoves= {1, 1, 2, 2, 3, 3, 4, 4, 5, 5};
         for(int i = 0; i < playerHandLength; i++){
             cardsCreated.add(new AssistantCard(cardsMotherNatureMoves[i], i+1));
         }
@@ -139,7 +140,7 @@ public abstract class BoardAbstract extends Observable implements Board {
     //--------------------------------------------------PAWNS MOVEMENTS
     public void moveMotherNature(int mnMoves){
         mn.putInPosition(archipelagos.get((whereIsMotherNature() + mnMoves) % archipelagos.size()));
-        notifyPlayers();
+        //notifyPlayers();
     }
 
     public void moveMotherNatureInArchipelagoIndex(int index){
@@ -150,12 +151,19 @@ public abstract class BoardAbstract extends Observable implements Board {
     public void moveStudentSchoolToArchipelagos(Player player, SPColour colour, int archipelagoIndex) throws StudentNotFoundException {
         //school related to the player that made the move
         School currentSchool = playerSchool.get(player);
-
+        System.out.println("inizio");
         if(currentSchool != null) {
+            System.out.println("not null");
             Student toBeMoved = currentSchool.removeStudentHall(colour);
             archipelagos.get(archipelagoIndex).addStudent(toBeMoved);
         }
-        notifyPlayers();
+        System.out.println("fine");
+
+        if(!(this.schools.get(0) instanceof SchoolAdvanced)) {
+            System.out.println("Notify normale");
+            notifyPlayers();
+        }
+
     }
 
     public void moveStudentCloudToSchool(Player player, int cloudIndex) throws ExceededMaxStudentsHallException {
@@ -170,7 +178,9 @@ public abstract class BoardAbstract extends Observable implements Board {
                 currentSchool.addStudentHall(s);
             }
         }
-        notifyPlayers();
+
+        if(!(this.schools.get(0) instanceof SchoolAdvanced))
+            notifyPlayers();
     }
 
     public void moveStudentHallToDiningRoom(Player player, SPColour colour) throws
@@ -192,7 +202,9 @@ public abstract class BoardAbstract extends Observable implements Board {
             toBePlaced = bag.extractStudents(numStudents);
             c.fill(toBePlaced);
         }
-        //notifyPlayers();
+
+        if(!(this.schools.get(0) instanceof SchoolAdvanced))
+            notifyPlayers();
     }
 
     public void moveStudentBagToSchool(int numStudents) throws StudentNotFoundException, ExceededMaxStudentsHallException {
@@ -204,7 +216,6 @@ public abstract class BoardAbstract extends Observable implements Board {
                 s.addStudentHall(student);
             }
         }
-        //notifyPlayers();
     }
 
     public void moveProfessor(Player destinationPlayer, SPColour colour) throws NoProfessorBagException, ProfessorNotFoundException {
@@ -222,7 +233,9 @@ public abstract class BoardAbstract extends Observable implements Board {
         }
 
         receiverSchool.addProfessor(toBeMoved);
-        notifyPlayers();
+
+        if(!(this.schools.get(0) instanceof SchoolAdvanced))
+            notifyPlayers();
     }
 
 

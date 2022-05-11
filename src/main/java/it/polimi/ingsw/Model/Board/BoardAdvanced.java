@@ -138,14 +138,19 @@ public class BoardAdvanced extends Observable implements Board {
     @Override
     public void moveStudentBagToCloud() throws StudentNotFoundException, ExceededMaxStudentsCloudException {
         this.board.moveStudentBagToCloud();
+        this.notifyPlayers();
     }
 
     public void moveStudentSchoolToArchipelagos(Player player, SPColour colour, int archipelagoIndex) throws StudentNotFoundException {
+        System.out.println("arriva in adv");
         this.board.moveStudentSchoolToArchipelagos(player, colour, archipelagoIndex);
+        System.out.println("notify advanced");
+        this.notifyPlayers();
     }
 
     public void moveStudentCloudToSchool(Player player, int cloudIndex) throws ExceededMaxStudentsHallException {
         this.board.moveStudentCloudToSchool(player, cloudIndex);
+        this.notifyPlayers();
     }
 
     public void moveStudentHallToDiningRoom(Player player, SPColour colour) throws
@@ -189,6 +194,7 @@ public class BoardAdvanced extends Observable implements Board {
 
     public void moveProfessor(Player destinationPlayer, SPColour colour) throws ProfessorNotFoundException, NoProfessorBagException {
         this.board.moveProfessor(destinationPlayer, colour);
+        this.notifyPlayers();
     }
 
     public boolean isProfessorInSchool(SPColour colour) {
@@ -392,13 +398,10 @@ public class BoardAdvanced extends Observable implements Board {
                 ((SchoolAdvanced)currentSchool).addCoin(bank.getCoin());
             }
         }
-
-        //notifyPlayers();
     }
 
     public void setColourToExclude(SPColour colourToExclude){
         this.colourToExclude = colourToExclude;
-        notifyPlayers();
     }
 
     public void setTwoExtraPointsFlag(boolean twoExtraPointsFlag) {
@@ -455,6 +458,8 @@ public class BoardAdvanced extends Observable implements Board {
         } else {
             throw new CoinNotFoundException();
         }
+
+        notifyPlayers();
     }
 
     public void useForbidIsland(Player player, int archipelago, int indexCard) throws
@@ -479,6 +484,8 @@ public class BoardAdvanced extends Observable implements Board {
         } else {
             throw new CoinNotFoundException();
         }
+
+        notifyPlayers();
     }
 
     public void useExchangeThreeStudents(Player player, List<SPColour> hallStudents, List<SPColour> exchangeStudents, int indexCard) throws
@@ -504,6 +511,8 @@ public class BoardAdvanced extends Observable implements Board {
         } else {
             throw new CoinNotFoundException();
         }
+
+        notifyPlayers();
     }
 
     public void useExcludeColourFromCounting(Player player, SPColour colourToExclude, int indexCard) throws
@@ -516,6 +525,8 @@ public class BoardAdvanced extends Observable implements Board {
         } else {
             throw new CoinNotFoundException();
         }
+
+        notifyPlayers();
     }
 
     public void useExchangeTwoHallDining(Player player, List<SPColour> hallStudents, List<SPColour> diningStudents, int indexCard) throws
