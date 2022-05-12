@@ -79,6 +79,21 @@ public class School implements Serializable {
         this.numMaxTowers = school.numMaxTowers;
     }
 
+    public School makeCopy(){
+        School result = new School(this.player, this.numMaxStudentsHall, numMaxTowers);
+        result.studentsHall.addAll(this.studentsHall);
+        result.studentsDiningRed.addAll(this.studentsDiningRed);
+        result.studentsDiningPink.addAll(this.studentsDiningPink);
+        result.studentsDiningGreen.addAll(this.studentsDiningGreen);
+        result.studentsDiningYellow.addAll(this.studentsDiningYellow);
+        result.studentsDiningBlue.addAll(this.studentsDiningBlue);
+        result.professors.addAll(this.professors);
+        result.towers.clear();
+        result.towers.addAll(this.towers);
+
+        return result;
+    }
+
     /**
      * @return the owner of the school.
      */

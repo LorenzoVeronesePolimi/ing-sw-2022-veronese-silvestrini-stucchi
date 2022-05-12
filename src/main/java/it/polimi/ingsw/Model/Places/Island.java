@@ -25,7 +25,8 @@ public class Island implements Serializable {
     }
 
     public Island(Island toCopy){//added for gameEndedArchipelagos in Controller
-        this.students = toCopy.getStudents();
+        this.students = new HashSet<>();
+        this.students.addAll(toCopy.getStudents());
 
         if(toCopy.getTower() == null){
             this.tower = null;

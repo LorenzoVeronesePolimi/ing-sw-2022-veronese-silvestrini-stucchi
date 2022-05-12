@@ -72,7 +72,7 @@ public abstract class BoardAbstract extends Observable implements Board {
             this.archipelagos.add(new Archipelago(toCopy.getArchipelago(i)));
             if(toCopy.getArchipelago(i) == toCopy.getMn().getCurrentPosition()){
                 posOfMn = i;
-            };
+            }
         }
 
         this.players = new ArrayList<>();
@@ -81,17 +81,18 @@ public abstract class BoardAbstract extends Observable implements Board {
         this.mn = new MotherNature();
         this.mn.putInPosition(this.archipelagos.get(posOfMn));
 
-        bag = toCopy.getBag();
+        this.bag = new Bag();
 
         this.schools = new ArrayList<>();
         this.playerSchool = new HashMap<>();
         for(Player p : this.players){
-            School toAdd = new School(toCopy.getPlayerSchool(p));
+            School toAdd = toCopy.getPlayerSchool(p).makeCopy();
             this.schools.add(toAdd);
             this.playerSchool.put(p, toAdd);
         }
 
         this.clouds = new ArrayList<>(); //no need to copy them for conquer
+        this.clouds = toCopy.getClouds();
     }
 
     private void initializePlayersHands() throws ExceedingAssistantCardNumberException {

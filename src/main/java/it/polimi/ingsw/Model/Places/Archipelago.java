@@ -60,6 +60,7 @@ public class Archipelago implements Serializable {
         for(SPColour c : availableColours){
             this.studentsData.put(c, 0);
         }
+
     }
 
     public Archipelago(Archipelago toCopy){//added for gameEndedArchipelagos in Controller
@@ -75,6 +76,9 @@ public class Archipelago implements Serializable {
         for(SPColour c : availableColours){
             this.studentsData.put(c, toCopy.getStudentsData().get(c));
         }
+
+        this.forbidFlag = toCopy.forbidFlag;
+        this.towerNoValueFlag = toCopy.towerNoValueFlag;
     }
 
     public Map<SPColour, Integer> getStudentsData() {

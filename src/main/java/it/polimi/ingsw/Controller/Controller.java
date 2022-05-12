@@ -669,12 +669,13 @@ public class Controller implements ObserverController<Message> {
         int moves = message.getMoves();
 
         this.precomputedState = State.ACTION3;
-        /*try {
+        try {
             this.gameEndedArchipelagos(moves);
-        } catch (TowerNotFoundException | EmptyCaveauException | ExceededMaxStudentsHallException | StudentNotFoundException e) {
+        } catch (TowerNotFoundException | EmptyCaveauException | ExceededMaxStudentsHallException | StudentNotFoundException | InvalidTowerNumberException | AnotherTowerException | ExceededMaxTowersException e) {
+            e.printStackTrace();
             this.precomputedState = State.ACTION2;
             return false;
-        }*/
+        }
 
         if(!isCurrentPlayer(nicknamePlayer)){
             this.precomputedState = State.ACTION2;
@@ -1310,7 +1311,7 @@ public class Controller implements ObserverController<Message> {
         return false;
     }*/
 
-    private void gameEndedArchipelagos(int moves) throws TowerNotFoundException, EmptyCaveauException, ExceededMaxStudentsHallException, StudentNotFoundException {
+    private void gameEndedArchipelagos(int moves) throws TowerNotFoundException, EmptyCaveauException, ExceededMaxStudentsHallException, StudentNotFoundException, InvalidTowerNumberException, AnotherTowerException, ExceededMaxTowersException {
         BoardAbstract boardCopy;
         if(this.numPlayers == 2){
             boardCopy = new BoardTwo(this.board);
@@ -1327,9 +1328,11 @@ public class Controller implements ObserverController<Message> {
             BoardAdvanced boardAdvancedCopy = new BoardAdvanced(boardCopy);
 
             boardAdvancedCopy.moveMotherNature(moves);
+            boardAdvancedCopy.tryToConquer(this.players.get(this.currentPlayerIndex));
         }
         else{
             boardCopy.moveMotherNature(moves);
+            boardCopy.tryToConquer(this.players.get(this.currentPlayerIndex));
         }
         //CASE 1: 3 Archipelagos remained
         //this condition has to be checked every time a merge is made
