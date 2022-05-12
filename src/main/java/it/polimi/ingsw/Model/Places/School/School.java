@@ -75,6 +75,8 @@ public class School implements Serializable {
         this.studentsDiningYellow = school.studentsDiningYellow;
         this.professors = school.professors;
         this.towers = school.towers;
+        this.numMaxStudentsHall = school.numMaxStudentsHall;
+        this.numMaxTowers = school.numMaxTowers;
     }
 
     /**

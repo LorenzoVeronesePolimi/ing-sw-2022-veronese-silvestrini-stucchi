@@ -18,6 +18,7 @@ import org.json.JSONObject;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -64,6 +65,35 @@ public abstract class BoardAbstract extends Observable implements Board {
         //notifyPlayers();
     }
 
+    public BoardAbstract(BoardAbstract toCopy){ //added for gameEndedArchipelagos in Controller
+        this.archipelagos = new ArrayList<>();
+        int posOfMn = 0;
+        for(int i = 0; i < toCopy.getNumArchipelagos(); i++){
+            this.archipelagos.add(new Archipelago(toCopy.getArchipelago(i)));
+            if(toCopy.getArchipelago(i) == toCopy.getMn().getCurrentPosition()){
+                posOfMn = i;
+            };
+        }
+
+        this.players = new ArrayList<>();
+        this.players.addAll(toCopy.getPlayers());
+
+        this.mn = new MotherNature();
+        this.mn.putInPosition(this.archipelagos.get(posOfMn));
+
+        bag = toCopy.getBag();
+
+        this.schools = new ArrayList<>();
+        this.playerSchool = new HashMap<>();
+        for(Player p : this.players){
+            School toAdd = new School(toCopy.getPlayerSchool(p));
+            this.schools.add(toAdd);
+            this.playerSchool.put(p, toAdd);
+        }
+
+        this.clouds = new ArrayList<>(); //no need to copy them for conquer
+    }
+
     private void initializePlayersHands() throws ExceedingAssistantCardNumberException {
         // Create all needed AssistantCards
         List<AssistantCard> cardsCreated = new ArrayList<>();
@@ -103,6 +133,19 @@ public abstract class BoardAbstract extends Observable implements Board {
 
 
     //--------------------------------------------------GETTER AND SETTER
+
+    public Bag getBag() {
+        return bag;
+    }
+
+    public List<Player> getPlayers() {
+        return players;
+    }
+
+    public MotherNature getMn() {
+        return mn;
+    }
+
     public List<Cloud> getClouds() {
         return new ArrayList<>(this.clouds);
     }

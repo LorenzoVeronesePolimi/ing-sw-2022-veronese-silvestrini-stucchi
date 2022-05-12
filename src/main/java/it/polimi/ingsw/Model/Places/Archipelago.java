@@ -62,6 +62,25 @@ public class Archipelago implements Serializable {
         }
     }
 
+    public Archipelago(Archipelago toCopy){//added for gameEndedArchipelagos in Controller
+        this.islands = new ArrayList<>();
+        for(Island i : toCopy.getIslands()){
+            this.islands.add(new Island(i));
+        }
+
+        this.owner = toCopy.getOwner();
+
+        this.studentsData = new HashMap<>();
+        SPColour[] availableColours = {SPColour.BLUE, SPColour.PINK, SPColour.RED, SPColour.GREEN, SPColour.YELLOW};
+        for(SPColour c : availableColours){
+            this.studentsData.put(c, toCopy.getStudentsData().get(c));
+        }
+    }
+
+    public Map<SPColour, Integer> getStudentsData() {
+        return studentsData;
+    }
+
     /**
      *
      * @return the number of islands that constitute the archipelago.

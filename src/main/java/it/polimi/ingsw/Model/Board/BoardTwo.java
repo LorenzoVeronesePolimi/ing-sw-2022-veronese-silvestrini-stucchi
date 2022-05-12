@@ -34,4 +34,8 @@ public class BoardTwo extends BoardAbstract {
         super.moveStudentBagToCloud();
         super.moveStudentBagToSchool(7);
     }
+
+    public BoardTwo(BoardAbstract toCopy){
+        super(toCopy);
+    }
 }

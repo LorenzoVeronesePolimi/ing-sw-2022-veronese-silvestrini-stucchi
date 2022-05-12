@@ -32,4 +32,8 @@ public class BoardThree extends BoardAbstract {
         moveStudentBagToCloud();
         moveStudentBagToSchool(9);
     }
+
+    public BoardThree(BoardAbstract toCopy){
+        super(toCopy);
+    }
 }

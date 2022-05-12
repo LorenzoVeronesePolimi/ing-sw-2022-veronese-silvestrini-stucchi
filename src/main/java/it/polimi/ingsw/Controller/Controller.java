@@ -6,9 +6,7 @@ import it.polimi.ingsw.Controller.Exceptions.ControllerException;
 import it.polimi.ingsw.Controller.Exceptions.NoPlayerException;
 import it.polimi.ingsw.Messages.Enumerations.INMessageType;
 import it.polimi.ingsw.Messages.INMessages.*;
-import it.polimi.ingsw.Model.Board.BoardAbstract;
-import it.polimi.ingsw.Model.Board.BoardAdvanced;
-import it.polimi.ingsw.Model.Board.BoardFactory;
+import it.polimi.ingsw.Model.Board.*;
 import it.polimi.ingsw.Model.Cards.*;
 import it.polimi.ingsw.Model.Enumerations.PlayerColour;
 import it.polimi.ingsw.Model.Enumerations.SPColour;
@@ -534,10 +532,6 @@ public class Controller implements ObserverController<Message> {
 
         //precompute
         this.precomputeNextPlayer(turnPriority);
-        /*The following will put END in precomputedState if true.
-        * If the action fails, precomputedState will be restored
-        * Else players will know immediately that the game has ended*/
-        this.gameEndedAssistantCards(this.getCurrentSitPlayer().getHandLength() - 1);
 
         // Remove the card from his hand
         try{
@@ -547,6 +541,8 @@ public class Controller implements ObserverController<Message> {
             System.out.println("catch");
             return false;
         } // card already used or no AssistantCard present
+
+        this.gameEndedAssistantCards(this.getCurrentSitPlayer().getHandLength());
 
         this.usedCards.add(getCurrentSitPlayer().getLastCard().getTurnPriority());
 
@@ -673,7 +669,12 @@ public class Controller implements ObserverController<Message> {
         int moves = message.getMoves();
 
         this.precomputedState = State.ACTION3;
-        this.gameEndedArchipelagos(this.board.getNumArchipelagos() - 1);
+        /*try {
+            this.gameEndedArchipelagos(moves);
+        } catch (TowerNotFoundException | EmptyCaveauException | ExceededMaxStudentsHallException | StudentNotFoundException e) {
+            this.precomputedState = State.ACTION2;
+            return false;
+        }*/
 
         if(!isCurrentPlayer(nicknamePlayer)){
             this.precomputedState = State.ACTION2;
@@ -686,6 +687,7 @@ public class Controller implements ObserverController<Message> {
                 try {
                     boardAdvanced.tryToConquer(getCurrentPlayer());
                 } catch (InvalidTowerNumberException | AnotherTowerException | ExceededMaxTowersException | TowerNotFoundException e) {
+                    this.precomputedState = State.ACTION2;
                     return false;
                 }
             }else {
@@ -694,6 +696,7 @@ public class Controller implements ObserverController<Message> {
                     board.tryToConquer(getCurrentPlayer());
                 } catch (InvalidTowerNumberException | AnotherTowerException | ExceededMaxTowersException |
                          TowerNotFoundException e) {
+                    this.precomputedState = State.ACTION2;
                     return false;
                 }
             }
@@ -733,14 +736,13 @@ public class Controller implements ObserverController<Message> {
                 try{
                     boardAdvanced.moveStudentCloudToSchool(getCurrentPlayer(), indexCloud);
                 } catch(ExceededMaxStudentsHallException ex){
-                    //TODO: manage state after error
                     return false;
                 }
             } else {
                 try{
                     board.moveStudentCloudToSchool(getCurrentPlayer(), indexCloud);
                 } catch(ExceededMaxStudentsHallException ex){
-                    //TODO: manage state after error
+                    ex.printStackTrace();
                     return false;
                 }
             }
@@ -1308,11 +1310,31 @@ public class Controller implements ObserverController<Message> {
         return false;
     }*/
 
-    private void gameEndedArchipelagos(int numArchipelagos){
+    private void gameEndedArchipelagos(int moves) throws TowerNotFoundException, EmptyCaveauException, ExceededMaxStudentsHallException, StudentNotFoundException {
+        BoardAbstract boardCopy;
+        if(this.numPlayers == 2){
+            boardCopy = new BoardTwo(this.board);
+        }
+        else if(this.numPlayers == 3){
+            boardCopy = new BoardThree(this.board);
+        }
+        else{
+            boardCopy = new BoardFour((BoardFour) this.board);
+        }
+
+        //make fake conquer
+        if(isAdvanced()){
+            BoardAdvanced boardAdvancedCopy = new BoardAdvanced(boardCopy);
+
+            boardAdvancedCopy.moveMotherNature(moves);
+        }
+        else{
+            boardCopy.moveMotherNature(moves);
+        }
         //CASE 1: 3 Archipelagos remained
         //this condition has to be checked every time a merge is made
         //game ends immediately
-        if(numArchipelagos <= 3){
+        if(boardCopy.getNumArchipelagos() <= 3){
             this.precomputedState = State.END; //game ends immediately
             controllerState.setState(State.END);
         }

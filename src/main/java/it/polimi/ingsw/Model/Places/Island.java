@@ -24,6 +24,18 @@ public class Island implements Serializable {
         this.tower = null;
     }
 
+    public Island(Island toCopy){//added for gameEndedArchipelagos in Controller
+        this.students = toCopy.getStudents();
+
+        if(toCopy.getTower() == null){
+            this.tower = null;
+        }
+        else{
+            this.tower = new Tower(toCopy.getTower().getPlayer());
+        }
+
+    }
+
     /**
      * @return the number of students, for each colour, placed on the island.
      */
@@ -83,5 +95,9 @@ public class Island implements Serializable {
      */
     public Tower getTower() {
         return tower;
+    }
+
+    public Set<Student> getStudents(){
+        return this.students;
     }
 }

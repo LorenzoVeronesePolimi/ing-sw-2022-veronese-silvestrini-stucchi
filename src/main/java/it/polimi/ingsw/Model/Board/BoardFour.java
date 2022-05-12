@@ -99,4 +99,14 @@ public class BoardFour extends BoardAbstract {
 
         moveTower(conquerorTowers, toConquer);
     }
+
+    public Map<Player, Player> getTeammates() {
+        return teammates;
+    }
+
+    public BoardFour(BoardFour toCopy){
+        super(toCopy);
+
+        this.teammates = toCopy.getTeammates();
+    }
 }
