@@ -168,6 +168,10 @@ public class ControllerTest {
         Assertions.assertTrue(controller.isAdvanced());
 
 
+        /*
+        * First: 9 => 2
+        * Second: 1 => 1
+        */
         /*-----MessageAssistantCard 1-----*/
         //ERRORS IN FORMAT
         //Error because of wrong name ("")
@@ -551,8 +555,9 @@ public class ControllerTest {
 
 
 
-        /*-----End of the game-----*/
-        /*-----MessageStudentHallToDiningRoom 1-----*/
+        //ROUND 1: TURN 2: First
+        Assertions.assertEquals(controller.getCurrentPlayer().getNickname(), "First");
+        //-----MessageStudentHallToDiningRoom 1-----
         // choose a Student which exists
         colourToMove = mapSPColourToString(controller.getBoard().getPlayerSchool(controller.getCurrentPlayer()).getStudentsHall().get(0).getColour());
 
@@ -566,7 +571,7 @@ public class ControllerTest {
         Assertions.assertEquals(controller.getNumStudentsToMoveCurrent(), 2);
         Assertions.assertEquals(State.ACTION1, controller.getControllerState().getState());
 
-        /*-----MessageStudentHallToDiningRoom 2-----*/
+        //-----MessageStudentHallToDiningRoom 2-----
         // choose a Student which exists
         colourToMove = mapSPColourToString(controller.getBoard().getPlayerSchool(controller.getCurrentPlayer()).getStudentsHall().get(0).getColour());
 
@@ -580,7 +585,7 @@ public class ControllerTest {
         Assertions.assertEquals(controller.getNumStudentsToMoveCurrent(), 1);
         Assertions.assertEquals(State.ACTION1, controller.getControllerState().getState());
 
-        /*-----MessageStudentToArchipelago-----*/
+        //-----MessageStudentToArchipelago-----
         // choose a Student which exists
         colourToMove = mapSPColourToString(controller.getBoard().getPlayerSchool(controller.getCurrentPlayer()).getStudentsHall().get(0).getColour());
 
@@ -594,7 +599,7 @@ public class ControllerTest {
         Assertions.assertEquals(controller.getNumStudentsToMoveCurrent(), 3);
         Assertions.assertEquals(State.ACTION2, controller.getControllerState().getState());
 
-        /*-----MessageMoveMotherNature-----*/
+        //-----MessageMoveMotherNature-----
         MessageMoveMotherNature m13 = new MessageMoveMotherNature(controller.getCurrentPlayer().getNickname(), 1);
         try {
             controller.update(m13);
@@ -603,7 +608,7 @@ public class ControllerTest {
         }
         Assertions.assertEquals(State.ACTION3, controller.getControllerState().getState());
 
-        /*-----MessageStudentCloudToSchool-----*/
+        //-----MessageStudentCloudToSchool-----
         MessageStudentCloudToSchool m14 = new MessageStudentCloudToSchool(controller.getCurrentPlayer().getNickname(), 0);
         try {
             controller.update(m14);
@@ -611,24 +616,23 @@ public class ControllerTest {
             e.printStackTrace();
         }
         Assertions.assertEquals(State.PLANNING2, controller.getControllerState().getState());
-        Assertions.assertEquals(1, controller.getCurrentPlayerIndex());
         Assertions.assertEquals("Second", controller.getCurrentSitPlayer().getNickname());
 
-        try {
-            this.controller.getBoard().useAssistantCard(controller.getCurrentSitPlayer(), 3);
-            this.controller.getBoard().useAssistantCard(controller.getCurrentSitPlayer(), 4);
-            this.controller.getBoard().useAssistantCard(controller.getCurrentSitPlayer(), 5);
-            this.controller.getBoard().useAssistantCard(controller.getCurrentSitPlayer(), 6);
-            this.controller.getBoard().useAssistantCard(controller.getCurrentSitPlayer(), 7);
-            this.controller.getBoard().useAssistantCard(controller.getCurrentSitPlayer(), 8);
-            this.controller.getBoard().useAssistantCard(controller.getCurrentSitPlayer(), 9);
-            this.controller.getBoard().useAssistantCard(controller.getCurrentSitPlayer(), 10);
-        } catch (AssistantCardAlreadyPlayedTurnException e) {
-            e.printStackTrace();
-        } catch (NoAssistantCardException e) {
+        //ROUND 2: Second plays AC
+        try { //for the end due to AC finished
+            controller.getBoard().useAssistantCard(controller.getCurrentSitPlayer(), 3);
+            controller.getBoard().useAssistantCard(controller.getCurrentSitPlayer(), 4);
+            controller.getBoard().useAssistantCard(controller.getCurrentSitPlayer(), 5);
+            controller.getBoard().useAssistantCard(controller.getCurrentSitPlayer(), 6);
+            controller.getBoard().useAssistantCard(controller.getCurrentSitPlayer(), 7);
+            controller.getBoard().useAssistantCard(controller.getCurrentSitPlayer(), 8);
+            controller.getBoard().useAssistantCard(controller.getPlayers().get(1), 3); //other-ways I couldn't use the 9 in the next line
+            controller.getBoard().useAssistantCard(controller.getCurrentSitPlayer(), 9);
+            controller.getBoard().useAssistantCard(controller.getCurrentSitPlayer(), 10);
+        } catch (AssistantCardAlreadyPlayedTurnException | NoAssistantCardException e) {
             e.printStackTrace();
         }
-        /*-----MessageAssistantCard 1-----*/
+        //-----MessageAssistantCard 1-----
         MessageAssistantCard m15 = new MessageAssistantCard("Second", 1, 2);
         try {
             controller.update(m15);
@@ -637,8 +641,10 @@ public class ControllerTest {
         }
         Assertions.assertEquals(State.PLANNING2, controller.getControllerState().getState());
         Assertions.assertEquals("First", controller.getCurrentSitPlayer().getNickname());
+        Assertions.assertTrue(controller.isGameEnded());
 
-        /*-----MessageAssistantCard 2-----*/
+        //ROUND 2: First plays AC
+        //-----MessageAssistantCard 2-----
         MessageAssistantCard m16 = new MessageAssistantCard("First", 3, 5);
         try {
             controller.update(m16);
@@ -648,15 +654,131 @@ public class ControllerTest {
         Assertions.assertEquals(State.ACTION1, controller.getControllerState().getState());
         Assertions.assertEquals(0, controller.getCurrentPlayerIndex());
         Assertions.assertEquals("Second", controller.getCurrentPlayer().getNickname());
-        //Assertions.assertEquals(true, controller.isGameEnded()); to be continued..
 
-        //force ending because of finished AssistantCards
-        //controller.getControllerState().setState();
+        //ROUND 2: Second plays
+        //-----MessageStudentHallToDiningRoom 1-----
+        // choose a Student which exists
+        colourToMove = mapSPColourToString(controller.getBoard().getPlayerSchool(controller.getCurrentPlayer()).getStudentsHall().get(0).getColour());
 
+        MessageStudentHallToDiningRoom m165 = new MessageStudentHallToDiningRoom(controller.getCurrentPlayer().getNickname(), colourToMove);
+        Assertions.assertEquals(controller.getNumStudentsToMoveCurrent(), 3);
+        try {
+            controller.update(m165);
+        } catch (ControllerException e) {
+            e.printStackTrace();
+        }
+        Assertions.assertEquals(controller.getNumStudentsToMoveCurrent(), 2);
+        Assertions.assertEquals(State.ACTION1, controller.getControllerState().getState());
 
+        //-----MessageStudentHallToDiningRoom 2-----
+        // choose a Student which exists
+        colourToMove = mapSPColourToString(controller.getBoard().getPlayerSchool(controller.getCurrentPlayer()).getStudentsHall().get(0).getColour());
 
+        MessageStudentHallToDiningRoom m17 = new MessageStudentHallToDiningRoom(controller.getCurrentPlayer().getNickname(), colourToMove);
+        Assertions.assertEquals(controller.getNumStudentsToMoveCurrent(), 2);
+        try {
+            controller.update(m17);
+        } catch (ControllerException e) {
+            e.printStackTrace();
+        }
+        Assertions.assertEquals(controller.getNumStudentsToMoveCurrent(), 1);
+        Assertions.assertEquals(State.ACTION1, controller.getControllerState().getState());
 
+        //-----MessageStudentToArchipelago-----
+        // choose a Student which exists
+        colourToMove = mapSPColourToString(controller.getBoard().getPlayerSchool(controller.getCurrentPlayer()).getStudentsHall().get(0).getColour());
 
+        MessageStudentToArchipelago m18 = new MessageStudentToArchipelago(controller.getCurrentPlayer().getNickname(), colourToMove, 10);
+        Assertions.assertEquals(controller.getNumStudentsToMoveCurrent(), 1);
+        try {
+            controller.update(m18);
+        } catch (ControllerException e) {
+            e.printStackTrace();
+        }
+        Assertions.assertEquals(controller.getNumStudentsToMoveCurrent(), 3);
+        Assertions.assertEquals(State.ACTION2, controller.getControllerState().getState());
+
+        //-----MessageMoveMotherNature-----
+        MessageMoveMotherNature m19 = new MessageMoveMotherNature(controller.getCurrentPlayer().getNickname(), 1);
+        try {
+            controller.update(m19);
+        } catch (ControllerException e) {
+            e.printStackTrace();
+        }
+        Assertions.assertEquals(State.ACTION3, controller.getControllerState().getState());
+
+        //-----MessageStudentCloudToSchool-----
+        MessageStudentCloudToSchool m20 = new MessageStudentCloudToSchool(controller.getCurrentPlayer().getNickname(), 0);
+        try {
+            controller.update(m20);
+        } catch (ControllerException e) {
+            e.printStackTrace();
+        }
+        Assertions.assertEquals(State.ACTION1, controller.getControllerState().getState());
+        Assertions.assertEquals("First", controller.getCurrentPlayer().getNickname());
+
+        //ROUND 2: First plays
+        //-----MessageStudentHallToDiningRoom 1-----
+        // choose a Student which exists
+        colourToMove = mapSPColourToString(controller.getBoard().getPlayerSchool(controller.getCurrentPlayer()).getStudentsHall().get(0).getColour());
+
+        MessageStudentHallToDiningRoom m21 = new MessageStudentHallToDiningRoom(controller.getCurrentPlayer().getNickname(), colourToMove);
+        Assertions.assertEquals(controller.getNumStudentsToMoveCurrent(), 3);
+        try {
+            controller.update(m21);
+        } catch (ControllerException e) {
+            e.printStackTrace();
+        }
+        Assertions.assertEquals(controller.getNumStudentsToMoveCurrent(), 2);
+        Assertions.assertEquals(State.ACTION1, controller.getControllerState().getState());
+
+        //-----MessageStudentHallToDiningRoom 2-----
+        // choose a Student which exists
+        colourToMove = mapSPColourToString(controller.getBoard().getPlayerSchool(controller.getCurrentPlayer()).getStudentsHall().get(0).getColour());
+
+        MessageStudentHallToDiningRoom m22 = new MessageStudentHallToDiningRoom(controller.getCurrentPlayer().getNickname(), colourToMove);
+        Assertions.assertEquals(controller.getNumStudentsToMoveCurrent(), 2);
+        try {
+            controller.update(m22);
+        } catch (ControllerException e) {
+            e.printStackTrace();
+        }
+        Assertions.assertEquals(controller.getNumStudentsToMoveCurrent(), 1);
+        Assertions.assertEquals(State.ACTION1, controller.getControllerState().getState());
+
+        //-----MessageStudentToArchipelago-----
+        // choose a Student which exists
+        colourToMove = mapSPColourToString(controller.getBoard().getPlayerSchool(controller.getCurrentPlayer()).getStudentsHall().get(0).getColour());
+
+        MessageStudentToArchipelago m23 = new MessageStudentToArchipelago(controller.getCurrentPlayer().getNickname(), colourToMove, 10);
+        Assertions.assertEquals(controller.getNumStudentsToMoveCurrent(), 1);
+        try {
+            controller.update(m23);
+        } catch (ControllerException e) {
+            e.printStackTrace();
+        }
+        Assertions.assertEquals(controller.getNumStudentsToMoveCurrent(), 3);
+        Assertions.assertEquals(State.ACTION2, controller.getControllerState().getState());
+
+        //-----MessageMoveMotherNature-----
+        MessageMoveMotherNature m24 = new MessageMoveMotherNature(controller.getCurrentPlayer().getNickname(), 1);
+        try {
+            controller.update(m24);
+        } catch (ControllerException e) {
+            e.printStackTrace();
+        }
+        Assertions.assertEquals(State.ACTION3, controller.getControllerState().getState());
+
+        //-----MessageStudentCloudToSchool-----
+        MessageStudentCloudToSchool m25 = new MessageStudentCloudToSchool(controller.getCurrentPlayer().getNickname(), 1);
+        try {
+            controller.update(m25);
+        } catch (ControllerException e) {
+            e.printStackTrace();
+        }
+        Assertions.assertEquals(State.END, controller.getControllerState().getState());
+        /*TODO: game ended due to AC finished. The case in which game ends due to void bag is analogous
+        * TODO: the case in which it ends due to 3 archipelagos has to be checked*/
 
 
 

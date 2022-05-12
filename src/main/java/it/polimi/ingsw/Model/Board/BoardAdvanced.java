@@ -300,8 +300,13 @@ public class BoardAdvanced extends Observable implements Board {
     }
 
     public void useAssistantCard(Player player, int turnPriority) throws AssistantCardAlreadyPlayedTurnException,
-            NoAssistantCardException {
+            NoAssistantCardException { //TODO: check if it has to be dropped
         this.board.useAssistantCard(player, turnPriority);
+    }
+
+    public void useAssistantCard(List<Integer> usedCards, Player player, int turnPriority) throws AssistantCardAlreadyPlayedTurnException,
+            NoAssistantCardException {
+        this.board.useAssistantCard(usedCards, player, turnPriority);
     }
 
     protected Player computeWinner(Player owner, Player challenger, Archipelago archipelago, boolean twoExtraPointsFlag, SPColour colourToExclude){

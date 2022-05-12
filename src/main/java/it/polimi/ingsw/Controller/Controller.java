@@ -384,6 +384,17 @@ public class Controller implements ObserverController<Message> {
         return 0;
     }
 
+    //this creates a list of Players who played their AC according to sitPlayers and iteratorAC
+    //Has to be used AFTER incrementing the iteratorAC (after you have precomputed the next player)
+    private List<Player> whoPlayedAC(){
+        List<Player> result = new ArrayList<>();
+        for(int i = this.currentPlayerIndex - this.iteratorAC; i <= this.currentPlayerIndex; i++){
+            result.add(this.sitPlayers.get(i));
+        }
+
+        return result;
+    }
+
     /**
      * Change order of Players in players according to the AssistantCards they played
      */
@@ -530,7 +541,7 @@ public class Controller implements ObserverController<Message> {
 
         // Remove the card from his hand
         try{
-            board.useAssistantCard(getCurrentSitPlayer(), turnPriority);
+            board.useAssistantCard(this.usedCards, getCurrentSitPlayer(), turnPriority);
         } catch(AssistantCardAlreadyPlayedTurnException | NoAssistantCardException ex){
             this.iteratorAC --;
             System.out.println("catch");
@@ -1301,7 +1312,7 @@ public class Controller implements ObserverController<Message> {
         //CASE 1: 3 Archipelagos remained
         //this condition has to be checked every time a merge is made
         //game ends immediately
-        if(numArchipelagos == 3){
+        if(numArchipelagos <= 3){
             this.precomputedState = State.END; //game ends immediately
             controllerState.setState(State.END);
         }

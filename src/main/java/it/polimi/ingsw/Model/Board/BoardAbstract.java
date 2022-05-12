@@ -446,14 +446,30 @@ public abstract class BoardAbstract extends Observable implements Board {
 
     //--------------------------------------------------ASSISTANT CARDS
     public void useAssistantCard(Player player, int turnPriority) throws
-            AssistantCardAlreadyPlayedTurnException, NoAssistantCardException {
+            AssistantCardAlreadyPlayedTurnException, NoAssistantCardException { //TODO: check id it's ok outside of the controller
 
         // control that no previous Player used that (but if it's his last card, let him use it)
-        //TODO: check if it still works after the introduction of sitPlayers
+        //TODO: check if it still works after the introduction of sitPlayers => added the other method below
         int currentPlayerIndex = this.players.indexOf(player);
         for(int i = 0; i < currentPlayerIndex; i++){
             if(players.get(i).getLastCard() != null) {
                 if (players.get(i).getLastCard().getTurnPriority() == turnPriority && player.getHandLength() > 1) {
+                    throw new AssistantCardAlreadyPlayedTurnException();
+                }
+            }
+        }
+
+        player.useAssistantCard(turnPriority);
+        notifyPlayers();
+    }
+
+    public void useAssistantCard(List<Integer> usedCards, Player player, int turnPriority) throws
+            AssistantCardAlreadyPlayedTurnException, NoAssistantCardException { //used in the controller
+
+        // control that no previous Player used that (but if it's his last card, let him use it)
+        if(player.getHandLength() > 1){ // only one AssistantCard in hand: he has no alternative
+            if(usedCards.size() > 0) {
+                if (usedCards.contains(turnPriority)) {
                     throw new AssistantCardAlreadyPlayedTurnException();
                 }
             }
