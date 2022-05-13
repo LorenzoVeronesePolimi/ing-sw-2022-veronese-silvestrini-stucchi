@@ -31,13 +31,15 @@ public class TwoExtraIslandsTest {
             e.printStackTrace();
         }
 
+        List<Integer> usedCards = new ArrayList<>();
+
         TwoExtraIslands card = new TwoExtraIslands();
         boardAdvanced.setExtractedCards(card);
 
         Assertions.assertEquals(card, boardAdvanced.getExtractedCards().get(0));
 
         try {
-            boardAdvanced.useAssistantCard(p1,3);
+            boardAdvanced.useAssistantCard(usedCards, p1,3);
         } catch (AssistantCardAlreadyPlayedTurnException | NoAssistantCardException e) {
             e.printStackTrace();
         }

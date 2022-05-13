@@ -313,9 +313,11 @@ class BoardAbstractTest {
 
         Assertions.assertEquals(playerList.get(1), this.b2.getArchipelago(7).getOwner());
 
+        List<Integer> usedCards = new ArrayList<>();
         try {
-            this.b2.useAssistantCard(this.b2.players.get(0), 1);
-            Assertions.assertThrows(AssistantCardAlreadyPlayedTurnException.class, () -> this.b2.useAssistantCard(this.b2.players.get(1), 1));
+            this.b2.useAssistantCard(usedCards, this.b2.players.get(0), 1);
+            usedCards.add(1);
+            Assertions.assertThrows(AssistantCardAlreadyPlayedTurnException.class, () -> this.b2.useAssistantCard(usedCards, this.b2.players.get(1), 1));
         } catch (AssistantCardAlreadyPlayedTurnException | NoAssistantCardException e) {
             e.printStackTrace();
         }

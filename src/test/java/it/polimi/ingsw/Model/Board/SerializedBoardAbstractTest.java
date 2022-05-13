@@ -37,9 +37,11 @@ public class SerializedBoardAbstractTest {
         Assertions.assertEquals(b2.clouds, serializedBoard.getClouds());
         Assertions.assertEquals(b2.mn, serializedBoard.getMn());
         Assertions.assertEquals(b2.schools, serializedBoard.getSchools());
+        List<Integer> usedCards = new ArrayList<>();
+
 
         try {
-            b2.useAssistantCard(p1, 1);
+            b2.useAssistantCard(usedCards, p1, 1);
         } catch (AssistantCardAlreadyPlayedTurnException e) {
             e.printStackTrace();
         } catch (NoAssistantCardException e) {

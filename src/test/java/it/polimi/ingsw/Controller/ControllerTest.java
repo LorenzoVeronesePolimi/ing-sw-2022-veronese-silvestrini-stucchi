@@ -620,16 +620,18 @@ public class ControllerTest {
         Assertions.assertEquals("Second", controller.getCurrentSitPlayer().getNickname());
 
         //ROUND 2: Second plays AC
+        List<Integer> usedCards = new ArrayList<>();
+
         try { //for the end due to AC finished
-            controller.getBoard().useAssistantCard(controller.getCurrentSitPlayer(), 3);
-            controller.getBoard().useAssistantCard(controller.getCurrentSitPlayer(), 4);
-            controller.getBoard().useAssistantCard(controller.getCurrentSitPlayer(), 5);
-            controller.getBoard().useAssistantCard(controller.getCurrentSitPlayer(), 6);
-            controller.getBoard().useAssistantCard(controller.getCurrentSitPlayer(), 7);
-            controller.getBoard().useAssistantCard(controller.getCurrentSitPlayer(), 8);
-            controller.getBoard().useAssistantCard(controller.getPlayers().get(1), 3); //other-ways I couldn't use the 9 in the next line
-            controller.getBoard().useAssistantCard(controller.getCurrentSitPlayer(), 9);
-            controller.getBoard().useAssistantCard(controller.getCurrentSitPlayer(), 10);
+            controller.getBoard().useAssistantCard(usedCards, controller.getCurrentSitPlayer(), 3);
+            controller.getBoard().useAssistantCard(usedCards, controller.getCurrentSitPlayer(), 4);
+            controller.getBoard().useAssistantCard(usedCards, controller.getCurrentSitPlayer(), 5);
+            controller.getBoard().useAssistantCard(usedCards, controller.getCurrentSitPlayer(), 6);
+            controller.getBoard().useAssistantCard(usedCards, controller.getCurrentSitPlayer(), 7);
+            controller.getBoard().useAssistantCard(usedCards, controller.getCurrentSitPlayer(), 8);
+            controller.getBoard().useAssistantCard(usedCards, controller.getPlayers().get(1), 3); //other-ways I couldn't use the 9 in the next line
+            controller.getBoard().useAssistantCard(usedCards, controller.getCurrentSitPlayer(), 9);
+            controller.getBoard().useAssistantCard(usedCards, controller.getCurrentSitPlayer(), 10);
         } catch (AssistantCardAlreadyPlayedTurnException | NoAssistantCardException e) {
             e.printStackTrace();
         }

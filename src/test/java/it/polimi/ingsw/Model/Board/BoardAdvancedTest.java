@@ -33,8 +33,11 @@ public class BoardAdvancedTest {
             e.printStackTrace();
         }
 
+        List<Integer> usedCards = new ArrayList<>();
+
         try {
-            boardAdvanced.useAssistantCard(board.players.get(0), 1);
+            boardAdvanced.useAssistantCard(usedCards, board.players.get(0), 1);
+            usedCards.add(1);
             Assertions.assertEquals(1, board.players.get(0).getLastCard().getTurnPriority());
             Assertions.assertEquals(boardAdvanced.computeWinner(board.players.get(0), board.players.get(0), board.archipelagos.get(0)), null);
             Assertions.assertEquals(boardAdvanced.computeInfluenceOfPlayer(board.players.get(0), board.archipelagos.get(0)), 0);

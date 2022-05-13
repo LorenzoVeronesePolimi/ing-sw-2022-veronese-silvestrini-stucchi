@@ -843,13 +843,9 @@ public class Controller implements ObserverController<Message> {
 
                 return true;
             }
-        } catch (WrongNumberOfStudentsTransferException |
-                StudentNotFoundException |
-                ExceededMaxStudentsHallException |
-                ExceededMaxStudentsDiningRoomException |
-                EmptyCaveauException |
-                ExceededMaxNumCoinException |
-                CoinNotFoundException e) {return false;}
+        } catch (WrongNumberOfStudentsTransferException | StudentNotFoundException | ExceededMaxStudentsHallException |
+                 ExceededMaxStudentsDiningRoomException | EmptyCaveauException | ExceededMaxNumCoinException |
+                 CoinNotFoundException | ProfessorNotFoundException | NoProfessorBagException e) {return false;}
 
         return false;
     }
