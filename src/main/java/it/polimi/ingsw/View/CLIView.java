@@ -559,26 +559,29 @@ public class CLIView extends ClientView {
 
         if(card.equalsIgnoreCase("reducecolourindining") || card.equalsIgnoreCase("reducecolour")
                 || card.equalsIgnoreCase("reduce")) {
-            //askReduceColourInDining();
+            askReduceColourInDining();
         }
 
         if(card.equalsIgnoreCase("takeprofessoronequity") || card.equalsIgnoreCase("takeprofessor")
                 || card.equalsIgnoreCase("take")) {
-            //askTakeProfessoOnEquity();
+            this.client.asyncWriteToSocket("takeProfessorOnEquity");
+
         }
 
         if(card.equalsIgnoreCase("towernovalue") || card.equalsIgnoreCase("tower")) {
-            //askTowerNoValue();
+            this.client.asyncWriteToSocket("towerNoValue");
         }
 
         if(card.equalsIgnoreCase("twoextraislands") || card.equalsIgnoreCase("twoextrai")
                 || card.equalsIgnoreCase("2extrai")) {
-            //askTwoExtraIslands();
+            this.client.asyncWriteToSocket("twoExtraIslands");
+
         }
 
         if(card.equalsIgnoreCase("twoextrapoints") || card.equalsIgnoreCase("twoextrap")
                 || card.equalsIgnoreCase("2extrap")) {
-            //askTwoExtraPoints();
+            this.client.asyncWriteToSocket("twoExtraPoints");
+
         }
     }
 
@@ -717,6 +720,20 @@ public class CLIView extends ClientView {
         } while(move < 0 || move > serializedBoardAdvanced.getArchipelagos().size() - 1);
 
         this.client.asyncWriteToSocket("placeOneStudent " + cardStudent + " " + move);
+    }
+    private void askReduceColourInDining(){
+        Set<String> possibleColours = new HashSet<String>();
+        possibleColours.add("pink"); possibleColours.add("red"); possibleColours.add("yellow"); possibleColours.add("blue"); possibleColours.add("green");
+        String colour = null;
+
+        do {
+            System.out.println("Select a colour of students that you want to remove from dining rooms: ");
+            System.out.flush();
+            colour = input.nextLine();
+        }while(!possibleColours.contains(colour.toLowerCase()));
+
+        this.client.asyncWriteToSocket("reduceColourInDining " + colour);
+
     }
 
     // This asks the player how much does he want to move Mother Nature
