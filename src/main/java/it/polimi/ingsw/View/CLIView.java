@@ -10,6 +10,7 @@ import it.polimi.ingsw.Model.Enumerations.SPColour;
 import it.polimi.ingsw.Model.Places.Archipelago;
 import it.polimi.ingsw.Model.Places.School.School;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -248,10 +249,6 @@ public class CLIView extends ClientView {
 
         printWaitTurn(serializedBoardAbstract);
         System.out.flush();
-
-        //TODO: let buy cards in all ACTION*
-        //TODO: manage student movement in an easier way
-        //TODO: don't show empty islands and is only one island remaining don't let player choose
     }
 
     private void printWaitTurn(SerializedBoardAbstract serializedBoardAbstract) {
@@ -365,7 +362,7 @@ public class CLIView extends ClientView {
             System.out.println("Choose a card from the extracted ones:");
             System.out.flush();
             card = input.nextLine();
-        } while(checkCharacterChoice(serializedBoardAdvanced, card));
+        } while(!checkCharacterChoice(serializedBoardAdvanced, card));
 
         manageCard(serializedBoardAdvanced, card);
 
@@ -376,6 +373,7 @@ public class CLIView extends ClientView {
 
         if(card.equalsIgnoreCase("exchangethreestudents") || card.equalsIgnoreCase("exchangethree")
                 || card.equalsIgnoreCase("ex3")) {
+
             if(extracted.get(0).getType().equals(CharacterCardEnumeration.EXCHANGE_THREE_STUDENTS)
                     || extracted.get(1).getType().equals(CharacterCardEnumeration.EXCHANGE_THREE_STUDENTS)
                     || extracted.get(2).getType().equals(CharacterCardEnumeration.EXCHANGE_THREE_STUDENTS)) {
@@ -439,9 +437,9 @@ public class CLIView extends ClientView {
 
         if(card.equalsIgnoreCase("reducecolourindining") || card.equalsIgnoreCase("reducecolour")
                 || card.equalsIgnoreCase("reduce")) {
-            if (extracted.get(0).getType().equals(CharacterCardEnumeration.PLACE_ONE_STUDENT)
-                    || extracted.get(1).getType().equals(CharacterCardEnumeration.PLACE_ONE_STUDENT)
-                    || extracted.get(2).getType().equals(CharacterCardEnumeration.PLACE_ONE_STUDENT)) {
+            if (extracted.get(0).getType().equals(CharacterCardEnumeration.REDUCE_COLOUR_IN_DINING)
+                    || extracted.get(1).getType().equals(CharacterCardEnumeration.REDUCE_COLOUR_IN_DINING)
+                    || extracted.get(2).getType().equals(CharacterCardEnumeration.REDUCE_COLOUR_IN_DINING)) {
                 return true;
             }
         }
@@ -465,18 +463,18 @@ public class CLIView extends ClientView {
 
         if(card.equalsIgnoreCase("twoextraislands") || card.equalsIgnoreCase("twoextrai")
                 || card.equalsIgnoreCase("2extrai")) {
-            if (extracted.get(0).getType().equals(CharacterCardEnumeration.TAKE_PROFESSOR_ON_EQUITY)
-                    || extracted.get(1).getType().equals(CharacterCardEnumeration.TAKE_PROFESSOR_ON_EQUITY)
-                    || extracted.get(2).getType().equals(CharacterCardEnumeration.TAKE_PROFESSOR_ON_EQUITY)) {
+            if (extracted.get(0).getType().equals(CharacterCardEnumeration.TWO_EXTRA_ISLANDS)
+                    || extracted.get(1).getType().equals(CharacterCardEnumeration.TWO_EXTRA_ISLANDS)
+                    || extracted.get(2).getType().equals(CharacterCardEnumeration.TWO_EXTRA_ISLANDS)) {
                 return true;
             }
         }
 
         if(card.equalsIgnoreCase("twoextrapoints") || card.equalsIgnoreCase("twoextrap")
                 || card.equalsIgnoreCase("2extrap")) {
-            if (extracted.get(0).getType().equals(CharacterCardEnumeration.TAKE_PROFESSOR_ON_EQUITY)
-                    || extracted.get(1).getType().equals(CharacterCardEnumeration.TAKE_PROFESSOR_ON_EQUITY)
-                    || extracted.get(2).getType().equals(CharacterCardEnumeration.TAKE_PROFESSOR_ON_EQUITY)) {
+            if (extracted.get(0).getType().equals(CharacterCardEnumeration.TWO_EXTRA_POINTS)
+                    || extracted.get(1).getType().equals(CharacterCardEnumeration.TWO_EXTRA_POINTS)
+                    || extracted.get(2).getType().equals(CharacterCardEnumeration.TWO_EXTRA_POINTS)) {
                 return true;
             }
         }
@@ -547,11 +545,11 @@ public class CLIView extends ClientView {
                 || card.equalsIgnoreCase("place")) {
             PlaceOneStudent place = null;
 
-            if(extracted.get(0).getType().equals(CharacterCardEnumeration.EXTRA_STUDENT_IN_DINING))
+            if(extracted.get(0).getType().equals(CharacterCardEnumeration.PLACE_ONE_STUDENT))
                 place = (PlaceOneStudent) extracted.get(0);
-            else if(extracted.get(1).getType().equals(CharacterCardEnumeration.EXCHANGE_TWO_HALL_DINING))
+            else if(extracted.get(1).getType().equals(CharacterCardEnumeration.PLACE_ONE_STUDENT))
                 place = (PlaceOneStudent) extracted.get(1);
-            else if(extracted.get(2).getType().equals(CharacterCardEnumeration.EXCHANGE_TWO_HALL_DINING))
+            else if(extracted.get(2).getType().equals(CharacterCardEnumeration.PLACE_ONE_STUDENT))
                 place = (PlaceOneStudent) extracted.get(2);
 
             askPlaceOneStudent(serializedBoardAdvanced, place);
@@ -586,8 +584,8 @@ public class CLIView extends ClientView {
     }
 
     private void askExchangeThreeStudents(ExchangeThreeStudents ex3s, School school) {
-        String cardStudents = null;
-        String hallStudents = null;
+        List<String> cardStudents = new ArrayList<>();
+        List<String> hallStudents = new ArrayList<>();
 
         System.out.println("Students on the card: " + ex3s.printStudents());
         System.out.println("Student in the hall: " + school.getStudentsHall().toString());
@@ -595,22 +593,24 @@ public class CLIView extends ClientView {
         for(int i = 0; i < 3; i++) {
             System.out.println("Select the colour of the student [" + (i+1) + "] from the card: ");
             System.out.flush();
-            cardStudents += " " + input.nextLine();
+            cardStudents.add(input.nextLine());
         }
 
         for(int i = 0; i < 3; i++) {
             System.out.println("Select the colour of the student [" + (i+1) + "] from the hall: ");
             System.out.flush();
-            hallStudents += " " + input.nextLine();
+            hallStudents.add(input.nextLine());
         }
 
         //The space after the command is missing because it is already present in cardStudents
-        this.client.asyncWriteToSocket("exchangeThreeStudents" + cardStudents + hallStudents);
+        this.client.asyncWriteToSocket("exchangeThreeStudents " + cardStudents.get(0) + " " +
+                cardStudents.get(1) + " " + cardStudents.get(2) + " " +
+                hallStudents.get(0) + " " + hallStudents.get(1) + " " + hallStudents.get(2));
     }
 
     private void askExchangeTwoHallDining(School school) {
-        String diningStudents = null;
-        String hallStudents = null;
+        List<String> diningStudents = new ArrayList<>();
+        List<String> hallStudents = new ArrayList<>();
 
         System.out.println("Students in the hall: " + school.getStudentsHall().toString());
         System.out.print("Students in dining room: ");
@@ -627,7 +627,7 @@ public class CLIView extends ClientView {
                 System.out.println("Select another student from the hall: ");
 
             System.out.flush();
-            hallStudents += " " + input.nextLine();
+            hallStudents.add(input.nextLine());
         }
 
         for(int i = 0; i < 3; i++) {
@@ -637,15 +637,17 @@ public class CLIView extends ClientView {
                 System.out.println("Select another student from the dining room: ");
 
             System.out.flush();
-            diningStudents += " " + input.nextLine();
+            diningStudents.add(input.nextLine());
         }
 
         //The space after the command is missing because it is already present in cardStudents
-        this.client.asyncWriteToSocket("exchangeTwoHallDining" + hallStudents + diningStudents);
+        this.client.asyncWriteToSocket("exchangeTwoHallDining " +
+                hallStudents.get(0) + " " + hallStudents.get(1) + " " +
+                diningStudents.get(0) + " " + diningStudents.get(1));
     }
 
     private void askExcludeColourFromCounting() {
-        Set<String> possibleColours = new HashSet<String>();
+        Set<String> possibleColours = new HashSet<>();
         possibleColours.add("pink"); possibleColours.add("red"); possibleColours.add("yellow"); possibleColours.add("blue"); possibleColours.add("green");
         String colour = null;
 
@@ -659,7 +661,7 @@ public class CLIView extends ClientView {
     }
 
     private void askExtraStudentInDining(ExtraStudentInDining exst, School school) {
-        Set<String> possibleColours = new HashSet<String>();
+        Set<String> possibleColours = new HashSet<>();
         possibleColours.add("pink"); possibleColours.add("red"); possibleColours.add("yellow"); possibleColours.add("blue"); possibleColours.add("green");
         String cardStudent = null;
 
@@ -702,7 +704,7 @@ public class CLIView extends ClientView {
     private void askPlaceOneStudent(SerializedBoardAdvanced serializedBoardAdvanced, PlaceOneStudent place) {
         Set<String> possibleColours = new HashSet<String>();
         possibleColours.add("pink"); possibleColours.add("red"); possibleColours.add("yellow"); possibleColours.add("blue"); possibleColours.add("green");
-        String cardStudent = null;
+        String cardStudent;
         int move;
 
         System.out.println("Students on the card: " + place.printStudents());

@@ -307,14 +307,10 @@ public class BoardAdvanced extends Observable implements Board {
         return 0;
     }
 
-    public void useAssistantCard(Player player, int turnPriority) throws AssistantCardAlreadyPlayedTurnException,
-            NoAssistantCardException { //TODO: check if it has to be dropped
-        this.board.useAssistantCard(player, turnPriority);
-    }
-
     public void useAssistantCard(List<Integer> usedCards, Player player, int turnPriority) throws AssistantCardAlreadyPlayedTurnException,
             NoAssistantCardException {
         this.board.useAssistantCard(usedCards, player, turnPriority);
+        notifyPlayers();
     }
 
     protected Player computeWinner(Player owner, Player challenger, Archipelago archipelago, boolean twoExtraPointsFlag, SPColour colourToExclude){
@@ -424,6 +420,8 @@ public class BoardAdvanced extends Observable implements Board {
     public void usePlaceOneStudent(Player player, SPColour chosen, int archipelago, int indexCard) throws
             StudentNotFoundException , EmptyCaveauException, ExceededMaxNumCoinException, CoinNotFoundException {
 
+        System.out.println("1stud" + this.extractedCards.get(indexCard).getCurrentPrice());
+        System.out.println("type" + this.extractedCards.get(indexCard).getType());
         if(this.makePayment(player, this.extractedCards.get(indexCard))) {
             ((PlaceOneStudent) this.extractedCards.get(indexCard)).useEffect(chosen, archipelago);
             this.extractedCards.get(indexCard).updatePrice(this.bank.getCoin());
@@ -437,7 +435,8 @@ public class BoardAdvanced extends Observable implements Board {
     public void useTakeProfessorOnEquity(Player player, int indexCard) throws
             EmptyCaveauException, ExceededMaxNumCoinException, CoinNotFoundException, InvalidTowerNumberException,
             AnotherTowerException, ProfessorNotFoundException, NoProfessorBagException, ExceededMaxTowersException, TowerNotFoundException {
-
+        System.out.println("takep" + this.extractedCards.get(indexCard).getCurrentPrice());
+        System.out.println("type" + this.extractedCards.get(indexCard).getType());
         if(this.makePayment(player, this.extractedCards.get(indexCard))) {
             ((TakeProfessorOnEquity) this.extractedCards.get(indexCard)).useEffect(player);
             this.extractedCards.get(indexCard).updatePrice(this.bank.getCoin());
@@ -451,7 +450,8 @@ public class BoardAdvanced extends Observable implements Board {
     public void useFakeMNMovement(Player player, int fakeMNPosition, int indexCard) throws
             EmptyCaveauException, ExceededMaxNumCoinException, CoinNotFoundException, InvalidTowerNumberException,
             AnotherTowerException, ExceededMaxTowersException, TowerNotFoundException {
-
+        System.out.println("fake" + this.extractedCards.get(indexCard).getCurrentPrice());
+        System.out.println("type" + this.extractedCards.get(indexCard).getType());
         if(this.makePayment(player, this.extractedCards.get(indexCard))) {
             ((FakeMNMovement) this.extractedCards.get(indexCard)).useEffect(player, fakeMNPosition);
             this.extractedCards.get(indexCard).updatePrice(this.bank.getCoin());
@@ -464,7 +464,8 @@ public class BoardAdvanced extends Observable implements Board {
 
     public void useTwoExtraIslands(Player player, int indexCard) throws
             EmptyCaveauException, ExceededMaxNumCoinException, CoinNotFoundException{
-
+        System.out.println("2extrai" + this.extractedCards.get(indexCard).getCurrentPrice());
+        System.out.println("type" + this.extractedCards.get(indexCard).getType());
         if(this.makePayment(player, this.extractedCards.get(indexCard))) {
             ((TwoExtraIslands) this.extractedCards.get(indexCard)).useEffect(player);
             this.extractedCards.get(indexCard).updatePrice(this.bank.getCoin());
@@ -477,7 +478,8 @@ public class BoardAdvanced extends Observable implements Board {
 
     public void useForbidIsland(Player player, int archipelago, int indexCard) throws
             EmptyCaveauException, ExceededMaxNumCoinException, CoinNotFoundException, ExceededNumberForbidFlagException {
-
+        System.out.println("forbid" + this.extractedCards.get(indexCard).getCurrentPrice());
+        System.out.println("type" + this.extractedCards.get(indexCard).getType());
         if(this.makePayment(player, this.extractedCards.get(indexCard))) {
             ((ForbidIsland) this.extractedCards.get(indexCard)).useEffect(archipelago);
             this.extractedCards.get(indexCard).updatePrice(this.bank.getCoin());
@@ -490,7 +492,8 @@ public class BoardAdvanced extends Observable implements Board {
 
     public void useTowerNoValue(Player player, int indexCard) throws
             EmptyCaveauException, ExceededMaxNumCoinException, CoinNotFoundException {
-
+        System.out.println("tnov" + this.extractedCards.get(indexCard).getCurrentPrice());
+        System.out.println("type" + this.extractedCards.get(indexCard).getType());
         if(this.makePayment(player, this.extractedCards.get(indexCard))) {
             ((TowerNoValue) this.extractedCards.get(indexCard)).useEffect();
             this.extractedCards.get(indexCard).updatePrice(this.bank.getCoin());
@@ -504,7 +507,8 @@ public class BoardAdvanced extends Observable implements Board {
     public void useExchangeThreeStudents(Player player, List<SPColour> hallStudents, List<SPColour> exchangeStudents, int indexCard) throws
             EmptyCaveauException, ExceededMaxNumCoinException, CoinNotFoundException, WrongNumberOfStudentsTransferException,
             StudentNotFoundException, ExceededMaxStudentsHallException {
-
+        System.out.println("ex3s" + this.extractedCards.get(indexCard).getCurrentPrice());
+        System.out.println("type" + this.extractedCards.get(indexCard).getType());
         if(this.makePayment(player, this.extractedCards.get(indexCard))) {
             ((ExchangeThreeStudents) this.extractedCards.get(indexCard)).useEffect(player, hallStudents, exchangeStudents);
             this.extractedCards.get(indexCard).updatePrice(this.bank.getCoin());
@@ -517,7 +521,8 @@ public class BoardAdvanced extends Observable implements Board {
 
     public void useTwoExtraPoints(Player player, int indexCard) throws
             EmptyCaveauException, ExceededMaxNumCoinException, CoinNotFoundException {
-
+        System.out.println("2exp" + this.extractedCards.get(indexCard).getCurrentPrice());
+        System.out.println("type" + this.extractedCards.get(indexCard).getType());
         if(this.makePayment(player, this.extractedCards.get(indexCard))) {
             ((TwoExtraPoints) this.extractedCards.get(indexCard)).useEffect();
             this.extractedCards.get(indexCard).updatePrice(this.bank.getCoin());
@@ -531,7 +536,8 @@ public class BoardAdvanced extends Observable implements Board {
     public void useExcludeColourFromCounting(Player player, SPColour colourToExclude, int indexCard) throws
             EmptyCaveauException, ExceededMaxNumCoinException, CoinNotFoundException, InvalidTowerNumberException,
             AnotherTowerException, ExceededMaxTowersException, TowerNotFoundException {
-
+        System.out.println("excolour" + this.extractedCards.get(indexCard).getCurrentPrice());
+        System.out.println("type" + this.extractedCards.get(indexCard).getType());
         if(this.makePayment(player, this.extractedCards.get(indexCard))) {
             ((ExcludeColourFromCounting) this.extractedCards.get(indexCard)).useEffect(colourToExclude);
             this.extractedCards.get(indexCard).updatePrice(this.bank.getCoin());
@@ -544,8 +550,9 @@ public class BoardAdvanced extends Observable implements Board {
 
     public void useExchangeTwoHallDining(Player player, List<SPColour> hallStudents, List<SPColour> diningStudents, int indexCard) throws
             EmptyCaveauException, ExceededMaxNumCoinException, CoinNotFoundException, WrongNumberOfStudentsTransferException,
-            ExceededMaxStudentsDiningRoomException, ExceededMaxStudentsHallException, StudentNotFoundException {
-
+            ExceededMaxStudentsDiningRoomException, ExceededMaxStudentsHallException, StudentNotFoundException, ProfessorNotFoundException, NoProfessorBagException {
+        System.out.println("type" + this.extractedCards.get(indexCard).getType());
+        System.out.println("ex2hall" + this.extractedCards.get(indexCard).getCurrentPrice());
         if(this.makePayment(player, this.extractedCards.get(indexCard))) {
             ((ExchangeTwoHallDining) this.extractedCards.get(indexCard)).useEffect(player, hallStudents, diningStudents);
             this.extractedCards.get(indexCard).updatePrice(this.bank.getCoin());
@@ -559,7 +566,8 @@ public class BoardAdvanced extends Observable implements Board {
     public void useExtraStudentInDining(Player player, SPColour cardToDining, int indexCard) throws
             EmptyCaveauException, ExceededMaxNumCoinException, CoinNotFoundException, StudentNotFoundException,
             ExceededMaxStudentsDiningRoomException {
-
+        System.out.println("extradin" + this.extractedCards.get(indexCard).getCurrentPrice());
+        System.out.println("type" + this.extractedCards.get(indexCard).getType());
         if(this.makePayment(player, this.extractedCards.get(indexCard))) {
             ((ExtraStudentInDining) this.extractedCards.get(indexCard)).useEffect(player, cardToDining);
             this.extractedCards.get(indexCard).updatePrice(this.bank.getCoin());
@@ -572,7 +580,8 @@ public class BoardAdvanced extends Observable implements Board {
 
     public void useReduceColourInDining(Player player, SPColour colour, int indexCard) throws
             EmptyCaveauException, ExceededMaxNumCoinException, CoinNotFoundException, StudentNotFoundException {
-
+        System.out.println("reduce" + this.extractedCards.get(indexCard).getCurrentPrice());
+        System.out.println("type" + this.extractedCards.get(indexCard).getType());
         if(this.makePayment(player, this.extractedCards.get(indexCard))) {
             ((ReduceColourInDining) this.extractedCards.get(indexCard)).useEffect(colour);
             this.extractedCards.get(indexCard).updatePrice(this.bank.getCoin());
@@ -585,6 +594,7 @@ public class BoardAdvanced extends Observable implements Board {
 
     private boolean makePayment(Player player, AbstractCharacterCard card) throws ExceededMaxNumCoinException, EmptyCaveauException {
         School currentSchool = this.board.getPlayerSchool(player);
+        System.out.println("make payment " + card.getCurrentPrice());
         for(int i = 0; i < card.getCurrentPrice(); i++) {
             try {
                 bank.addCoin(((SchoolAdvanced)currentSchool).removeCoin());

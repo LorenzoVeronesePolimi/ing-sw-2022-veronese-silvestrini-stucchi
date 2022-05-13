@@ -201,16 +201,12 @@ public abstract class BoardAbstract extends Observable implements Board {
     public void moveStudentSchoolToArchipelagos(Player player, SPColour colour, int archipelagoIndex) throws StudentNotFoundException {
         //school related to the player that made the move
         School currentSchool = playerSchool.get(player);
-        System.out.println("inizio");
         if(currentSchool != null) {
-            System.out.println("not null");
             Student toBeMoved = currentSchool.removeStudentHall(colour);
             archipelagos.get(archipelagoIndex).addStudent(toBeMoved);
         }
-        System.out.println("fine");
 
         if(!(this.schools.get(0) instanceof SchoolAdvanced)) {
-            System.out.println("Notify normale");
             notifyPlayers();
         }
 
@@ -488,25 +484,7 @@ public abstract class BoardAbstract extends Observable implements Board {
     }
 
 
-    //--------------------------------------------------ASSISTANT CARDS
-    public void useAssistantCard(Player player, int turnPriority) throws
-            AssistantCardAlreadyPlayedTurnException, NoAssistantCardException { //TODO: check id it's ok outside of the controller
-
-        // control that no previous Player used that (but if it's his last card, let him use it)
-        //TODO: check if it still works after the introduction of sitPlayers => added the other method below
-        int currentPlayerIndex = this.players.indexOf(player);
-        for(int i = 0; i < currentPlayerIndex; i++){
-            if(players.get(i).getLastCard() != null) {
-                if (players.get(i).getLastCard().getTurnPriority() == turnPriority && player.getHandLength() > 1) {
-                    throw new AssistantCardAlreadyPlayedTurnException();
-                }
-            }
-        }
-
-        player.useAssistantCard(turnPriority);
-        notifyPlayers();
-    }
-
+    //--------------------------------------------------ASSISTANT CARD
     public void useAssistantCard(List<Integer> usedCards, Player player, int turnPriority) throws
             AssistantCardAlreadyPlayedTurnException, NoAssistantCardException { //used in the controller
 
@@ -520,13 +498,13 @@ public abstract class BoardAbstract extends Observable implements Board {
         }
 
         player.useAssistantCard(turnPriority);
-        notifyPlayers();
+        if(!(this.schools.get(0) instanceof SchoolAdvanced))
+            notifyPlayers();
     }
 
     @Override
     public void notifyPlayers() {
         SerializedBoardAbstract serializedBoardAbstract =
                 new SerializedBoardAbstract(this.archipelagos, this.clouds, this.mn, this.schools);
-        notify(serializedBoardAbstract);
     }
 }

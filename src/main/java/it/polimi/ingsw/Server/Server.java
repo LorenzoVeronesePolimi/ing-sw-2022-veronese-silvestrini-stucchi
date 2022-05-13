@@ -2,6 +2,7 @@ package it.polimi.ingsw.Server;
 
 import it.polimi.ingsw.Controller.Controller;
 import it.polimi.ingsw.Messages.OUTMessages.MessageAskName;
+import it.polimi.ingsw.Messages.OUTMessages.OUTMessage;
 import it.polimi.ingsw.Model.Enumerations.PlayerColour;
 
 import java.io.IOException;
@@ -21,12 +22,14 @@ public class Server {
     private int connections = 0;
     private int alreadyin =0; //number of players that have already given information about nick & colour
     private List<SocketClientConnectionCLI> socketConnections = new ArrayList<>();
+    private List<OUTMessage> pendingMessage;
 
     private Controller controller;
 
     public Server() throws IOException {
         this.serverSocket = new ServerSocket(PORT);
         this.controller = new Controller(this);
+        this.pendingMessage = new ArrayList<>();
     }
 
     public Controller getController() {
@@ -49,15 +52,25 @@ public class Server {
                 }
 
                 executor.submit(socketConnection);
+
+                if(pendingMessage.size() > 0) {
+                    socketConnection.setPendingMessage(pendingMessage.get(0));
+                    pendingMessage.clear();
+                    alreadyin++;
+                }
             } catch (IOException e) {
                 System.out.println("Connection Error!");
             }
         }
     }
 
-    public void askPlayerInfo(List<PlayerColour> list, int numPlayers){
-        alreadyin++;
-        socketConnections.get(alreadyin).send(new MessageAskName(list, numPlayers));
+    public void askPlayerInfo(List<PlayerColour> list, int numPlayers) {
+        if (socketConnections.size() > (alreadyin + 1)) {
+            alreadyin++;
+            socketConnections.get(alreadyin).send(new MessageAskName(list, numPlayers));
+        } else {
+            pendingMessage.add(new MessageAskName(list, numPlayers));
+        }
     }
 
     public void reserServer() {

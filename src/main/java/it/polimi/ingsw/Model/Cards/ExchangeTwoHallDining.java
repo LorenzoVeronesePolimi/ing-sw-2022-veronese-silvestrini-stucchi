@@ -3,10 +3,7 @@ package it.polimi.ingsw.Model.Cards;
 import it.polimi.ingsw.Model.Board.BoardAdvanced;
 import it.polimi.ingsw.Model.Enumerations.CharacterCardEnumeration;
 import it.polimi.ingsw.Model.Enumerations.SPColour;
-import it.polimi.ingsw.Model.Exceptions.ExceededMaxStudentsDiningRoomException;
-import it.polimi.ingsw.Model.Exceptions.ExceededMaxStudentsHallException;
-import it.polimi.ingsw.Model.Exceptions.StudentNotFoundException;
-import it.polimi.ingsw.Model.Exceptions.WrongNumberOfStudentsTransferException;
+import it.polimi.ingsw.Model.Exceptions.*;
 import it.polimi.ingsw.Model.Pawns.Student;
 import it.polimi.ingsw.Model.Places.School.School;
 import it.polimi.ingsw.Model.Player;
@@ -47,7 +44,7 @@ public class ExchangeTwoHallDining extends AbstractCharacterCard implements Seri
      */
     public void useEffect(Player player, List<SPColour> hallStudents, List<SPColour> diningStudents) throws
             WrongNumberOfStudentsTransferException, StudentNotFoundException, ExceededMaxStudentsHallException,
-            ExceededMaxStudentsDiningRoomException {
+            ExceededMaxStudentsDiningRoomException, ProfessorNotFoundException, NoProfessorBagException {
 
         if(hallStudents.size()>2 || diningStudents.size()>2) {
             throw new WrongNumberOfStudentsTransferException();
@@ -76,6 +73,9 @@ public class ExchangeTwoHallDining extends AbstractCharacterCard implements Seri
         for(Student s: hallToDining) {
             currentPlayerSchool.addStudentDiningRoom(s);
         }
+
+        boardAdvanced.conquerProfessor(player, hallStudents.get(0));
+        boardAdvanced.conquerProfessor(player, hallStudents.get(1));
     }
 
     @Override

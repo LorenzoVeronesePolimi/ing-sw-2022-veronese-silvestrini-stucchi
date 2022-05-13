@@ -10,6 +10,8 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.NoSuchElementException;
 
 /*
@@ -48,6 +50,7 @@ public class SocketClientConnectionCLI extends ClientConnection implements Runna
 
     private boolean active = true;
     private boolean firstPlayer = false;
+    private List<OUTMessage> pendingMessage;
     private final ServerView serverView;
 
 
@@ -55,8 +58,7 @@ public class SocketClientConnectionCLI extends ClientConnection implements Runna
         this.socket = socket;
         this.server = server;
         this.serverView = new ServerView(this, controller);
-
-        //controller.addBoardObserver();
+        this.pendingMessage = new ArrayList<>();
 
         try {
             this.out = new ObjectOutputStream(socket.getOutputStream());
@@ -88,6 +90,9 @@ public class SocketClientConnectionCLI extends ClientConnection implements Runna
             if(firstPlayer) {
                 send(serverView.askFirstPlayer());
             }
+            if(pendingMessage.size() > 0) {
+                this.send(pendingMessage.get(0));
+            }
 
             //server.lobby(this, this.nickname);
             while(isActive()){
@@ -106,6 +111,10 @@ public class SocketClientConnectionCLI extends ClientConnection implements Runna
 
     public void setFirstPlayerAction() {
         this.firstPlayer = true;
+    }
+
+    public void setPendingMessage(OUTMessage pending) {
+        this.pendingMessage.add(pending);
     }
 
     private synchronized boolean isActive(){

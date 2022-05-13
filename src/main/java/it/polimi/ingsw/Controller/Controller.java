@@ -535,7 +535,12 @@ public class Controller implements ObserverController<Message> {
 
         // Remove the card from his hand
         try{
-            board.useAssistantCard(this.usedCards, getCurrentSitPlayer(), turnPriority);
+            if(isAdvanced()){
+                boardAdvanced.useAssistantCard(this.usedCards, getCurrentSitPlayer(), turnPriority);
+            }
+            else{
+                board.useAssistantCard(this.usedCards, getCurrentSitPlayer(), turnPriority);
+            }
         } catch(AssistantCardAlreadyPlayedTurnException | NoAssistantCardException ex){
             this.iteratorAC --;
             System.out.println("catch");
@@ -753,6 +758,7 @@ public class Controller implements ObserverController<Message> {
             // change current Player
             this.currentPlayerIndex++;
             if(this.currentPlayerIndex >= this.players.size()){ //all Players made their move => new turn
+                this.characterCardUsed = false;
                 if(this.gameEnded){ //case game ends at the end of the turn
                     controllerState.setState(State.END);
                 }
