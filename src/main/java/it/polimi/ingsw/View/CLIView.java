@@ -752,12 +752,21 @@ public class CLIView extends ClientView {
     }
 
     private void askCloudChoice(SerializedBoardAbstract serializedBoardAbstract) {
-        int cloudIndex;
-        do {
-            System.out.println("Is Action3: Which cloud do you choose? ");
-            System.out.flush();
-            cloudIndex = Integer.parseInt(input.nextLine());
-        } while (cloudIndex < 0 || cloudIndex > serializedBoardAbstract.getClouds().size());
+        int cloudIndex = 0;
+
+        if(serializedBoardAbstract.getClouds().stream().filter(x -> x.getStudents().size() > 0).count() > 1) {
+            do {
+                System.out.println("Is Action3: Which cloud do you choose? ");
+                System.out.flush();
+                cloudIndex = Integer.parseInt(input.nextLine());
+            } while (cloudIndex < 0 || cloudIndex > serializedBoardAbstract.getClouds().size());
+        } else {
+            for(int i = 0; i < serializedBoardAbstract.getClouds().size(); i++) {
+                if(serializedBoardAbstract.getClouds().get(i).getStudents().size() > 0) {
+                    cloudIndex = i;
+                }
+            }
+        }
 
         client.asyncWriteToSocket("studentCloudToSchool " + cloudIndex);
     }
