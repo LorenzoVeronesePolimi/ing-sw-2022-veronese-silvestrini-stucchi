@@ -28,6 +28,6 @@ public class TwoExtraPoints extends AbstractCharacterCard implements Serializabl
 
     @Override
     public String toString() {
-        return "Two Extra Points";
+        return "TwoExtraPoints " + this.printPrice();
     }
 }

@@ -34,6 +34,6 @@ public class ForbidIsland extends AbstractCharacterCard implements Serializable 
 
     @Override
     public String toString() {
-        return "Forbid Island";
+        return "ForbidIsland " + this.printPrice();
     }
 }

@@ -47,6 +47,6 @@ public class FakeMNMovement extends AbstractCharacterCard implements Serializabl
 
     @Override
     public String toString() {
-        return "Fake MN Movement";
+        return "FakeMNMovement " + this.printPrice();
     }
 }

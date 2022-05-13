@@ -68,8 +68,12 @@ public class ExtraStudentInDining extends AbstractCharacterCard implements Seria
         students.add(student.get(0));
     }
 
+    public String printStudents() {
+        return this.students.toString();
+    }
+
     @Override
     public String toString() {
-        return "Extra Student In Dining";
+        return "ExtraStudentInDining " + this.printPrice();
     }
 }

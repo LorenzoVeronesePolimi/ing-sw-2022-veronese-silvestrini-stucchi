@@ -80,6 +80,6 @@ public class ExchangeTwoHallDining extends AbstractCharacterCard implements Seri
 
     @Override
     public String toString() {
-        return "Exchange Two Hall Dining";
+        return "ExchangeTwoHallDining " + this.printPrice();
     }
 }

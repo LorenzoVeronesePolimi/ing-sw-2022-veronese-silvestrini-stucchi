@@ -43,6 +43,6 @@ public class ReduceColourInDining extends AbstractCharacterCard implements Seria
 
     @Override
     public String toString() {
-        return "Reduce Colour In Dining";
+        return "ReduceColourInDining " + this.printPrice();
     }
 }

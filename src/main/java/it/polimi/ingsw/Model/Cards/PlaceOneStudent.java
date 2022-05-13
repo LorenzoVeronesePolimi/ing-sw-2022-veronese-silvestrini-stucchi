@@ -18,7 +18,7 @@ import java.util.stream.Collectors;
  * a new student is extracted from the bag and put on the card.
  */
 public class PlaceOneStudent extends AbstractCharacterCard implements Serializable {
-    private final List<Student> fourStudents;
+    private final List<Student> students;
     private transient final Bag bag;
 
     /**
@@ -29,14 +29,14 @@ public class PlaceOneStudent extends AbstractCharacterCard implements Serializab
     public PlaceOneStudent(BoardAdvanced boardAdvanced) throws StudentNotFoundException {
         super(CharacterCardEnumeration.PLACE_ONE_STUDENT, boardAdvanced,1);
         bag = boardAdvanced.getBag();
-        fourStudents = bag.extractStudents(4);
+        students = bag.extractStudents(4);
     }
 
     /**
      * @return The list of student that are on the card.
      */
     public List<Student> getStudentsOnCard(){
-        return fourStudents;
+        return students;
     }
 
     /**
@@ -46,22 +46,26 @@ public class PlaceOneStudent extends AbstractCharacterCard implements Serializab
      * @throws StudentNotFoundException when there are no students of the specified colour on the card.
      */
     public void useEffect(SPColour chosenColour, int archipelago) throws StudentNotFoundException {
-        List<Student> s = fourStudents.stream().filter(x -> x.getColour().equals(chosenColour)).collect(Collectors.toList());
+        List<Student> s = students.stream().filter(x -> x.getColour().equals(chosenColour)).collect(Collectors.toList());
         Student student;
 
         if(!s.isEmpty()){
-            student = fourStudents.remove(fourStudents.indexOf(s.get(0)));
+            student = students.remove(students.indexOf(s.get(0)));
             this.boardAdvanced.getArchiList().get(archipelago).addStudent(student);
         }else {
             throw new StudentNotFoundException();
         }
 
         s = bag.extractStudents(1);
-        fourStudents.add(s.get(0));
+        students.add(s.get(0));
+    }
+
+    public String printStudents() {
+        return this.students.toString();
     }
 
     @Override
     public String toString() {
-        return "Place One Student";
+        return "PlaceOneStudent " + this.printPrice();
     }
 }

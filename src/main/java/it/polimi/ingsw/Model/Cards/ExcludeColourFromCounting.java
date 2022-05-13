@@ -32,6 +32,6 @@ public class ExcludeColourFromCounting extends AbstractCharacterCard implements 
 
     @Override
     public String toString() {
-        return "Exclude Colour From Counting";
+        return "ExcludeColourFromCounting " + this.printPrice();
     }
 }

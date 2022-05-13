@@ -28,6 +28,6 @@ public class TowerNoValue extends AbstractCharacterCard implements Serializable 
 
     @Override
     public String toString() {
-        return "Tower No Value";
+        return "TowerNoValue " + this.printPrice();
     }
 }
