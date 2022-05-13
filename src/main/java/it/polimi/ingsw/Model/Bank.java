@@ -25,6 +25,15 @@ public class Bank {
         }
     }
 
+    public Bank(Bank toCopy){
+        caveau = new ArrayList<>();
+        caveau.addAll(toCopy.getCaveau());
+    }
+
+    protected List<Coin> getCaveau(){
+        return this.caveau;
+    }
+
     /**
      *
      * @param coin represents the coin that the caller wants to re-put in the bank

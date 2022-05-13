@@ -88,6 +88,14 @@ public class BoardAdvanced extends Observable implements Board {
         notifyPlayers();
     }
 
+    public BoardAdvanced(BoardAbstract boardCopy, BoardAdvanced toCopy){
+        this.board = boardCopy;
+        this.twoExtraPointsFlag = toCopy.twoExtraPointsFlag;
+        this.colourToExclude = toCopy.colourToExclude;
+        this.extractedCards = toCopy.extractedCards; //is final... temporarily removed just for testing card usage
+        this.bank = new Bank(toCopy.bank);
+    }
+
     //TODO: remove this method ad set final the extractedCard list...added just for testing
     public void setExtractedCards(AbstractCharacterCard c){
         extractedCards.clear();
