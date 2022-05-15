@@ -37,6 +37,25 @@ public class SchoolAdvanced extends School implements Serializable {
         this.coins=schoolAdvanced.coins;
     }
 
+    public School makeCopy(){
+        SchoolAdvanced result = new SchoolAdvanced(this.player, this.numMaxStudentsHall, numMaxTowers);
+        result.studentsHall.addAll(this.studentsHall);
+        result.studentsDiningRed.addAll(this.studentsDiningRed);
+        result.studentsDiningPink.addAll(this.studentsDiningPink);
+        result.studentsDiningGreen.addAll(this.studentsDiningGreen);
+        result.studentsDiningYellow.addAll(this.studentsDiningYellow);
+        result.studentsDiningBlue.addAll(this.studentsDiningBlue);
+        result.professors.addAll(this.professors);
+        result.towers.clear();
+        result.towers.addAll(this.towers);
+
+        for(Coin c : this.coins){
+            result.addCoin(c);
+        }
+
+        return result;
+    }
+
     /**
      * This method adds the coin that is giver as parameter to the school list of coins
      * @param coin that must be added

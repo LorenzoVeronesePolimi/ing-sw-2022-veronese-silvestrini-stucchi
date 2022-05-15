@@ -88,8 +88,8 @@ public class BoardAdvanced extends Observable implements Board {
         notifyPlayers();
     }
 
-    public BoardAdvanced(BoardAbstract boardCopy, BoardAdvanced toCopy){
-        this.board = boardCopy;
+    public BoardAdvanced(BoardAbstract boardToCopy, BoardAdvanced toCopy){
+        this.board = boardToCopy;
         this.twoExtraPointsFlag = toCopy.twoExtraPointsFlag;
         this.colourToExclude = toCopy.colourToExclude;
         this.extractedCards = toCopy.extractedCards; //is final... temporarily removed just for testing card usage
