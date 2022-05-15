@@ -123,6 +123,7 @@ public class ControllerIntegrity {
             // Is there enough space in the Hall?
             return s.getNumMaxStudentsHall() - s.getStudentsHall().size() <= clouds.get(0).getNumMaxStudents();
         }
+
         return false;
     }
 

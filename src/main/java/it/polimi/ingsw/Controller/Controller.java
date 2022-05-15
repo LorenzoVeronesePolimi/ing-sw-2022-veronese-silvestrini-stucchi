@@ -739,7 +739,7 @@ public class Controller implements ObserverController<Message> {
             this.precomputedPlayer = this.players.get(currentPlayerIndex+1);
         }
 
-        if(controllerIntegrity.checkStudentCloudToSchool(getCurrentPlayer(), indexCloud)){
+        if(controllerIntegrity.checkStudentCloudToSchool(getCurrentPlayer(), indexCloud) || this.gameEnded){//TODO: I can choose a void cloud only if the game is going to finish, RIGHT?
             if(isAdvanced()) {
                 try{
                     boardAdvanced.moveStudentCloudToSchool(getCurrentPlayer(), indexCloud);
@@ -1357,9 +1357,16 @@ public class Controller implements ObserverController<Message> {
             this.precomputedState = State.END; //game ends immediately
             controllerState.setState(State.END);
         }
+
+        //CASE 0: a player has put all of his towers
+        if(boardCopy.getPlayerSchool(this.players.get(this.currentPlayerIndex)).getNumTowers() == 0){
+            this.precomputedState = State.END; //game ends immediately
+            controllerState.setState(State.END);
+        }
     }
 
     private void gameEndedBag(int numStudentsInBag){
+        //TODO: test
         //CASE 2.1: no more Students in the Bag
         //game ends at the end of round
         if(numStudentsInBag == 0){
