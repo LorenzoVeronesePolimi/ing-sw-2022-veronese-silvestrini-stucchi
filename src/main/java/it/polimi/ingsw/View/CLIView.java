@@ -266,6 +266,7 @@ public class CLIView extends ClientView {
     }
 
     private void manageNextMove(SerializedBoardAbstract serializedBoardAbstract) {
+        System.out.println(serializedBoardAbstract.getCurrentState());
         switch(serializedBoardAbstract.getCurrentState()){
             case PLANNING2:
                 askAssistantCard();
@@ -304,46 +305,49 @@ public class CLIView extends ClientView {
         possibleColours.add("pink"); possibleColours.add("red"); possibleColours.add("yellow"); possibleColours.add("blue"); possibleColours.add("green");
         String command;
         String colour;
-
+        String action=null;
         do {
-            if(serializedBoardAbstract.getType().equals("advanced")) {
-                System.out.println("Move a student [DiningRoom/Archipelago] or buy a card [Card]:");
-            }else{
-                System.out.println("Move a student [DiningRoom/Archipelago]:");
-            }
-            System.out.flush();
-            command = input.nextLine();
-        } while (checkStudentInput(serializedBoardAbstract, command));
-
-        if(!command.equalsIgnoreCase("Card")) {
-            if (command.equalsIgnoreCase("DiningRoom")) {
-                command = "studentHallToDiningRoom";
-            } else if (command.equalsIgnoreCase("Archipelago")) {
-                command = "studentToArchipelago";
-            }
-
             do {
-                System.out.println("Choose the colour's student to move from hall: ");
+                if (serializedBoardAbstract.getType().equals("advanced")) {
+                    System.out.println("Move a student [DiningRoom/Archipelago] or buy a card [Card]:");
+                } else {
+                    System.out.println("Move a student [DiningRoom/Archipelago]:");
+                }
                 System.out.flush();
-                colour = input.nextLine();
-            } while (!possibleColours.contains(colour.toLowerCase()));
+                command = input.nextLine();
+            } while (checkStudentInput(serializedBoardAbstract, command));
 
-            if (command.equals("studentHallToDiningRoom")) { //studentHallToDiningRoom
-                client.asyncWriteToSocket(command + " " + colour);
-            } else { //studentToArchipelago
-                int destArchipelagoIndex;
+            if (!command.equalsIgnoreCase("Card")) {
+                action="ok";
+                if (command.equalsIgnoreCase("DiningRoom")) {
+                    command = "studentHallToDiningRoom";
+                } else if (command.equalsIgnoreCase("Archipelago")) {
+                    command = "studentToArchipelago";
+                }
 
                 do {
-                    System.out.println("Choose the index of the destination archipelago: ");
+                    System.out.println("Choose the colour's student to move from hall: ");
                     System.out.flush();
-                    destArchipelagoIndex = Integer.parseInt(input.nextLine());
-                } while (destArchipelagoIndex < 0 || destArchipelagoIndex > 11);
+                    colour = input.nextLine();
+                } while (!possibleColours.contains(colour.toLowerCase()));
 
-                client.asyncWriteToSocket(command + " " + colour + " " + destArchipelagoIndex);
+                if (command.equals("studentHallToDiningRoom")) { //studentHallToDiningRoom
+                    client.asyncWriteToSocket(command + " " + colour);
+                } else { //studentToArchipelago
+                    int destArchipelagoIndex;
+
+                    do {
+                        System.out.println("Choose the index of the destination archipelago: ");
+                        System.out.flush();
+                        destArchipelagoIndex = Integer.parseInt(input.nextLine());
+                    } while (destArchipelagoIndex < 0 || destArchipelagoIndex > 11);
+
+                    client.asyncWriteToSocket(command + " " + colour + " " + destArchipelagoIndex);
+                }
+            } else {
+                action=askCharacterCard((SerializedBoardAdvanced) serializedBoardAbstract);
             }
-        }else{
-            askCharacterCard((SerializedBoardAdvanced) serializedBoardAbstract);
-        }
+        }while(action.equalsIgnoreCase("Back"));
     }
 
     private boolean checkStudentInput(SerializedBoardAbstract serializedBoardAbstract, String command) {
@@ -355,17 +359,22 @@ public class CLIView extends ClientView {
         }
     }
 
-    private void askCharacterCard(SerializedBoardAdvanced serializedBoardAdvanced) {
+    private String askCharacterCard(SerializedBoardAdvanced serializedBoardAdvanced) {
         String card;
 
         do {
-            System.out.println("Choose a card from the extracted ones:");
+            System.out.println("Choose a card from the extracted ones or go back [Back]:");
             System.out.flush();
             card = input.nextLine();
-        } while(!checkCharacterChoice(serializedBoardAdvanced, card));
+        } while(!checkCharacterChoice(serializedBoardAdvanced, card) && !card.equalsIgnoreCase("back"));
 
-        manageCard(serializedBoardAdvanced, card);
-
+        if(!card.equalsIgnoreCase("back")) {
+            manageCard(serializedBoardAdvanced, card);
+            return "ok";
+        }
+        else{
+            return card;
+        }
     }
 
     private boolean checkCharacterChoice(SerializedBoardAdvanced serializedBoardAdvanced, String card) {
