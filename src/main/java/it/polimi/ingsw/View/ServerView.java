@@ -122,6 +122,7 @@ public class ServerView implements Observer<SerializedBoardAbstract> {
 
         finalMessage.setCurrentState(this.controller.getPrecomputedState());
         finalMessage.setCurrentPlayer(this.controller.getPrecomputedPlayer());
+        finalMessage.setNicknameWinner(this.controller.getNicknameWinner());
         this.socketClientConnectionCLI.asyncSendModel(finalMessage);
     }
 

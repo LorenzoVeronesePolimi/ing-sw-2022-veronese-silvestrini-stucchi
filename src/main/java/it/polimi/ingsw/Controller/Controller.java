@@ -100,6 +100,8 @@ public class Controller implements ObserverController<Message> {
 
     public BoardAdvanced getBoardAdvanced(){return this.boardAdvanced;}
 
+    public String getNicknameWinner(){return this.nicknameWinner;}
+
     public boolean isAdvanced(){
         return this.advanced;
     }
@@ -729,6 +731,7 @@ public class Controller implements ObserverController<Message> {
         if(this.currentPlayerIndex == this.players.size() - 1){ //all Players made their move => new turn
             if(this.gameEnded){ //case game ends at the end of the turn
                 this.precomputedState = State.END;
+                computeNicknameWinner();
             }
             else{
                 this.precomputedState = State.PLANNING1;
@@ -1357,7 +1360,7 @@ public class Controller implements ObserverController<Message> {
         if(boardCopy.getNumArchipelagos() <= 3){
             this.precomputedState = State.END; //game ends immediately
             controllerState.setState(State.END);
-
+            computeNicknameWinner();
         }
 
         //CASE 0: a player has put all of his towers
@@ -1367,12 +1370,14 @@ public class Controller implements ObserverController<Message> {
             if(this.board.getPlayerSchool(p1).getNumTowers() == 0 && this.board.getPlayerSchool(p2).getNumTowers() == 0){
                 this.precomputedState = State.END; //game ends immediately
                 controllerState.setState(State.END);
+                computeNicknameWinner();
             }
         }
         else{
             if(boardCopy.getPlayerSchool(this.players.get(this.currentPlayerIndex)).getNumTowers() == 0){
                 this.precomputedState = State.END; //game ends immediately
                 controllerState.setState(State.END);
+                computeNicknameWinner();
             }
         }
     }
@@ -1394,7 +1399,7 @@ public class Controller implements ObserverController<Message> {
         }
     }
 
-    private String computeNicknameWinner(){
+    private void computeNicknameWinner(){
         //CASE 1: one player has fewer towers then the others
         Map<Player, Integer> playerTowersLeft = new HashMap<>();
         for(Player p : this.players){
@@ -1415,7 +1420,7 @@ public class Controller implements ObserverController<Message> {
         }
         //if the num of the first player is lower (not equal) he won
         if(this.board.getPlayerSchool(orderedPlayerTowerLeft.get(0)).getNumTowers() < this.board.getPlayerSchool(orderedPlayerTowerLeft.get(1)).getNumTowers()){
-            return orderedPlayerTowerLeft.get(0).getNickname();
+            this.nicknameWinner = orderedPlayerTowerLeft.get(0).getNickname();
         }
         else{//CASE 2: between the players with same number of towers left, the one with more professors win
             //remove all Players with too many towers
@@ -1445,7 +1450,7 @@ public class Controller implements ObserverController<Message> {
                 playerProfessors.remove(minPlayer);
             }
 
-            return orderedPlayerProfessors.get(0).getNickname();
+            this.nicknameWinner = orderedPlayerProfessors.get(0).getNickname();
         }
     }
 

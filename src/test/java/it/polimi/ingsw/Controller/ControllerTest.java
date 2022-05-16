@@ -170,10 +170,10 @@ public class ControllerTest {
 
 
         /*
-        * First: 9 => 2
-        * Second: 1 => 1
+        * First: 9 => 2 to play
+        * Second: 1 => 1 to play
         */
-        /*-----MessageAssistantCard 1-----*/
+        //-----MessageAssistantCard 1-----
         //ERRORS IN FORMAT
         //Error because of wrong name ("")
         MessageAssistantCard m3Err1 = new MessageAssistantCard("", 5, 10);
@@ -199,13 +199,12 @@ public class ControllerTest {
         } catch (ControllerException e) {
             e.printStackTrace();
         }
-        //Assertions.assertEquals("", outContent.toString().trim());
         Assertions.assertEquals(State.PLANNING2, controller.getControllerState().getState());
         Assertions.assertEquals("Second", controller.getCurrentPlayer().getNickname());
         Assertions.assertEquals(1, controller.getCurrentPlayerIndex());
         Assertions.assertTrue(controller.isAdvanced());
 
-        /*-----MessageAssistantCard 2-----*/
+        //-----MessageAssistantCard 2-----
         //ERRORS IN CONTROLLER
         //Not current player
         MessageAssistantCard m4Err1 = new MessageAssistantCard("First", 1, 1);
@@ -227,7 +226,7 @@ public class ControllerTest {
         Assertions.assertEquals("Second", controller.getCurrentPlayer().getNickname());
         Assertions.assertTrue(controller.isAdvanced());
 
-        /*-----MessageStudentHallToDiningRoom 1-----*/
+        //-----MessageStudentHallToDiningRoom 1-----
         // choose a Student which exists
         String colourToMove = mapSPColourToString(controller.getBoard().getPlayerSchool(controller.getCurrentPlayer()).getStudentsHall().get(0).getColour());
 
@@ -247,7 +246,7 @@ public class ControllerTest {
         Assertions.assertEquals(controller.getNumStudentsToMoveCurrent(), 2);
         Assertions.assertEquals(State.ACTION1, controller.getControllerState().getState());
 
-        /*-----MessageStudentHallToDiningRoom 2-----*/
+        //-----MessageStudentHallToDiningRoom 2-----
         // choose a Student which exists
         colourToMove = mapSPColourToString(controller.getBoard().getPlayerSchool(controller.getCurrentPlayer()).getStudentsHall().get(0).getColour());
 
@@ -379,7 +378,6 @@ public class ControllerTest {
         Assertions.assertThrows(ControllerException.class, () -> controller.update(mcc1Err2));
 
         //TODO:
-        /*
         //Not right CC
         controller.setCharacterCardUsed(false);
         ExchangeThreeStudents c1;
@@ -392,7 +390,7 @@ public class ControllerTest {
             Assertions.assertThrows(ControllerException.class, () -> controller.update(mcc1Err3));
         } catch (StudentNotFoundException e) {
             e.printStackTrace();
-        }*/
+        }
 
         /*-----MessageCCExchangeTwoHallDining-----*/
         controller.getBoardAdvanced().setExtractedCards(new ExchangeTwoHallDining(controller.getBoardAdvanced()));
@@ -770,6 +768,15 @@ public class ControllerTest {
         }
         Assertions.assertEquals(State.ACTION3, controller.getControllerState().getState());
 
+        //Make current player (First, white) win
+        for(int i = 0; i < 4; i++){
+            try {
+                controller.getBoard().getPlayerSchool(controller.getCurrentPlayer()).removeTower();
+            } catch (TowerNotFoundException e) {
+                e.printStackTrace();
+            }
+        }
+
         //-----MessageStudentCloudToSchool-----
         MessageStudentCloudToSchool m25 = new MessageStudentCloudToSchool(controller.getCurrentPlayer().getNickname(), 1);
         try {
@@ -777,8 +784,8 @@ public class ControllerTest {
         } catch (ControllerException e) {
             e.printStackTrace();
         }
-        Assertions.assertEquals(State.END, controller.getControllerState().getState());
-
+        Assertions.assertEquals(State.END, controller.getControllerState().getState()); //end due to AC finished
+        Assertions.assertEquals(controller.getNicknameWinner(), "First"); //win for num of towers
 
 
         //**********CASE BOARD ADVANCED (2 players): test ending due to 3 archipelagos**********
@@ -881,6 +888,8 @@ public class ControllerTest {
         }
         Assertions.assertEquals(controller.getNumStudentsToMoveCurrent(), 3);
         Assertions.assertEquals(State.ACTION2, controller.getControllerState().getState());
+
+        //make the number of towers equals
 
         //-----MessageMoveMotherNature-----
         MessageMoveMotherNature ma8 = new MessageMoveMotherNature(controller.getCurrentPlayer().getNickname(), 0);

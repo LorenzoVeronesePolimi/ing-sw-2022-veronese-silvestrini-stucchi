@@ -23,6 +23,7 @@ public class SerializedBoardAbstract implements Serializable, ActiveMessageView 
     private List<School> schools;
     private State currentState;
     private Player currentPlayer;
+    private String nicknameWinner;
 
     public SerializedBoardAbstract(List<Archipelago> archipelagos, List<Cloud> clouds, MotherNature mn, List<School> schools) {
         this.type = "standard";
@@ -82,9 +83,15 @@ public class SerializedBoardAbstract implements Serializable, ActiveMessageView 
         return currentPlayer;
     }
 
+    public String getNicknameWinner() {
+        return nicknameWinner;
+    }
+
     public void setCurrentState(State newState){this.currentState = newState;}
 
     public void setCurrentPlayer(Player currentPlayer){this.currentPlayer = currentPlayer;}
+
+    public void setNicknameWinner(String winner){this.nicknameWinner = winner;}
 
     @Override
     public void manageMessage(ClientView view) {
