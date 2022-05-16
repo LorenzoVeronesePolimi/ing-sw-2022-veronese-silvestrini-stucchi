@@ -10,6 +10,7 @@ import it.polimi.ingsw.Model.Enumerations.SPColour;
 import it.polimi.ingsw.Model.Places.Archipelago;
 import it.polimi.ingsw.Model.Places.School.School;
 
+import javax.print.attribute.standard.PresentationDirection;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -266,7 +267,6 @@ public class CLIView extends ClientView {
     }
 
     private void manageNextMove(SerializedBoardAbstract serializedBoardAbstract) {
-        System.out.println(serializedBoardAbstract.getCurrentState());
         switch(serializedBoardAbstract.getCurrentState()){
             case PLANNING2:
                 askAssistantCard();
@@ -280,6 +280,8 @@ public class CLIView extends ClientView {
             case ACTION3:
                 askCloudChoice(serializedBoardAbstract);
                 break;
+            case END:
+                this.printCustom("END OF THE MATCH! THE WINNER IS " + serializedBoardAbstract.getNicknameWinner());
 
         }
     }
@@ -287,13 +289,18 @@ public class CLIView extends ClientView {
     // This asks the player what AssistantCard does he want to use
     private void askAssistantCard(){
         int[] cardsMotherNatureMoves= {1, 1, 2, 2, 3, 3, 4, 4, 5, 5};
-        int turnPriority;
+        String response;
+        int turnPriority = 0;
 
         do {
             System.out.println("Choose the turn priority of the card you want to use: ");
             System.out.flush();
-            turnPriority = Integer.parseInt(input.nextLine());
-        } while (turnPriority < 1 || turnPriority > 10);
+            response = input.nextLine();
+
+            if(checkInt(response)) {
+                turnPriority = Integer.parseInt(response);
+            }
+        } while ((turnPriority < 1 || turnPriority > 10) && !checkInt(response));
 
         // turnPriority is enough to identify the card: assign motherNatureMovement automatically
         client.asyncWriteToSocket("assistantCard " + cardsMotherNatureMoves[turnPriority - 1] + " " + turnPriority);
@@ -334,13 +341,19 @@ public class CLIView extends ClientView {
                 if (command.equals("studentHallToDiningRoom")) { //studentHallToDiningRoom
                     client.asyncWriteToSocket(command + " " + colour);
                 } else { //studentToArchipelago
-                    int destArchipelagoIndex;
+                    String response;
+                    int destArchipelagoIndex = 0;
 
                     do {
                         System.out.println("Choose the index of the destination archipelago: ");
                         System.out.flush();
-                        destArchipelagoIndex = Integer.parseInt(input.nextLine());
-                    } while (destArchipelagoIndex < 0 || destArchipelagoIndex > 11);
+                        response = input.nextLine();
+
+                        if(checkInt(response)) {
+                            destArchipelagoIndex = Integer.parseInt(response);
+                        }
+                    } while ((destArchipelagoIndex < 0 || destArchipelagoIndex > serializedBoardAbstract.getArchipelagos().size()) && !checkInt(response));
+
 
                     client.asyncWriteToSocket(command + " " + colour + " " + destArchipelagoIndex);
                 }
@@ -600,13 +613,13 @@ public class CLIView extends ClientView {
         System.out.println("Student in the hall: " + school.getStudentsHall().toString());
 
         for(int i = 0; i < 3; i++) {
-            System.out.println("Select the colour of the student [" + (i+1) + "] from the card: ");
+            System.out.println("Select the colour of the student [" + (i+1) + "] from the card or none [-]: ");
             System.out.flush();
             cardStudents.add(input.nextLine());
         }
 
         for(int i = 0; i < 3; i++) {
-            System.out.println("Select the colour of the student [" + (i+1) + "] from the hall: ");
+            System.out.println("Select the colour of the student [" + (i+1) + "] from the hall or none [-]: ");
             System.out.flush();
             hallStudents.add(input.nextLine());
         }
@@ -633,17 +646,17 @@ public class CLIView extends ClientView {
             if(i == 0)
                 System.out.println("Select one student from the hall: ");
             else
-                System.out.println("Select another student from the hall: ");
+                System.out.println("Select another student from the hall or none [-]: ");
 
             System.out.flush();
             hallStudents.add(input.nextLine());
         }
 
-        for(int i = 0; i < 3; i++) {
+        for(int i = 0; i < 2; i++) {
             if(i == 0)
                 System.out.println("Select one student from the dining room: ");
             else
-                System.out.println("Select another student from the dining room: ");
+                System.out.println("Select another student from the dining room or none [-]: ");
 
             System.out.flush();
             diningStudents.add(input.nextLine());
@@ -687,25 +700,35 @@ public class CLIView extends ClientView {
     }
 
     private void askFakeMNMovement(SerializedBoardAdvanced serializedBoardAdvanced) {
-        int move;
+        String response;
+        int move = 0;
 
         do{
             System.out.println("Insert the archipelago index on which you want to move to (and come back after): ");
             System.out.flush();
-            move = Integer.parseInt(input.nextLine());
-        } while(move < 0 || move > serializedBoardAdvanced.getArchipelagos().size() - 1);
+            response = input.nextLine();
+
+            if(checkInt(response)) {
+                move = Integer.parseInt(response);
+            }
+        } while((move < 0 || move > serializedBoardAdvanced.getArchipelagos().size()) && !checkInt(response) );
 
         this.client.asyncWriteToSocket("fakeMNMovement " + move);
     }
 
     private void askForbidIsland(SerializedBoardAdvanced serializedBoardAdvanced) {
-        int index;
+        String response;
+        int index = 0;
 
         do{
             System.out.println("Insert the archipelago index on which you want put a forbid tile: ");
             System.out.flush();
-            index = Integer.parseInt(input.nextLine());
-        } while(index < 0 || index > serializedBoardAdvanced.getArchipelagos().size() - 1);
+            response = input.nextLine();
+
+            if(checkInt(response)) {
+                index = Integer.parseInt(response);
+            }
+        } while((index < 0 || index > serializedBoardAdvanced.getArchipelagos().size()) && !checkInt(response));
 
         this.client.asyncWriteToSocket("forbidIsland " + index);
     }
@@ -714,7 +737,8 @@ public class CLIView extends ClientView {
         Set<String> possibleColours = new HashSet<String>();
         possibleColours.add("pink"); possibleColours.add("red"); possibleColours.add("yellow"); possibleColours.add("blue"); possibleColours.add("green");
         String cardStudent;
-        int move;
+        String response;
+        int move = 0;
 
         System.out.println("Students on the card: " + place.printStudents());
 
@@ -727,8 +751,12 @@ public class CLIView extends ClientView {
         do{
             System.out.println("Insert the archipelago index on which you want put the student: ");
             System.out.flush();
-            move = Integer.parseInt(input.nextLine());
-        } while(move < 0 || move > serializedBoardAdvanced.getArchipelagos().size() - 1);
+            response = input.nextLine();
+
+            if(checkInt(response)) {
+                move = Integer.parseInt(response);
+            }
+        } while((move < 0 || move > serializedBoardAdvanced.getArchipelagos().size()) && !checkInt(response));
 
         this.client.asyncWriteToSocket("placeOneStudent " + cardStudent + " " + move);
     }
@@ -749,35 +777,75 @@ public class CLIView extends ClientView {
 
     // This asks the player how much does he want to move Mother Nature
     private void askMoveMotherNature(SerializedBoardAbstract serializedBoardAbstract){
-        int moves;
+        String response;
+        int moves = 0;
+        String action = null;
 
-        do {
-            System.out.println("Is Action2: How much do you want to move Mother Nature? ");
-            System.out.flush();
-            moves = Integer.parseInt(input.nextLine());
-        } while (moves < 0 || moves > 7);
+        do{
+            do{
+                System.out.println("Is Action2: Move mother nature [Move] or buy a card [Card] ");
+                System.out.flush();
+                response = input.nextLine();
+            }while(!response.equalsIgnoreCase("move") && !response.equalsIgnoreCase("card"));
 
-        client.asyncWriteToSocket("moveMotherNature " + moves);
+            if(response.equalsIgnoreCase("move")) {
+                action = "ok";
+                do {
+                    System.out.println("Is Action2: How much do you want to move Mother Nature? ");
+                    System.out.flush();
+                    response = input.nextLine();
+
+                    if (checkInt(response)) {
+                        moves = Integer.parseInt(response);
+                    }
+                } while ((moves < 0 || moves > 7) && !checkInt(response));
+
+                client.asyncWriteToSocket("moveMotherNature " + moves);
+            }
+            else{
+                action = askCharacterCard((SerializedBoardAdvanced) serializedBoardAbstract);
+            }
+        }while(action.equalsIgnoreCase("back"));
     }
 
     private void askCloudChoice(SerializedBoardAbstract serializedBoardAbstract) {
+        String response;
         int cloudIndex = 0;
+        String action = null;
 
-        if(serializedBoardAbstract.getClouds().stream().filter(x -> x.getStudents().size() > 0).count() > 1) {
+        do {
             do {
-                System.out.println("Is Action3: Which cloud do you choose? ");
+                System.out.println("Is Action2: Choose a cloud [Cloud] or buy a card [Card] ");
                 System.out.flush();
-                cloudIndex = Integer.parseInt(input.nextLine());
-            } while (cloudIndex < 0 || cloudIndex > serializedBoardAbstract.getClouds().size());
-        } else {
-            for(int i = 0; i < serializedBoardAbstract.getClouds().size(); i++) {
-                if(serializedBoardAbstract.getClouds().get(i).getStudents().size() > 0) {
-                    cloudIndex = i;
-                }
-            }
-        }
+                response = input.nextLine();
+            } while (!response.equalsIgnoreCase("cloud") && !response.equalsIgnoreCase("card"));
 
-        client.asyncWriteToSocket("studentCloudToSchool " + cloudIndex);
+            if(response.equalsIgnoreCase("cloud")) {
+                action = "ok";
+                if (serializedBoardAbstract.getClouds().stream().filter(x -> x.getStudents().size() > 0).count() > 1) {
+                    do {
+                        System.out.println("Is Action3: Which cloud do you choose? ");
+                        System.out.flush();
+                        response = input.nextLine();
+
+                        if (checkInt(response)) {
+                            cloudIndex = Integer.parseInt(response);
+                        }
+                    } while ((cloudIndex < 0 || cloudIndex > serializedBoardAbstract.getClouds().size()) && !checkInt(response));
+                } else {
+                    for (int i = 0; i < serializedBoardAbstract.getClouds().size(); i++) {
+                        if (serializedBoardAbstract.getClouds().get(i).getStudents().size() > 0) {
+                            cloudIndex = i;
+                        }
+                    }
+                }
+
+                client.asyncWriteToSocket("studentCloudToSchool " + cloudIndex);
+            }
+            else{
+                action = askCharacterCard((SerializedBoardAdvanced) serializedBoardAbstract);
+            }
+        }while (response.equalsIgnoreCase("back"));
     }
 
 
@@ -849,6 +917,17 @@ public class CLIView extends ClientView {
         }
         System.out.flush();
     }
+
+    private boolean checkInt(String response) {
+        try {
+            int conversion = Integer.parseInt(response);
+        }catch(NumberFormatException nfe) {
+            return false;
+        }
+
+        return true;
+    }
+
 
     private void colourArchipelago(SerializedBoardAbstract serializedBoardAbstract, int i, List<Archipelago> archipelagos, SerializedBoardAbstract serializedBoardAdvanced) {
         if(serializedBoardAbstract.getMn().getCurrentPosition().equals(serializedBoardAbstract.getArchipelagos().get(i))) {
