@@ -1439,13 +1439,13 @@ public class Controller implements ObserverController<Message> {
             //order the map so that at first place there is the player with fewer towers left
             List<Player> orderedPlayerProfessors = new ArrayList<>();
             while (playerProfessors.size() > 0) {
-                Map.Entry<Player, Integer> min = null;
+                Map.Entry<Player, Integer> max = null;
                 for (Map.Entry<Player, Integer> e : playerProfessors.entrySet()) {
-                    if (min == null || min.getValue() > e.getValue()) {
-                        min = e;
+                    if (max == null || max.getValue() < e.getValue()) {
+                        max = e;
                     }
                 }
-                Player minPlayer = min.getKey();
+                Player minPlayer = max.getKey();
                 orderedPlayerProfessors.add(minPlayer);
                 playerProfessors.remove(minPlayer);
             }
