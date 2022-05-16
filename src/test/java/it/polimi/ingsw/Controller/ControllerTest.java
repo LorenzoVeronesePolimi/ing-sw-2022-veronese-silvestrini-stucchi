@@ -8,9 +8,11 @@ import it.polimi.ingsw.Model.Cards.*;
 import it.polimi.ingsw.Model.Enumerations.SPColour;
 import it.polimi.ingsw.Model.Exceptions.*;
 import it.polimi.ingsw.Model.Pawns.Coin;
+import it.polimi.ingsw.Model.Pawns.Professor;
 import it.polimi.ingsw.Model.Pawns.Student;
 import it.polimi.ingsw.Model.Pawns.Tower;
 import it.polimi.ingsw.Model.Places.School.SchoolAdvanced;
+import it.polimi.ingsw.Model.Player;
 import it.polimi.ingsw.Server.Server;
 import it.polimi.ingsw.Server.SocketClientConnectionCLI;
 import it.polimi.ingsw.View.ServerView;
@@ -70,7 +72,7 @@ public class ControllerTest {
     }
 
     @Test
-    void controllerTest(){
+    void controllerTest() throws ProfessorNotFoundException {
         /*-----MessageCreateMatch-----*/
         //ERRORS IN FORMAT
         //Error because of wrong name ("")
@@ -890,6 +892,36 @@ public class ControllerTest {
         Assertions.assertEquals(State.ACTION2, controller.getControllerState().getState());
 
         //make the number of towers equals
+        Player p1 = controller.getBoard().getPlayers().get(0);
+        Player p2 = controller.getBoard().getPlayers().get(1);
+        while(controller.getBoard().getPlayerSchool(p1).getNumTowers() != controller.getBoard().getPlayerSchool(p2).getNumTowers()){
+            if(controller.getBoard().getPlayerSchool(p1).getNumTowers() > controller.getBoard().getPlayerSchool(p2).getNumTowers()){
+                try {
+                    controller.getBoard().getPlayerSchool(p1).removeTower();
+                } catch (TowerNotFoundException e) {
+                    e.printStackTrace();
+                }
+            }
+            else{
+                try {
+                    controller.getBoard().getPlayerSchool(p2).removeTower();
+                } catch (TowerNotFoundException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+
+        //give to p1 all professors to be sure he will win
+        SPColour[] availableColours = {SPColour.BLUE, SPColour.PINK, SPColour.RED, SPColour.GREEN, SPColour.YELLOW};
+        for(Professor p : this.controller.getBoard().getPlayerSchool(p2).getProfessors()){
+            this.controller.getBoard().getPlayerSchool(p2).removeProfessor(p.getColour());
+        }
+
+        for(SPColour c : availableColours){
+            for(int i = 0; i < 6; i++){
+                controller.getBoard().getPlayerSchool(p1).addProfessor(new Professor(c));
+            }
+        }
 
         //-----MessageMoveMotherNature-----
         MessageMoveMotherNature ma8 = new MessageMoveMotherNature(controller.getCurrentPlayer().getNickname(), 0);
@@ -899,7 +931,9 @@ public class ControllerTest {
             e.printStackTrace();
         }
         Assertions.assertEquals(State.END, controller.getControllerState().getState());
-
+        System.out.println(controller.getBoard().getPlayerSchool(p1).getProfessors());
+        System.out.println(controller.getBoard().getPlayerSchool(p2).getProfessors());
+        Assertions.assertEquals(p1.getNickname(), controller.getNicknameWinner());
 
 
         //**********CASE BOARD NOT ADVANCED (2 players): test ending due to 3 archipelagos**********
