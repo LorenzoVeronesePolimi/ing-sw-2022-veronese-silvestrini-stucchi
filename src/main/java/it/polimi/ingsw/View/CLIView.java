@@ -10,7 +10,6 @@ import it.polimi.ingsw.Model.Enumerations.SPColour;
 import it.polimi.ingsw.Model.Places.Archipelago;
 import it.polimi.ingsw.Model.Places.School.School;
 
-import javax.print.attribute.standard.PresentationDirection;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -281,8 +280,8 @@ public class CLIView extends ClientView {
                 askCloudChoice(serializedBoardAbstract);
                 break;
             case END:
-                this.printCustom("END OF THE MATCH! THE WINNER IS " + serializedBoardAbstract.getNicknameWinner());
-
+                showWinner(serializedBoardAbstract);
+                break;
         }
     }
 
@@ -918,6 +917,14 @@ public class CLIView extends ClientView {
         System.out.flush();
     }
 
+    private void showWinner(SerializedBoardAbstract serializedBoardAbstract) {
+        if(serializedBoardAbstract.getNicknameWinner().equals(this.playerNick)) {
+            colourWinner();
+        } else {
+            colourLooser(serializedBoardAbstract);
+        }
+    }
+
     private boolean checkInt(String response) {
         try {
             int conversion = Integer.parseInt(response);
@@ -928,6 +935,23 @@ public class CLIView extends ClientView {
         return true;
     }
 
+    private void colourWinner() {
+        System.out.println(ANSI_GREEN);
+        System.out.println("\n----------------------------------------");
+        System.out.println("YOU ARE THE WINNER!");
+        System.out.println("----------------------------------------\n");
+        System.out.println(ANSI_RESET);
+        System.out.flush();
+    }
+
+    private void colourLooser(SerializedBoardAbstract se) {
+        System.out.println(ANSI_RED);
+        System.out.println("\n----------------------------------------");
+        System.out.println("YOU LOST! THE WINNER IS " + se.getNicknameWinner());
+        System.out.println("----------------------------------------\n");
+        System.out.println(ANSI_RESET);
+        System.out.flush();
+    }
 
     private void colourArchipelago(SerializedBoardAbstract serializedBoardAbstract, int i, List<Archipelago> archipelagos, SerializedBoardAbstract serializedBoardAdvanced) {
         if(serializedBoardAbstract.getMn().getCurrentPosition().equals(serializedBoardAbstract.getArchipelagos().get(i))) {
