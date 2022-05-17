@@ -31,7 +31,7 @@ public class ControllerInput {
      * @return true if it's not void, false other-ways
      */
     public boolean checkNickname(String nickname){
-        return !(nickname.equals(""));
+        return !(nickname.equals("")) && !(nickname.contains("*"));
     }
 
     /**

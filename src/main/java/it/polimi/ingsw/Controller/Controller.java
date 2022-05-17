@@ -731,7 +731,12 @@ public class Controller implements ObserverController<Message> {
         if(this.currentPlayerIndex == this.players.size() - 1){ //all Players made their move => new turn
             if(this.gameEnded){ //case game ends at the end of the turn
                 this.precomputedState = State.END;
-                computeNicknameWinner();
+                if(this.players.size() <= 3){
+                    computeNicknameWinner();
+                }
+                else{
+                    computeNicknameWinnerFour();
+                }
             }
             else{
                 this.precomputedState = State.PLANNING1;
@@ -1360,7 +1365,13 @@ public class Controller implements ObserverController<Message> {
         if(boardCopy.getNumArchipelagos() <= 3){
             this.precomputedState = State.END; //game ends immediately
             controllerState.setState(State.END);
-            computeNicknameWinner();
+            if(this.players.size() <= 3){
+                computeNicknameWinner();
+            }
+            else{
+                computeNicknameWinnerFour();
+            }
+
         }
 
         //CASE 0: a player has put all of his towers
@@ -1370,14 +1381,24 @@ public class Controller implements ObserverController<Message> {
             if(this.board.getPlayerSchool(p1).getNumTowers() == 0 && this.board.getPlayerSchool(p2).getNumTowers() == 0){
                 this.precomputedState = State.END; //game ends immediately
                 controllerState.setState(State.END);
-                computeNicknameWinner();
+                if(this.players.size() <= 3){
+                    computeNicknameWinner();
+                }
+                else{
+                    computeNicknameWinnerFour();
+                }
             }
         }
         else{
             if(boardCopy.getPlayerSchool(this.players.get(this.currentPlayerIndex)).getNumTowers() == 0){
                 this.precomputedState = State.END; //game ends immediately
                 controllerState.setState(State.END);
-                computeNicknameWinner();
+                if(this.players.size() <= 3){
+                    computeNicknameWinner();
+                }
+                else{
+                    computeNicknameWinnerFour();
+                }
             }
         }
     }
@@ -1422,6 +1443,9 @@ public class Controller implements ObserverController<Message> {
         if(this.board.getPlayerSchool(orderedPlayerTowerLeft.get(0)).getNumTowers() < this.board.getPlayerSchool(orderedPlayerTowerLeft.get(1)).getNumTowers()){
             this.nicknameWinner = orderedPlayerTowerLeft.get(0).getNickname();
         }
+        else if(this.board.getPlayerSchool(orderedPlayerTowerLeft.get(0)).getNumTowers() > this.board.getPlayerSchool(orderedPlayerTowerLeft.get(1)).getNumTowers()){
+            this.nicknameWinner = orderedPlayerTowerLeft.get(1).getNickname();
+        }
         else{//CASE 2: between the players with same number of towers left, the one with more professors win
             //remove all Players with too many towers
             int maxNumTowers = this.board.getPlayerSchool(orderedPlayerTowerLeft.get(0)).getNumTowers();
@@ -1451,6 +1475,71 @@ public class Controller implements ObserverController<Message> {
             }
 
             this.nicknameWinner = orderedPlayerProfessors.get(0).getNickname();
+        }
+    }
+
+    private void computeNicknameWinnerFour(){
+        //CASE 1: one team has fewer towers then the others
+        Player t1 = null; //leader (the one with towers) of white team
+        for(int i = 0; i < this.players.size(); i++){
+            if(players.get(i).getColour() == PlayerColour.WHITE){
+                t1 = players.get(i);
+            }
+        }
+        Player t2 = null; //leader (the one with towers) of black team
+        for(int i = 0; i < this.players.size(); i++){
+            if(players.get(i).getColour() == PlayerColour.BLACK){
+                t2 = players.get(i);
+            }
+        }
+        Map<Player, Integer> playerLeaderTowersLeft = new HashMap<>();
+        playerLeaderTowersLeft.put(t1, this.board.getPlayerSchool(t1).getNumTowers());
+        playerLeaderTowersLeft.put(t2, this.board.getPlayerSchool(t2).getNumTowers());
+
+        //order the map so that at first place there is the player with fewer towers left
+        List<Player> orderedPlayerTowerLeft = new ArrayList<>();
+        while (playerLeaderTowersLeft.size() > 0) {
+            Map.Entry<Player, Integer> min = null;
+            for (Map.Entry<Player, Integer> e : playerLeaderTowersLeft.entrySet()) {
+                if (min == null || min.getValue() > e.getValue()) {
+                    min = e;
+                }
+            }
+            Player minPlayer = min.getKey();
+            orderedPlayerTowerLeft.add(minPlayer);
+            playerLeaderTowersLeft.remove(minPlayer);
+        }
+        //if the num of the first player is lower (not equal) he won
+        if(this.board.getPlayerSchool(orderedPlayerTowerLeft.get(0)).getNumTowers() < this.board.getPlayerSchool(orderedPlayerTowerLeft.get(1)).getNumTowers()){
+            this.nicknameWinner = orderedPlayerTowerLeft.get(0).getNickname() + '+' + ((BoardFour)this.board).getTeammates().get(orderedPlayerTowerLeft.get(0)).getNickname();
+        }
+        else if(this.board.getPlayerSchool(orderedPlayerTowerLeft.get(0)).getNumTowers() > this.board.getPlayerSchool(orderedPlayerTowerLeft.get(1)).getNumTowers()){
+            this.nicknameWinner = orderedPlayerTowerLeft.get(1).getNickname() + '*' + ((BoardFour)this.board).getTeammates().get(orderedPlayerTowerLeft.get(1)).getNickname();
+        }
+        else{//CASE 2: between the players with same number of towers left, the one with more professors win
+            Map<Player, Integer> playerProfessors = new HashMap<>();
+            int pt1 = this.board.getPlayerSchool(t1).getProfessors().size();
+            pt1 += this.board.getPlayerSchool(((BoardFour)this.board).getTeammates().get(t1)).getProfessors().size();
+            int pt2 = this.board.getPlayerSchool(t2).getProfessors().size();
+            pt2 += this.board.getPlayerSchool(((BoardFour)this.board).getTeammates().get(t2)).getProfessors().size();
+            playerProfessors.put(t1, pt1);
+            playerProfessors.put(t2, pt2);
+
+            //order the map so that at first place there is the player with fewer towers left
+            List<Player> orderedPlayerProfessors = new ArrayList<>();
+            while (playerProfessors.size() > 0) {
+                Map.Entry<Player, Integer> max = null;
+                for (Map.Entry<Player, Integer> e : playerProfessors.entrySet()) {
+                    if (max == null || max.getValue() < e.getValue()) {
+                        max = e;
+                    }
+                }
+                Player minPlayer = max.getKey();
+                orderedPlayerProfessors.add(minPlayer);
+                playerProfessors.remove(minPlayer);
+            }
+
+            this.nicknameWinner = orderedPlayerProfessors.get(0).getNickname() + '*' + ((BoardFour)this.board).getTeammates().get(orderedPlayerProfessors.get(0)).getNickname();
         }
     }
 

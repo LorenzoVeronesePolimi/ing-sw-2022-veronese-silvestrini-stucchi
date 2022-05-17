@@ -1,6 +1,8 @@
 package it.polimi.ingsw.Model.Board;
 
+import it.polimi.ingsw.Model.Bag;
 import it.polimi.ingsw.Model.Exceptions.*;
+import it.polimi.ingsw.Model.Pawns.MotherNature;
 import it.polimi.ingsw.Model.Pawns.Professor;
 import it.polimi.ingsw.Model.Pawns.Tower;
 import it.polimi.ingsw.Model.Places.Archipelago;
@@ -46,6 +48,11 @@ public class BoardFour extends BoardAbstract {
         }
         super.moveStudentBagToCloud();
         super.moveStudentBagToSchool(7);
+    }
+
+    public BoardFour(BoardAbstract toCopy){ //added for gameEndedArchipelagos in Controller
+        super(toCopy);
+        this.teammates = ((BoardFour)toCopy).getTeammates();
     }
 
     @Override
