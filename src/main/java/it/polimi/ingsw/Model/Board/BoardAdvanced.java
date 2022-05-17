@@ -272,7 +272,8 @@ public class BoardAdvanced extends Observable implements Board {
             if (currentArchipelago.getOwner() == currentPlayer || currentArchipelago.getOwner() == ((BoardFour)this.board).teammates.get(currentPlayer)) {
                 return false;
             } else if (currentArchipelago.getOwner() == null) { //archipelago never conquered before
-                List<Professor> conquerorProfessors = this.board.playerSchool.get(currentPlayer).getProfessors();
+                List<Professor> conquerorProfessors = new ArrayList<>();
+                conquerorProfessors.addAll(this.board.playerSchool.get(currentPlayer).getProfessors());
                 conquerorProfessors.addAll(this.board.playerSchool.get(((BoardFour)this.board).teammates.get(currentPlayer)).getProfessors());
                 return setConquerable(currentArchipelago, conquerorProfessors);
             }

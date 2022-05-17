@@ -60,7 +60,8 @@ public class BoardFour extends BoardAbstract {
         Archipelago currentArchipelago = this.archipelagos.get(whereIsMotherNature());
         //if the owner of the Archipelago is the current Player or mate, he conquers nothing
         if (currentArchipelago.getOwner() == null) { //archipelago never conquered before
-            List<Professor> conquerorProfessors = this.playerSchool.get(currentPlayer).getProfessors();
+            List<Professor> conquerorProfessors = new ArrayList<>();
+            conquerorProfessors.addAll(this.playerSchool.get(currentPlayer).getProfessors());
             conquerorProfessors.addAll(this.playerSchool.get(teammates.get(currentPlayer)).getProfessors());
             boolean conquerable = false;
 
