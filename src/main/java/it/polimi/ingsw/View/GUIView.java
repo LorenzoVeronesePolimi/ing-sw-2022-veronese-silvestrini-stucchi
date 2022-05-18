@@ -18,6 +18,21 @@ public class GUIView extends ClientView {
     }
 
     @Override
+    public void endView() {
+
+    }
+
+    @Override
+    public void clientDisconnectionEnd() {
+
+    }
+
+    @Override
+    public void askReconnect() {
+
+    }
+
+    @Override
     public void askCLIorGUI() {
 
     }

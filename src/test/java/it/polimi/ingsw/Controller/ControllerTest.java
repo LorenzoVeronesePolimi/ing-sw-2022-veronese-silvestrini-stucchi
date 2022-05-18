@@ -51,8 +51,7 @@ public class ControllerTest {
             throw new RuntimeException(e);
         }
 
-        controller = server.getController();
-        //System.setOut(new PrintStream(outContent));
+        controller = server.createController();
         conn1 = new SocketClientConnectionCLI(server, controller);
         server.addConnection(conn1);
         view1 = conn1.getServerView();

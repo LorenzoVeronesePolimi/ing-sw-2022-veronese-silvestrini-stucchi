@@ -34,10 +34,45 @@ public class CLIView extends ClientView {
     }
 
     public void printCustom(String err) {
-        System.out.println("\n----------------------------------------");
+        for(int i = 0; i < err.length(); i++)
+            System.out.print("-");
+        System.out.println();
+
         System.out.println(err);
-        System.out.println("----------------------------------------\n");
+
+        for(int i = 0; i < err.length(); i++)
+            System.out.print("-");
+        System.out.println();
+
         System.out.flush();
+    }
+
+    public void endView() {
+        System.out.println();
+        printCustom("Closing connection...");
+        System.out.println();
+    }
+
+    @Override
+    public void clientDisconnectionEnd() {
+        System.out.print(ANSI_RED);
+        printCustom("An error occurred on one of the other players. The match is ended. :(");
+        System.out.print(ANSI_RESET);
+    }
+
+    public void askReconnect() {
+        String response;
+
+        System.out.println();
+        do {
+            System.out.println("Do you want to be play another match? [Y/N]");
+            response = input.nextLine();
+        } while(!response.equalsIgnoreCase("Y") && !response.equalsIgnoreCase("N"));
+
+        if(response.equalsIgnoreCase("Y"))
+            this.client.setClientReconnect(true);
+        else
+            this.client.setClientReconnect(false);
     }
 
     @Override
