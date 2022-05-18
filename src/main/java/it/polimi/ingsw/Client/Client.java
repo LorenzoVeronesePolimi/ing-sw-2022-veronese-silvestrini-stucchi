@@ -1,18 +1,19 @@
 package it.polimi.ingsw.Client;
 
 import it.polimi.ingsw.Messages.ActiveMessageView;
-import it.polimi.ingsw.Messages.OUTMessages.OUTMessage;
-import it.polimi.ingsw.Model.Board.SerializedBoardAbstract;
-import it.polimi.ingsw.Model.Board.SerializedBoardAdvanced;
 import it.polimi.ingsw.View.CLIView;
 import it.polimi.ingsw.View.ClientView;
 import it.polimi.ingsw.View.GUIView;
 
+import java.io.EOFException;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.net.SocketException;
 import java.util.NoSuchElementException;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
 
 public class Client {
 
@@ -22,8 +23,12 @@ public class Client {
     private ObjectInputStream socketIn;
     private ObjectOutputStream socketOut;
     private boolean CLIorGUI = false;
-    private boolean active = true;
+    private boolean activeConnection = true;
+    private boolean clientReconnect = false;
+    private boolean clientError = false;
+    private boolean serverError = false;
     private ActiveMessageView prevMessage = null;
+    private ScheduledExecutorService pinger;
 
     public Client(String ip, int port){
         this.ip = ip;
@@ -31,29 +36,36 @@ public class Client {
     }
 
     public synchronized boolean isActive(){
-        return active;
+        return activeConnection;
     }
 
     public synchronized void setActive(boolean active){
-        this.active = active;
+        this.activeConnection = active;
+    }
+    public synchronized void setClientReconnect(boolean rec) { this.clientReconnect = rec; }
+
+    public void setClientError(boolean clientError) {
+        this.clientError = clientError;
     }
 
-    public Thread asyncReadFromSocket(final ObjectInputStream socketIn){
+    public void setServerError(boolean serverError) {
+        this.serverError = serverError;
+    }
+
+    public Thread asyncReadFromSocket(){
         Thread t = new Thread(() -> {
             try {
                 Object inputMessage = this.socketIn.readObject();
 
-                if(inputMessage instanceof ActiveMessageView)
-                    ((ActiveMessageView)inputMessage).manageMessage(this.view);
+                if (inputMessage instanceof ActiveMessageView)
+                    ((ActiveMessageView) inputMessage).manageMessage(this.view);
 
-                if(this.CLIorGUI) {
+                if (this.CLIorGUI) {
                     this.view = new GUIView(this);
                 }
                 this.view.printCustom("You will be connected soon, wait!");
 
                 while (isActive()) {
-                    //view.printCustom("Attendi!");
-
                     /*
                         When a message is received it is managed by the view.
                         Then, this message is saved as prevMessage (in order to manage future errors).
@@ -65,11 +77,11 @@ public class Client {
 
                     inputMessage = this.socketIn.readObject();
 
-                    if(inputMessage instanceof ActiveMessageView) {
-                        ((ActiveMessageView)inputMessage).manageMessage(this.view);
+                    if (inputMessage instanceof ActiveMessageView) {
+                        ((ActiveMessageView) inputMessage).manageMessage(this.view);
 
                         if (this.view.isErrorStatus()) {
-                            if(prevMessage != null)
+                            if (prevMessage != null)
                                 prevMessage.manageMessage(this.view);
 
                             this.view.setErrorStatus(false);
@@ -79,8 +91,16 @@ public class Client {
                     }
 
                 }
-            } catch (Exception e){
-                setActive(false);
+            } catch (SocketException e) {
+                this.view.printCustom("Error. You have been disconnected!");
+                this.setClientError(true);
+
+            } catch (EOFException e){
+                e.printStackTrace();
+            } catch (Exception e) {
+                e.printStackTrace();
+            } finally {
+                this.setActive(false);
             }
         });
         t.start();
@@ -103,9 +123,21 @@ public class Client {
 
     public void run() throws IOException {
         // Connecting
+        connecting();
+    }
+
+    private void connecting() throws IOException {
+        this.setActive(true);
+        this.setClientReconnect(false);
+        this.setClientError(false);
+
         Socket socket = new Socket(this.ip, this.port);
         System.out.println("Connection established");
 
+        //Ping for establishing connection
+        this.pinger = Executors.newSingleThreadScheduledExecutor();
+
+        //Socket for communication
         this.socketOut = new ObjectOutputStream(socket.getOutputStream());
         this.socketOut.flush();
         this.socketIn = new ObjectInputStream(socket.getInputStream());
@@ -113,8 +145,21 @@ public class Client {
         this.view = new CLIView(this);
 
         try{
-            Thread t0 = asyncReadFromSocket(this.socketIn);
+            Thread t0 = asyncReadFromSocket();
             t0.join();
+
+            if(this.clientError && !this.serverError) {
+                try {
+                    this.askReconnet();
+                } catch (IOException e) {
+                    System.out.println("reconnecting error");
+                    this.view.endView();
+                    //e.printStackTrace();
+                }
+            }
+
+            this.view.endView();
+
         } catch(InterruptedException | NoSuchElementException e){
             System.out.println("Connection closed from the client side");
         } finally {
@@ -126,5 +171,16 @@ public class Client {
 
     public void setCLIorGUI(boolean CLIorGUI){
         this.CLIorGUI = CLIorGUI;
+    }
+
+    private void askReconnet() throws IOException {
+        this.view.askReconnect();
+
+        if(clientReconnect)
+            connecting();
+    }
+
+    public void managePinger() {
+        //pinger.scheduleAtFixedRate(() -> this.asyncWriteToSocket(new Ping()), 0, 1000, TimeUnit.MILLISECONDS);
     }
 }

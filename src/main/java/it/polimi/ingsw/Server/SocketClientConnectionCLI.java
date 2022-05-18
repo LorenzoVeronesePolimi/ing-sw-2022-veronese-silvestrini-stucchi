@@ -48,7 +48,6 @@ public class SocketClientConnectionCLI extends ClientConnection implements Runna
     private ObjectInputStream in;
     private final Server server;
 
-    private boolean active = true;
     private boolean firstPlayer = false;
     private List<OUTMessage> pendingMessage;
     private final ServerView serverView;
@@ -59,6 +58,7 @@ public class SocketClientConnectionCLI extends ClientConnection implements Runna
         this.server = server;
         this.serverView = new ServerView(this, controller);
         this.pendingMessage = new ArrayList<>();
+        this.activeConnection = true;
 
         try {
             this.out = new ObjectOutputStream(socket.getOutputStream());
@@ -82,30 +82,31 @@ public class SocketClientConnectionCLI extends ClientConnection implements Runna
     @Override
     public void run() {
         String read;
-        try{
+        try {
             // TODO: consider the case of wrong input
             // CLI o GUI
             send(serverView.askCLIorGUI());
 
-            if(firstPlayer) {
+            if (firstPlayer) {
                 send(serverView.askFirstPlayer());
             }
-            if(pendingMessage.size() > 0) {
+            if (pendingMessage.size() > 0) {
                 this.send(pendingMessage.get(0));
             }
 
             //server.lobby(this, this.nickname);
-            while(isActive()){
+            while (isActiveConnection()) {
                 read = (String) in.readObject();
                 notify(read);
             }
 
         } catch (NoSuchElementException e) {
             System.err.println("Error! " + e.getMessage());
-        } catch (IOException | ClassNotFoundException e) {
+        } catch (IOException e) {
+            if(server.isActiveConnection(this))
+                server.deregisterConnection(this);
+        }catch (ClassNotFoundException e) {
             e.printStackTrace();
-        } finally {
-            close();
         }
     }
 
@@ -115,10 +116,6 @@ public class SocketClientConnectionCLI extends ClientConnection implements Runna
 
     public void setPendingMessage(OUTMessage pending) {
         this.pendingMessage.add(pending);
-    }
-
-    private synchronized boolean isActive(){
-        return active;
     }
 
     public synchronized void send(OUTMessage message) {
@@ -159,13 +156,13 @@ public class SocketClientConnectionCLI extends ClientConnection implements Runna
         } catch (IOException e) {
             System.err.println("Error when closing socket!");
         }
-        active = false;
+        activeConnection = false;
     }
 
-    private void close() {
+    public void close() {
         closeConnection();
-        System.out.println("De-registering client...");
-        server.deregisterConnection(this);
+        System.out.println("De-registering client " + this.hashCode());
+        //server.deregisterConnection(this);
         System.out.println("Done!");
     }
 

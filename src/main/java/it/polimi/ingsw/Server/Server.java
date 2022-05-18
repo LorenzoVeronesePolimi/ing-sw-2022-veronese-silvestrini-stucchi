@@ -2,6 +2,7 @@ package it.polimi.ingsw.Server;
 
 import it.polimi.ingsw.Controller.Controller;
 import it.polimi.ingsw.Messages.OUTMessages.MessageAskName;
+import it.polimi.ingsw.Messages.OUTMessages.MessageClientDisconnection;
 import it.polimi.ingsw.Messages.OUTMessages.OUTMessage;
 import it.polimi.ingsw.Model.Enumerations.PlayerColour;
 
@@ -11,6 +12,7 @@ import java.net.Socket;
 import java.util.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.stream.Collectors;
 
 public class Server {
 
@@ -28,7 +30,6 @@ public class Server {
 
     public Server() throws IOException {
         this.serverSocket = new ServerSocket(PORT);
-        this.controller = new Controller(this);
         this.pendingMessage = new ArrayList<>();
     }
 
@@ -42,10 +43,17 @@ public class Server {
         while(true){
             try {
                 Socket newSocket = serverSocket.accept();
+
+                controller = this.createController();
+
                 connections++;
                 System.out.println("Ready for the new connection - " + connections);
                 SocketClientConnectionCLI socketConnection = new SocketClientConnectionCLI(newSocket, this, controller);
                 socketConnections.add(socketConnection);
+
+                System.out.println("Connection: " + socketConnection.hashCode());
+                System.out.println("List: " + socketConnections.stream().map(x -> x.hashCode()).collect(Collectors.toList()));
+
 
                 if(connections == 1) {
                     socketConnection.setFirstPlayerAction();
@@ -73,10 +81,20 @@ public class Server {
         }
     }
 
+    public Controller createController() {
+        if(this.connections == 0) {
+            this.controller = new Controller(this);
+            return this.controller;
+        }
+
+        return this.controller;
+    }
+
     public void reserServer() {
         alreadyin = 0;
     }
 
+    //just for testing
     public void addConnection(SocketClientConnectionCLI clientConnectionCLI) {
         socketConnections.add(clientConnectionCLI);
     }
@@ -128,18 +146,21 @@ public class Server {
     }*/
 
     //De-register connection
-    public synchronized void deregisterConnection(ClientConnection c) {
-        ClientConnection opponent = playingConnection.get(c);
-        if(opponent != null) {
-            opponent.closeConnection();
+    public synchronized void deregisterConnection(SocketClientConnectionCLI c) {
+        for(SocketClientConnectionCLI sc : socketConnections) {
+            if(sc != c)
+                sc.send(new MessageClientDisconnection());
+
+            System.out.println("Chiudendo " + sc.hashCode());
+            sc.close();
         }
-        playingConnection.remove(c);
-        playingConnection.remove(opponent);
-        Iterator<String> iterator = waitingConnection.keySet().iterator();
-        while(iterator.hasNext()){
-            if(waitingConnection.get(iterator.next())==c){
-                iterator.remove();
-            }
-        }
+
+        reserServer();
+        socketConnections.clear();
+        connections = 0;
+    }
+
+    public boolean isActiveConnection(ClientConnection c) {
+        return socketConnections.contains(c) && c.isActiveConnection();
     }
 }

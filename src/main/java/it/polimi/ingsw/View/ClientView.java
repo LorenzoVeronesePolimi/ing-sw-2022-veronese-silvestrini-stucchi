@@ -28,11 +28,22 @@ public abstract class ClientView {
 
     public abstract void printErrorMessage();
 
+    public abstract void endView();
+    public abstract void clientDisconnectionEnd();
+    public abstract void askReconnect();
     public abstract void askCLIorGUI();
     public abstract void askNickName(List<PlayerColour> list, int numPlayer);
     public abstract void askFirstPlayerInfo();
-
     public abstract void showBoard(SerializedBoardAbstract serializedBoardAbstract);
+    public void setClientActive(boolean active) {
+        this.client.setActive(active);
+    }
+    public void setClientError(boolean err) {
+        this.client.setClientError(err);
+    }
+    public void setServerError(boolean err) {
+        this.client.setServerError(err);
+    }
 
     //TODO: just for test
     public abstract void printCustom(String err);
