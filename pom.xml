@@ -37,6 +37,11 @@
       <artifactId>json</artifactId>
       <version>20220320</version>
     </dependency>
+    <dependency>
+      <groupId>org.openjfx</groupId>
+      <artifactId>javafx-controls</artifactId>
+      <version>17.0.1</version>
+    </dependency>
   </dependencies>
 
   <build>
@@ -120,6 +125,14 @@
               </goals>
             </execution>
           </executions>
+        </plugin>
+        <plugin>
+          <groupId>org.openjfx</groupId>
+          <artifactId>javafx-maven-plugin</artifactId>
+          <version>0.0.8</version>
+          <configuration>
+            <mainClass>it.polimi.ingsw.HelloFX</mainClass>
+          </configuration>
         </plugin>
       </plugins>
   </build>
