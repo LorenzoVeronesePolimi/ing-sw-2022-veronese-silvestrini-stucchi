@@ -1,15 +1,22 @@
 package it.polimi.ingsw.View;
 
 import it.polimi.ingsw.Client.Client;
+import it.polimi.ingsw.HelloFX;
 import it.polimi.ingsw.Messages.OUTMessages.OUTMessage;
 import it.polimi.ingsw.Model.Board.SerializedBoardAbstract;
 import it.polimi.ingsw.Model.Enumerations.PlayerColour;
+import javafx.application.Application;
+import javafx.scene.Scene;
+import javafx.scene.control.Label;
+import javafx.scene.layout.StackPane;
+import javafx.stage.Stage;
 
 import java.util.List;
 
-public class GUIView extends ClientView {
+public class GUIView extends ClientView{
     public GUIView(Client client) {
         super(client);
+        Application.launch(it.polimi.ingsw.View.GUI.GUIViewFX.class);
     }
 
     @Override

@@ -1,4 +1,4 @@
-package it.polimi.ingsw;
+package it.polimi.ingsw.View.GUI;
 
 import javafx.application.Application;
 import javafx.scene.Scene;
@@ -6,10 +6,7 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 
-
-//Not used anymore (it was just a try): see GUIViewFX instead
-public class HelloFX extends Application {
-
+public class GUIViewFX extends Application {
     @Override
     public void start(Stage stage) {
         String javaVersion = System.getProperty("java.version");
@@ -23,5 +20,5 @@ public class HelloFX extends Application {
     public static void main(String[] args) {
         launch();
     }
-
 }
+

@@ -1,9 +1,11 @@
 package it.polimi.ingsw.Client;
 
+import it.polimi.ingsw.HelloFX;
 import it.polimi.ingsw.Messages.ActiveMessageView;
 import it.polimi.ingsw.View.CLIView;
 import it.polimi.ingsw.View.ClientView;
 import it.polimi.ingsw.View.GUIView;
+import javafx.application.Application;
 
 import java.io.EOFException;
 import java.io.IOException;
