@@ -108,6 +108,12 @@ public class Server {
 
     //De-register connection
     public synchronized void deregisterConnection(SocketClientConnectionCLI c) {
+        if(socketConnections.indexOf(c) >= this.controller.getPlayers().size()) {
+            c.close();
+            connections--;
+            alreadyin--;
+            return;
+        }
         for(SocketClientConnectionCLI sc : socketConnections) {
             if(sc != c)
                 sc.send(new MessageClientDisconnection());

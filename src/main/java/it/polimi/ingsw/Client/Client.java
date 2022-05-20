@@ -29,6 +29,7 @@ public class Client {
     private boolean clientError = false;
     private boolean serverError = false;
     private boolean endGame = false;
+    private boolean socketNull = true;
     private ActiveMessageView prevMessage = null;
     private ScheduledExecutorService pinger;
 
@@ -99,6 +100,7 @@ public class Client {
             } catch (SocketException e) {
                 this.view.printErrorMessage("Error. You have been disconnected!");
                 this.setClientError(true);
+                this.socketNull = true;
 
                 // testing reconnection in order to identify server status
                 try {
@@ -109,11 +111,12 @@ public class Client {
                     this.view.printErrorMessage("Error 404. Server not responding.");
                 } finally {
                     if(!this.serverError && this.clientError) {
-                        try {
+                        this.socketNull = false;
+                        /*try {
                             this.socket.close();
                         } catch (IOException ex) {
                             e.printStackTrace();
-                        }
+                        }*/
                     }
                 }
 
@@ -149,14 +152,17 @@ public class Client {
 
     private void connecting() throws IOException {
         // initialization of the parameters of the client
-        this.setActive(true);
         this.setClientReconnect(false);
         this.setClientError(false);
         this.setEndGame(false);
 
         // connection to the server
-        this.socket = new Socket(this.ip, this.port);
+        if(this.socketNull)
+            this.socket = new Socket(this.ip, this.port);
+
         System.out.println("Connection established");
+        this.setActive(true);
+        this.socketNull = false;
 
         //Ping for establishing connection
         this.pinger = Executors.newSingleThreadScheduledExecutor();
