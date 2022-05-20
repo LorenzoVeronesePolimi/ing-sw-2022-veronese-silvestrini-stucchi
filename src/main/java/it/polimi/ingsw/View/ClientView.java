@@ -13,6 +13,8 @@ public abstract class ClientView {
     protected Scanner input;
     private boolean errorStatus = false;
 
+    public ClientView() {}
+
     public ClientView(Client client) {
         this.client = client;
         this.input = new Scanner(System.in);

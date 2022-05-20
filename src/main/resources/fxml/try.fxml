@@ -1,14 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.shape.Circle?>
 
-
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.View.GUIView">
    <children>
-      <Label layoutY="190.0" prefHeight="21.0" prefWidth="600.0" text="Welcome to Eryantis" textAlignment="CENTER" />
+      <Button layoutX="285.0" layoutY="14.0" mnemonicParsing="false" onAction="#up" text="UP" />
+      <Button layoutX="534.0" layoutY="188.0" mnemonicParsing="false" onAction="#right" text="RIGHT" />
+      <Button layoutX="275.0" layoutY="361.0" mnemonicParsing="false" onAction="#down" text="DOWN" />
+      <Button layoutX="14.0" layoutY="188.0" mnemonicParsing="false" onAction="#left" text="LEFT" />
+      <Circle fx:id="myCircle" fill="DODGERBLUE" layoutX="300.0" layoutY="201.0" radius="100.0" stroke="BLACK" strokeType="INSIDE" />
    </children>
 </AnchorPane>

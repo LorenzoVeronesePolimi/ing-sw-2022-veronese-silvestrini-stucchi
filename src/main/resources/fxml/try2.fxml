@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <Label fx:id="titleLable" prefHeight="17.0" prefWidth="800.0" text="Welcome to Eriantys" />
+      <Label fx:id="subtitleLable" prefHeight="17.0" prefWidth="802.0" text="The magical world of floating islands!" />
+   </children>
+</VBox>

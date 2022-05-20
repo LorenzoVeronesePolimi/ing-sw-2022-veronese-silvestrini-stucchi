@@ -71,8 +71,8 @@ public class CLIView extends ClientView {
 
         System.out.println();
         do {
-            System.out.println(">Do you want to be play another match? [Y/N]");
-            System.out.print(">");
+            System.out.println("> Do you want to be play another match? [Y/N]");
+            System.out.print("> ");
             response = input.nextLine();
         } while(!response.equalsIgnoreCase("Y") && !response.equalsIgnoreCase("N"));
 
@@ -87,8 +87,8 @@ public class CLIView extends ClientView {
         String response;
 
         do {
-            System.out.println(">Select between CLI[0] or GUI[1]:");
-            System.out.print(">");
+            System.out.println("> Select between CLI[0] or GUI[1]:");
+            System.out.print("> ");
             System.out.flush();
             response = input.nextLine();
 
@@ -105,8 +105,8 @@ public class CLIView extends ClientView {
         String colour = "";
 
         do {
-            System.out.println(">Write your nickname:");
-            System.out.print(">");
+            System.out.println("> Write your nickname:");
+            System.out.print("> ");
             System.out.flush();
             nickname = input.nextLine();
             this.playerNick = nickname;
@@ -114,30 +114,30 @@ public class CLIView extends ClientView {
 
         if(numPlayer==2){
             colour= colourList.get(0).equals(PlayerColour.WHITE) ? "BLACK" : "WHITE";
-            System.out.println(">your colour is " + colour);
+            System.out.println("> your colour is " + colour);
         }
         if(numPlayer == 3 ){
             if(colourList.size()==1){
                 if(colourList.get(0).equals(PlayerColour.WHITE)) {
                     do {
-                        System.out.println(">What colour would you like [Black/Gray]:");
-                        System.out.print(">");
+                        System.out.println("> What colour would you like [Black/Gray]:");
+                        System.out.print("> ");
                         System.out.flush();
                         colour = input.nextLine();
                     } while (!colour.equalsIgnoreCase("black") && !colour.equalsIgnoreCase("gray"));
                 }
                 if(colourList.get(0).equals(PlayerColour.BLACK)) {
                     do {
-                        System.out.println(">What colour would you like [White/Gray]:");
-                        System.out.print(">");
+                        System.out.println("> What colour would you like [White/Gray]:");
+                        System.out.print("> ");
                         System.out.flush();
                         colour = input.nextLine();
                     } while (!colour.equalsIgnoreCase("white") && !colour.equalsIgnoreCase("gray"));
                 }
                 if(colourList.get(0).equals(PlayerColour.GRAY)) {
                     do {
-                        System.out.println(">What colour would you like [Black/White]:");
-                        System.out.print(">");
+                        System.out.println("> What colour would you like [Black/White]:");
+                        System.out.print("> ");
                         System.out.flush();
                         colour = input.nextLine();
                     } while (!colour.equalsIgnoreCase("black") && !colour.equalsIgnoreCase("white"));
@@ -153,7 +153,7 @@ public class CLIView extends ClientView {
                 if(colourList.contains(PlayerColour.GRAY) && colourList.contains(PlayerColour.BLACK)) {
                     colour = "WHITE";
                 }
-                System.out.println(">Your colour is " + colour);
+                System.out.println("> Your colour is " + colour);
             }
         }
         if (numPlayer == 4){
@@ -162,26 +162,26 @@ public class CLIView extends ClientView {
 
             if(colourList.size()==3){
                 colour=(black==2)? "WHITE" : "BLACK";
-                System.out.println(">Your colour is " + colour);
+                System.out.println("> Your colour is " + colour);
             }
             if(colourList.size()==2){
                 if(black==1 || white==1){
                     do {
-                        System.out.println(">What colour would you like [Black/White]:");
-                        System.out.print(">");
+                        System.out.println("> What colour would you like [Black/White]:");
+                        System.out.print("> ");
                         System.out.flush();
                         colour = input.nextLine();
                     } while (!colour.equalsIgnoreCase("BLACK") && !colour.equalsIgnoreCase("WHITE"));
                 }
                 else{
                     colour=(black==2)? "WHITE" : "BLACK";
-                    System.out.println(">Your colour is " + colour);
+                    System.out.println("> Your colour is " + colour);
                 }
             }
             if(colourList.size()==1){
                 do {
-                    System.out.println(">What colour would you like [Black/White]:");
-                    System.out.print(">");
+                    System.out.println("> What colour would you like [Black/White]:");
+                    System.out.print("> ");
                     System.out.flush();
                     colour = input.nextLine();
                 } while (!colour.equalsIgnoreCase("BLACK") && !colour.equalsIgnoreCase("WHITE"));
@@ -202,24 +202,24 @@ public class CLIView extends ClientView {
         String gameMode;
 
         do {
-            System.out.println(">Write your nickname:");
-            System.out.print(">");
+            System.out.println("> Write your nickname:");
+            System.out.print("> ");
             System.out.flush();
             nickname = input.nextLine();
             this.playerNick = nickname;
         } while (nickname.equals(""));
 
         do {
-            System.out.println(">Select number of players [2 - 3 - 4]:");
-            System.out.print(">");
+            System.out.println("> Select number of players [2 - 3 - 4]:");
+            System.out.print("> ");
             System.out.flush();
             numPlayers = input.nextLine();
         } while (!numPlayers.equals("2") && !numPlayers.equals("3") && !numPlayers.equals("4"));
 
         if(Integer.parseInt(numPlayers)==2 || Integer.parseInt(numPlayers)==4){
             do {
-                System.out.println(">What colour would you like [Black/White]:");
-                System.out.print(">");
+                System.out.println("> What colour would you like [Black/White]:");
+                System.out.print("> ");
                 System.out.flush();
                 colour = input.nextLine();
             } while (!colour.equalsIgnoreCase("black") && !colour.equalsIgnoreCase("white"));
@@ -227,8 +227,8 @@ public class CLIView extends ClientView {
         if(Integer.parseInt(numPlayers)==3){
             do {
 
-                System.out.println(">What colour would you like [Black/White/Gray]:");
-                System.out.print(">");
+                System.out.println("> What colour would you like [Black/White/Gray]:");
+                System.out.print("> ");
                 System.out.flush();
                 colour = input.nextLine();
             } while (!colour.equalsIgnoreCase("black") && !colour.equalsIgnoreCase("white") &&
@@ -236,8 +236,8 @@ public class CLIView extends ClientView {
         }
 
         do {
-            System.out.println(">Do you want to play in ADVANCED mode? [Y/N]:");
-            System.out.print(">");
+            System.out.println("> Do you want to play in ADVANCED mode? [Y/N]:");
+            System.out.print("> ");
             System.out.flush();
             gameMode = input.nextLine();
         } while (!gameMode.equalsIgnoreCase("Y") && !gameMode.equalsIgnoreCase("N"));
@@ -308,12 +308,12 @@ public class CLIView extends ClientView {
     private void printWaitTurn(SerializedBoardAbstract serializedBoardAbstract) {
         System.out.print(ANSI_GREEN);
         if(this.playerNick.equals(serializedBoardAbstract.getCurrentPlayer().getNickname())) {
-            System.out.println("\n>IT'S YOUR TURN! MAKE A MOVE!");
+            System.out.println("\n> IT'S YOUR TURN! MAKE A MOVE!");
             System.out.print(ANSI_RESET);
 
             manageNextMove(serializedBoardAbstract);
         } else {
-            System.out.println("\n>IT'S " + serializedBoardAbstract.getCurrentPlayer().getNickname() + "'s TURN! WAIT...");
+            System.out.println("\n> IT'S " + serializedBoardAbstract.getCurrentPlayer().getNickname() + "'s TURN! WAIT...");
         }
         System.out.print(ANSI_RESET);
         System.out.flush();
@@ -347,8 +347,8 @@ public class CLIView extends ClientView {
         int turnPriority = 0;
 
         do {
-            System.out.println(">Choose the turn priority of the card you want to use: ");
-            System.out.print(">");
+            System.out.println("> Choose the turn priority of the card you want to use: ");
+            System.out.print("> ");
             System.out.flush();
             response = input.nextLine();
 
@@ -371,11 +371,11 @@ public class CLIView extends ClientView {
         do {
             do {
                 if (serializedBoardAbstract.getType().equals("advanced")) {
-                    System.out.println(">Move a student [DiningRoom/Archipelago] or buy a card [Card]:");
+                    System.out.println("> Move a student [DiningRoom/Archipelago] or buy a card [Card]:");
                 } else {
-                    System.out.println(">Move a student [DiningRoom/Archipelago]:");
+                    System.out.println("> Move a student [DiningRoom/Archipelago]:");
                 }
-                System.out.print(">");
+                System.out.print("> ");
                 System.out.flush();
                 command = input.nextLine();
             } while (checkStudentInput(serializedBoardAbstract, command));
@@ -389,8 +389,8 @@ public class CLIView extends ClientView {
                 }
 
                 do {
-                    System.out.println(">Choose the colour's student to move from hall: ");
-                    System.out.print(">");
+                    System.out.println("> Choose the colour's student to move from hall: ");
+                    System.out.print("> ");
                     System.out.flush();
                     colour = input.nextLine();
                 } while (!possibleColours.contains(colour.toLowerCase()));
@@ -402,8 +402,8 @@ public class CLIView extends ClientView {
                     int destArchipelagoIndex = 0;
 
                     do {
-                        System.out.println(">Choose the index of the destination archipelago: ");
-                        System.out.print(">");
+                        System.out.println("> Choose the index of the destination archipelago: ");
+                        System.out.print("> ");
                         System.out.flush();
                         response = input.nextLine();
 
@@ -434,8 +434,8 @@ public class CLIView extends ClientView {
         String card;
 
         do {
-            System.out.println(">Choose a card from the extracted ones or go back [Back]:");
-            System.out.print(">");
+            System.out.println("> Choose a card from the extracted ones or go back [Back]:");
+            System.out.print("> ");
             System.out.flush();
             card = input.nextLine();
         } while(!checkCharacterChoice(serializedBoardAdvanced, card) && !card.equalsIgnoreCase("back"));
@@ -673,15 +673,15 @@ public class CLIView extends ClientView {
         System.out.println("Student in the hall: " + school.getStudentsHall().toString());
 
         for(int i = 0; i < 3; i++) {
-            System.out.println(">Select the colour of the [#" + (i+1) + "] student from the card or none [-]: ");
-            System.out.print(">");
+            System.out.println("> Select the colour of the [#" + (i+1) + "] student from the card or none [-]: ");
+            System.out.print("> ");
             System.out.flush();
             cardStudents.add(input.nextLine());
         }
 
         for(int i = 0; i < 3; i++) {
-            System.out.println(">Select the colour of the student [" + (i+1) + "] from the hall or none [-]: ");
-            System.out.print(">");
+            System.out.println("> Select the colour of the student [" + (i+1) + "] from the hall or none [-]: ");
+            System.out.print("> ");
             System.out.flush();
             hallStudents.add(input.nextLine());
         }
@@ -706,22 +706,22 @@ public class CLIView extends ClientView {
 
         for(int i = 0; i < 2; i++) {
             if(i == 0)
-                System.out.println(">Select one student from the hall: ");
+                System.out.println("> Select one student from the hall: ");
             else
-                System.out.println(">Select another student from the hall or none [-]: ");
+                System.out.println("> Select another student from the hall or none [-]: ");
 
-            System.out.print(">");
+            System.out.print("> ");
             System.out.flush();
             hallStudents.add(input.nextLine());
         }
 
         for(int i = 0; i < 2; i++) {
             if(i == 0)
-                System.out.println(">Select one student from the dining room: ");
+                System.out.println("> Select one student from the dining room: ");
             else
-                System.out.println(">Select another student from the dining room or none [-]: ");
+                System.out.println("> Select another student from the dining room or none [-]: ");
 
-            System.out.print(">");
+            System.out.print("> ");
             System.out.flush();
             diningStudents.add(input.nextLine());
         }
@@ -738,8 +738,8 @@ public class CLIView extends ClientView {
         String colour = null;
 
         do {
-            System.out.println(">Select a colour to exclude from the next conquer attempt: ");
-            System.out.print(">");
+            System.out.println("> Select a colour to exclude from the next conquer attempt: ");
+            System.out.print("> ");
             System.out.flush();
             colour = input.nextLine();
         } while(!possibleColours.contains(colour.toLowerCase()));
@@ -755,8 +755,8 @@ public class CLIView extends ClientView {
         System.out.println("Students on the card: " + exst.printStudents());
 
         do {
-            System.out.println(">Select one student from the card: ");
-            System.out.print(">");
+            System.out.println("> Select one student from the card: ");
+            System.out.print("> ");
             System.out.flush();
             cardStudent = input.nextLine();
         }while(!possibleColours.contains(cardStudent.toLowerCase()));
@@ -770,8 +770,8 @@ public class CLIView extends ClientView {
         int move = 0;
 
         do{
-            System.out.println(">Insert the archipelago index on which you want to move to (and come back after): ");
-            System.out.print(">");
+            System.out.println("> Insert the archipelago index on which you want to move to (and come back after): ");
+            System.out.print("> ");
             System.out.flush();
             response = input.nextLine();
 
@@ -788,8 +788,8 @@ public class CLIView extends ClientView {
         int index = 0;
 
         do{
-            System.out.println(">Insert the archipelago index on which you want put a forbid tile: ");
-            System.out.print(">");
+            System.out.println("> Insert the archipelago index on which you want put a forbid tile: ");
+            System.out.print("> ");
             System.out.flush();
             response = input.nextLine();
 
@@ -811,15 +811,15 @@ public class CLIView extends ClientView {
         System.out.println("Students on the card: " + place.printStudents());
 
         do {
-            System.out.println(">Select one student from the card: ");
-            System.out.print(">");
+            System.out.println("> Select one student from the card: ");
+            System.out.print("> ");
             System.out.flush();
             cardStudent = input.nextLine();
         }while(!possibleColours.contains(cardStudent.toLowerCase()));
 
         do{
-            System.out.println(">Insert the archipelago index on which you want put the student: ");
-            System.out.print(">");
+            System.out.println("> Insert the archipelago index on which you want put the student: ");
+            System.out.print("> ");
             System.out.flush();
             response = input.nextLine();
 
@@ -836,8 +836,8 @@ public class CLIView extends ClientView {
         String colour = null;
 
         do {
-            System.out.println(">Select a colour of students that you want to remove from dining rooms: ");
-            System.out.print(">");
+            System.out.println("> Select a colour of students that you want to remove from dining rooms: ");
+            System.out.print("> ");
             System.out.flush();
             colour = input.nextLine();
         }while(!possibleColours.contains(colour.toLowerCase()));
@@ -855,8 +855,8 @@ public class CLIView extends ClientView {
         do{
             do{
                 if (serializedBoardAbstract.getType().equals("advanced")) {
-                    System.out.println(">Is Action2: Move mother nature [Move] or buy a card [Card] ");
-                    System.out.print(">");
+                    System.out.println("> Is Action2: Move mother nature [Move] or buy a card [Card] ");
+                    System.out.print("> ");
                     System.out.flush();
                     response = input.nextLine();
                 } else {
@@ -868,8 +868,8 @@ public class CLIView extends ClientView {
             if(response.equalsIgnoreCase("move")) {
                 action = "ok";
                 do {
-                    System.out.println(">Is Action2: How much do you want to move Mother Nature? ");
-                    System.out.print(">");
+                    System.out.println("> Is Action2: How much do you want to move Mother Nature? ");
+                    System.out.print("> ");
                     System.out.flush();
                     response = input.nextLine();
 
@@ -894,8 +894,8 @@ public class CLIView extends ClientView {
         do {
             do {
                 if(serializedBoardAbstract.getType().equals("advanced")) {
-                    System.out.println(">Is Action2: Choose a cloud [Cloud] or buy a card [Card] ");
-                    System.out.print(">");
+                    System.out.println("> Is Action2: Choose a cloud [Cloud] or buy a card [Card] ");
+                    System.out.print("> ");
                     System.out.flush();
                 } else {
                     response = "cloud";
@@ -907,8 +907,8 @@ public class CLIView extends ClientView {
                 action = "ok";
                 if (serializedBoardAbstract.getClouds().stream().filter(x -> x.getStudents().size() > 0).count() > 1) {
                     do {
-                        System.out.println(">Is Action3: Which cloud do you choose? ");
-                        System.out.print(">");
+                        System.out.println("> Is Action3: Which cloud do you choose? ");
+                        System.out.print("> ");
                         System.out.flush();
                         response = input.nextLine();
 
