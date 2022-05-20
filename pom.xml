@@ -42,6 +42,11 @@
       <artifactId>javafx-controls</artifactId>
       <version>17.0.1</version>
     </dependency>
+    <dependency>
+      <groupId>org.openjfx</groupId>
+      <artifactId>javafx-fxml</artifactId>
+      <version>17</version>
+    </dependency>
   </dependencies>
 
   <build>
@@ -131,9 +136,11 @@
           <artifactId>javafx-maven-plugin</artifactId>
           <version>0.0.8</version>
           <configuration>
-            <mainClass>it.polimi.ingsw.View.GUI.GUIViewFX</mainClass>
+            <!--<mainClass>it.polimi.ingsw.View.GUI.GUIViewFX</mainClass>-->
+            <mainClass>it.polimi.ingsw.HelloFX</mainClass>
           </configuration>
         </plugin>
+
       </plugins>
   </build>
 </project>
