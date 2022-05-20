@@ -26,7 +26,7 @@ public abstract class ClientView {
         this.errorStatus = errorStatus;
     }
 
-    public abstract void printErrorMessage();
+    public abstract void printErrorMessage(String err);
 
     public abstract void endView();
     public abstract void clientDisconnectionEnd();
@@ -40,9 +40,6 @@ public abstract class ClientView {
     }
     public void setClientError(boolean err) {
         this.client.setClientError(err);
-    }
-    public void setServerError(boolean err) {
-        this.client.setServerError(err);
     }
 
     //TODO: just for test

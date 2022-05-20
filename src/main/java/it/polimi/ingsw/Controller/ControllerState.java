@@ -41,6 +41,8 @@ public class ControllerState {
             case CC_TWO_EXTRA_ISLANDS:
                 return (this.state != State.CONNECTING &&
                         this.state != State.WAITING_PLAYERS);
+            case PING:
+                return true;
         }
         return false;
     }

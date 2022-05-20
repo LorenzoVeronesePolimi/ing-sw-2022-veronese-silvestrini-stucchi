@@ -20,7 +20,7 @@ public class GUIView extends ClientView{
     }
 
     @Override
-    public void printErrorMessage() {
+    public void printErrorMessage(String err) {
 
     }
 

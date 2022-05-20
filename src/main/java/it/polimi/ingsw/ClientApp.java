@@ -10,6 +10,7 @@ public class ClientApp {
         try{
             client.run();
         }catch (IOException e){
+            System.out.println("ClientApp error");
             System.err.println(e.getMessage());
         }
     }

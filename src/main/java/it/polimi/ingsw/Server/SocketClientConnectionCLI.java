@@ -162,7 +162,6 @@ public class SocketClientConnectionCLI extends ClientConnection implements Runna
     public void close() {
         closeConnection();
         System.out.println("De-registering client " + this.hashCode());
-        //server.deregisterConnection(this);
         System.out.println("Done!");
     }
 

@@ -18,6 +18,6 @@ public class MessageControllerError extends OUTMessage implements Serializable {
     @Override
     public void manageMessage(ClientView view) {
         view.setErrorStatus(true);
-        view.printErrorMessage();
+        view.printErrorMessage("Controller error");
     }
 }

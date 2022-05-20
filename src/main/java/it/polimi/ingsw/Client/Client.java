@@ -1,11 +1,9 @@
 package it.polimi.ingsw.Client;
 
-import it.polimi.ingsw.HelloFX;
 import it.polimi.ingsw.Messages.ActiveMessageView;
 import it.polimi.ingsw.View.CLIView;
 import it.polimi.ingsw.View.ClientView;
 import it.polimi.ingsw.View.GUIView;
-import javafx.application.Application;
 
 import java.io.EOFException;
 import java.io.IOException;
@@ -21,6 +19,7 @@ public class Client {
 
     private final String ip;
     private final int port;
+    private Socket socket;
     private ClientView view;
     private ObjectInputStream socketIn;
     private ObjectOutputStream socketOut;
@@ -29,6 +28,7 @@ public class Client {
     private boolean clientReconnect = false;
     private boolean clientError = false;
     private boolean serverError = false;
+    private boolean endGame = false;
     private ActiveMessageView prevMessage = null;
     private ScheduledExecutorService pinger;
 
@@ -52,6 +52,9 @@ public class Client {
 
     public void setServerError(boolean serverError) {
         this.serverError = serverError;
+    }
+    public void setEndGame(boolean endGame) {
+        this.endGame = endGame;
     }
 
     public Thread asyncReadFromSocket(){
@@ -94,12 +97,28 @@ public class Client {
 
                 }
             } catch (SocketException e) {
-                this.view.printCustom("Error. You have been disconnected!");
+                this.view.printErrorMessage("Error. You have been disconnected!");
                 this.setClientError(true);
 
-            } catch (EOFException e){
-                e.printStackTrace();
-            } catch (Exception e) {
+                // testing reconnection in order to identify server status
+                try {
+                    this.socket = new Socket(this.ip, this.port);
+                } catch(IOException ex) {
+                    this.serverError = true;
+                    this.clientError = false;
+                    this.view.printErrorMessage("Error 404. Server not responding.");
+                } finally {
+                    if(!this.serverError && this.clientError) {
+                        try {
+                            this.socket.close();
+                        } catch (IOException ex) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+
+                //e.printStackTrace();
+            } catch (Exception e){
                 e.printStackTrace();
             } finally {
                 this.setActive(false);
@@ -116,7 +135,7 @@ public class Client {
                 this.socketOut.writeObject(messageToController);
                 this.socketOut.flush();
             } catch(IOException | NullPointerException e){
-                System.err.println(e.getMessage());
+                //e.printStackTrace();
             }
         });
         t.start();
@@ -124,16 +143,19 @@ public class Client {
     }
 
     public void run() throws IOException {
-        // Connecting
+        // Connecting to the server
         connecting();
     }
 
     private void connecting() throws IOException {
+        // initialization of the parameters of the client
         this.setActive(true);
         this.setClientReconnect(false);
         this.setClientError(false);
+        this.setEndGame(false);
 
-        Socket socket = new Socket(this.ip, this.port);
+        // connection to the server
+        this.socket = new Socket(this.ip, this.port);
         System.out.println("Connection established");
 
         //Ping for establishing connection
@@ -144,30 +166,35 @@ public class Client {
         this.socketOut.flush();
         this.socketIn = new ObjectInputStream(socket.getInputStream());
 
+        // view
         this.view = new CLIView(this);
 
         try{
+            // ready to listen to the server
             Thread t0 = asyncReadFromSocket();
             t0.join();
 
-            if(this.clientError && !this.serverError) {
+            // when the match is somehow ended (error or normale game end)
+            if((this.clientError || this.endGame) && !this.serverError) {
                 try {
                     this.askReconnet();
                 } catch (IOException e) {
-                    System.out.println("reconnecting error");
-                    this.view.endView();
+                    this.view.printErrorMessage("reconnecting error");
                     //e.printStackTrace();
                 }
             }
 
             this.view.endView();
 
-        } catch(InterruptedException | NoSuchElementException e){
+        } catch (InterruptedException | NoSuchElementException e){
             System.out.println("Connection closed from the client side");
+            e.printStackTrace();
         } finally {
-            this.socketIn.close();
-            this.socketOut.close();
-            socket.close();
+            if(!this.clientError && !this.serverError) {
+                this.socketIn.close();
+                this.socketOut.close();
+                this.socket.close();
+            }
         }
     }
 
@@ -178,11 +205,7 @@ public class Client {
     private void askReconnet() throws IOException {
         this.view.askReconnect();
 
-        if(clientReconnect)
+        if (clientReconnect)
             connecting();
-    }
-
-    public void managePinger() {
-        //pinger.scheduleAtFixedRate(() -> this.asyncWriteToSocket(new Ping()), 0, 1000, TimeUnit.MILLISECONDS);
     }
 }
