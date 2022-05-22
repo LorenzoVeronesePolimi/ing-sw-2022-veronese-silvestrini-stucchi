@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.text.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <Label fx:id="titleLogin" layoutX="279.0" layoutY="21.0" text="Title">
+         <font>
+            <Font size="22.0" />
+         </font>
+      </Label>
+      <TextField fx:id="nicknameLogin" layoutX="207.0" layoutY="87.0" />
+      <Label layoutX="223.0" layoutY="59.0" text="Choose your nickname:" />
+      <Label layoutX="236.0" layoutY="126.0" text="Choose your colour:" />
+      <Label layoutX="152.0" layoutY="200.0" text="How many players do you want to play with?" />
+      <Label layoutX="240.0" layoutY="272.0" text="Select game mode:" />
+      <ChoiceBox fx:id="modeLogin" layoutX="227.0" layoutY="299.0" prefWidth="150.0" />
+      <ChoiceBox fx:id="numPlayersLogin" layoutX="225.0" layoutY="230.0" prefWidth="150.0" />
+      <ChoiceBox fx:id="colourLogin" layoutX="227.0" layoutY="155.0" prefWidth="150.0" />
+      <Button layoutX="273.0" layoutY="346.0" mnemonicParsing="false" text="Done" />
+   </children>
+</AnchorPane>

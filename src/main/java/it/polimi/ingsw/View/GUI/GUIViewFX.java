@@ -24,12 +24,12 @@ public class GUIViewFX extends Application {
         //------------------------------ Moving circle -------------------------------------------------
         // The circle can be moved by clicking on the buttons on the screen
         // for the moving circle uncomment this:
-        //Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/fxml/try.fxml")));
+        Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/fxml/try.fxml")));
         //----------------------------------------------------------------------------------------------
 
         //----------------------------- Eriantys Welcome -----------------------------------------------
         // for the eriantys welcome uncomment this:
-        Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/fxml/try2.fxml")));
+        //Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/fxml/try2.fxml")));
         //----------------------------------------------------------------------------------------------
 
 
