@@ -4,17 +4,21 @@ import it.polimi.ingsw.Client.Client;
 import it.polimi.ingsw.Model.Board.SerializedBoardAbstract;
 import it.polimi.ingsw.Model.Enumerations.PlayerColour;
 import it.polimi.ingsw.View.GUI.GUIViewFX;
+import it.polimi.ingsw.View.GUI.IntroController;
+import it.polimi.ingsw.View.GUI.LoginController;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.shape.Circle;
 import javafx.stage.Stage;
 
+import javax.swing.*;
 import java.io.IOException;
 import java.net.URL;
 import java.util.List;
@@ -34,7 +38,11 @@ public class GUIView extends ClientView {
     public GUIView(Client client) {
         super(client);
         this.guiViewFX = new GUIViewFX();
-        Application.launch(it.polimi.ingsw.View.GUI.GUIViewFX.class);
+        new Thread(() -> {
+            Application.launch(it.polimi.ingsw.View.GUI.GUIViewFX.class);
+        }).start();
+
+
     }
 
     public GUIView() {
@@ -68,7 +76,26 @@ public class GUIView extends ClientView {
 
     @Override
     public void askFirstPlayerInfo() {
+        System.out.println("askNickname");
+        Platform.runLater(() ->{
+            //ActionEvent e = IntroController.getFirstEvent();
+            Stage stage = IntroController.firstStage;
+            Parent root = null;
+            try {
+                root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/fxml/try.fxml")));
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
 
+            Scene scene = new Scene(root);
+
+            // css
+            String css = getClass().getResource("/css/try2.css").toExternalForm();
+            scene.getStylesheets().add(css);
+
+            stage.setScene(scene);
+            stage.show();
+        });
     }
 
     @Override

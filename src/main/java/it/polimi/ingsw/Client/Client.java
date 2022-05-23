@@ -68,6 +68,7 @@ public class Client {
 
                 if (this.CLIorGUI) {
                     this.view = new GUIView(this);
+
                 }
                 this.view.printCustom("You will be connected soon, wait!");
 
@@ -82,7 +83,7 @@ public class Client {
                      */
 
                     inputMessage = this.socketIn.readObject();
-
+                    System.out.println("client");
                     if (inputMessage instanceof ActiveMessageView) {
                         ((ActiveMessageView) inputMessage).manageMessage(this.view);
 
