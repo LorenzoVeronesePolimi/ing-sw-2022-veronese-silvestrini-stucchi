@@ -68,21 +68,7 @@ public class GUIView extends ClientView {
 
     @Override
     public void askFirstPlayerInfo() {
-        Platform.runLater(() -> {
-            Stage stage;
-            Parent root = null;
-            try {
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/Login.fxml"));
-                root = loader.load();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
 
-            stage = new Stage();
-            Scene scene = new Scene(root);
-            stage.setScene(scene);
-            stage.show();
-        });
     }
 
     @Override

@@ -1,6 +1,5 @@
 package it.polimi.ingsw.View.GUI;
 
-import it.polimi.ingsw.Model.Enumerations.PlayerColour;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -9,11 +8,8 @@ import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
 import java.io.IOException;
-import java.util.List;
 import java.util.Objects;
 
-import static it.polimi.ingsw.View.CLIColours.ANSI_GREEN;
-import static it.polimi.ingsw.View.CLIColours.ANSI_RESET;
 
 public class GUIViewFX extends Application {
     private Stage stage;
@@ -27,7 +23,7 @@ public class GUIViewFX extends Application {
 
         // Windows title
         stage.setTitle("Stage demo w00t w00t");
-        stage.setFullScreen(true);
+        stage.setFullScreen(false);
 
         //------------------------------ Moving circle -------------------------------------------------
         // The circle can be moved by clicking on the buttons on the screen
@@ -37,7 +33,7 @@ public class GUIViewFX extends Application {
 
         //----------------------------- Eriantys Welcome -----------------------------------------------
         // for the eriantys welcome uncomment this:
-        Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/fxml/try2.fxml")));
+        Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/fxml/Intro.fxml")));
         //----------------------------------------------------------------------------------------------
 
         Scene scene = new Scene(root);
@@ -56,6 +52,10 @@ public class GUIViewFX extends Application {
 
     public Stage getStage(){
         return this.stage;
+    }
+
+    public void displayAskFirstPlayerInfo(){
+
     }
 }
 
