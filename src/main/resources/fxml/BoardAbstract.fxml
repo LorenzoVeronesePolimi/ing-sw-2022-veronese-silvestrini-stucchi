@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.shape.Circle?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="1280.0" style="-fx-background-color: #a5d9fd;" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <ImageView fitHeight="83.0" fitWidth="86.0" layoutX="610.0" layoutY="125.0" preserveRatio="true">
+         <image>
+            <Image url="@../images/Island.png" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="83.0" fitWidth="86.0" layoutX="542.0" layoutY="482.0" preserveRatio="true">
+         <image>
+            <Image url="@../images/Island.png" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="83.0" fitWidth="86.0" layoutX="400.0" layoutY="455.0" preserveRatio="true">
+         <image>
+            <Image url="@../images/Island.png" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="83.0" fitWidth="86.0" layoutX="341.0" layoutY="373.0" preserveRatio="true">
+         <image>
+            <Image url="@../images/Island.png" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="83.0" fitWidth="86.0" layoutX="320.0" layoutY="264.0" preserveRatio="true">
+         <image>
+            <Image url="@../images/Island.png" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="83.0" fitWidth="86.0" layoutX="828.0" layoutY="306.0" preserveRatio="true">
+         <image>
+            <Image url="@../images/Island.png" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="83.0" fitWidth="86.0" layoutX="807.0" layoutY="202.0" preserveRatio="true">
+         <image>
+            <Image url="@../images/Island.png" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="83.0" fitWidth="86.0" layoutX="719.0" layoutY="140.0" preserveRatio="true">
+         <image>
+            <Image url="@../images/Island.png" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="83.0" fitWidth="86.0" layoutX="388.0" layoutY="181.0" preserveRatio="true">
+         <image>
+            <Image url="@../images/Island.png" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="83.0" fitWidth="86.0" layoutX="489.0" layoutY="139.0" preserveRatio="true">
+         <image>
+            <Image url="@../images/Island.png" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="83.0" fitWidth="86.0" layoutX="695.0" layoutY="475.0" preserveRatio="true">
+         <image>
+            <Image url="@../images/Island.png" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="83.0" fitWidth="86.0" layoutX="788.0" layoutY="414.0" preserveRatio="true">
+         <image>
+            <Image url="@../images/Island.png" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="218.0" fitWidth="381.0" layoutY="1.0" preserveRatio="true" rotate="180.0">
+         <image>
+            <Image url="@../images/Plancia_DEF2.png" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="218.0" fitWidth="381.0" layoutY="534.0" preserveRatio="true">
+         <image>
+            <Image url="@../images/Plancia_DEF2.png" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="218.0" fitWidth="381.0" layoutX="899.0" layoutY="1.0" preserveRatio="true" rotate="180.0">
+         <image>
+            <Image url="@../images/Plancia_DEF2.png" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="218.0" fitWidth="381.0" layoutX="899.0" layoutY="534.0" preserveRatio="true">
+         <image>
+            <Image url="@../images/Plancia_DEF2.png" />
+         </image>
+      </ImageView>
+      <Circle fill="#261fff" layoutX="637.0" layoutY="143.0" radius="3.0" stroke="#261fff" strokeType="INSIDE" />
+      <Circle fill="#ff83e6" layoutX="637.0" layoutY="151.0" radius="3.0" stroke="#ff83e6" strokeType="INSIDE" />
+      <Circle fill="#ebfd28" layoutX="637.0" layoutY="169.0" radius="3.0" stroke="#ebfd28" strokeType="INSIDE" />
+      <Circle fill="#fb1f17" layoutX="637.0" layoutY="159.0" radius="3.0" stroke="#fb1f17" strokeType="INSIDE" />
+      <Circle fill="#18f83d" layoutX="637.0" layoutY="178.0" radius="3.0" stroke="#18f83d" strokeType="INSIDE" />
+   </children>
+</AnchorPane>
