@@ -30,6 +30,8 @@ import static it.polimi.ingsw.View.CLIColours.ANSI_RESET;
 
 public class GUIView extends ClientView {
     private GUIViewFX guiViewFX;
+    private Stage currentStage;
+
     @FXML
     private Circle myCircle;
     private double x;
@@ -37,16 +39,20 @@ public class GUIView extends ClientView {
 
     public GUIView(Client client) {
         super(client);
-        this.guiViewFX = new GUIViewFX();
-        new Thread(() -> {
+        //this.guiViewFX = new GUIViewFX();
+        /*new Thread(() -> {
             Application.launch(it.polimi.ingsw.View.GUI.GUIViewFX.class);
-        }).start();
+        }).start();*/
 
 
     }
 
     public GUIView() {
         super();
+    }
+
+    public void setCurrentStage(Stage currentStage) {
+        this.currentStage = currentStage;
     }
 
     @Override
@@ -78,7 +84,9 @@ public class GUIView extends ClientView {
     public void askFirstPlayerInfo() {
         System.out.println("askNickname");
         Platform.runLater(() ->{
+            System.out.println("askNickname2");
             //ActionEvent e = IntroController.getFirstEvent();
+            //this.currentStage = new Stage();
             Stage stage = IntroController.firstStage;
             Parent root = null;
             try {
@@ -96,6 +104,7 @@ public class GUIView extends ClientView {
             stage.setScene(scene);
             stage.show();
         });
+
     }
 
     @Override

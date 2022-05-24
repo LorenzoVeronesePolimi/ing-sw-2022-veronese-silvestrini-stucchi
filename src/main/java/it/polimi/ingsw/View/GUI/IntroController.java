@@ -15,12 +15,12 @@ import java.util.Objects;
 public class IntroController {
     public static ActionEvent firstEvent;
     public static Stage firstStage;
-    public void introControl(ActionEvent e) throws IOException {
+    public void startButton(ActionEvent e) throws IOException {
         System.out.println("ciao2");
         this.firstStage = (Stage)((Node)e.getSource()).getScene().getWindow();
         this.firstEvent = e;
         System.out.println("ciao3");
-        /*Platform.runLater(() ->{
+        Platform.runLater(() ->{
             Stage stage = (Stage)((Node)e.getSource()).getScene().getWindow();
             Parent root = null;
             try {
@@ -37,7 +37,7 @@ public class IntroController {
 
             stage.setScene(scene);
             stage.show();
-        });*/
+        });
     }
 
 }

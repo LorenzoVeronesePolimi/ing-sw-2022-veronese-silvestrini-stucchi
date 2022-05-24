@@ -3,7 +3,10 @@ package it.polimi.ingsw.Client;
 import it.polimi.ingsw.Messages.ActiveMessageView;
 import it.polimi.ingsw.View.CLIView;
 import it.polimi.ingsw.View.ClientView;
+import it.polimi.ingsw.View.GUI.GUIViewFX;
 import it.polimi.ingsw.View.GUIView;
+import javafx.application.Application;
+import javafx.stage.Stage;
 
 import java.io.EOFException;
 import java.io.IOException;
@@ -32,6 +35,7 @@ public class Client {
     private boolean socketNull = true;
     private ActiveMessageView prevMessage = null;
     private ScheduledExecutorService pinger;
+    private GUIViewFX guiView;
 
     public Client(String ip, int port){
         this.ip = ip;
@@ -67,11 +71,20 @@ public class Client {
                     ((ActiveMessageView) inputMessage).manageMessage(this.view);
 
                 if (this.CLIorGUI) {
-                    this.view = new GUIView(this);
+
+                    new Thread(() -> {
+                        this.view = new GUIView(this);
+                        this.guiView = new GUIViewFX();
+                        this.guiView.initializeView(this, this.view);
+                    }).start();
+
+                    //viewFx.main(null);
+                    //Application.launch(it.polimi.ingsw.View.GUI.GUIViewFX.class);
 
                 }
                 this.view.printCustom("You will be connected soon, wait!");
 
+                System.out.println("Entro nel loop");
                 while (isActive()) {
                     /*
                         When a message is received it is managed by the view.
