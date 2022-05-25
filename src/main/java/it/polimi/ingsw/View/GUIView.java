@@ -3,6 +3,7 @@ package it.polimi.ingsw.View;
 import it.polimi.ingsw.Client.Client;
 import it.polimi.ingsw.Model.Board.SerializedBoardAbstract;
 import it.polimi.ingsw.Model.Enumerations.PlayerColour;
+import it.polimi.ingsw.View.GUI.CurrentStage;
 import it.polimi.ingsw.View.GUI.GUIViewFX;
 import it.polimi.ingsw.View.GUI.IntroController;
 import it.polimi.ingsw.View.GUI.LoginController;
@@ -29,8 +30,7 @@ import static it.polimi.ingsw.View.CLIColours.ANSI_GREEN;
 import static it.polimi.ingsw.View.CLIColours.ANSI_RESET;
 
 public class GUIView extends ClientView {
-    private GUIViewFX guiViewFX;
-    private Stage currentStage;
+    private Stage stage;
 
     @FXML
     private Circle myCircle;
@@ -51,8 +51,8 @@ public class GUIView extends ClientView {
         super();
     }
 
-    public void setCurrentStage(Stage currentStage) {
-        this.currentStage = currentStage;
+    public void setStage(Stage stage){
+        this.stage = stage;
     }
 
     @Override
@@ -85,12 +85,15 @@ public class GUIView extends ClientView {
         System.out.println("askNickname");
         Platform.runLater(() ->{
             System.out.println("askNickname2");
-            //ActionEvent e = IntroController.getFirstEvent();
-            //this.currentStage = new Stage();
-            Stage stage = IntroController.firstStage;
+            //ActionEvent e = IntroController.getFirstEvent(); NO
+            //stage = new Stage(); OK, but it opens another window above the menu's one
+            //Stage stage = (Stage)((Node)e.getSource()).getScene().getWindow(); NO
+            //Stage stage = GUIView.currentStage; OK
+            //Stage stage = this.stage; NO: NullPointerException
+            this.stage = CurrentStage.currentStage;
             Parent root = null;
             try {
-                root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/fxml/try.fxml")));
+                root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/fxml/Login.fxml")));
             } catch (IOException ex) {
                 ex.printStackTrace();
             }

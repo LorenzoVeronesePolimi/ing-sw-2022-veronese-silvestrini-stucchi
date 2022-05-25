@@ -17,6 +17,7 @@ import java.net.SocketException;
 import java.util.NoSuchElementException;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 public class Client {
 
@@ -35,7 +36,9 @@ public class Client {
     private boolean socketNull = true;
     private ActiveMessageView prevMessage = null;
     private ScheduledExecutorService pinger;
-    private GUIViewFX guiView;
+    private GUIViewFX guiViewFX;
+
+    public static Object lock;
 
     public Client(String ip, int port){
         this.ip = ip;
@@ -71,20 +74,24 @@ public class Client {
                     ((ActiveMessageView) inputMessage).manageMessage(this.view);
 
                 if (this.CLIorGUI) {
+                    Client.lock = new Object();
+                    this.view = new GUIView(this);
+                    //this.guiViewFX = new GUIViewFX(); OK, but not necessary
+                    new Thread(() ->
+                            //this.guiViewFX.initializeView(this, this.view) OK, but not necessary
+                            Application.launch(it.polimi.ingsw.View.GUI.GUIViewFX.class)
+                    ).start();
 
-                    new Thread(() -> {
-                        this.view = new GUIView(this);
-                        this.guiView = new GUIViewFX();
-                        this.guiView.initializeView(this, this.view);
-                    }).start();
+                    synchronized (Client.lock){
+                        Client.lock.wait();
+                    }
+                    //((GUIView)this.view).setStage(this.guiViewFX.getStage()); NO: NullPointerException
 
-                    //viewFx.main(null);
-                    //Application.launch(it.polimi.ingsw.View.GUI.GUIViewFX.class);
+
 
                 }
                 this.view.printCustom("You will be connected soon, wait!");
 
-                System.out.println("Entro nel loop");
                 while (isActive()) {
                     /*
                         When a message is received it is managed by the view.
