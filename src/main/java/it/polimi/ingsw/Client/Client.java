@@ -135,6 +135,7 @@ public class Client {
                 }
                 this.view.printCustom("You will be connected soon, wait!");
 
+                System.out.println("Entro nel loop");
                 while (isActive()) {
                     /*
                         When a message is received it is managed by the view.
