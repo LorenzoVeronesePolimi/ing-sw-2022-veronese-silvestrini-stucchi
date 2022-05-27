@@ -320,6 +320,7 @@ public class CLIView extends ClientView {
     }
 
     private void manageNextMove(SerializedBoardAbstract serializedBoardAbstract) {
+        //System.out.println("State: " + serializedBoardAbstract.getCurrentState());
         switch(serializedBoardAbstract.getCurrentState()){
             case PLANNING2:
                 askAssistantCard();
@@ -897,10 +898,10 @@ public class CLIView extends ClientView {
                     System.out.println("> Is Action2: Choose a cloud [Cloud] or buy a card [Card] ");
                     System.out.print("> ");
                     System.out.flush();
+                    response = input.nextLine();
                 } else {
                     response = "cloud";
                 }
-                response = input.nextLine();
             } while (!response.equalsIgnoreCase("cloud") && !response.equalsIgnoreCase("card"));
 
             if(response.equalsIgnoreCase("cloud")) {

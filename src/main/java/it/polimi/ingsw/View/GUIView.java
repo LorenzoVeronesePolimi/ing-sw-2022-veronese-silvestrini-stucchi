@@ -39,16 +39,14 @@ public class GUIView extends ClientView {
 
     public GUIView(Client client) {
         super(client);
-        //this.guiViewFX = new GUIViewFX();
-        /*new Thread(() -> {
-            Application.launch(it.polimi.ingsw.View.GUI.GUIViewFX.class);
-        }).start();*/
-
-
     }
 
     public GUIView() {
         super();
+    }
+
+    public void setGuiViewFX(GUIViewFX guiViewFX) {
+        this.guiViewFX = guiViewFX;
     }
 
     public void setCurrentStage(Stage currentStage) {
@@ -82,34 +80,22 @@ public class GUIView extends ClientView {
 
     @Override
     public void askFirstPlayerInfo() {
-        System.out.println("askNickname");
+        System.out.println("askFirstPlayer");
         Platform.runLater(() ->{
-            System.out.println("askNickname2");
-            //ActionEvent e = IntroController.getFirstEvent();
-            //this.currentStage = new Stage();
-            Stage stage = IntroController.firstStage;
-            Parent root = null;
-            try {
-                root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/fxml/try.fxml")));
-            } catch (IOException ex) {
-                ex.printStackTrace();
-            }
-
-            Scene scene = new Scene(root);
-
-            // css
-            String css = getClass().getResource("/css/try2.css").toExternalForm();
-            scene.getStylesheets().add(css);
-
-            stage.setScene(scene);
-            stage.show();
+            System.out.println("askFirstPlayer2");
+            this.guiViewFX.changeScene("Login.fxml");
         });
 
     }
 
     @Override
     public void askNickName(List<PlayerColour> list, int numPlayer) {
-
+        System.out.println("askNickname");
+        Platform.runLater(() -> {
+            System.out.println("askNickname2");
+            //TODO: change this scene to "askNick" or model the Login one to manage first player and not first player
+            this.guiViewFX.changeScene("Login.fxml");
+        });
     }
 
     @Override
