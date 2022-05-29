@@ -6,6 +6,7 @@ import it.polimi.ingsw.View.ClientView;
 import it.polimi.ingsw.View.GUI.GUIViewFX;
 import it.polimi.ingsw.View.GUIView;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.stage.Stage;
 
 import java.io.EOFException;
@@ -15,13 +16,14 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.net.SocketException;
 import java.util.NoSuchElementException;
+import java.util.Scanner;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
 
 public class Client {
 
-    private final String ip;
+    private Scanner scanner;
+    private String ip;
     private final int port;
     private Socket socket;
     private ClientView view;
@@ -34,14 +36,17 @@ public class Client {
     private boolean serverError = false;
     private boolean endGame = false;
     private boolean socketNull = true;
+    private boolean platformReady = false;
     private ActiveMessageView prevMessage = null;
     private ScheduledExecutorService pinger;
     private GUIViewFX guiViewFX;
 
-    public static Object lock;
-
     public Client(String ip, int port){
         this.ip = ip;
+        this.port = port;
+    }
+
+    public Client(int port) {
         this.port = port;
     }
 
@@ -65,6 +70,10 @@ public class Client {
         this.endGame = endGame;
     }
 
+    public void setPlatformReady(boolean platformReady) {
+        this.platformReady = platformReady;
+    }
+
     public Thread asyncReadFromSocket(){
         Thread t = new Thread(() -> {
             try {
@@ -74,24 +83,59 @@ public class Client {
                     ((ActiveMessageView) inputMessage).manageMessage(this.view);
 
                 if (this.CLIorGUI) {
-                    Client.lock = new Object();
-                    this.view = new GUIView(this);
-                    //this.guiViewFX = new GUIViewFX(); OK, but not necessary
-                    new Thread(() ->
-                            //this.guiViewFX.initializeView(this, this.view) OK, but not necessary
-                            Application.launch(it.polimi.ingsw.View.GUI.GUIViewFX.class)
-                    ).start();
+                    /*
+                        The GUI is activate by calling the Platform method startup()
+                        It allows us to rely on the parameters passes to the GUI Application
+                        without the worry of losing them.
 
-                    synchronized (Client.lock){
-                        Client.lock.wait();
-                    }
-                    //((GUIView)this.view).setStage(this.guiViewFX.getStage()); NO: NullPointerException
+                        When a match begins everyone sees the Intro page
+                        The Login page is show at each player in order (like in CLI) so, after the first player has
+                        clicked on PLAY, the second player can do the same and so on...
+                        In order to manage a better UI we need to implement a waining page for the next players waiting their
+                        turn of Login actions.
+
+                        Currently the Login page is not customized at all by the GUI.
+                        In order to do that, and all the other future stuff, we need to add some method to GUIViewFX, like:
+                        - askFirstPlayerScene(parameter of the askFirstPLayer in GUIView received via the message) -> passing
+                                parameters to controller in order to show and customize them
+                        - askNickName(parameters of the askNickName in GUIView received via the message) -> passing parameters to controller...
+                        - showBoardScene(parameter os ShowBoard method in GUIView) -> passing parameters to contrloler..
+                        - and so on...
 
 
+                     */
 
+                    System.out.println("Activating GUI in client");
+                    System.out.println("Server socket: " + this.socket.hashCode());
+
+                    this.view = new GUIView(this);  //Creating the GUIView which will call methods of GUIViewFX
+
+                    System.out.println("Passing client: " + this.hashCode());
+                    this.guiViewFX = new GUIViewFX(this, (GUIView) this.view);  // Passing setup arguments to FX
+
+                    this.guiViewFX.init(); // this method is mandatory (found on stackoverflow)
+
+                    System.out.println("pre thread");
+
+                    new Thread(() -> {
+                        // Thread that runs JavaFX application
+                        Platform.startup(() ->{
+                            Stage stage = new Stage();
+                            try {
+                                this.guiViewFX.start(stage);
+                            } catch (IOException e) {
+                                throw new RuntimeException(e);
+                            }
+                        });
+                    }).start();
+                    System.out.println("post thread");
+
+                } else {
+                    this.platformReady = true;
                 }
                 this.view.printCustom("You will be connected soon, wait!");
 
+                System.out.println("Entro nel loop");
                 while (isActive()) {
                     /*
                         When a message is received it is managed by the view.
@@ -102,18 +146,28 @@ public class Client {
                             - the flow continues until next move or error
                      */
 
-                    inputMessage = this.socketIn.readObject();
-                    System.out.println("client");
-                    if (inputMessage instanceof ActiveMessageView) {
-                        ((ActiveMessageView) inputMessage).manageMessage(this.view);
+                    /*
+                    this.platformReady:
+                        When the player click on play he can receive the first message.
+                        It is NOT necessary to modify this value for future use, because messages are received when required.
+                        This is not true for the first message, which is received immediately.
 
-                        if (this.view.isErrorStatus()) {
-                            if (prevMessage != null)
-                                prevMessage.manageMessage(this.view);
+                     */
+                    if(this.platformReady) {
+                        System.out.println("platform ready");
+                        inputMessage = this.socketIn.readObject();
+                        System.out.println("message received in client");
+                        if (inputMessage instanceof ActiveMessageView) {
+                            ((ActiveMessageView) inputMessage).manageMessage(this.view);
 
-                            this.view.setErrorStatus(false);
-                        } else {
-                            prevMessage = (ActiveMessageView) inputMessage;
+                            if (this.view.isErrorStatus()) {
+                                if (prevMessage != null)
+                                    prevMessage.manageMessage(this.view);
+
+                                this.view.setErrorStatus(false);
+                            } else {
+                                prevMessage = (ActiveMessageView) inputMessage;
+                            }
                         }
                     }
 
@@ -167,6 +221,8 @@ public class Client {
     }
 
     public void run() throws IOException {
+        this.ip = askIP();
+
         // Connecting to the server
         connecting();
     }
@@ -225,6 +281,22 @@ public class Client {
         }
     }
 
+    private String askIP() {
+        scanner = new Scanner(System.in);
+        String response;
+        do {
+            System.out.println("> Insert the server ip: ");
+            System.out.print("> ");
+            response = scanner.nextLine();
+        }while(checkResponse(response));
+
+        return response;
+    }
+
+    private boolean checkResponse(String response) {
+        return false;
+    }
+
     public void setCLIorGUI(boolean CLIorGUI){
         this.CLIorGUI = CLIorGUI;
     }
@@ -234,5 +306,9 @@ public class Client {
 
         if (clientReconnect)
             connecting();
+    }
+
+    public void printOut(String msg) {
+        System.out.println(msg);
     }
 }

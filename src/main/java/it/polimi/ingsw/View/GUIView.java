@@ -3,7 +3,6 @@ package it.polimi.ingsw.View;
 import it.polimi.ingsw.Client.Client;
 import it.polimi.ingsw.Model.Board.SerializedBoardAbstract;
 import it.polimi.ingsw.Model.Enumerations.PlayerColour;
-import it.polimi.ingsw.View.GUI.CurrentStage;
 import it.polimi.ingsw.View.GUI.GUIViewFX;
 import it.polimi.ingsw.View.GUI.IntroController;
 import it.polimi.ingsw.View.GUI.LoginController;
@@ -30,7 +29,8 @@ import static it.polimi.ingsw.View.CLIColours.ANSI_GREEN;
 import static it.polimi.ingsw.View.CLIColours.ANSI_RESET;
 
 public class GUIView extends ClientView {
-    private Stage stage;
+    private GUIViewFX guiViewFX;
+    private Stage currentStage;
 
     @FXML
     private Circle myCircle;
@@ -39,20 +39,18 @@ public class GUIView extends ClientView {
 
     public GUIView(Client client) {
         super(client);
-        //this.guiViewFX = new GUIViewFX();
-        /*new Thread(() -> {
-            Application.launch(it.polimi.ingsw.View.GUI.GUIViewFX.class);
-        }).start();*/
-
-
     }
 
     public GUIView() {
         super();
     }
 
-    public void setStage(Stage stage){
-        this.stage = stage;
+    public void setGuiViewFX(GUIViewFX guiViewFX) {
+        this.guiViewFX = guiViewFX;
+    }
+
+    public void setCurrentStage(Stage currentStage) {
+        this.currentStage = currentStage;
     }
 
     @Override
@@ -82,37 +80,22 @@ public class GUIView extends ClientView {
 
     @Override
     public void askFirstPlayerInfo() {
-        System.out.println("askNickname");
+        System.out.println("askFirstPlayer");
         Platform.runLater(() ->{
-            System.out.println("askNickname2");
-            //ActionEvent e = IntroController.getFirstEvent(); NO
-            //stage = new Stage(); OK, but it opens another window above the menu's one
-            //Stage stage = (Stage)((Node)e.getSource()).getScene().getWindow(); NO
-            //Stage stage = GUIView.currentStage; OK
-            //Stage stage = this.stage; NO: NullPointerException
-            this.stage = CurrentStage.currentStage;
-            Parent root = null;
-            try {
-                root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/fxml/Login.fxml")));
-            } catch (IOException ex) {
-                ex.printStackTrace();
-            }
-
-            Scene scene = new Scene(root);
-
-            // css
-            String css = getClass().getResource("/css/try2.css").toExternalForm();
-            scene.getStylesheets().add(css);
-
-            stage.setScene(scene);
-            stage.show();
+            System.out.println("askFirstPlayer2");
+            this.guiViewFX.sceneAskFirstPlayerInfo("Login.fxml");
         });
 
     }
 
     @Override
     public void askNickName(List<PlayerColour> list, int numPlayer) {
-
+        System.out.println("askNickname");
+        Platform.runLater(() -> {
+            System.out.println("askNickname2");
+            //TODO: change this scene to "askNick" or model the Login one to manage first player and not first player
+            this.guiViewFX.sceneAskNickname("Login.fxml", list, numPlayer);
+        });
     }
 
     @Override
