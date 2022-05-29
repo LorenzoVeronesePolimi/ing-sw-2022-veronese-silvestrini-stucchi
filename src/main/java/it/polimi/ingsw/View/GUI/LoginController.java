@@ -57,6 +57,8 @@ public class LoginController implements GUIController, Initializable {
         this.chosenMode = modeChoice.getValue();
     }
 
+    //TODO: what if we use CLIView here? We just take right arguments from the GUI interaction and then
+    // call the right CLI method. In this way we don't have to re-write the code
     public void onButtonClicked(ActionEvent event) {
         this.chosenNick = nicknameChoice.getText();
         if(this.chosenNick != null && this.chosenColour != null && this.chosenNumPlayers != null
