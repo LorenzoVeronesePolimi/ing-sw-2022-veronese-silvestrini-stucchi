@@ -10,14 +10,16 @@ import javafx.scene.control.TextField;
 
 import javax.swing.*;
 import java.net.URL;
+import java.util.Arrays;
+import java.util.List;
 import java.util.ResourceBundle;
 
 public class LoginController implements GUIController, Initializable {
     private GUIViewFX guiViewFX;
     private Client client;
-    private String[] availableColours = {"Black", "White", "Gray"};
-    private Integer[] availableNumPlayers = {2, 3, 4};
-    private String[] availableModes = {"Normal", "Advanced"};
+    private List<String> availableColours = Arrays.asList("Black", "White", "Gray");
+    private List<Integer> availableNumPlayers = Arrays.asList(2, 3, 4);
+    private List<String> availableModes = Arrays.asList("Normal", "Advanced");
 
     private String chosenNick = null;
     private String chosenColour = null;
@@ -30,6 +32,8 @@ public class LoginController implements GUIController, Initializable {
     @FXML private ChoiceBox<Integer> numPlayersChoice;
     @FXML private ChoiceBox<String> modeChoice;
 
+    //This method is mandatory to show personalized info
+    // The initialization of the scene must be done here (the modified where we want)
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         colourChoice.getItems().addAll(availableColours);

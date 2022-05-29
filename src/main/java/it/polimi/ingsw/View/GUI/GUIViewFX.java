@@ -1,6 +1,7 @@
 package it.polimi.ingsw.View.GUI;
 
 import it.polimi.ingsw.Client.Client;
+import it.polimi.ingsw.Model.Enumerations.PlayerColour;
 import it.polimi.ingsw.View.ClientView;
 import it.polimi.ingsw.View.GUIView;
 import javafx.application.Application;
@@ -112,7 +113,23 @@ public class GUIViewFX extends Application {
         this.client = client;
     }
 
-    public synchronized void changeScene(String scene){
+    public void sceneAskFirstPlayerInfo(String scene){
+        this.currentScene = sceneMap.get(scene);
+        this.stage.setScene(this.currentScene);
+        this.stage.show();
+    }
+
+    public void sceneAskNickname(String scene, List<PlayerColour> colourList, int numPlayer){
+        /*  Example of what should be done for every scene:
+             - receiving the parameters from Message->GUIView
+             - passing them to the scene controller in order to show personalized info
+             - when showing a scene the controller SHOULD execute the initialize method first (try this, I'm not sure)
+
+        GUIController currentController = controllerMap.get(scene);
+        currentController.setColourList(colourList);
+        currentController.setNumPlayers(numPlayer);
+        */
+
         this.currentScene = sceneMap.get(scene);
         this.stage.setScene(this.currentScene);
         this.stage.show();

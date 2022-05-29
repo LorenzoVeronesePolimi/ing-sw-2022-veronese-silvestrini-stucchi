@@ -83,7 +83,7 @@ public class GUIView extends ClientView {
         System.out.println("askFirstPlayer");
         Platform.runLater(() ->{
             System.out.println("askFirstPlayer2");
-            this.guiViewFX.changeScene("Login.fxml");
+            this.guiViewFX.sceneAskFirstPlayerInfo("Login.fxml");
         });
 
     }
@@ -94,7 +94,7 @@ public class GUIView extends ClientView {
         Platform.runLater(() -> {
             System.out.println("askNickname2");
             //TODO: change this scene to "askNick" or model the Login one to manage first player and not first player
-            this.guiViewFX.changeScene("Login.fxml");
+            this.guiViewFX.sceneAskNickname("Login.fxml", list, numPlayer);
         });
     }
 
