@@ -7,21 +7,36 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.View.GUI.LoginController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" styleClass="parent" stylesheets="@../css/Login.css" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.View.GUI.Controllers.LoginController">
    <children>
-      <Label fx:id="titleLogin" layoutX="282.0" layoutY="21.0" text="Title">
+      <Label fx:id="titleLogin" layoutX="-1.0" layoutY="21.0" prefHeight="32.0" prefWidth="800.0" stylesheets="@../css/Login.css" text="Title" textFill="WHITE">
          <font>
-            <Font size="22.0" />
+            <Font name="Segoe UI Black" size="36.0" />
          </font>
       </Label>
-      <TextField fx:id="nicknameChoice" alignment="CENTER" layoutX="228.0" layoutY="85.0" />
-      <Label layoutX="241.0" layoutY="66.0" text="Choose your nickname:" />
-      <Label layoutX="249.0" layoutY="136.0" text="Choose your colour:" />
-      <Label layoutX="225.0" layoutY="210.0" text="Select the number of players:" />
-      <Label layoutX="250.0" layoutY="280.0" text="Select game mode:" />
-      <ChoiceBox fx:id="colourChoice" layoutX="227.0" layoutY="155.0" prefWidth="150.0" />
-      <ChoiceBox fx:id="numPlayersChoice" layoutX="225.0" layoutY="230.0" prefWidth="150.0" />
-      <ChoiceBox fx:id="modeChoice" layoutX="226.0" layoutY="299.0" prefWidth="150.0" />
-      <Button layoutX="279.0" layoutY="346.0" mnemonicParsing="false" onAction="#onButtonClicked" text="Done" />
+      <TextField fx:id="nicknameChoice" alignment="CENTER" layoutX="332.0" layoutY="129.0" style="-fx-background-color: #ffffff;" />
+      <Label fx:id="nicknameLabel" layoutX="271.0" layoutY="93.0" text="Choose your nickname:" textFill="WHITE">
+         <font>
+            <Font name="Consolas" size="24.0" />
+         </font></Label>
+      <Label fx:id="colourLabel" layoutX="284.0" layoutY="188.0" text="Choose your colour:" textFill="WHITE">
+         <font>
+            <Font name="Consolas" size="24.0" />
+         </font></Label>
+      <Label fx:id="numPlayersLabel" layoutX="215.0" layoutY="286.0" text="Select the number of players:" textFill="WHITE">
+         <font>
+            <Font name="Consolas" size="24.0" />
+         </font></Label>
+      <Label fx:id="gameModeLabel" layoutX="298.0" layoutY="386.0" text="Select game mode:" textFill="WHITE">
+         <font>
+            <Font name="Consolas" size="24.0" />
+         </font></Label>
+      <ChoiceBox fx:id="colourChoice" layoutX="332.0" layoutY="225.0" prefWidth="150.0" style="-fx-background-color: #ffffff;" />
+      <ChoiceBox fx:id="numPlayersChoice" layoutX="332.0" layoutY="324.0" prefWidth="150.0" style="-fx-background-color: #ffffff;" />
+      <ChoiceBox fx:id="modeChoice" layoutX="332.0" layoutY="421.0" prefWidth="150.0" style="-fx-background-color: #ffffff;" />
+      <Button fx:id="startButton" layoutX="335.0" layoutY="495.0" mnemonicParsing="false" onAction="#onButtonClicked" style="-fx-background-color: #417db8;" text="START GAME" textFill="WHITE">
+         <font>
+            <Font name="Segoe UI Black" size="18.0" />
+         </font></Button>
    </children>
 </AnchorPane>

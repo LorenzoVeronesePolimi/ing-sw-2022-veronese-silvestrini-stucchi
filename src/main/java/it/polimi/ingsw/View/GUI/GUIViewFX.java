@@ -2,7 +2,7 @@ package it.polimi.ingsw.View.GUI;
 
 import it.polimi.ingsw.Client.Client;
 import it.polimi.ingsw.Model.Enumerations.PlayerColour;
-import it.polimi.ingsw.View.ClientView;
+import it.polimi.ingsw.View.GUI.Controllers.*;
 import it.polimi.ingsw.View.GUIView;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -21,11 +21,12 @@ public class GUIViewFX extends Application {
     private Client client;
     private GUIView clientView;
     private Scene currentScene;
-    private static final String BOARD_ABSTRACT = "BoardAbstract.fxml";
-    private static final String BOARD_ABSTRACT_CSS = "try2.css";
     private static final String INTRO = "Intro.fxml";
     private static final String LOGIN = "Login.fxml";
-    private static final String INTRO_CSS = "try2.css";
+    private static final String LOADING = "LoadingPage.fxml";
+    private static final String INTRO_CSS = "Intro.css";
+    private static final String LOGIN_CSS = "Login.css";
+    private static final String LOADING_CSS = "LoadingCSS.css";
     private final HashMap<String, Scene> sceneMap = new HashMap<>();
     private final HashMap<String, GUIController> controllerMap = new HashMap<>();
 
@@ -51,7 +52,7 @@ public class GUIViewFX extends Application {
 
     private void setupControllers() {
         // creating an array of scenes (All the scenes of the application)
-        List<String> sceneList = new ArrayList<>(Arrays.asList(INTRO, LOGIN));
+        List<String> sceneList = new ArrayList<>(Arrays.asList(INTRO, LOADING, LOGIN));
         try {
             for(String path : sceneList) {
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/" + path)); // prepare the scene
@@ -72,9 +73,14 @@ public class GUIViewFX extends Application {
                         sceneMap.get(INTRO).getStylesheets().add(css);
                         break;
 
-                    case "BoardAbstract.fxml":
-                        css = getClass().getResource("/css/" + BOARD_ABSTRACT_CSS).toExternalForm();
-                        sceneMap.get(BOARD_ABSTRACT).getStylesheets().add(css);
+                    case "LoadingCSS.css":
+                        css = getClass().getResource("/css/" + LOADING_CSS).toExternalForm();
+                        sceneMap.get(LOADING).getStylesheets().add(css);
+                        break;
+
+                    case "Login.css":
+                        css = getClass().getResource("/css/" + LOGIN_CSS).toExternalForm();
+                        sceneMap.get(LOGIN).getStylesheets().add(css);
                         break;
                 }
 
@@ -82,14 +88,14 @@ public class GUIViewFX extends Application {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        currentScene = sceneMap.get(INTRO); //inintal scene
+        currentScene = sceneMap.get(INTRO); //initial scene
 
         /*
             The first scene shown in the intro page.
             After a player clicks on the play button the GUIView is set free (platformReady = true)
-            and the GUI can execute the askFirstplayerInfo.
-            When the second player clicks on the play button it waits until the prevous player has sent his login info (as in CLI)
-            It necessary to implement a waiting scene (loading scene)
+            and the GUI can execute the askFirstPlayerInfo.
+            When the second player clicks on the play button it waits until the previous player has sent his login info (as in CLI)
+            It's necessary to implement a waiting scene (loading scene)
          */
     }
 
@@ -101,34 +107,46 @@ public class GUIViewFX extends Application {
         stage.getIcons().add(icon);
 
         // Windows title
-        stage.setTitle("Stage demo w00t w00t");
+        stage.setTitle("Eriantys board game");
         stage.setFullScreen(false);
 
         stage.setScene(currentScene);
         stage.show();
-
     }
 
     public void setClient(Client client) {
         this.client = client;
     }
 
-    public void sceneAskFirstPlayerInfo(String scene){
+    public void sceneLoading(String scene, String message) {
+        LoaderController currentController = (LoaderController) controllerMap.get(scene);
+        currentController.setMessage(message);
+
         this.currentScene = sceneMap.get(scene);
         this.stage.setScene(this.currentScene);
         this.stage.show();
     }
 
-    public void sceneAskNickname(String scene, List<PlayerColour> colourList, int numPlayer){
+    public void sceneAskFirstPlayerInfo(String scene){
+        LoginController currentController = (LoginController) controllerMap.get(scene);
+        currentController.setFirstPlayer(true);
+
+        this.currentScene = sceneMap.get(scene);
+        this.stage.setScene(this.currentScene);
+        this.stage.show();
+    }
+
+    public void sceneAskNickname(String scene, List<PlayerColour> colourList, int numPlayers){
         /*  Example of what should be done for every scene:
              - receiving the parameters from Message->GUIView
              - passing them to the scene controller in order to show personalized info
              - when showing a scene the controller SHOULD execute the initialize method first (try this, I'm not sure)
-
-        GUIController currentController = controllerMap.get(scene);
-        currentController.setColourList(colourList);
-        currentController.setNumPlayers(numPlayer);
         */
+        LoginController currentController = (LoginController) controllerMap.get(scene);
+        currentController.setFirstPlayer(false);    //used to show firstPlayer or not
+        currentController.setNumPlayers(numPlayers);    // used to chose the colour automatically
+        currentController.setAvailableColours(colourList);  // used to modify the possible colour (it uses the numPlayer value)
+
 
         this.currentScene = sceneMap.get(scene);
         this.stage.setScene(this.currentScene);

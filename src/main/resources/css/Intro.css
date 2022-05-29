@@ -1,0 +1,12 @@
+.root {
+    -fx-background-color: #2596be;
+    -fx-alignment: center;
+}
+
+.label {
+    -fx-alignment: center;
+}
+
+#titleLable {
+    -fx-font-size: 50;
+}

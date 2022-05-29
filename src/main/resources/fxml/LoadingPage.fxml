@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="600.0"
+            prefWidth="800.0"
+            styleClass="parent"
+            stylesheets="@../css/LoadingCSS.css"
+            xmlns="http://javafx.com/javafx/18"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="it.polimi.ingsw.View.GUI.Controllers.LoaderController">
+   <children>
+      <Label fx:id="labelMessage" alignment="CENTER" contentDisplay="CENTER" layoutY="261.0" prefHeight="21.0" prefWidth="800.0" text="Text Label" textFill="WHITE">
+         <font>
+            <Font name="Segoe UI Black" size="33.0" />
+         </font>
+      </Label>
+      <Label fx:id="labelLoading" layoutY="322.0" prefHeight="21.0" prefWidth="800.0" text="Loading ..." textFill="WHITE">
+         <font>
+            <Font name="Consolas" size="15.0" />
+         </font>
+      </Label>
+   </children>
+</AnchorPane>

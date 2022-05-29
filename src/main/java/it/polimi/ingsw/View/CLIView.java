@@ -100,7 +100,7 @@ public class CLIView extends ClientView {
     }
 
     @Override
-    public void askNickName(List<PlayerColour> colourList, int numPlayer) {
+    public void askNickName(List<PlayerColour> chosenColourList, int numPlayer) {
         String nickname;
         String colour = "";
 
@@ -113,12 +113,12 @@ public class CLIView extends ClientView {
         } while (nickname.equals(""));
 
         if(numPlayer==2){
-            colour= colourList.get(0).equals(PlayerColour.WHITE) ? "BLACK" : "WHITE";
+            colour= chosenColourList.get(0).equals(PlayerColour.WHITE) ? "BLACK" : "WHITE";
             System.out.println("> your colour is " + colour);
         }
         if(numPlayer == 3 ){
-            if(colourList.size()==1){
-                if(colourList.get(0).equals(PlayerColour.WHITE)) {
+            if(chosenColourList.size() == 1){
+                if(chosenColourList.get(0).equals(PlayerColour.WHITE)) {
                     do {
                         System.out.println("> What colour would you like [Black/Gray]:");
                         System.out.print("> ");
@@ -126,7 +126,7 @@ public class CLIView extends ClientView {
                         colour = input.nextLine();
                     } while (!colour.equalsIgnoreCase("black") && !colour.equalsIgnoreCase("gray"));
                 }
-                if(colourList.get(0).equals(PlayerColour.BLACK)) {
+                if(chosenColourList.get(0).equals(PlayerColour.BLACK)) {
                     do {
                         System.out.println("> What colour would you like [White/Gray]:");
                         System.out.print("> ");
@@ -134,7 +134,7 @@ public class CLIView extends ClientView {
                         colour = input.nextLine();
                     } while (!colour.equalsIgnoreCase("white") && !colour.equalsIgnoreCase("gray"));
                 }
-                if(colourList.get(0).equals(PlayerColour.GRAY)) {
+                if(chosenColourList.get(0).equals(PlayerColour.GRAY)) {
                     do {
                         System.out.println("> What colour would you like [Black/White]:");
                         System.out.print("> ");
@@ -143,28 +143,28 @@ public class CLIView extends ClientView {
                     } while (!colour.equalsIgnoreCase("black") && !colour.equalsIgnoreCase("white"));
                 }
             }
-            if(colourList.size()==2){
-                if(colourList.contains(PlayerColour.WHITE) && colourList.contains(PlayerColour.BLACK)) {
+            if(chosenColourList.size() == 2){
+                if(chosenColourList.contains(PlayerColour.WHITE) && chosenColourList.contains(PlayerColour.BLACK)) {
                     colour = "GRAY";
                 }
-                if(colourList.contains(PlayerColour.WHITE) && colourList.contains(PlayerColour.GRAY)) {
+                if(chosenColourList.contains(PlayerColour.WHITE) && chosenColourList.contains(PlayerColour.GRAY)) {
                     colour= "BLACK";
                 }
-                if(colourList.contains(PlayerColour.GRAY) && colourList.contains(PlayerColour.BLACK)) {
+                if(chosenColourList.contains(PlayerColour.GRAY) && chosenColourList.contains(PlayerColour.BLACK)) {
                     colour = "WHITE";
                 }
                 System.out.println("> Your colour is " + colour);
             }
         }
         if (numPlayer == 4){
-            long black=colourList.stream().filter(x -> x.equals(PlayerColour.BLACK)).count();
-            long white=colourList.stream().filter(x -> x.equals(PlayerColour.WHITE)).count();
+            long black = chosenColourList.stream().filter(x -> x.equals(PlayerColour.BLACK)).count();
+            long white = chosenColourList.stream().filter(x -> x.equals(PlayerColour.WHITE)).count();
 
-            if(colourList.size()==3){
+            if(chosenColourList.size() == 3){
                 colour=(black==2)? "WHITE" : "BLACK";
                 System.out.println("> Your colour is " + colour);
             }
-            if(colourList.size()==2){
+            if(chosenColourList.size() == 2){
                 if(black==1 || white==1){
                     do {
                         System.out.println("> What colour would you like [Black/White]:");
@@ -178,7 +178,7 @@ public class CLIView extends ClientView {
                     System.out.println("> Your colour is " + colour);
                 }
             }
-            if(colourList.size()==1){
+            if(chosenColourList.size() == 1){
                 do {
                     System.out.println("> What colour would you like [Black/White]:");
                     System.out.print("> ");
