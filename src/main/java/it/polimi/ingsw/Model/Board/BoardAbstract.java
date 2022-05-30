@@ -317,7 +317,7 @@ public abstract class BoardAbstract extends Observable implements Board {
 
     public void conquerProfessor(Player currentPlayer, SPColour colour) throws NoProfessorBagException, ProfessorNotFoundException {
         School currentSchool = this.whereIsProfessor(colour);
-        if(currentSchool == null){ //it's in the bag
+        if(currentSchool == null){ // it's in the bag
             this.playerSchool.get(currentPlayer).addProfessor(this.bag.takeProfessor(colour));
             return;
         }
@@ -337,7 +337,6 @@ public abstract class BoardAbstract extends Observable implements Board {
             challengerSchool.addProfessor(removed);
         }
     }
-
 
 
 

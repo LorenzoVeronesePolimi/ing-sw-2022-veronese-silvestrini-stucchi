@@ -171,7 +171,8 @@ public class GUIViewFX extends Application {
 
     public void sceneShowBoard(String scene, SerializedBoardAbstract board){
         BoardFourAdvancedController currentController = (BoardFourAdvancedController) controllerMap.get(scene);
-        currentController.setNumPlayers(board.getSchools().size());    // used to choose the colour automatically
+        currentController.setArchipelagoFxml(board);
+
 
         this.currentScene = sceneMap.get(scene);
         this.stage.setScene(this.currentScene);
