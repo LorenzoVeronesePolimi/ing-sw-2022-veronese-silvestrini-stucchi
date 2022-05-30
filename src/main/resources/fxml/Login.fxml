@@ -10,13 +10,15 @@
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" styleClass="parent" stylesheets="@../css/Login.css" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.View.GUI.Controllers.LoginController">
    <children>
+      <Rectangle fx:id="gameModeError" arcHeight="5.0" arcWidth="5.0" fill="#ff1f1f" height="37.0" layoutX="328.0" layoutY="416.0" stroke="BLACK" strokeType="INSIDE" visible="false" width="159.0" />
+      <Rectangle fx:id="numPlayerError" arcHeight="5.0" arcWidth="5.0" fill="#ff1f1f" height="37.0" layoutX="328.0" layoutY="319.0" stroke="BLACK" strokeType="INSIDE" visible="false" width="159.0" />
       <Rectangle fx:id="nicknameError" arcHeight="5.0" arcWidth="5.0" fill="#ff1f1f" height="37.0" layoutX="327.0" layoutY="123.0" stroke="BLACK" strokeType="INSIDE" visible="false" width="159.0" />
+      <Rectangle fx:id="colourError" arcHeight="5.0" arcWidth="5.0" fill="#ff1f1f" height="37.0" layoutX="328.0" layoutY="220.0" stroke="BLACK" strokeType="INSIDE" visible="false" width="159.0" />
       <Label fx:id="titleLogin" layoutX="-1.0" layoutY="21.0" prefHeight="32.0" prefWidth="800.0" stylesheets="@../css/Login.css" text="Title" textFill="WHITE">
          <font>
             <Font name="Segoe UI Black" size="36.0" />
          </font>
       </Label>
-      <TextField fx:id="nicknameChoice" alignment="CENTER" layoutX="332.0" layoutY="129.0" style="-fx-background-color: #ffffff;" />
       <Label fx:id="nicknameLabel" layoutX="271.0" layoutY="93.0" text="Choose your nickname:" textFill="WHITE">
          <font>
             <Font name="Consolas" size="24.0" />
@@ -33,13 +35,13 @@
          <font>
             <Font name="Consolas" size="24.0" />
          </font></Label>
-      <ChoiceBox fx:id="colourChoice" layoutX="332.0" layoutY="225.0" prefWidth="150.0" style="-fx-background-color: #ffffff;" />
-      <ChoiceBox fx:id="numPlayersChoice" layoutX="332.0" layoutY="324.0" prefWidth="150.0" style="-fx-background-color: #ffffff;" />
-      <ChoiceBox fx:id="modeChoice" layoutX="332.0" layoutY="421.0" prefWidth="150.0" style="-fx-background-color: #ffffff;" />
       <Button fx:id="startButton" layoutX="335.0" layoutY="495.0" mnemonicParsing="false" onAction="#onButtonClicked" style="-fx-background-color: #417db8;" text="START GAME" textFill="WHITE">
          <font>
             <Font name="Segoe UI Black" size="18.0" />
          </font></Button>
-      <Rectangle fx:id="colourError" arcHeight="5.0" arcWidth="5.0" fill="#ff1f1f" height="37.0" layoutX="328.0" layoutY="220.0" stroke="BLACK" strokeType="INSIDE" visible="false" width="159.0" />
+      <ChoiceBox fx:id="colourChoice" layoutX="332.0" layoutY="225.0" prefWidth="150.0" style="-fx-background-color: #ffffff;" />
+      <TextField fx:id="nicknameChoice" alignment="CENTER" layoutX="332.0" layoutY="129.0" style="-fx-background-color: #ffffff;" />
+      <ChoiceBox fx:id="numPlayersChoice" layoutX="332.0" layoutY="324.0" prefWidth="150.0" style="-fx-background-color: #ffffff;" />
+      <ChoiceBox fx:id="modeChoice" layoutX="332.0" layoutY="421.0" prefWidth="150.0" style="-fx-background-color: #ffffff;" />
    </children>
 </AnchorPane>
