@@ -8,7 +8,7 @@ import it.polimi.ingsw.Model.Board.SerializedBoardAbstract;
 import it.polimi.ingsw.Model.Board.SerializedBoardAdvanced;
 import it.polimi.ingsw.Observer.ObservableController;
 import it.polimi.ingsw.Observer.Observer;
-import it.polimi.ingsw.Server.SocketClientConnectionCLI;
+import it.polimi.ingsw.Server.SocketClientConnection;
 import it.polimi.ingsw.View.Exceptions.NoCharacterCardException;
 
 /*
@@ -16,7 +16,7 @@ import it.polimi.ingsw.View.Exceptions.NoCharacterCardException;
  */
 public class ServerView implements Observer<SerializedBoardAbstract> {
 
-    private final SocketClientConnectionCLI socketClientConnectionCLI;
+    private final SocketClientConnection socketClientConnection;
     private String playerNickname;
     private final Controller controller;
     /*
@@ -101,12 +101,12 @@ public class ServerView implements Observer<SerializedBoardAbstract> {
         }
     }
 
-    public ServerView(SocketClientConnectionCLI connection, Controller controller) {
+    public ServerView(SocketClientConnection connection, Controller controller) {
         ConnectionListener connectionListener = new ConnectionListener(this);
         connection.addObserver(connectionListener);
         this.controller = controller;
         connectionListener.addObserver(controller);
-        this.socketClientConnectionCLI = connection;
+        this.socketClientConnection = connection;
     }
 
     //TODO: this should not be a Object message but instead a JSON or something, because it's received from the model itself
@@ -125,7 +125,7 @@ public class ServerView implements Observer<SerializedBoardAbstract> {
         finalMessage.setCurrentState(this.controller.getPrecomputedState());
         finalMessage.setCurrentPlayer(this.controller.getPrecomputedPlayer());
         finalMessage.setNicknameWinner(this.controller.getNicknameWinner());
-        this.socketClientConnectionCLI.asyncSendModel(finalMessage);
+        this.socketClientConnection.asyncSendModel(finalMessage);
     }
 
     protected String getPlayerNickname(){
@@ -146,6 +146,6 @@ public class ServerView implements Observer<SerializedBoardAbstract> {
     }
 
     public void manageControllerError() {
-        this.socketClientConnectionCLI.asyncSend(new MessageControllerError());
+        this.socketClientConnection.asyncSend(new MessageControllerError());
     }
 }

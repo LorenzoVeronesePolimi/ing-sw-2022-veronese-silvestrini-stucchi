@@ -1,9 +1,0 @@
-Manifest-Version: 1.0
-Main-Class: it.polimi.ingsw.ClientApp
-Class-Path: javafx-controls-18.0.1-win.jar javafx-controls-18.0.1.jar ja
- vafx-base-18.0.1.jar javafx-graphics-18.0.1-win.jar javafx-base-18.0.1-
- win.jar javafx-graphics-18.0.1.jar javafx-swt.jar javafx.web.jar javafx
- .base.jar javafx.fxml.jar javafx.media.jar javafx.swing.jar javafx.cont
- rols.jar javafx.graphics.jar json-20220320.jar javafx-fxml-18-win.jar j
- avafx-fxml-18.jar
-

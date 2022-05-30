@@ -14,18 +14,15 @@ import it.polimi.ingsw.Model.Pawns.Tower;
 import it.polimi.ingsw.Model.Places.School.SchoolAdvanced;
 import it.polimi.ingsw.Model.Player;
 import it.polimi.ingsw.Server.Server;
-import it.polimi.ingsw.Server.SocketClientConnectionCLI;
+import it.polimi.ingsw.Server.SocketClientConnection;
 import it.polimi.ingsw.View.ServerView;
 import org.junit.jupiter.api.Test;
-import java.io.ByteArrayOutputStream;
+
 import java.io.IOException;
-import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.jupiter.api.Assertions;
-
-import javax.naming.ldap.Control;
 
 
 public class ControllerTest {
@@ -34,10 +31,10 @@ public class ControllerTest {
     private final PrintStream originalOut = System.out;
     private final PrintStream originalErr = System.err;
     static Socket socket;*/
-    static SocketClientConnectionCLI conn1;
-    static SocketClientConnectionCLI conn2;
-    static SocketClientConnectionCLI conn3;
-    static SocketClientConnectionCLI conn4;
+    static SocketClientConnection conn1;
+    static SocketClientConnection conn2;
+    static SocketClientConnection conn3;
+    static SocketClientConnection conn4;
     static ServerView view1;
     static ServerView view2;
     static ServerView view3;
@@ -52,16 +49,16 @@ public class ControllerTest {
         }
 
         controller = server.createController();
-        conn1 = new SocketClientConnectionCLI(server, controller);
+        conn1 = new SocketClientConnection(server, controller);
         server.addConnection(conn1);
         view1 = conn1.getServerView();
-        conn2 = new SocketClientConnectionCLI(server, controller);
+        conn2 = new SocketClientConnection(server, controller);
         server.addConnection(conn2);
         view2 = conn2.getServerView();
-        conn3 = new SocketClientConnectionCLI(server, controller);
+        conn3 = new SocketClientConnection(server, controller);
         server.addConnection(conn3);
         view3 = conn1.getServerView();
-        conn4 = new SocketClientConnectionCLI(server, controller);
+        conn4 = new SocketClientConnection(server, controller);
         server.addConnection(conn4);
         view4 = conn2.getServerView();
 
@@ -790,7 +787,7 @@ public class ControllerTest {
 
 
         //**********CASE BOARD ADVANCED (2 players): test ending due to 3 archipelagos**********
-        server.reserServer();
+        server.resetServer();
         ControllerTest.controller = new Controller(server);
         //CREATE MATCH
         MessageCreateMatch ma1 = new MessageCreateMatch("First", "white", 2, true, view1);
@@ -936,7 +933,7 @@ public class ControllerTest {
 
 
         //**********CASE BOARD NOT ADVANCED (2 players): test ending due to 3 archipelagos**********
-        server.reserServer();
+        server.resetServer();
         ControllerTest.controller = new Controller(server);
         //CREATE MATCH
         MessageCreateMatch mna1 = new MessageCreateMatch("First", "white", 2, false, view1);
@@ -1048,7 +1045,7 @@ public class ControllerTest {
 
 
         //**********CASE BOARD ADVANCED (2 players): test ending due to finished towers**********
-        server.reserServer();
+        server.resetServer();
         ControllerTest.controller = new Controller(server);
         //CREATE MATCH
         MessageCreateMatch mt1 = new MessageCreateMatch("First", "white", 2, false, view1);
@@ -1153,7 +1150,7 @@ public class ControllerTest {
 
 
         //**********CASE BOARD ADVANCED (2 players): test ending due to void bag**********
-        server.reserServer();
+        server.resetServer();
         ControllerTest.controller = new Controller(server);
         //CREATE MATCH
         MessageCreateMatch mb1 = new MessageCreateMatch("First", "white", 2, true, view1);
@@ -1463,7 +1460,7 @@ public class ControllerTest {
 
 
         //**********CASE BOARD NOT ADVANCED (4 players)**********
-        server.reserServer();
+        server.resetServer();
         ControllerTest.controller = new Controller(server);
         //CREATE MATCH
         MessageCreateMatch m4p1 = new MessageCreateMatch("First", "white", 4, false, view1);

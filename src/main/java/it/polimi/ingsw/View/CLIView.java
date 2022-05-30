@@ -20,6 +20,7 @@ import static it.polimi.ingsw.View.CLIColours.*;
 public class CLIView extends ClientView {
 
     private String playerNick;
+    private String TAB = "    ";
 
     public CLIView(Client client) {
         super(client);
@@ -252,7 +253,7 @@ public class CLIView extends ClientView {
 
     @Override
     public void showBoard(SerializedBoardAbstract serializedBoardAbstract) {
-        System.out.println("\n\t The Board is this:");
+        System.out.println("\n" + TAB + " The Board is this:");
         System.out.println("Clouds: ");
         for(int i=0; i<serializedBoardAbstract.getClouds().size(); i++) {
             if(serializedBoardAbstract.getClouds().get(i).getStudents().size() > 0) {
@@ -266,7 +267,7 @@ public class CLIView extends ClientView {
             for (int i = 0; i < serializedBoardAbstract.getArchipelagos().size(); i++) {
                 colourArchipelago(serializedBoardAbstract, i, serializedBoardAbstract.getArchipelagos(), serializedBoardAbstract);
                 if (serializedBoardAbstract.getMn().getCurrentPosition().equals(serializedBoardAbstract.getArchipelagos().get(i))) {
-                    System.out.println("\tMother nature is here!");
+                    System.out.println(TAB + "Mother nature is here!");
                 } else {
                     System.out.println();
                 }
@@ -287,7 +288,7 @@ public class CLIView extends ClientView {
                 colourArchipelago(serializedBoardAbstract, i, serializedBoardAdvanced.getArchipelagos(), serializedBoardAdvanced);
 
                 if (serializedBoardAdvanced.getMn().getCurrentPosition().equals(serializedBoardAdvanced.getArchipelagos().get(i))) {
-                    System.out.print("\tMother nature is here!");
+                    System.out.print(TAB + "Mother nature is here!");
                 }
                 if(serializedBoardAdvanced.getArchipelagos().get(i).getForbidFlag()>0) {
                     System.out.print("Forbidden conquer!");

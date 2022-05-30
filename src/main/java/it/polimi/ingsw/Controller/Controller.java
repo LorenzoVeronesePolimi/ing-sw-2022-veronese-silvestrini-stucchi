@@ -21,7 +21,9 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 
-// This is the main Controller: it coordinates all the others
+/**
+ * This class is the controller of the MVC pattern. It observes the view and plays actions on the model.
+ */
 public class Controller implements ObserverController<Message> {
     private final Server server;
     private int numPlayers;
@@ -354,6 +356,12 @@ public class Controller implements ObserverController<Message> {
         System.out.println("add obs");
     }
 
+    /**
+     * Compute the expected player that acquires the game turn.
+     * @param list list of the players of the match.
+     * @param turnPriority turnPriority value of the AssistantCard played by the player.
+     * @return an ordered list of players, where the turn priorities are in ascending order.
+     */
     private List<Player> precomputeTurnOrder(List<Player> list, int turnPriority){
         Map<Player, Integer> values = new HashMap<>();
 
@@ -387,6 +395,7 @@ public class Controller implements ObserverController<Message> {
 
     //this creates a list of Players who played their AC according to sitPlayers and iteratorAC
     //Has to be used AFTER incrementing the iteratorAC (after you have precomputed the next player)
+    /*
     private List<Player> whoPlayedAC(){
         List<Player> result = new ArrayList<>();
         for(int i = this.currentPlayerIndex - this.iteratorAC; i <= this.currentPlayerIndex; i++){
@@ -395,6 +404,7 @@ public class Controller implements ObserverController<Message> {
 
         return result;
     }
+     */
 
     /**
      * Change order of Players in players according to the AssistantCards they played
@@ -423,8 +433,9 @@ public class Controller implements ObserverController<Message> {
     }
 
     /**
-     * @param message incomingMessage
-     * @return true if the actions has been done, false other-ways
+     * Create the match.
+     * @param message message coming from the Client.
+     * @return true if the actions has been done, false otherwise
      */
     public boolean manageCreateMatch(MessageCreateMatch message){
         this.numPlayers = message.getNumPlayers();
@@ -451,8 +462,9 @@ public class Controller implements ObserverController<Message> {
     }
 
     /**
-     * @param message incomingMessage
-     * @return true if the actions has been done, false other-ways
+     * Add a player to an existing match.
+     * @param message message coming from the Client.
+     * @return true if the actions has been done, false otherwise
      */
     public boolean manageAddPlayer(MessageAddPlayer message){
         String nickname = message.getNickname();
@@ -516,8 +528,9 @@ public class Controller implements ObserverController<Message> {
     }
 
     /**
-     * @param message incomingMessage
-     * @return true if the actions has been done, false other-ways
+     * Player plays an AssistantCard in his hand.
+     * @param message message coming from the Client.
+     * @return true if the actions has been done, false otherwise
      */
     public boolean manageAssistantCard(MessageAssistantCard message){
         String nicknamePlayer = message.getNickname();
@@ -567,6 +580,10 @@ public class Controller implements ObserverController<Message> {
         return true;
     }
 
+    /**
+     * Compute the expected player that will have to play the next turn.
+     * @param turnPriority value of the last card played.
+     */
     private void precomputeNextPlayer(int turnPriority) {
         if(this.iteratorAC == 0){
             this.currentPlayerIndex = this.sitPlayers.indexOf(this.precomputedPlayer); //precomputedPlayer was set in the last Cloud
@@ -584,8 +601,9 @@ public class Controller implements ObserverController<Message> {
     }
 
     /**
-     * @param message incomingMessage
-     * @return true if the actions has been done, false other-ways
+     * Move students from the Hall to the Diningroom of the School.
+     * @param message message coming from the Client.
+     * @return true if the actions has been done, false otherwise
      */
     public boolean manageStudentHallToDiningRoom(MessageStudentHallToDiningRoom message){
         String nicknamePlayer = message.getNickname();
@@ -627,8 +645,9 @@ public class Controller implements ObserverController<Message> {
     }
 
     /**
-     * @param message incomingMessage
-     * @return true if the actions has been done, false other-ways
+     * Move a student from the Hall to an archipelago.
+     * @param message message coming from the Client.
+     * @return true if the actions has been done, false otherwise.
      */
     public boolean manageStudentToArchipelago(MessageStudentToArchipelago message){
         String nicknamePlayer = message.getNickname();
@@ -669,8 +688,9 @@ public class Controller implements ObserverController<Message> {
     }
 
     /**
-     * @param message incomingMessage
-     * @return true if the actions has been done, false other-ways
+     * Move MotherNature on an archipelago.
+     * @param message message coming from the Client.
+     * @return true if the actions has been done, false otherwise.
      */
     public boolean manageMoveMotherNature(MessageMoveMotherNature message){
         String nicknamePlayer = message.getNickname();
@@ -719,8 +739,9 @@ public class Controller implements ObserverController<Message> {
     }
 
     /**
-     * @param message incomingMessage
-     * @return true if the actions has been done, false other-ways
+     * Move Student from Cloud to School.
+     * @param message message coming from the Client.
+     * @return true if the actions has been done, false otherwise.
      */
     public boolean manageStudentCloudToSchool(MessageStudentCloudToSchool message){
         String nicknamePlayer = message.getNickname();
@@ -789,8 +810,9 @@ public class Controller implements ObserverController<Message> {
 
     //--------------------------------------------------CHARACTER CARDS
     /**
-     * @param message incomingMessage
-     * @return true if the actions has been done, false other-ways
+     * Play the CharacterCard ExchangeThreeStudents.
+     * @param message message coming from the Client.
+     * @return true if the actions has been done, false otherwise.
      */
     public boolean manageCCExchangeThreeStudents(MessageCCExchangeThreeStudents message){
         int indexCard;
@@ -826,8 +848,9 @@ public class Controller implements ObserverController<Message> {
     }
 
     /**
-     * @param message incomingMessage
-     * @return true if the actions has been done, false other-ways
+     * Play the CharacterCard ExchangeTwoHallDining.
+     * @param message message coming from the Client.
+     * @return true if the actions has been done, false otherwise.
      */
     public boolean manageCCExchangeTwoHallDining(MessageCCExchangeTwoHallDining message){
         int indexCard;
@@ -860,8 +883,9 @@ public class Controller implements ObserverController<Message> {
     }
 
     /**
-     * @param message incomingMessage
-     * @return true if the actions has been done, false other-ways
+     * Play the CharacterCard ExcludeColourFromCounting.
+     * @param message message coming from the Client.
+     * @return true if the actions has been done, false otherwise.
      */
     public boolean manageCCExcludeColourFromCounting(MessageCCExcludeColourFromCounting message){
         int indexCard;
@@ -899,8 +923,9 @@ public class Controller implements ObserverController<Message> {
     }
 
     /**
-     * @param message incomingMessage
-     * @return true if the actions has been done, false other-ways
+     * Play the CharacterCard ExtraStudentInDining.
+     * @param message message coming from the Client.
+     * @return true if the actions has been done, false otherwise.
      */
     public boolean manageCCExtraStudentInDining(MessageCCExtraStudentInDining message){
         int indexCard;
@@ -936,8 +961,9 @@ public class Controller implements ObserverController<Message> {
     }
 
     /**
-     * @param message incomingMessage
-     * @return true if the actions has been done, false other-ways
+     * Play the CharacterCard FakeMNMovement.
+     * @param message message coming from the Client.
+     * @return true if the actions has been done, false otherwise.
      */
     public boolean manageCCFakeMNMovement(MessageCCFakeMNMovement message){
         int indexCard;
@@ -975,8 +1001,9 @@ public class Controller implements ObserverController<Message> {
     }
 
     /**
-     * @param message incomingMessage
-     * @return true if the actions has been done, false other-ways
+     * Play the CharacterCard ForbidIsland.
+     * @param message message coming from the Client.
+     * @return true if the actions has been done, false otherwise.
      */
     public boolean manageCCForbidIsland(MessageCCForbidIsland message){
         int indexCard;
@@ -1010,8 +1037,9 @@ public class Controller implements ObserverController<Message> {
     }
 
     /**
-     * @param message incomingMessage
-     * @return true if the actions has been done, false other-ways
+     * Play the CharacterCard PlaceOneStudent.
+     * @param message message coming from the Client.
+     * @return true if the actions has been done, false otherwise.
      */
     public boolean manageCCPlaceOneStudent(MessageCCPlaceOneStudent message){
         int indexCard;
@@ -1048,8 +1076,9 @@ public class Controller implements ObserverController<Message> {
     }
 
     /**
-     * @param message incomingMessage
-     * @return true if the actions has been done, false other-ways
+     * Play the CharacterCard ReduceColourInDining.
+     * @param message message coming from the Client.
+     * @return true if the actions has been done, false otherwise.
      */
     public boolean manageCCReduceColourInDining(MessageCCReduceColourInDining message){
         int indexCard;
@@ -1084,8 +1113,9 @@ public class Controller implements ObserverController<Message> {
     }
 
     /**
-     * @param message incomingMessage
-     * @return true if the actions has been done, false other-ways
+     * Play the CharacterCard TowerNoValue.
+     * @param message message coming from the Client.
+     * @return true if the actions has been done, false otherwise.
      */
     public boolean manageCCTowerNoValue(MessageCCTowerNoValue message){
         int indexCard;
@@ -1118,8 +1148,9 @@ public class Controller implements ObserverController<Message> {
     }
 
     /**
-     * @param message incomingMessage
-     * @return true if the actions has been done, false other-ways
+     * Play the CharacterCard TwoExtraPoints.
+     * @param message message coming from the Client.
+     * @return true if the actions has been done, false otherwise.
      */
     public boolean manageCCTwoExtraPoints(MessageCCTwoExtraPoints message){
         int indexCard;
@@ -1152,8 +1183,9 @@ public class Controller implements ObserverController<Message> {
     }
 
     /**
-     * @param message incomingMessage
-     * @return true if the actions has been done, false other-ways
+     * Play the CharacterCard TakeProfessorOnEquity.
+     * @param message message coming from the Client.
+     * @return true if the actions has been done, false otherwise.
      */
     public boolean manageCCTakeProfessorOnEquity(MessageCCTakeProfessorOnEquity message){
         int indexCard;
@@ -1192,8 +1224,9 @@ public class Controller implements ObserverController<Message> {
     }
 
     /**
-     * @param message incomingMessage
-     * @return true if the actions has been done, false other-ways
+     * Play the CharacterCard TwoExtraIslands.
+     * @param message message coming from the Client.
+     * @return true if the actions has been done, false otherwise.
      */
     public boolean manageCCTwoExtraIslands(MessageCCTwoExtraIslands message){
         int indexCard;
@@ -1226,10 +1259,10 @@ public class Controller implements ObserverController<Message> {
     }
 
     /**
-     * Check if the type of CCCard chosen exists among extracted CCCards
-     * @param type of the message received
-     * @return int of the CCCard among the extracted CCCards
-     * @throws NoCharacterCardException if there is no right CCCard
+     * Check if the type of CharacterCard chosen exists among extracted CharacterCards.
+     * @param type typeof the message received.
+     * @return index of the CharacterCard in the extracted CharacterCards.
+     * @throws NoCharacterCardException if there is no corresponding CharacterCard.
      */
     private int ccTypeToIndex(INMessageType type) throws NoCharacterCardException {
         List<AbstractCharacterCard> extractedCards = this.boardAdvanced.getExtractedCards();
@@ -1301,41 +1334,17 @@ public class Controller implements ObserverController<Message> {
         throw new NoCharacterCardException();
     }
 
-
-    /*
-    private boolean isRightMapIndexToCharacterCard(INMessageType type, int indexCard){
-        AbstractCharacterCard chosenCard = this.boardAdvanced.getExtractedCards().get(indexCard);
-
-        // is this card corresponding to the index chosen?
-        switch(type) {
-            case CC_EXCHANGE_THREE_STUDENTS:
-                return chosenCard.getType() == CharacterCardEnumeration.EXCHANGE_THREE_STUDENTS;
-            case CC_EXCHANGE_TWO_HALL_DINING:
-                return chosenCard.getType() == CharacterCardEnumeration.EXCHANGE_TWO_HALL_DINING;
-            case CC_EXCLUDE_COLOUR_FROM_COUNTING:
-                return chosenCard.getType().equals(CharacterCardEnumeration.EXCLUDE_COLOUR_FROM_COUNTING);
-            case CC_EXTRA_STUDENT_IN_DINING:
-                return chosenCard.getType().equals(CharacterCardEnumeration.EXTRA_STUDENT_IN_DINING);
-            case CC_FAKE_MN_MOVEMENT:
-                return chosenCard.getType().equals(CharacterCardEnumeration.FAKE_MN_MOVEMENT);
-            case CC_FORBID_ISLAND:
-                return chosenCard.getType().equals(CharacterCardEnumeration.FORBID_ISLAND);
-            case CC_PLACE_ONE_STUDENT:
-                return chosenCard.getType().equals(CharacterCardEnumeration.PLACE_ONE_STUDENT);
-            case CC_REDUCE_COLOUR_IN_DINING:
-                return chosenCard.getType().equals(CharacterCardEnumeration.REDUCE_COLOUR_IN_DINING);
-            case CC_TAKE_PROFESSOR_ON_EQUITY:
-                return chosenCard.getType().equals(CharacterCardEnumeration.TAKE_PROFESSOR_ON_EQUITY);
-            case CC_TOWER_NO_VALUE:
-                return chosenCard.getType().equals(CharacterCardEnumeration.TOWER_NO_VALUE);
-            case CC_TWO_EXTRA_ISLANDS:
-                return chosenCard.getType().equals(CharacterCardEnumeration.TWO_EXTRA_ISLANDS);
-            case CC_TWO_EXTRA_POINTS:
-                return chosenCard.getType().equals(CharacterCardEnumeration.TWO_EXTRA_POINTS);
-        }
-        return false;
-    }*/
-
+    /**
+     * Checks if the game is ending based on the rule that states: "The game ends when only 3 groups of Islands remain on the table."
+     * @param moves Number of archipelagos that MotherNature has to pass over.
+     * @throws TowerNotFoundException When a tower is not found on a conquered archipelago or when there are no towers in a School.
+     * @throws EmptyCaveauException Where there are no money in the Bank.
+     * @throws ExceededMaxStudentsHallException When is exceeded the maximum number of students in the Hall.
+     * @throws StudentNotFoundException When a student is not found.
+     * @throws InvalidTowerNumberException When the number of towers is incorrect.
+     * @throws AnotherTowerException When there is already a tower on an archipelago.
+     * @throws ExceededMaxTowersException When the maximum number of towers is exceeded.
+     */
     private void gameEndedArchipelagos(int moves) throws TowerNotFoundException, EmptyCaveauException, ExceededMaxStudentsHallException, StudentNotFoundException, InvalidTowerNumberException, AnotherTowerException, ExceededMaxTowersException {
         BoardAbstract boardCopy;
         if(this.numPlayers == 2){
@@ -1403,6 +1412,11 @@ public class Controller implements ObserverController<Message> {
         }
     }
 
+    /**
+     * Checks if the game is ending based on the rule that states: "The game ends at the end of the round where the last student
+     * has been drawn from the bag."
+     * @param numStudentsInBag number of students in the bag.
+     */
     private void gameEndedBag(int numStudentsInBag){
         //TODO: test
         //CASE 2.1: no more Students in the Bag
@@ -1412,6 +1426,11 @@ public class Controller implements ObserverController<Message> {
         }
     }
 
+    /**
+     * Checks if the game is ending based on the rule that states: "The game ends at the end of the round where every
+     * player runs out of AssistantCards in their hand."
+     * @param handSize number of AssistantCards in the player hand.
+     */
     private void gameEndedAssistantCards(int handSize){
         //CASE 2.2: no more assistant cards
         //game ends at the end of the round (?)
@@ -1420,6 +1439,9 @@ public class Controller implements ObserverController<Message> {
         }
     }
 
+    /**
+     * Compute the nickname of the winner of the game.
+     */
     private void computeNicknameWinner(){
         //CASE 1: one player has fewer towers then the others
         Map<Player, Integer> playerTowersLeft = new HashMap<>();
@@ -1478,6 +1500,9 @@ public class Controller implements ObserverController<Message> {
         }
     }
 
+    /**
+     * Compute the nicknames of the winners if the match is a four players match.
+     */
     private void computeNicknameWinnerFour(){
         //CASE 1: one team has fewer towers then the others
         Player t1 = null; //leader (the one with towers) of white team
@@ -1543,6 +1568,9 @@ public class Controller implements ObserverController<Message> {
         }
     }
 
+    /**
+     * Adds observers of the Board to the Board.
+     */
     public void addBoardObserver() {
         for(ServerView s : serverViews) {
             this.board.addObserver(s);
