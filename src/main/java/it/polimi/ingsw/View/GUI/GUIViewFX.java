@@ -1,6 +1,7 @@
 package it.polimi.ingsw.View.GUI;
 
 import it.polimi.ingsw.Client.Client;
+import it.polimi.ingsw.Model.Board.SerializedBoardAbstract;
 import it.polimi.ingsw.Model.Enumerations.PlayerColour;
 import it.polimi.ingsw.View.GUI.Controllers.*;
 import it.polimi.ingsw.View.GUIView;
@@ -27,9 +28,11 @@ public class GUIViewFX extends Application {
     private static final String INTRO = "Intro.fxml";
     private static final String LOGIN = "Login.fxml";
     private static final String LOADING = "LoadingPage.fxml";
+    private static final String BOARD_FOUR_ADVANCED = "BoardGrid.fxml"; //TODO: to be changed
     private static final String INTRO_CSS = "Intro.css";
     private static final String LOGIN_CSS = "Login.css";
     private static final String LOADING_CSS = "LoadingCSS.css";
+    private static final String BOARD_FOUR_ADVANCED_CSS = "Intro.css"; //TODO: to be changed
     private final HashMap<String, Scene> sceneMap = new HashMap<>();
     private final HashMap<String, GUIController> controllerMap = new HashMap<>();
 
@@ -55,7 +58,7 @@ public class GUIViewFX extends Application {
 
     private void setupControllers() {
         // creating an array of scenes (All the scenes of the application)
-        List<String> sceneList = new ArrayList<>(Arrays.asList(INTRO, LOADING, LOGIN));
+        List<String> sceneList = new ArrayList<>(Arrays.asList(INTRO, LOADING, LOGIN, BOARD_FOUR_ADVANCED));
         try {
             for(String path : sceneList) {
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/" + path)); // prepare the scene
@@ -76,14 +79,17 @@ public class GUIViewFX extends Application {
                         sceneMap.get(INTRO).getStylesheets().add(css);
                         break;
 
-                    case "LoadingCSS.css":
+                    case "Loading.fxml":
                         css = getClass().getResource("/css/" + LOADING_CSS).toExternalForm();
                         sceneMap.get(LOADING).getStylesheets().add(css);
                         break;
-
-                    case "Login.css":
+                    case "Login.fxml":
                         css = getClass().getResource("/css/" + LOGIN_CSS).toExternalForm();
                         sceneMap.get(LOGIN).getStylesheets().add(css);
+                        break;
+                    case "BoardFourAdvanced.fxml":
+                        css = getClass().getResource("/css" + BOARD_FOUR_ADVANCED_CSS).toExternalForm();
+                        sceneMap.get(BOARD_FOUR_ADVANCED).getStylesheets().add(css);
                         break;
                 }
 
@@ -161,6 +167,15 @@ public class GUIViewFX extends Application {
     public void sceneAlert(String msg) {
         Alert alert = new Alert(Alert.AlertType.ERROR, msg);
         alert.showAndWait();
+    }
+
+    public void sceneShowBoard(String scene, SerializedBoardAbstract board){
+        BoardFourAdvancedController currentController = (BoardFourAdvancedController) controllerMap.get(scene);
+        currentController.setNumPlayers(board.getSchools().size());    // used to choose the colour automatically
+
+        this.currentScene = sceneMap.get(scene);
+        this.stage.setScene(this.currentScene);
+        this.stage.show();
     }
 }
 

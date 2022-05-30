@@ -84,7 +84,11 @@ public class GUIView extends ClientView {
 
     @Override
     public void showBoard(SerializedBoardAbstract serializedBoardAbstract) {
-        System.out.println("show board");
+        System.out.println("show board (outside)");
+        Platform.runLater(() -> {
+            System.out.println("show board (inside)");
+            this.guiViewFX.sceneShowBoard("BoardGrid.fxml", serializedBoardAbstract);
+        });
     }
 
     //TODO: just for test
