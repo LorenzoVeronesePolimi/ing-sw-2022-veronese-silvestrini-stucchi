@@ -161,7 +161,7 @@ public class CLIView extends ClientView {
             long white = chosenColourList.stream().filter(x -> x.equals(PlayerColour.WHITE)).count();
 
             if(chosenColourList.size() == 3){
-                colour=(black==2)? "WHITE" : "BLACK";
+                colour = (black == 2)? "WHITE" : "BLACK";
                 System.out.println("> Your colour is " + colour);
             }
             if(chosenColourList.size() == 2){

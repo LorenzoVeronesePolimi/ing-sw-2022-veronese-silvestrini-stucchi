@@ -8,9 +8,12 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
+import javax.swing.text.html.Option;
 import java.io.IOException;
 import java.util.*;
 
@@ -101,6 +104,8 @@ public class GUIViewFX extends Application {
 
     public void run() {
         System.out.println("GUI running");
+        Locale.setDefault(new Locale("en", "english"));
+        stage.setResizable(false);
 
         // Eriantys logo
         Image icon = new Image("/images/eriantys.jpg");
@@ -151,6 +156,11 @@ public class GUIViewFX extends Application {
         this.currentScene = sceneMap.get(scene);
         this.stage.setScene(this.currentScene);
         this.stage.show();
+    }
+
+    public void sceneAlert(String msg) {
+        Alert alert = new Alert(Alert.AlertType.ERROR, msg);
+        alert.showAndWait();
     }
 }
 
