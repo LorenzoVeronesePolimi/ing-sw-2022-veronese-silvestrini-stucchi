@@ -48,10 +48,13 @@ public class LoginController implements GUIController, Initializable {
     // Num players
     @FXML private Label numPlayersLabel;
     @FXML private ChoiceBox<Integer> numPlayersChoice;
+    @FXML private Rectangle numPlayerError;
+
 
     // Game mode
     @FXML private Label gameModeLabel;
     @FXML private ChoiceBox<String> modeChoice;
+    @FXML private Rectangle gameModeError;
 
     // Start button
     @FXML private Button startButton;
@@ -76,15 +79,29 @@ public class LoginController implements GUIController, Initializable {
 
     public void saveColour(ActionEvent event) {
         this.chosenColour = colourChoice.getValue();
-        this.colourError.setVisible(false);
+
+        if(this.colourError.isVisible()) {
+            this.colourError.setVisible(false);
+            this.colourError.setTranslateZ(+1);
+        }
     }
 
     public void saveNumPlayers(ActionEvent event) {
         this.chosenNumPlayers = numPlayersChoice.getValue();
+
+        if(this.numPlayerError.isVisible()) {
+            this.numPlayerError.setVisible(false);
+            this.numPlayerError.setTranslateZ(+1);
+        }
     }
 
     public void saveMode(ActionEvent event) {
         this.chosenMode = modeChoice.getValue().equals("Normal") ? "false" : "true";
+
+        if(this.gameModeError.isVisible()) {
+            this.gameModeError.setVisible(false);
+            this.gameModeError.setTranslateZ(+1);
+        }
     }
 
     public void onButtonClicked(ActionEvent event) {
@@ -101,24 +118,35 @@ public class LoginController implements GUIController, Initializable {
             var msg = "Colour not selected!";
             this.guiViewFX.sceneAlert(msg);
             this.colourError.setVisible(true);
+            this.colourError.setTranslateZ(-1);
             System.out.println("Colour not selected!");
             return;
         }
 
         if(this.firstPlayer) {
             if(this.chosenNumPlayers == null) {
-                //TODO: add an alert message, not only a cli message
+                var msg = "Number of players not selected!";
+                this.guiViewFX.sceneAlert(msg);
+                this.numPlayerError.setVisible(true);
+                this.numPlayerError.setTranslateZ(-1);
                 System.out.println("Number of players not selected!");
                 return;
             }
             if(this.chosenNumPlayers == 2 || this.chosenNumPlayers == 4) {
                 if(this.chosenColour.equals("Gray")) {
+                    var msg = "You cannot chose Gray as colour with this number of players.";
+                    this.guiViewFX.sceneAlert(msg);
+                    this.colourError.setVisible(true);
+                    this.colourError.setTranslateZ(-1);
                     System.out.println("You cannot chose Gray as colour with this number of players.");
                     return;
                 }
             }
             if(this.chosenMode == null) {
-                //TODO: add an alert message, not only a cli message
+                var msg = "Game mode not selected!";
+                this.guiViewFX.sceneAlert(msg);
+                this.gameModeError.setVisible(true);
+                this.gameModeError.setTranslateZ(-1);
                 System.out.println("Game mode not selected!");
                 return;
             }
