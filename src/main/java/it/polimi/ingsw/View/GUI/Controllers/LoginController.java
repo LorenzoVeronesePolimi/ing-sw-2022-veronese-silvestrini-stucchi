@@ -2,7 +2,6 @@ package it.polimi.ingsw.View.GUI.Controllers;
 
 import it.polimi.ingsw.Client.Client;
 import it.polimi.ingsw.Model.Enumerations.PlayerColour;
-import it.polimi.ingsw.View.GUI.Controllers.GUIController;
 import it.polimi.ingsw.View.GUI.GUIViewFX;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -11,6 +10,8 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.shape.Rectangle;
 
 import java.net.URL;
 import java.util.ArrayList;
@@ -33,14 +34,26 @@ public class LoginController implements GUIController, Initializable {
     private String chosenMode = null;
 
     @FXML private Label titleLogin;
+
+    // Nickname
     @FXML private Label nicknameLabel;
-    @FXML private Label colourLabel;
-    @FXML private Label numPlayersLabel;
-    @FXML private Label gameModeLabel;
     @FXML private TextField nicknameChoice;
+    @FXML private Rectangle nicknameError;
+
+    // Colour
+    @FXML private Label colourLabel;
     @FXML private ChoiceBox<String> colourChoice;
+    @FXML private Rectangle colourError;
+
+    // Num players
+    @FXML private Label numPlayersLabel;
     @FXML private ChoiceBox<Integer> numPlayersChoice;
+
+    // Game mode
+    @FXML private Label gameModeLabel;
     @FXML private ChoiceBox<String> modeChoice;
+
+    // Start button
     @FXML private Button startButton;
 
     //This method is mandatory to show personalized info
@@ -48,17 +61,22 @@ public class LoginController implements GUIController, Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         this.titleLogin.setText("Login information");
-        colourChoice.getItems().addAll(availableColours);
-        colourChoice.setOnAction(this::saveColour);
-        numPlayersChoice.getItems().addAll(availableNumPlayers);
-        numPlayersChoice.setOnAction(this::saveNumPlayers);
-        modeChoice.getItems().addAll(availableModes);
-        modeChoice.setOnAction(this::saveMode);
+        this.nicknameChoice.setOnMousePressed(this::saveNickname);
+        this.colourChoice.getItems().addAll(this.availableColours);
+        this.colourChoice.setOnAction(this::saveColour);
+        this.numPlayersChoice.getItems().addAll(this.availableNumPlayers);
+        this.numPlayersChoice.setOnAction(this::saveNumPlayers);
+        this.modeChoice.getItems().addAll(this.availableModes);
+        this.modeChoice.setOnAction(this::saveMode);
     }
 
-    //TODO: insert check on the values (also after passing the board to this controller)
+    public void saveNickname(MouseEvent event) {
+        this.nicknameError.setVisible(false);
+    }
+
     public void saveColour(ActionEvent event) {
         this.chosenColour = colourChoice.getValue();
+        this.colourError.setVisible(false);
     }
 
     public void saveNumPlayers(ActionEvent event) {
@@ -72,13 +90,17 @@ public class LoginController implements GUIController, Initializable {
     public void onButtonClicked(ActionEvent event) {
         this.chosenNick = nicknameChoice.getText();
 
-        if(this.chosenNick == null) {
-            //TODO: add an alert message, not only a cli message
+        if(this.chosenNick == "") {
+            var msg = "NickName not selected!";
+            this.guiViewFX.sceneAlert(msg);
+            this.nicknameError.setVisible(true);
             System.out.println("NickName not selected!");
             return;
         }
         if(this.chosenColour == null) {
-            //TODO: add an alert message, not only a cli message
+            var msg = "Colour not selected!";
+            this.guiViewFX.sceneAlert(msg);
+            this.colourError.setVisible(true);
             System.out.println("Colour not selected!");
             return;
         }
@@ -88,6 +110,12 @@ public class LoginController implements GUIController, Initializable {
                 //TODO: add an alert message, not only a cli message
                 System.out.println("Number of players not selected!");
                 return;
+            }
+            if(this.chosenNumPlayers == 2 || this.chosenNumPlayers == 4) {
+                if(this.chosenColour.equals("Gray")) {
+                    System.out.println("You cannot chose Gray as colour with this number of players.");
+                    return;
+                }
             }
             if(this.chosenMode == null) {
                 //TODO: add an alert message, not only a cli message
@@ -132,39 +160,80 @@ public class LoginController implements GUIController, Initializable {
         System.out.println(chosenColour);
         colourChoice.getItems().clear();
         colourChoice.getItems().addAll(mapColourToStringList(chosenColour));
+        colourChoice.setVisible(true);
     }
 
     private List<String> mapColourToStringList(List<PlayerColour> colourList) {
         ArrayList<String> colour = new ArrayList<>();
-        //TODO: manage colour choice based on the number of players
-        if(colourList.contains(PlayerColour.BLACK)) {
-            if(colourList.contains(PlayerColour.GRAY)) {
-                colour.add("White");
-            } else if(colourList.contains(PlayerColour.WHITE)) {
-                colour.add("Gray");
-            } else {
-                colour.add("White");
-                colour.add("Gray");
+
+        if(this.numPlayers == 3) {
+            if (colourList.contains(PlayerColour.BLACK)) {
+                if (colourList.contains(PlayerColour.GRAY)) {
+                    colour.add("White");
+                } else if (colourList.contains(PlayerColour.WHITE)) {
+                    colour.add("Gray");
+                } else {
+                    colour.add("White");
+                    colour.add("Gray");
+                }
+
+            } else if (colourList.contains(PlayerColour.GRAY)) {
+                if (colourList.contains(PlayerColour.BLACK)) {
+                    colour.add("White");
+                } else if (colourList.contains(PlayerColour.WHITE)) {
+                    colour.add("Black");
+                } else {
+                    colour.add("White");
+                    colour.add("Black");
+                }
+            }
+            if (colourList.contains(PlayerColour.WHITE)) {
+                if (colourList.contains(PlayerColour.BLACK)) {
+                    colour.add("Gray");
+                } else if (colourList.contains(PlayerColour.GRAY)) {
+                    colour.add("Black");
+                } else {
+                    colour.add("Gray");
+                    colour.add("Black");
+                }
+            }
+        } else {
+            if(this.numPlayers == 2) {
+                if(colourList.contains(PlayerColour.BLACK)) {
+                    colour.add("White");
+                } else if(colourList.contains(PlayerColour.WHITE)) {
+                    colour.add("Black");
+                }
             }
 
-        } else if(colourList.contains(PlayerColour.GRAY)) {
-            if(colourList.contains(PlayerColour.BLACK)) {
-                colour.add("White");
-            } else if(colourList.contains(PlayerColour.WHITE)) {
-                colour.add("Black");
-            } else {
-                colour.add("White");
-                colour.add("Black");
-            }
-        }
-        if(colourList.contains(PlayerColour.WHITE)) {
-            if(colourList.contains(PlayerColour.BLACK)) {
-                colour.add("Gray");
-            } else if(colourList.contains(PlayerColour.GRAY)) {
-                colour.add("Black");
-            } else {
-                colour.add("Gray");
-                colour.add("Black");
+            if(this.numPlayers == 4) {
+                long black = colourList.stream().filter(x -> x.equals(PlayerColour.BLACK)).count();
+                long white = colourList.stream().filter(x -> x.equals(PlayerColour.WHITE)).count();
+
+                if(colourList.size() == 3){
+                    if(black == 2) {
+                        colour.add("White");
+                    } else {
+                        colour.add("Black");
+                    }
+                }
+                if(colourList.size() == 2){
+                    if(black == 1 || white == 1){
+                        colour.add("Black");
+                        colour.add("White");
+                    }
+                    else{
+                        if(black == 2) {
+                            colour.add("White");
+                        } else {
+                            colour.add("Black");
+                        }
+                    }
+                }
+                if(colourList.size() == 1){
+                    colour.add("Black");
+                    colour.add("White");
+                }
             }
         }
         return colour;
