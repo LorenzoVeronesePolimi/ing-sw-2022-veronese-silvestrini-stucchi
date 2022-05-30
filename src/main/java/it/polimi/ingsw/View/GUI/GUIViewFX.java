@@ -87,10 +87,10 @@ public class GUIViewFX extends Application {
                         css = getClass().getResource("/css/" + LOGIN_CSS).toExternalForm();
                         sceneMap.get(LOGIN).getStylesheets().add(css);
                         break;
-                    case "BoardFourAdvanced.fxml":
+                    /*case "BoardGrid.fxml":
                         css = getClass().getResource("/css" + BOARD_FOUR_ADVANCED_CSS).toExternalForm();
                         sceneMap.get(BOARD_FOUR_ADVANCED).getStylesheets().add(css);
-                        break;
+                        break;*/
                 }
 
             }
@@ -155,7 +155,7 @@ public class GUIViewFX extends Application {
         */
         LoginController currentController = (LoginController) controllerMap.get(scene);
         currentController.setFirstPlayer(false);    //used to show firstPlayer or not
-        currentController.setNumPlayers(numPlayers);    // used to chose the colour automatically
+        currentController.setNumPlayers(numPlayers);    // used to choose the colour automatically
         currentController.setAvailableColours(colourList);  // used to modify the possible colour (it uses the numPlayer value)
 
 
@@ -172,7 +172,6 @@ public class GUIViewFX extends Application {
     public void sceneShowBoard(String scene, SerializedBoardAbstract board){
         BoardFourAdvancedController currentController = (BoardFourAdvancedController) controllerMap.get(scene);
         currentController.setArchipelagoFxml(board);
-
 
         this.currentScene = sceneMap.get(scene);
         this.stage.setScene(this.currentScene);

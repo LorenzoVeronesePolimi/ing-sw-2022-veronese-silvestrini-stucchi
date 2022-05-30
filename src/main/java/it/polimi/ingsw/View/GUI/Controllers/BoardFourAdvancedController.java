@@ -2,6 +2,7 @@ package it.polimi.ingsw.View.GUI.Controllers;
 
 import it.polimi.ingsw.Client.Client;
 import it.polimi.ingsw.Model.Board.SerializedBoardAbstract;
+import it.polimi.ingsw.Model.Enumerations.SPColour;
 import it.polimi.ingsw.Model.Places.Archipelago;
 import it.polimi.ingsw.View.GUI.Controllers.DataStructures.ArchipelagoFxml;
 import it.polimi.ingsw.View.GUI.GUIViewFX;
@@ -14,13 +15,14 @@ import javafx.scene.layout.GridPane;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.ResourceBundle;
 
 public class BoardFourAdvancedController implements GUIController, Initializable {
     private GUIViewFX guiViewFX;
     private Client client;
 
-    // School my
+    // School of mine
     @FXML private GridPane my_hall;
     @FXML private GridPane my_dining;
     @FXML private GridPane my_professors;
@@ -216,15 +218,19 @@ public class BoardFourAdvancedController implements GUIController, Initializable
                 archipelagosFxml.get(i).getArchi_mother_nature().setVisible(false);
             }
 
-            // Tower: of which colour?
+            // Towers: if present of which colour? And how many of them?
             if(board.getArchipelagos().get(i).getOwner() == null){
                 archipelagosFxml.get(i).setVisibleTower(null);
                 archipelagosFxml.get(i).getArchi_num_towers().setVisible(false);
             }
             else{
                 archipelagosFxml.get(i).setVisibleTower(board.getArchipelagos().get(i).getOwner().getColour());
+                archipelagosFxml.get(i).getArchi_num_towers().setVisible(true);
                 archipelagosFxml.get(i).getArchi_num_towers().setText(Integer.toString(a.getIslands().size()));
             }
+
+            // Students: How many of them?
+            archipelagosFxml.get(i).setTextNumStudents(board.getArchipelagos().get(i).getStudentsData());
 
             i++;
         }

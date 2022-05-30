@@ -2,20 +2,31 @@ package it.polimi.ingsw.View.GUI.Controllers.DataStructures;
 
 import it.polimi.ingsw.Model.Enumerations.PlayerColour;
 import it.polimi.ingsw.Model.Enumerations.SPColour;
+import it.polimi.ingsw.Model.Player;
 import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class ArchipelagoFxml {
+    private static final SPColour[] availableSPColours = {SPColour.BLUE,SPColour.PINK, SPColour.RED, SPColour.YELLOW, SPColour.GREEN};
+    private static final PlayerColour[] availablePlayerColours = {PlayerColour.WHITE, PlayerColour.BLACK, PlayerColour.GRAY};
     private ImageView archi_mother_nature;
+
+    private Map<PlayerColour, ImageView> towerColourImage; //useful to avoid switches and to streamline the code
     private ImageView archi_white_tower;
     private ImageView archi_black_tower;
     private ImageView archi_gray_tower;
     private Label archi_num_towers;
+
+    private Map<SPColour, Label> studentColourNumber; //useful to avoid switches and to streamline the code
     private Label archi_num_blue;
     private Label archi_num_pink;
     private Label archi_num_red;
     private Label archi_num_yellow;
     private Label archi_num_green;
+
 
     public ArchipelagoFxml(ImageView archi_mother_nature, ImageView archi_white_tower, ImageView archi_black_tower, ImageView archi_gray_tower, Label archi_num_towers, Label archi_num_blue, Label archi_num_pink, Label archi_num_red, Label archi_num_yellow, Label archi_num_green){
         this.archi_mother_nature = archi_mother_nature;
@@ -28,6 +39,19 @@ public class ArchipelagoFxml {
         this.archi_num_red = archi_num_red;
         this.archi_num_yellow = archi_num_yellow;
         this.archi_num_green = archi_num_green;
+
+        // Set data structures
+        this.towerColourImage = new HashMap<>();
+        this.towerColourImage.put(PlayerColour.WHITE, this.archi_white_tower);
+        this.towerColourImage.put(PlayerColour.BLACK, this.archi_black_tower);
+        this.towerColourImage.put(PlayerColour.GRAY, this.archi_gray_tower);
+
+        this.studentColourNumber = new HashMap<>();
+        this.studentColourNumber.put(SPColour.BLUE, this.archi_num_blue);
+        this.studentColourNumber.put(SPColour.PINK, this.archi_num_pink);
+        this.studentColourNumber.put(SPColour.RED, this.archi_num_red);
+        this.studentColourNumber.put(SPColour.YELLOW, this.archi_num_yellow);
+        this.studentColourNumber.put(SPColour.GREEN, this.archi_num_green);
     }
 
     public ImageView getArchi_mother_nature() {
@@ -50,87 +74,28 @@ public class ArchipelagoFxml {
         return archi_num_towers;
     }
 
-    public Label getArchi_num_blue() {
-        return archi_num_blue;
-    }
-
-    public Label getArchi_num_pink() {
-        return archi_num_pink;
-    }
-
-    public Label getArchi_num_red() {
-        return archi_num_red;
-    }
-
-    public Label getArchi_num_yellow() {
-        return archi_num_yellow;
-    }
-
-    public Label getArchi_num_green() {
-        return archi_num_green;
-    }
-
-    public void setArchi_mother_nature(ImageView archi_mother_nature) {
-        this.archi_mother_nature = archi_mother_nature;
-    }
-
-    public void setArchi_white_tower(ImageView archi_white_tower) {
-        this.archi_white_tower = archi_white_tower;
-    }
-
-    public void setArchi_black_tower(ImageView archi_black_tower) {
-        this.archi_black_tower = archi_black_tower;
-    }
-
-    public void setArchi_gray_tower(ImageView archi_gray_tower) {
-        this.archi_gray_tower = archi_gray_tower;
-    }
-
-    public void setArchi_num_blue(Label archi_num_blue) {
-        this.archi_num_blue = archi_num_blue;
-    }
-
-    public void setArchi_num_pink(Label archi_num_pink) {
-        this.archi_num_pink = archi_num_pink;
-    }
-
-    public void setArchi_num_red(Label archi_num_red) {
-        this.archi_num_red = archi_num_red;
-    }
-
-    public void setArchi_num_yellow(Label archi_num_yellow) {
-        this.archi_num_yellow = archi_num_yellow;
-    }
-
-    public void setArchi_num_green(Label archi_num_green) {
-        this.archi_num_green = archi_num_green;
-    }
-
     //set only one (or zero) of three towers visible
     public void setVisibleTower(PlayerColour colourToShow){
         if(colourToShow == null){
-            this.archi_white_tower.setVisible(false);
-            this.archi_black_tower.setVisible(false);
-            this.archi_gray_tower.setVisible(false);
+            for(PlayerColour c : availablePlayerColours){
+                this.towerColourImage.get(c).setVisible(false);
+            }
         }
         else{
-            switch(colourToShow){
-                case WHITE:
-                    this.archi_white_tower.setVisible(true);
-                    this.archi_black_tower.setVisible(false);
-                    this.archi_gray_tower.setVisible(false);
-                    break;
-                case BLACK:
-                    this.archi_white_tower.setVisible(false);
-                    this.archi_black_tower.setVisible(true);
-                    this.archi_gray_tower.setVisible(false);
-                    break;
-                case GRAY:
-                    this.archi_white_tower.setVisible(false);
-                    this.archi_black_tower.setVisible(false);
-                    this.archi_gray_tower.setVisible(true);
-                    break;
+            for(PlayerColour c : availablePlayerColours){
+                if(c == colourToShow){
+                    this.towerColourImage.get(c).setVisible(true);
+                }
+                else{
+                    this.towerColourImage.get(c).setVisible(false);
+                }
             }
+        }
+    }
+
+    public void setTextNumStudents(Map<SPColour, Integer> studentsData){
+        for(SPColour c : availableSPColours){
+            this.studentColourNumber.get(c).setText(Integer.toString(studentsData.get(c)));
         }
     }
 }
