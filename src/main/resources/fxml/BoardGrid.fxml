@@ -13,6 +13,33 @@
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="1280.0" style="-fx-background-color: #a5d9fd;" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1">
    <children>
+      <GridPane layoutX="519.0" layoutY="14.0" prefHeight="150.0" prefWidth="496.0">
+        <columnConstraints>
+          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+        </columnConstraints>
+        <rowConstraints>
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+        </rowConstraints>
+         <children>
+            <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../images/Characters/ExchamgeTwoHallDining.jpg" />
+               </image>
+            </ImageView>
+            <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1">
+               <image>
+                  <Image url="@../images/Characters/ExchamgeTwoHallDining.jpg" />
+               </image>
+            </ImageView>
+            <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="2" GridPane.valignment="CENTER">
+               <image>
+                  <Image url="@../images/Characters/ExchamgeTwoHallDining.jpg" />
+               </image>
+            </ImageView>
+         </children>
+      </GridPane>
       <AnchorPane layoutX="506.0" layoutY="182.0">
          <children>
             <ImageView fitHeight="124.0" fitWidth="124.0" layoutY="3.0" opacity="0.65" preserveRatio="true">
@@ -25,27 +52,27 @@
             <Circle fill="#fb1f17" layoutX="26.0" layoutY="64.0" radius="4.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.5" />
             <Circle fill="#ebfd28" layoutX="26.0" layoutY="82.0" radius="4.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.5" />
             <Circle fill="#18f83d" layoutX="26.0" layoutY="101.0" radius="4.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.5" />
-            <Label fx:id="num_blue" layoutX="32.0" layoutY="24.0" text="Label" />
-            <Label fx:id="num_pink" layoutX="32.0" layoutY="39.0" text="Label" />
-            <Label fx:id="num_red" layoutX="32.0" layoutY="55.0" text="Label" />
-            <Label fx:id="num_yellow" layoutX="32.0" layoutY="73.0" text="Label" />
-            <Label fx:id="num_green" layoutX="32.0" layoutY="92.0" text="Label" />
-            <ImageView fx:id="mother_nature" fitHeight="30.0" fitWidth="19.0" layoutX="67.0" layoutY="32.0" preserveRatio="true">
+            <Label fx:id="archi0_num_blue" layoutX="32.0" layoutY="24.0" text="Label" />
+            <Label fx:id="archi0_num_pink" layoutX="32.0" layoutY="39.0" text="Label" />
+            <Label fx:id="archi0_num_red" layoutX="32.0" layoutY="55.0" text="Label" />
+            <Label fx:id="archi0_num_yellow" layoutX="32.0" layoutY="73.0" text="Label" />
+            <Label fx:id="archi0_num_green" layoutX="32.0" layoutY="92.0" text="Label" />
+            <ImageView fx:id="archi0_mother_nature" fitHeight="30.0" fitWidth="19.0" layoutX="67.0" layoutY="32.0" preserveRatio="true">
                <image>
                   <Image url="@../images/pawns/MN.png" />
                </image>
             </ImageView>
-            <ImageView fx:id="gray_tower" fitHeight="25.0" fitWidth="19.0" layoutX="69.0" layoutY="64.0" preserveRatio="true">
+            <ImageView fx:id="archi0_gray_tower" fitHeight="25.0" fitWidth="19.0" layoutX="69.0" layoutY="64.0" preserveRatio="true">
                <image>
                   <Image url="@../images/pawns/GrayTower.png" />
                </image>
             </ImageView>
-            <ImageView fx:id="black_tower" fitHeight="25.0" fitWidth="15.0" layoutX="69.0" layoutY="66.0" preserveRatio="true">
+            <ImageView fx:id="archi0_black_tower" fitHeight="25.0" fitWidth="15.0" layoutX="69.0" layoutY="66.0" preserveRatio="true">
                <image>
                   <Image url="@../images/pawns/BlackTower.png" />
                </image>
             </ImageView>
-            <ImageView fx:id="white_tower" fitHeight="30.0" fitWidth="15.0" layoutX="69.0" layoutY="65.0" preserveRatio="true">
+            <ImageView fx:id="archi0_white_tower" fitHeight="30.0" fitWidth="15.0" layoutX="69.0" layoutY="65.0" preserveRatio="true">
                <image>
                   <Image url="@../images/pawns/WhiteTower.png" />
                </image>
@@ -237,21 +264,6 @@
             <Image url="@../images/cloud.png" />
          </image>
       </ImageView>
-      <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="516.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true">
-         <image>
-            <Image url="@../images/Characters/ExchamgeTwoHallDining.jpg" />
-         </image>
-      </ImageView>
-      <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="719.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true">
-         <image>
-            <Image url="@../images/Characters/ExchamgeTwoHallDining.jpg" />
-         </image>
-      </ImageView>
-      <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="907.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true">
-         <image>
-            <Image url="@../images/Characters/ExchamgeTwoHallDining.jpg" />
-         </image>
-      </ImageView>
       <AnchorPane layoutY="252.0">
          <children>
             <ImageView fitHeight="218.0" fitWidth="381.0" layoutX="-2.0" layoutY="24.0" preserveRatio="true">
@@ -439,27 +451,27 @@
             <Circle fill="#fb1f17" layoutX="26.0" layoutY="64.0" radius="4.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.5" />
             <Circle fill="#ebfd28" layoutX="26.0" layoutY="82.0" radius="4.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.5" />
             <Circle fill="#18f83d" layoutX="26.0" layoutY="101.0" radius="4.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.5" />
-            <Label fx:id="num_blue1" layoutX="32.0" layoutY="24.0" text="Label" />
-            <Label fx:id="num_pink1" layoutX="32.0" layoutY="39.0" text="Label" />
-            <Label fx:id="num_red1" layoutX="32.0" layoutY="55.0" text="Label" />
-            <Label fx:id="num_yellow1" layoutX="32.0" layoutY="73.0" text="Label" />
-            <Label fx:id="num_green1" layoutX="32.0" layoutY="92.0" text="Label" />
-            <ImageView fx:id="mother_nature1" fitHeight="30.0" fitWidth="19.0" layoutX="67.0" layoutY="32.0" preserveRatio="true">
+            <Label fx:id="archi11_num_blue" layoutX="32.0" layoutY="24.0" text="Label" />
+            <Label fx:id="archi11num_pink" layoutX="32.0" layoutY="39.0" text="Label" />
+            <Label fx:id="archi11_num_red" layoutX="32.0" layoutY="55.0" text="Label" />
+            <Label fx:id="archi11_num_yellow" layoutX="32.0" layoutY="73.0" text="Label" />
+            <Label fx:id="archi11_num_green" layoutX="32.0" layoutY="92.0" text="Label" />
+            <ImageView fx:id="archi11_mother_nature" fitHeight="30.0" fitWidth="19.0" layoutX="67.0" layoutY="32.0" preserveRatio="true">
                <image>
                   <Image url="@../images/pawns/MN.png" />
                </image>
             </ImageView>
-            <ImageView fx:id="gray_tower1" fitHeight="25.0" fitWidth="19.0" layoutX="69.0" layoutY="64.0" preserveRatio="true">
+            <ImageView fx:id="archi11_gray_tower" fitHeight="25.0" fitWidth="19.0" layoutX="69.0" layoutY="64.0" preserveRatio="true">
                <image>
                   <Image url="@../images/pawns/GrayTower.png" />
                </image>
             </ImageView>
-            <ImageView fx:id="black_tower1" fitHeight="25.0" fitWidth="15.0" layoutX="69.0" layoutY="66.0" preserveRatio="true">
+            <ImageView fx:id="archi11_black_tower" fitHeight="25.0" fitWidth="15.0" layoutX="69.0" layoutY="66.0" preserveRatio="true">
                <image>
                   <Image url="@../images/pawns/BlackTower.png" />
                </image>
             </ImageView>
-            <ImageView fx:id="white_tower1" fitHeight="30.0" fitWidth="15.0" layoutX="69.0" layoutY="65.0" preserveRatio="true">
+            <ImageView fx:id="archi11_white_tower" fitHeight="30.0" fitWidth="15.0" layoutX="69.0" layoutY="65.0" preserveRatio="true">
                <image>
                   <Image url="@../images/pawns/WhiteTower.png" />
                </image>
@@ -479,27 +491,27 @@
             <Circle fill="#fb1f17" layoutX="26.0" layoutY="64.0" radius="4.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.5" />
             <Circle fill="#ebfd28" layoutX="26.0" layoutY="82.0" radius="4.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.5" />
             <Circle fill="#18f83d" layoutX="26.0" layoutY="101.0" radius="4.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.5" />
-            <Label fx:id="num_blue2" layoutX="32.0" layoutY="24.0" text="Label" />
-            <Label fx:id="num_pink2" layoutX="32.0" layoutY="39.0" text="Label" />
-            <Label fx:id="num_red2" layoutX="32.0" layoutY="55.0" text="Label" />
-            <Label fx:id="num_yellow2" layoutX="32.0" layoutY="73.0" text="Label" />
-            <Label fx:id="num_green2" layoutX="32.0" layoutY="92.0" text="Label" />
-            <ImageView fx:id="mother_nature2" fitHeight="30.0" fitWidth="19.0" layoutX="67.0" layoutY="32.0" preserveRatio="true">
+            <Label fx:id="archi10_num_blue" layoutX="32.0" layoutY="24.0" text="Label" />
+            <Label fx:id="archi10_num_pink" layoutX="32.0" layoutY="39.0" text="Label" />
+            <Label fx:id="archi10_num_red" layoutX="32.0" layoutY="55.0" text="Label" />
+            <Label fx:id="archi10_num_yellow" layoutX="32.0" layoutY="73.0" text="Label" />
+            <Label fx:id="archi10_num_green" layoutX="32.0" layoutY="92.0" text="Label" />
+            <ImageView fx:id="archi10_mother_nature" fitHeight="30.0" fitWidth="19.0" layoutX="67.0" layoutY="32.0" preserveRatio="true">
                <image>
                   <Image url="@../images/pawns/MN.png" />
                </image>
             </ImageView>
-            <ImageView fx:id="gray_tower2" fitHeight="25.0" fitWidth="19.0" layoutX="69.0" layoutY="64.0" preserveRatio="true">
+            <ImageView fx:id="archi10_gray_tower" fitHeight="25.0" fitWidth="19.0" layoutX="69.0" layoutY="64.0" preserveRatio="true">
                <image>
                   <Image url="@../images/pawns/GrayTower.png" />
                </image>
             </ImageView>
-            <ImageView fx:id="black_tower2" fitHeight="25.0" fitWidth="15.0" layoutX="69.0" layoutY="66.0" preserveRatio="true">
+            <ImageView fx:id="archi10_black_tower" fitHeight="25.0" fitWidth="15.0" layoutX="69.0" layoutY="66.0" preserveRatio="true">
                <image>
                   <Image url="@../images/pawns/BlackTower.png" />
                </image>
             </ImageView>
-            <ImageView fx:id="white_tower2" fitHeight="30.0" fitWidth="15.0" layoutX="69.0" layoutY="65.0" preserveRatio="true">
+            <ImageView fx:id="archi10_white_tower" fitHeight="30.0" fitWidth="15.0" layoutX="69.0" layoutY="65.0" preserveRatio="true">
                <image>
                   <Image url="@../images/pawns/WhiteTower.png" />
                </image>
@@ -519,27 +531,27 @@
             <Circle fill="#fb1f17" layoutX="26.0" layoutY="64.0" radius="4.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.5" />
             <Circle fill="#ebfd28" layoutX="26.0" layoutY="82.0" radius="4.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.5" />
             <Circle fill="#18f83d" layoutX="26.0" layoutY="101.0" radius="4.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.5" />
-            <Label fx:id="num_blue3" layoutX="32.0" layoutY="24.0" text="Label" />
-            <Label fx:id="num_pink3" layoutX="32.0" layoutY="39.0" text="Label" />
-            <Label fx:id="num_red3" layoutX="32.0" layoutY="55.0" text="Label" />
-            <Label fx:id="num_yellow3" layoutX="32.0" layoutY="73.0" text="Label" />
-            <Label fx:id="num_green3" layoutX="32.0" layoutY="92.0" text="Label" />
-            <ImageView fx:id="mother_nature3" fitHeight="30.0" fitWidth="19.0" layoutX="67.0" layoutY="32.0" preserveRatio="true">
+            <Label fx:id="archi9_num_blue" layoutX="32.0" layoutY="24.0" text="Label" />
+            <Label fx:id="archi9_num_pink" layoutX="32.0" layoutY="39.0" text="Label" />
+            <Label fx:id="archi9_num_red" layoutX="32.0" layoutY="55.0" text="Label" />
+            <Label fx:id="archi9_num_yellow" layoutX="32.0" layoutY="73.0" text="Label" />
+            <Label fx:id="archi9_num_green" layoutX="32.0" layoutY="92.0" text="Label" />
+            <ImageView fx:id="archi9_mother_nature" fitHeight="30.0" fitWidth="19.0" layoutX="67.0" layoutY="32.0" preserveRatio="true">
                <image>
                   <Image url="@../images/pawns/MN.png" />
                </image>
             </ImageView>
-            <ImageView fx:id="gray_tower3" fitHeight="25.0" fitWidth="19.0" layoutX="69.0" layoutY="64.0" preserveRatio="true">
+            <ImageView fx:id="archi9_gray_tower" fitHeight="25.0" fitWidth="19.0" layoutX="69.0" layoutY="64.0" preserveRatio="true">
                <image>
                   <Image url="@../images/pawns/GrayTower.png" />
                </image>
             </ImageView>
-            <ImageView fx:id="black_tower3" fitHeight="25.0" fitWidth="15.0" layoutX="69.0" layoutY="66.0" preserveRatio="true">
+            <ImageView fx:id="archi9_black_tower" fitHeight="25.0" fitWidth="15.0" layoutX="69.0" layoutY="66.0" preserveRatio="true">
                <image>
                   <Image url="@../images/pawns/BlackTower.png" />
                </image>
             </ImageView>
-            <ImageView fx:id="white_tower3" fitHeight="30.0" fitWidth="15.0" layoutX="69.0" layoutY="65.0" preserveRatio="true">
+            <ImageView fx:id="archi9_white_tower" fitHeight="30.0" fitWidth="15.0" layoutX="69.0" layoutY="65.0" preserveRatio="true">
                <image>
                   <Image url="@../images/pawns/WhiteTower.png" />
                </image>
@@ -559,27 +571,27 @@
             <Circle fill="#fb1f17" layoutX="26.0" layoutY="64.0" radius="4.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.5" />
             <Circle fill="#ebfd28" layoutX="26.0" layoutY="82.0" radius="4.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.5" />
             <Circle fill="#18f83d" layoutX="26.0" layoutY="101.0" radius="4.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.5" />
-            <Label fx:id="num_blue5" layoutX="32.0" layoutY="24.0" text="Label" />
-            <Label fx:id="num_pink5" layoutX="32.0" layoutY="39.0" text="Label" />
-            <Label fx:id="num_red5" layoutX="32.0" layoutY="55.0" text="Label" />
-            <Label fx:id="num_yellow5" layoutX="32.0" layoutY="73.0" text="Label" />
-            <Label fx:id="num_green5" layoutX="32.0" layoutY="92.0" text="Label" />
-            <ImageView fx:id="mother_nature5" fitHeight="30.0" fitWidth="19.0" layoutX="67.0" layoutY="32.0" preserveRatio="true">
+            <Label fx:id="archi2_num_blue" layoutX="32.0" layoutY="24.0" text="Label" />
+            <Label fx:id="archi2_num_pink" layoutX="32.0" layoutY="39.0" text="Label" />
+            <Label fx:id="archi2_num_red" layoutX="32.0" layoutY="55.0" text="Label" />
+            <Label fx:id="archi2_num_yellow" layoutX="32.0" layoutY="73.0" text="Label" />
+            <Label fx:id="archi2_num_green" layoutX="32.0" layoutY="92.0" text="Label" />
+            <ImageView fx:id="archi2_mother_nature" fitHeight="30.0" fitWidth="19.0" layoutX="67.0" layoutY="32.0" preserveRatio="true">
                <image>
                   <Image url="@../images/pawns/MN.png" />
                </image>
             </ImageView>
-            <ImageView fx:id="gray_tower5" fitHeight="25.0" fitWidth="19.0" layoutX="69.0" layoutY="64.0" preserveRatio="true">
+            <ImageView fx:id="archi2_gray_tower" fitHeight="25.0" fitWidth="19.0" layoutX="69.0" layoutY="64.0" preserveRatio="true">
                <image>
                   <Image url="@../images/pawns/GrayTower.png" />
                </image>
             </ImageView>
-            <ImageView fx:id="black_tower5" fitHeight="25.0" fitWidth="15.0" layoutX="69.0" layoutY="66.0" preserveRatio="true">
+            <ImageView fx:id="archi2_black_tower" fitHeight="25.0" fitWidth="15.0" layoutX="69.0" layoutY="66.0" preserveRatio="true">
                <image>
                   <Image url="@../images/pawns/BlackTower.png" />
                </image>
             </ImageView>
-            <ImageView fx:id="white_tower5" fitHeight="30.0" fitWidth="15.0" layoutX="69.0" layoutY="65.0" preserveRatio="true">
+            <ImageView fx:id="archi2_white_tower" fitHeight="30.0" fitWidth="15.0" layoutX="69.0" layoutY="65.0" preserveRatio="true">
                <image>
                   <Image url="@../images/pawns/WhiteTower.png" />
                </image>
@@ -599,27 +611,27 @@
             <Circle fill="#fb1f17" layoutX="26.0" layoutY="64.0" radius="4.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.5" />
             <Circle fill="#ebfd28" layoutX="26.0" layoutY="82.0" radius="4.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.5" />
             <Circle fill="#18f83d" layoutX="26.0" layoutY="101.0" radius="4.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.5" />
-            <Label fx:id="num_blue6" layoutX="32.0" layoutY="24.0" text="Label" />
-            <Label fx:id="num_pink6" layoutX="32.0" layoutY="39.0" text="Label" />
-            <Label fx:id="num_red6" layoutX="32.0" layoutY="55.0" text="Label" />
-            <Label fx:id="num_yellow6" layoutX="32.0" layoutY="73.0" text="Label" />
-            <Label fx:id="num_green6" layoutX="32.0" layoutY="92.0" text="Label" />
-            <ImageView fx:id="mother_nature6" fitHeight="30.0" fitWidth="19.0" layoutX="67.0" layoutY="32.0" preserveRatio="true">
+            <Label fx:id="archi1_num_blue" layoutX="32.0" layoutY="24.0" text="Label" />
+            <Label fx:id="archi1_num_pink" layoutX="32.0" layoutY="39.0" text="Label" />
+            <Label fx:id="archi1_num_red" layoutX="32.0" layoutY="55.0" text="Label" />
+            <Label fx:id="archi1_num_yellow" layoutX="32.0" layoutY="73.0" text="Label" />
+            <Label fx:id="archi1_num_green" layoutX="32.0" layoutY="92.0" text="Label" />
+            <ImageView fx:id="archi1_mother_nature" fitHeight="30.0" fitWidth="19.0" layoutX="67.0" layoutY="32.0" preserveRatio="true">
                <image>
                   <Image url="@../images/pawns/MN.png" />
                </image>
             </ImageView>
-            <ImageView fx:id="gray_tower6" fitHeight="25.0" fitWidth="19.0" layoutX="69.0" layoutY="64.0" preserveRatio="true">
+            <ImageView fx:id="archi1_gray_tower" fitHeight="25.0" fitWidth="19.0" layoutX="69.0" layoutY="64.0" preserveRatio="true">
                <image>
                   <Image url="@../images/pawns/GrayTower.png" />
                </image>
             </ImageView>
-            <ImageView fx:id="black_tower6" fitHeight="25.0" fitWidth="15.0" layoutX="69.0" layoutY="66.0" preserveRatio="true">
+            <ImageView fx:id="archi1_black_tower" fitHeight="25.0" fitWidth="15.0" layoutX="69.0" layoutY="66.0" preserveRatio="true">
                <image>
                   <Image url="@../images/pawns/BlackTower.png" />
                </image>
             </ImageView>
-            <ImageView fx:id="white_tower6" fitHeight="30.0" fitWidth="15.0" layoutX="69.0" layoutY="65.0" preserveRatio="true">
+            <ImageView fx:id="archi1_white_tower" fitHeight="30.0" fitWidth="15.0" layoutX="69.0" layoutY="65.0" preserveRatio="true">
                <image>
                   <Image url="@../images/pawns/WhiteTower.png" />
                </image>
@@ -639,27 +651,27 @@
             <Circle fill="#fb1f17" layoutX="26.0" layoutY="64.0" radius="4.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.5" />
             <Circle fill="#ebfd28" layoutX="26.0" layoutY="82.0" radius="4.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.5" />
             <Circle fill="#18f83d" layoutX="26.0" layoutY="101.0" radius="4.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.5" />
-            <Label fx:id="num_blue4" layoutX="32.0" layoutY="24.0" text="Label" />
-            <Label fx:id="num_pink4" layoutX="32.0" layoutY="39.0" text="Label" />
-            <Label fx:id="num_red4" layoutX="32.0" layoutY="55.0" text="Label" />
-            <Label fx:id="num_yellow4" layoutX="32.0" layoutY="73.0" text="Label" />
-            <Label fx:id="num_green4" layoutX="32.0" layoutY="92.0" text="Label" />
-            <ImageView fx:id="mother_nature4" fitHeight="30.0" fitWidth="19.0" layoutX="67.0" layoutY="32.0" preserveRatio="true">
+            <Label fx:id="archi3_num_blue" layoutX="32.0" layoutY="24.0" text="Label" />
+            <Label fx:id="archi3_num_pink" layoutX="32.0" layoutY="39.0" text="Label" />
+            <Label fx:id="archi3_num_red" layoutX="32.0" layoutY="55.0" text="Label" />
+            <Label fx:id="archi3_num_yellow" layoutX="32.0" layoutY="73.0" text="Label" />
+            <Label fx:id="archi3_num_green" layoutX="32.0" layoutY="92.0" text="Label" />
+            <ImageView fx:id="archi3_mother_nature" fitHeight="30.0" fitWidth="19.0" layoutX="67.0" layoutY="32.0" preserveRatio="true">
                <image>
                   <Image url="@../images/pawns/MN.png" />
                </image>
             </ImageView>
-            <ImageView fx:id="gray_tower4" fitHeight="25.0" fitWidth="19.0" layoutX="69.0" layoutY="64.0" preserveRatio="true">
+            <ImageView fx:id="archi3_gray_tower" fitHeight="25.0" fitWidth="19.0" layoutX="69.0" layoutY="64.0" preserveRatio="true">
                <image>
                   <Image url="@../images/pawns/GrayTower.png" />
                </image>
             </ImageView>
-            <ImageView fx:id="black_tower4" fitHeight="25.0" fitWidth="15.0" layoutX="69.0" layoutY="66.0" preserveRatio="true">
+            <ImageView fx:id="archi3_black_tower" fitHeight="25.0" fitWidth="15.0" layoutX="69.0" layoutY="66.0" preserveRatio="true">
                <image>
                   <Image url="@../images/pawns/BlackTower.png" />
                </image>
             </ImageView>
-            <ImageView fx:id="white_tower4" fitHeight="30.0" fitWidth="15.0" layoutX="69.0" layoutY="65.0" preserveRatio="true">
+            <ImageView fx:id="archi3_white_tower" fitHeight="30.0" fitWidth="15.0" layoutX="69.0" layoutY="65.0" preserveRatio="true">
                <image>
                   <Image url="@../images/pawns/WhiteTower.png" />
                </image>
@@ -679,27 +691,27 @@
             <Circle fill="#fb1f17" layoutX="26.0" layoutY="64.0" radius="4.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.5" />
             <Circle fill="#ebfd28" layoutX="26.0" layoutY="82.0" radius="4.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.5" />
             <Circle fill="#18f83d" layoutX="26.0" layoutY="101.0" radius="4.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.5" />
-            <Label fx:id="num_blue7" layoutX="32.0" layoutY="24.0" text="Label" />
-            <Label fx:id="num_pink7" layoutX="32.0" layoutY="39.0" text="Label" />
-            <Label fx:id="num_red7" layoutX="32.0" layoutY="55.0" text="Label" />
-            <Label fx:id="num_yellow7" layoutX="32.0" layoutY="73.0" text="Label" />
-            <Label fx:id="num_green7" layoutX="32.0" layoutY="92.0" text="Label" />
-            <ImageView fx:id="mother_nature7" fitHeight="30.0" fitWidth="19.0" layoutX="67.0" layoutY="32.0" preserveRatio="true">
+            <Label fx:id="archi4_num_blue" layoutX="32.0" layoutY="24.0" text="Label" />
+            <Label fx:id="archi4_num_pink" layoutX="32.0" layoutY="39.0" text="Label" />
+            <Label fx:id="archi4_num_red" layoutX="32.0" layoutY="55.0" text="Label" />
+            <Label fx:id="archi4_num_yellow" layoutX="32.0" layoutY="73.0" text="Label" />
+            <Label fx:id="archi4_num_green" layoutX="32.0" layoutY="92.0" text="Label" />
+            <ImageView fx:id="archi4_mother_nature" fitHeight="30.0" fitWidth="19.0" layoutX="67.0" layoutY="32.0" preserveRatio="true">
                <image>
                   <Image url="@../images/pawns/MN.png" />
                </image>
             </ImageView>
-            <ImageView fx:id="gray_tower7" fitHeight="25.0" fitWidth="19.0" layoutX="69.0" layoutY="64.0" preserveRatio="true">
+            <ImageView fx:id="archi4_gray_tower" fitHeight="25.0" fitWidth="19.0" layoutX="69.0" layoutY="64.0" preserveRatio="true">
                <image>
                   <Image url="@../images/pawns/GrayTower.png" />
                </image>
             </ImageView>
-            <ImageView fx:id="black_tower7" fitHeight="25.0" fitWidth="15.0" layoutX="69.0" layoutY="66.0" preserveRatio="true">
+            <ImageView fx:id="archi4_black_tower" fitHeight="25.0" fitWidth="15.0" layoutX="69.0" layoutY="66.0" preserveRatio="true">
                <image>
                   <Image url="@../images/pawns/BlackTower.png" />
                </image>
             </ImageView>
-            <ImageView fx:id="white_tower7" fitHeight="30.0" fitWidth="15.0" layoutX="69.0" layoutY="65.0" preserveRatio="true">
+            <ImageView fx:id="archi4_white_tower" fitHeight="30.0" fitWidth="15.0" layoutX="69.0" layoutY="65.0" preserveRatio="true">
                <image>
                   <Image url="@../images/pawns/WhiteTower.png" />
                </image>
@@ -719,27 +731,27 @@
             <Circle fill="#fb1f17" layoutX="26.0" layoutY="64.0" radius="4.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.5" />
             <Circle fill="#ebfd28" layoutX="26.0" layoutY="82.0" radius="4.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.5" />
             <Circle fill="#18f83d" layoutX="26.0" layoutY="101.0" radius="4.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.5" />
-            <Label fx:id="num_blue8" layoutX="32.0" layoutY="24.0" text="Label" />
-            <Label fx:id="num_pink8" layoutX="32.0" layoutY="39.0" text="Label" />
-            <Label fx:id="num_red8" layoutX="32.0" layoutY="55.0" text="Label" />
-            <Label fx:id="num_yellow8" layoutX="32.0" layoutY="73.0" text="Label" />
-            <Label fx:id="num_green8" layoutX="32.0" layoutY="92.0" text="Label" />
-            <ImageView fx:id="mother_nature8" fitHeight="30.0" fitWidth="19.0" layoutX="67.0" layoutY="32.0" preserveRatio="true">
+            <Label fx:id="archi5_num_blue" layoutX="32.0" layoutY="24.0" text="Label" />
+            <Label fx:id="archi5_num_pink" layoutX="32.0" layoutY="39.0" text="Label" />
+            <Label fx:id="archi5_num_red" layoutX="32.0" layoutY="55.0" text="Label" />
+            <Label fx:id="archi5_num_yellow" layoutX="32.0" layoutY="73.0" text="Label" />
+            <Label fx:id="archi5_num_green" layoutX="32.0" layoutY="92.0" text="Label" />
+            <ImageView fx:id="archi5_mother_nature" fitHeight="30.0" fitWidth="19.0" layoutX="67.0" layoutY="32.0" preserveRatio="true">
                <image>
                   <Image url="@../images/pawns/MN.png" />
                </image>
             </ImageView>
-            <ImageView fx:id="gray_tower8" fitHeight="25.0" fitWidth="19.0" layoutX="69.0" layoutY="64.0" preserveRatio="true">
+            <ImageView fx:id="archi5_gray_tower" fitHeight="25.0" fitWidth="19.0" layoutX="69.0" layoutY="64.0" preserveRatio="true">
                <image>
                   <Image url="@../images/pawns/GrayTower.png" />
                </image>
             </ImageView>
-            <ImageView fx:id="black_tower8" fitHeight="25.0" fitWidth="15.0" layoutX="69.0" layoutY="66.0" preserveRatio="true">
+            <ImageView fx:id="archi5_black_tower" fitHeight="25.0" fitWidth="15.0" layoutX="69.0" layoutY="66.0" preserveRatio="true">
                <image>
                   <Image url="@../images/pawns/BlackTower.png" />
                </image>
             </ImageView>
-            <ImageView fx:id="white_tower8" fitHeight="30.0" fitWidth="15.0" layoutX="69.0" layoutY="65.0" preserveRatio="true">
+            <ImageView fx:id="archi5_white_tower" fitHeight="30.0" fitWidth="15.0" layoutX="69.0" layoutY="65.0" preserveRatio="true">
                <image>
                   <Image url="@../images/pawns/WhiteTower.png" />
                </image>
@@ -759,27 +771,27 @@
             <Circle fill="#fb1f17" layoutX="26.0" layoutY="64.0" radius="4.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.5" />
             <Circle fill="#ebfd28" layoutX="26.0" layoutY="82.0" radius="4.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.5" />
             <Circle fill="#18f83d" layoutX="26.0" layoutY="101.0" radius="4.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.5" />
-            <Label fx:id="num_blue9" layoutX="32.0" layoutY="24.0" text="Label" />
-            <Label fx:id="num_pink9" layoutX="32.0" layoutY="39.0" text="Label" />
-            <Label fx:id="num_red9" layoutX="32.0" layoutY="55.0" text="Label" />
-            <Label fx:id="num_yellow9" layoutX="32.0" layoutY="73.0" text="Label" />
-            <Label fx:id="num_green9" layoutX="32.0" layoutY="92.0" text="Label" />
-            <ImageView fx:id="mother_nature9" fitHeight="30.0" fitWidth="19.0" layoutX="67.0" layoutY="32.0" preserveRatio="true">
+            <Label fx:id="archi6_num_blue" layoutX="32.0" layoutY="24.0" text="Label" />
+            <Label fx:id="archi6_num_pink" layoutX="32.0" layoutY="39.0" text="Label" />
+            <Label fx:id="archi6_num_red" layoutX="32.0" layoutY="55.0" text="Label" />
+            <Label fx:id="archi6_num_yellow" layoutX="32.0" layoutY="73.0" text="Label" />
+            <Label fx:id="archi6_num_green" layoutX="32.0" layoutY="92.0" text="Label" />
+            <ImageView fx:id="archi6_mother_nature" fitHeight="30.0" fitWidth="19.0" layoutX="67.0" layoutY="32.0" preserveRatio="true">
                <image>
                   <Image url="@../images/pawns/MN.png" />
                </image>
             </ImageView>
-            <ImageView fx:id="gray_tower9" fitHeight="25.0" fitWidth="19.0" layoutX="69.0" layoutY="64.0" preserveRatio="true">
+            <ImageView fx:id="archi6_gray_tower" fitHeight="25.0" fitWidth="19.0" layoutX="69.0" layoutY="64.0" preserveRatio="true">
                <image>
                   <Image url="@../images/pawns/GrayTower.png" />
                </image>
             </ImageView>
-            <ImageView fx:id="black_tower9" fitHeight="25.0" fitWidth="15.0" layoutX="69.0" layoutY="66.0" preserveRatio="true">
+            <ImageView fx:id="archi6_black_tower" fitHeight="25.0" fitWidth="15.0" layoutX="69.0" layoutY="66.0" preserveRatio="true">
                <image>
                   <Image url="@../images/pawns/BlackTower.png" />
                </image>
             </ImageView>
-            <ImageView fx:id="white_tower9" fitHeight="30.0" fitWidth="15.0" layoutX="69.0" layoutY="65.0" preserveRatio="true">
+            <ImageView fx:id="archi6_white_tower" fitHeight="30.0" fitWidth="15.0" layoutX="69.0" layoutY="65.0" preserveRatio="true">
                <image>
                   <Image url="@../images/pawns/WhiteTower.png" />
                </image>
@@ -799,27 +811,27 @@
             <Circle fill="#fb1f17" layoutX="26.0" layoutY="64.0" radius="4.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.5" />
             <Circle fill="#ebfd28" layoutX="26.0" layoutY="82.0" radius="4.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.5" />
             <Circle fill="#18f83d" layoutX="26.0" layoutY="101.0" radius="4.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.5" />
-            <Label fx:id="num_blue10" layoutX="32.0" layoutY="24.0" text="Label" />
-            <Label fx:id="num_pink10" layoutX="32.0" layoutY="39.0" text="Label" />
-            <Label fx:id="num_red10" layoutX="32.0" layoutY="55.0" text="Label" />
-            <Label fx:id="num_yellow10" layoutX="32.0" layoutY="73.0" text="Label" />
-            <Label fx:id="num_green10" layoutX="32.0" layoutY="92.0" text="Label" />
-            <ImageView fx:id="mother_nature10" fitHeight="30.0" fitWidth="19.0" layoutX="67.0" layoutY="32.0" preserveRatio="true">
+            <Label fx:id="archi8_num_blue" layoutX="32.0" layoutY="24.0" text="Label" />
+            <Label fx:id="archi8_num_pink" layoutX="32.0" layoutY="39.0" text="Label" />
+            <Label fx:id="archi8_num_red" layoutX="32.0" layoutY="55.0" text="Label" />
+            <Label fx:id="archi8_num_yellow" layoutX="32.0" layoutY="73.0" text="Label" />
+            <Label fx:id="archi8_num_green" layoutX="32.0" layoutY="92.0" text="Label" />
+            <ImageView fx:id="archi8_mother_nature" fitHeight="30.0" fitWidth="19.0" layoutX="67.0" layoutY="32.0" preserveRatio="true">
                <image>
                   <Image url="@../images/pawns/MN.png" />
                </image>
             </ImageView>
-            <ImageView fx:id="gray_tower10" fitHeight="25.0" fitWidth="19.0" layoutX="69.0" layoutY="64.0" preserveRatio="true">
+            <ImageView fx:id="archi8_gray_tower" fitHeight="25.0" fitWidth="19.0" layoutX="69.0" layoutY="64.0" preserveRatio="true">
                <image>
                   <Image url="@../images/pawns/GrayTower.png" />
                </image>
             </ImageView>
-            <ImageView fx:id="black_tower10" fitHeight="25.0" fitWidth="15.0" layoutX="69.0" layoutY="66.0" preserveRatio="true">
+            <ImageView fx:id="archi8_black_tower" fitHeight="25.0" fitWidth="15.0" layoutX="69.0" layoutY="66.0" preserveRatio="true">
                <image>
                   <Image url="@../images/pawns/BlackTower.png" />
                </image>
             </ImageView>
-            <ImageView fx:id="white_tower10" fitHeight="30.0" fitWidth="15.0" layoutX="69.0" layoutY="65.0" preserveRatio="true">
+            <ImageView fx:id="archi8_white_tower" fitHeight="30.0" fitWidth="15.0" layoutX="69.0" layoutY="65.0" preserveRatio="true">
                <image>
                   <Image url="@../images/pawns/WhiteTower.png" />
                </image>
@@ -839,27 +851,27 @@
             <Circle fill="#fb1f17" layoutX="26.0" layoutY="64.0" radius="4.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.5" />
             <Circle fill="#ebfd28" layoutX="26.0" layoutY="82.0" radius="4.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.5" />
             <Circle fill="#18f83d" layoutX="26.0" layoutY="101.0" radius="4.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.5" />
-            <Label fx:id="num_blue11" layoutX="32.0" layoutY="24.0" text="Label" />
-            <Label fx:id="num_pink11" layoutX="32.0" layoutY="39.0" text="Label" />
-            <Label fx:id="num_red11" layoutX="32.0" layoutY="55.0" text="Label" />
-            <Label fx:id="num_yellow11" layoutX="32.0" layoutY="73.0" text="Label" />
-            <Label fx:id="num_green11" layoutX="32.0" layoutY="92.0" text="Label" />
-            <ImageView fx:id="mother_nature11" fitHeight="30.0" fitWidth="19.0" layoutX="67.0" layoutY="32.0" preserveRatio="true">
+            <Label fx:id="archi7_num_blue" layoutX="32.0" layoutY="24.0" text="Label" />
+            <Label fx:id="archi7_num_pink" layoutX="32.0" layoutY="39.0" text="Label" />
+            <Label fx:id="archi7_num_red" layoutX="32.0" layoutY="55.0" text="Label" />
+            <Label fx:id="archi7_num_yellow" layoutX="32.0" layoutY="73.0" text="Label" />
+            <Label fx:id="archi7_num_green" layoutX="32.0" layoutY="92.0" text="Label" />
+            <ImageView fx:id="archi7_mother_nature" fitHeight="30.0" fitWidth="19.0" layoutX="67.0" layoutY="32.0" preserveRatio="true">
                <image>
                   <Image url="@../images/pawns/MN.png" />
                </image>
             </ImageView>
-            <ImageView fx:id="gray_tower11" fitHeight="25.0" fitWidth="19.0" layoutX="69.0" layoutY="64.0" preserveRatio="true">
+            <ImageView fx:id="archi7_gray_tower" fitHeight="25.0" fitWidth="19.0" layoutX="69.0" layoutY="64.0" preserveRatio="true">
                <image>
                   <Image url="@../images/pawns/GrayTower.png" />
                </image>
             </ImageView>
-            <ImageView fx:id="black_tower11" fitHeight="25.0" fitWidth="15.0" layoutX="69.0" layoutY="66.0" preserveRatio="true">
+            <ImageView fx:id="archi7_black_tower" fitHeight="25.0" fitWidth="15.0" layoutX="69.0" layoutY="66.0" preserveRatio="true">
                <image>
                   <Image url="@../images/pawns/BlackTower.png" />
                </image>
             </ImageView>
-            <ImageView fx:id="white_tower11" fitHeight="30.0" fitWidth="15.0" layoutX="69.0" layoutY="65.0" preserveRatio="true">
+            <ImageView fx:id="archi7_white_tower" fitHeight="30.0" fitWidth="15.0" layoutX="69.0" layoutY="65.0" preserveRatio="true">
                <image>
                   <Image url="@../images/pawns/WhiteTower.png" />
                </image>
