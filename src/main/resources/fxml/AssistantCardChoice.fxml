@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="1280.0" style="-fx-background-color: #2596be;" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.View.GUI.Controllers.AssistantCardController">
+   <children>
+      <ImageView fitHeight="200.0" fitWidth="136.0" layoutX="249.0" layoutY="172.0">
+         <image>
+            <Image url="@../images/Assistants/1.png" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="200.0" fitWidth="136.0" layoutX="410.0" layoutY="172.0">
+         <image>
+            <Image url="@../images/Assistants/2.png" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="200.0" fitWidth="136.0" layoutX="574.0" layoutY="172.0">
+         <image>
+            <Image url="@../images/Assistants/3.png" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="200.0" fitWidth="136.0" layoutX="732.0" layoutY="172.0">
+         <image>
+            <Image url="@../images/Assistants/4.png" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="200.0" fitWidth="136.0" layoutX="894.0" layoutY="172.0">
+         <image>
+            <Image url="@../images/Assistants/5.png" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="200.0" fitWidth="136.0" layoutX="249.0" layoutY="413.0">
+         <image>
+            <Image url="@../images/Assistants/6.png" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="200.0" fitWidth="136.0" layoutX="410.0" layoutY="413.0">
+         <image>
+            <Image url="@../images/Assistants/7.png" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="200.0" fitWidth="136.0" layoutX="574.0" layoutY="413.0">
+         <image>
+            <Image url="@../images/Assistants/8.png" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="200.0" fitWidth="136.0" layoutX="732.0" layoutY="413.0">
+         <image>
+            <Image url="@../images/Assistants/9.png" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="200.0" fitWidth="136.0" layoutX="894.0" layoutY="413.0">
+         <image>
+            <Image url="@../images/Assistants/10.png" />
+         </image>
+      </ImageView>
+      <AnchorPane layoutX="248.0" layoutY="55.0">
+         <children>
+            <Label graphicTextGap="3.0" prefHeight="70.0" prefWidth="783.0" style="-fx-alignment: center;" text="Choose your assistant card" textFill="WHITE">
+               <font>
+                  <Font name="Segoe UI Black" size="42.0" />
+               </font>
+            </Label>
+         </children>
+      </AnchorPane>
+      <Button fx:id="card1" layoutX="249.0" layoutY="172.0" mnemonicParsing="false" opacity="0.0" prefHeight="200.0" prefWidth="136.0" style="-fx-background-color: #000000;" textFill="TRANSPARENT" />
+      <Button fx:id="card2" layoutX="410.0" layoutY="172.0" mnemonicParsing="false" opacity="0.0" prefHeight="200.0" prefWidth="136.0" style="-fx-background-color: #000000;" textFill="TRANSPARENT" />
+      <Button fx:id="card3" layoutX="573.0" layoutY="172.0" mnemonicParsing="false" opacity="0.0" prefHeight="200.0" prefWidth="136.0" style="-fx-background-color: #000000;" textFill="TRANSPARENT" />
+      <Button fx:id="card4" layoutX="732.0" layoutY="172.0" mnemonicParsing="false" opacity="0.0" prefHeight="200.0" prefWidth="136.0" style="-fx-background-color: #000000;" textFill="TRANSPARENT" />
+      <Button fx:id="card5" layoutX="894.0" layoutY="172.0" mnemonicParsing="false" opacity="0.0" prefHeight="200.0" prefWidth="136.0" style="-fx-background-color: #000000;" textFill="TRANSPARENT" />
+      <Button fx:id="card6" layoutX="249.0" layoutY="413.0" mnemonicParsing="false" opacity="0.0" prefHeight="200.0" prefWidth="136.0" style="-fx-background-color: #000000;" textFill="TRANSPARENT" />
+      <Button fx:id="card7" layoutX="410.0" layoutY="413.0" mnemonicParsing="false" opacity="0.0" prefHeight="200.0" prefWidth="136.0" style="-fx-background-color: #000000;" textFill="TRANSPARENT" />
+      <Button fx:id="card8" layoutX="574.0" layoutY="413.0" mnemonicParsing="false" opacity="0.0" prefHeight="200.0" prefWidth="136.0" style="-fx-background-color: #000000;" textFill="TRANSPARENT" />
+      <Button fx:id="card9" layoutX="732.0" layoutY="413.0" mnemonicParsing="false" opacity="0.0" prefHeight="200.0" prefWidth="136.0" style="-fx-background-color: #000000;" textFill="TRANSPARENT" />
+      <Button fx:id="card10" layoutX="894.0" layoutY="413.0" mnemonicParsing="false" opacity="0.0" prefHeight="200.0" prefWidth="136.0" style="-fx-background-color: #000000;" textFill="TRANSPARENT" />
+   </children>
+</AnchorPane>

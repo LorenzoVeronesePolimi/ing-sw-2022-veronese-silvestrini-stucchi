@@ -141,7 +141,7 @@ public interface Board {
     School getPlayerSchool(Player player);
 
     /**
-     * method that compute
+     * method that assign an owner (if there is one) to the archipelago where mother nature is currently on
      * @param currentPlayer
      * @throws InvalidTowerNumberException
      * @throws AnotherTowerException
