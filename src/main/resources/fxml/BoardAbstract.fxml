@@ -311,17 +311,17 @@
       </ImageView>
       <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="516.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../images/Characters/ExchamgeTwoHallDining.jpg" />
+            <Image url="@../images/Characters/ExchangeTwoHallDining.jpg" />
          </image>
       </ImageView>
       <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="719.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../images/Characters/ExchamgeTwoHallDining.jpg" />
+            <Image url="@../images/Characters/ExchangeTwoHallDining.jpg" />
          </image>
       </ImageView>
       <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="907.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../images/Characters/ExchamgeTwoHallDining.jpg" />
+            <Image url="@../images/Characters/ExchangeTwoHallDining.jpg" />
          </image>
       </ImageView>
       <AnchorPane layoutY="252.0">

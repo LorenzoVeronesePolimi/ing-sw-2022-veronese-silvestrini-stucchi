@@ -252,7 +252,10 @@ public class BoardFourAdvancedController implements GUIController, Initializable
 
         for(int i = 0; i < board.getOrderedPlayers().size(); i++){
             this.schoolsFxml.get(i).setNickVisualization(board.getOrderedPlayers().get(onWorkingPlayerIndex).getNickname());
-            this.schoolsFxml.get(i).setHallVisualization(board.getSchools().get(onWorkingPlayerIndex).getStudentsHall());
+            if(this.client.getNickname().equals(board.getOrderedPlayers().get(onWorkingPlayerIndex).getNickname()))
+                this.schoolsFxml.get(i).setHallVisualization(board.getSchools().get(onWorkingPlayerIndex).getStudentsHall());
+            else
+                this.schoolsFxml.get(i).setHallVisualization(board.getSchools().get(onWorkingPlayerIndex).getStudentsHall(), 0.1);
 
             onWorkingPlayerIndex = (onWorkingPlayerIndex  + 1) % board.getOrderedPlayers().size();
         }

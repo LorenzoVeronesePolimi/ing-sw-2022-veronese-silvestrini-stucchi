@@ -20,11 +20,11 @@ public class SchoolFxml {
     @FXML private Label coins;
 
     private static Map<SPColour, String> studentColourPath = Map.of(
-            SPColour.BLUE, "/images/pawns/stud_blue.jpg",
-            SPColour.PINK, "/images/pawns/stud_pink.jpg",
-            SPColour.RED, "/images/pawns/stud_blue.jpg",
-            SPColour.YELLOW, "/images/pawns/stud_blue.jpg",
-            SPColour.GREEN, "/images/pawns/stud_blue.jpg"
+            SPColour.BLUE, "/images/pawns/stud_blue.png",
+            SPColour.PINK, "/images/pawns/stud_pink.png",
+            SPColour.RED, "/images/pawns/stud_red.png",
+            SPColour.YELLOW, "/images/pawns/stud_yellow.png",
+            SPColour.GREEN, "/images/pawns/stud_green.png"
     ); // relates the SPColour to the image of the student of that colour
 
     public SchoolFxml(Label nick, GridPane hall, GridPane dining, GridPane professors, GridPane towers, Label coins) {
@@ -70,14 +70,29 @@ public class SchoolFxml {
         int x = 0; // always 0 or 1
         int y = 0;
         for(Student s : students){
-            this.hall.add(new ImageView(studentColourPath.get(s.getColour())), x, y);
+            this.hall.add(new ImageView(getClass().getResource(studentColourPath.get(s.getColour())).toExternalForm()), x, y);
             x++;
             if(x == 2) {
                 x = 0;
                 y++;
             }
         }
-        this.hall = hall;
+    }
+
+    public void setHallVisualization(List<Student> students, double scale) {
+        int x = 0; // always 0 or 1
+        int y = 0;
+        for(Student s : students){
+            ImageView image = new ImageView(getClass().getResource(studentColourPath.get(s.getColour())).toExternalForm());
+            image.setFitHeight(image.getFitHeight() * scale);
+            image.setFitWidth(image.getFitWidth() * scale);
+            this.hall.add(image, x, y);
+            x++;
+            if(x == 2) {
+                x = 0;
+                y++;
+            }
+        }
     }
 
     public void setDining(GridPane dining) {
