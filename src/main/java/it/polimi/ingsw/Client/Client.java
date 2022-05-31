@@ -26,6 +26,7 @@ public class Client {
     private String ip;
     private final int port;
     private Socket socket;
+    private String nickname;
     private ClientView view;
     private ObjectInputStream socketIn;
     private ObjectOutputStream socketOut;
@@ -72,6 +73,14 @@ public class Client {
 
     public void setPlatformReady(boolean platformReady) {
         this.platformReady = platformReady;
+    }
+
+    public String getNickname() {
+        return nickname;
+    }
+
+    public void setNickname(String nickname) {
+        this.nickname = nickname;
     }
 
     public Thread asyncReadFromSocket(){

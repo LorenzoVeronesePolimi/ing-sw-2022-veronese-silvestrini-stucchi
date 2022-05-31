@@ -21,7 +21,7 @@ public class IntroController implements GUIController {
     public void onButtonClicked(ActionEvent e) {
         System.out.println("Button pressed");
         this.client.setPlatformReady(true);
-        this.guiViewFX.sceneLoading("LoadingPage.fxml", "You will be connected soon!");
+        this.guiViewFX.sceneLoading("You will be connected soon!");
 
     }
 

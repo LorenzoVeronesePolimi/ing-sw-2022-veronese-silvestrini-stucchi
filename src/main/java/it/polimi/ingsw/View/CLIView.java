@@ -193,6 +193,7 @@ public class CLIView extends ClientView {
         System.out.flush();
 
         client.asyncWriteToSocket("addPlayer " + nickname + " " + colour);
+        this.client.setNickname(nickname);
     }
 
     @Override
@@ -249,6 +250,7 @@ public class CLIView extends ClientView {
         System.out.flush();
 
         client.asyncWriteToSocket("createMatch " + nickname + " " + colour + " " + numPlayers + " " + gameMode);
+        this.client.setNickname(nickname);
     }
 
     @Override

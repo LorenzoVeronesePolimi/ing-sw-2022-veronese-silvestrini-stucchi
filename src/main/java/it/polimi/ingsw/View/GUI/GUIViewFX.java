@@ -1,6 +1,7 @@
 package it.polimi.ingsw.View.GUI;
 
 import it.polimi.ingsw.Client.Client;
+import it.polimi.ingsw.Controller.Enumerations.State;
 import it.polimi.ingsw.Model.Board.SerializedBoardAbstract;
 import it.polimi.ingsw.Model.Enumerations.PlayerColour;
 import it.polimi.ingsw.View.GUI.Controllers.*;
@@ -28,6 +29,7 @@ public class GUIViewFX extends Application {
     private static final String INTRO = "Intro.fxml";
     private static final String LOGIN = "Login.fxml";
     private static final String LOADING = "LoadingPage.fxml";
+    private static final String ASSISTANT_CARD = "AssistantCardChoice.fxml";
     private static final String BOARD_FOUR_ADVANCED = "BoardGrid.fxml"; //TODO: to be changed
     private static final String INTRO_CSS = "Intro.css";
     private static final String LOGIN_CSS = "Login.css";
@@ -58,7 +60,7 @@ public class GUIViewFX extends Application {
 
     private void setupControllers() {
         // creating an array of scenes (All the scenes of the application)
-        List<String> sceneList = new ArrayList<>(Arrays.asList(INTRO, LOADING, LOGIN, BOARD_FOUR_ADVANCED));
+        List<String> sceneList = new ArrayList<>(Arrays.asList(INTRO, LOADING, LOGIN, ASSISTANT_CARD, BOARD_FOUR_ADVANCED));
         try {
             for(String path : sceneList) {
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/" + path)); // prepare the scene
@@ -118,7 +120,7 @@ public class GUIViewFX extends Application {
         stage.getIcons().add(icon);
 
         // Windows title
-        stage.setTitle("Eriantys board game");
+        stage.setTitle("Eriantys board game: " +  this.client.getNickname());
         stage.setFullScreen(false);
 
         stage.setScene(currentScene);
@@ -129,7 +131,9 @@ public class GUIViewFX extends Application {
         this.client = client;
     }
 
-    public void sceneLoading(String scene, String message) {
+    public void sceneLoading(String message) {
+        String scene = "LoadingPage.fxml";
+
         LoaderController currentController = (LoaderController) controllerMap.get(scene);
         currentController.setMessage(message);
 
@@ -138,7 +142,8 @@ public class GUIViewFX extends Application {
         this.stage.show();
     }
 
-    public void sceneAskFirstPlayerInfo(String scene){
+    public void sceneAskFirstPlayerInfo(){
+        String scene = "Login.fxml";
         LoginController currentController = (LoginController) controllerMap.get(scene);
         currentController.setFirstPlayer(true);
 
@@ -147,7 +152,9 @@ public class GUIViewFX extends Application {
         this.stage.show();
     }
 
-    public void sceneAskNickname(String scene, List<PlayerColour> colourList, int numPlayers){
+    public void sceneAskNickname(List<PlayerColour> colourList, int numPlayers){
+        String scene = "Login.fxml";
+
         /*  Example of what should be done for every scene:
              - receiving the parameters from Message->GUIView
              - passing them to the scene controller in order to show personalized info
@@ -169,7 +176,34 @@ public class GUIViewFX extends Application {
         alert.showAndWait();
     }
 
-    public void sceneShowBoard(String scene, SerializedBoardAbstract board){
+    public void manageScene(SerializedBoardAbstract board){
+        switch (board.getCurrentState()) {
+            case PLANNING2:
+                this.sceneAssistantCard("AssistantCardChoice.fxml", board);
+                break;
+
+            case ACTION1:
+            case ACTION2:
+            case ACTION3:
+                this.sceneShowBoard("BoardGrid.fxml", board);
+                break;
+
+            case END:
+                break;
+
+        }
+    }
+
+    private void sceneAssistantCard(String scene, SerializedBoardAbstract board) {
+        AssistantCardController currentController = (AssistantCardController) controllerMap.get(scene);
+        currentController.setSerializedBoardAbstract(board);
+
+        this.currentScene = sceneMap.get(scene);
+        this.stage.setScene(this.currentScene);
+        this.stage.show();
+    }
+
+    private void sceneShowBoard(String scene, SerializedBoardAbstract board) {
         BoardFourAdvancedController currentController = (BoardFourAdvancedController) controllerMap.get(scene);
         currentController.setArchipelagosFxmlVisualization(board);
         //currentController.setSchoolsFxmlVisualization(board);
@@ -178,5 +212,6 @@ public class GUIViewFX extends Application {
         this.stage.setScene(this.currentScene);
         this.stage.show();
     }
+
 }
 

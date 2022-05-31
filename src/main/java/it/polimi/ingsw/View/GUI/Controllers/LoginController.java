@@ -73,11 +73,11 @@ public class LoginController implements GUIController, Initializable {
         this.modeChoice.setOnAction(this::saveMode);
     }
 
-    public void saveNickname(MouseEvent event) {
+    private void saveNickname(MouseEvent event) {
         this.nicknameError.setVisible(false);
     }
 
-    public void saveColour(ActionEvent event) {
+    private void saveColour(ActionEvent event) {
         this.chosenColour = colourChoice.getValue();
 
         if(this.colourError.isVisible()) {
@@ -86,7 +86,7 @@ public class LoginController implements GUIController, Initializable {
         }
     }
 
-    public void saveNumPlayers(ActionEvent event) {
+    private void saveNumPlayers(ActionEvent event) {
         this.chosenNumPlayers = numPlayersChoice.getValue();
 
         if(this.numPlayerError.isVisible()) {
@@ -95,7 +95,7 @@ public class LoginController implements GUIController, Initializable {
         }
     }
 
-    public void saveMode(ActionEvent event) {
+    private void saveMode(ActionEvent event) {
         this.chosenMode = modeChoice.getValue().equals("Normal") ? "false" : "true";
 
         if(this.gameModeError.isVisible()) {
@@ -155,8 +155,8 @@ public class LoginController implements GUIController, Initializable {
         } else {
             this.client.asyncWriteToSocket("addPlayer " + this.chosenNick + " " + this.chosenColour);
         }
-
-        this.guiViewFX.sceneLoading("LoadingPage.fxml", "Wait for other players to connect!");
+        this.client.setNickname(this.chosenNick);
+        this.guiViewFX.sceneLoading("Wait for other players to connect!");
     }
 
     @Override
