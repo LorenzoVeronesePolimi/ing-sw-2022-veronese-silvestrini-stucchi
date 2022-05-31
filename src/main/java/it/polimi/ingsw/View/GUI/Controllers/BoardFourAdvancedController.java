@@ -248,6 +248,7 @@ public class BoardFourAdvancedController implements GUIController, Initializable
 
     public void setSchoolsFxmlVisualization(SerializedBoardAbstract board){
         int onWorkingPlayerIndex = board.getOrderedPlayers().indexOf(board.getCurrentPlayer());
+        System.out.println(onWorkingPlayerIndex);
 
         for(int i = 0; i < board.getOrderedPlayers().size(); i++){
             this.schoolsFxml.get(i).setNickVisualization(board.getOrderedPlayers().get(onWorkingPlayerIndex).getNickname());

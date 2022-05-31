@@ -61,7 +61,9 @@ public class SchoolFxml {
     }
 
     public void setNickVisualization(String nick) {
-        this.nick.setText(nick);
+        if(this.nick != null){
+            this.nick.setText(nick);
+        }
     }
 
     public void setHallVisualization(List<Student> students) {
