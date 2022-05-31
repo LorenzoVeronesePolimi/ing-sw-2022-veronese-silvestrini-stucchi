@@ -5,6 +5,7 @@ import it.polimi.ingsw.Model.Board.SerializedBoardAbstract;
 import it.polimi.ingsw.Model.Enumerations.SPColour;
 import it.polimi.ingsw.Model.Places.Archipelago;
 import it.polimi.ingsw.View.GUI.Controllers.DataStructures.ArchipelagoFxml;
+import it.polimi.ingsw.View.GUI.Controllers.DataStructures.SchoolFxml;
 import it.polimi.ingsw.View.GUI.GUIViewFX;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -190,8 +191,10 @@ public class BoardFourAdvancedController implements GUIController, Initializable
     @FXML private GridPane cloud4;
 
     private static List<ArchipelagoFxml> archipelagosFxml;
+    private static List<SchoolFxml> schoolsFxml;
 
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        // Create Archipelagos data structure
         archipelagosFxml = new ArrayList<>();
         archipelagosFxml.add(new ArchipelagoFxml(archi0_mother_nature, archi0_white_tower, archi0_black_tower, archi0_gray_tower, archi0_num_towers, archi0_num_blue, archi0_num_pink, archi0_num_red, archi0_num_yellow, archi0_num_green));
         archipelagosFxml.add(new ArchipelagoFxml(archi1_mother_nature, archi1_white_tower, archi1_black_tower, archi1_gray_tower, archi1_num_towers, archi1_num_blue, archi1_num_pink, archi1_num_red, archi1_num_yellow, archi1_num_green));
@@ -205,9 +208,15 @@ public class BoardFourAdvancedController implements GUIController, Initializable
         archipelagosFxml.add(new ArchipelagoFxml(archi9_mother_nature, archi9_white_tower, archi9_black_tower, archi9_gray_tower, archi9_num_towers, archi9_num_blue, archi9_num_pink, archi9_num_red, archi9_num_yellow, archi9_num_green));
         archipelagosFxml.add(new ArchipelagoFxml(archi10_mother_nature, archi10_white_tower, archi10_black_tower, archi10_gray_tower, archi10_num_towers, archi10_num_blue, archi10_num_pink, archi10_num_red, archi10_num_yellow, archi10_num_green));
         archipelagosFxml.add(new ArchipelagoFxml(archi11_mother_nature, archi11_white_tower, archi11_black_tower, archi11_gray_tower, archi11_num_towers, archi11_num_blue, archi11_num_pink, archi11_num_red, archi11_num_yellow, archi11_num_green));
+
+        // Create Schools data structure
+        schoolsFxml.add(new SchoolFxml(null, my_hall, my_dining, my_professors, my_towers, my_coins));
+        schoolsFxml.add(new SchoolFxml(opponent1_nick, opponent1_hall, opponent1_dining, opponent1_professors, opponent1_towers, opponent1_coins));
+        schoolsFxml.add(new SchoolFxml(opponent2_nick, opponent2_hall, opponent2_dining, opponent2_professors, opponent2_towers, opponent2_coins));
+        schoolsFxml.add(new SchoolFxml(opponent3_nick, opponent3_hall, opponent3_dining, opponent3_professors, opponent3_towers, opponent3_coins));
     }
 
-    public void setArchipelagoFxml(SerializedBoardAbstract board){
+    public void setArchipelagosFxmlVisualization(SerializedBoardAbstract board){
         int i = 0;
         for(Archipelago a : board.getArchipelagos()){
             // MotherNature: visible or not?
@@ -234,6 +243,10 @@ public class BoardFourAdvancedController implements GUIController, Initializable
 
             i++;
         }
+    }
+
+    public void setSchoolsFxmlVisualization(SerializedBoardAbstract board){
+        int currentPlayerIndex = board.getOrderedPlayers().indexOf(board.getCurrentPlayer());
     }
 
     @Override
