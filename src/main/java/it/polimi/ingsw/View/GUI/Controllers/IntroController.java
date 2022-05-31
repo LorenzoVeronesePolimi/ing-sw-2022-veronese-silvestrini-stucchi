@@ -19,7 +19,7 @@ public class IntroController implements GUIController {
     @FXML private Button startGame;
 
     public void onButtonClicked(ActionEvent e) {
-        System.out.println("Button pressed");
+        //System.out.println("Button pressed");
         this.client.setPlatformReady(true);
         this.guiViewFX.sceneLoading("You will be connected soon!");
 

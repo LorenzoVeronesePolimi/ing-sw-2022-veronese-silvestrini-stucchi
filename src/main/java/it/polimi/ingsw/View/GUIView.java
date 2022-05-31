@@ -64,9 +64,9 @@ public class GUIView extends ClientView {
 
     @Override
     public void askFirstPlayerInfo() {
-        System.out.println("askFirstPlayer");
+        //System.out.println("askFirstPlayer");
         Platform.runLater(() ->{
-            System.out.println("askFirstPlayer2");
+            //System.out.println("askFirstPlayer2");
             this.guiViewFX.sceneAskFirstPlayerInfo();
         });
 
@@ -74,19 +74,18 @@ public class GUIView extends ClientView {
 
     @Override
     public void askNickName(List<PlayerColour> list, int numPlayer) {
-        System.out.println("askNickname");
+        //System.out.println("askNickname");
         Platform.runLater(() -> {
-            System.out.println("askNickname2");
-            //TODO: change this scene to "askNick" or model the Login one to manage first player and not first player
+            //System.out.println("askNickname2");
             this.guiViewFX.sceneAskNickname(list, numPlayer);
         });
     }
 
     @Override
     public void showBoard(SerializedBoardAbstract serializedBoardAbstract) {
-        System.out.println("show board (outside)");
+        //System.out.println("show board (outside)");
         Platform.runLater(() -> {
-            System.out.println("show board (inside)");
+            //System.out.println("show board (inside)");
             this.guiViewFX.manageScene(serializedBoardAbstract);
         });
     }

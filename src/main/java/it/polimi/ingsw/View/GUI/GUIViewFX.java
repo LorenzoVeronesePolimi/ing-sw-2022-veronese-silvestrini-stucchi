@@ -7,6 +7,7 @@ import it.polimi.ingsw.Model.Enumerations.PlayerColour;
 import it.polimi.ingsw.View.GUI.Controllers.*;
 import it.polimi.ingsw.View.GUIView;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -111,7 +112,7 @@ public class GUIViewFX extends Application {
     }
 
     public void run() {
-        System.out.println("GUI running");
+        //System.out.println("GUI running");
         Locale.setDefault(new Locale("en", "english"));
         stage.setResizable(false);
 
@@ -120,11 +121,15 @@ public class GUIViewFX extends Application {
         stage.getIcons().add(icon);
 
         // Windows title
-        stage.setTitle("Eriantys board game: " +  this.client.getNickname());
+        stage.setTitle("Eriantys board game");
         stage.setFullScreen(false);
 
         stage.setScene(currentScene);
         stage.show();
+    }
+
+    public void setStageTitle(String title) {
+        stage.setTitle(title);
     }
 
     public void setClient(Client client) {
@@ -195,12 +200,18 @@ public class GUIViewFX extends Application {
     }
 
     private void sceneAssistantCard(String scene, SerializedBoardAbstract board) {
-        AssistantCardController currentController = (AssistantCardController) controllerMap.get(scene);
-        currentController.setSerializedBoardAbstract(board);
+        if(!board.getCurrentPlayer().getNickname().equals(this.client.getNickname())) {
+            Platform.runLater(() -> {
+                this.sceneLoading("Wait for other player to do their move!");
+            });
+        } else {
+            AssistantCardController currentController = (AssistantCardController) controllerMap.get(scene);
+            currentController.setSerializedBoardAbstract(board);
 
-        this.currentScene = sceneMap.get(scene);
-        this.stage.setScene(this.currentScene);
-        this.stage.show();
+            this.currentScene = sceneMap.get(scene);
+            this.stage.setScene(this.currentScene);
+            this.stage.show();
+        }
     }
 
     private void sceneShowBoard(String scene, SerializedBoardAbstract board) {

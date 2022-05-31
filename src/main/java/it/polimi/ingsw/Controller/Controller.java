@@ -94,6 +94,10 @@ public class Controller implements ObserverController<Message> {
         return new ArrayList<>(this.players);
     }
 
+    public List<Player> getSitPlayers() {
+        return new ArrayList<>(this.sitPlayers);
+    }
+
     public int getNumStudentsToMoveCurrent(){
         return this.numStudentsToMoveCurrent;
     }

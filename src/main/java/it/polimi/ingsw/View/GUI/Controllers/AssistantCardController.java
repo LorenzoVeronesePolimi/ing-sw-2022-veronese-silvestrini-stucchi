@@ -13,6 +13,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 
 import java.net.URL;
+import java.sql.SQLOutput;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -110,9 +111,7 @@ public class AssistantCardController implements GUIController, Initializable {
         }
 
         if(!player.equals(serializedBoardAbstract.getCurrentPlayer())){
-            Platform.runLater(() -> {
-                this.guiViewFX.sceneLoading("Wait for other player to do their move!");
-            });
+            System.err.println("Error in showing the AssistantCard scene. (In class AssistantCardController)");
         }
 
         List<AssistantCard> playerHand = new ArrayList<>(player.getPlayerHand());

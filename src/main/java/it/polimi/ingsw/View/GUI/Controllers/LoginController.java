@@ -156,6 +156,7 @@ public class LoginController implements GUIController, Initializable {
             this.client.asyncWriteToSocket("addPlayer " + this.chosenNick + " " + this.chosenColour);
         }
         this.client.setNickname(this.chosenNick);
+        this.guiViewFX.setStageTitle("Eriantys board game: " + this.chosenNick);
         this.guiViewFX.sceneLoading("Wait for other players to connect!");
     }
 
@@ -185,7 +186,7 @@ public class LoginController implements GUIController, Initializable {
     }
 
     public void setAvailableColours(List<PlayerColour> chosenColour) {
-        System.out.println(chosenColour);
+        //System.out.println(chosenColour);
         colourChoice.getItems().clear();
         colourChoice.getItems().addAll(mapColourToStringList(chosenColour));
         colourChoice.setVisible(true);

@@ -114,17 +114,17 @@ public class Client {
 
                      */
 
-                    System.out.println("Activating GUI in client");
-                    System.out.println("Server socket: " + this.socket.hashCode());
+                    //System.out.println("Activating GUI in client");
+                    //System.out.println("Server socket: " + this.socket.hashCode());
 
                     this.view = new GUIView(this);  //Creating the GUIView which will call methods of GUIViewFX
 
-                    System.out.println("Passing client: " + this.hashCode());
+                    //System.out.println("Passing client: " + this.hashCode());
                     this.guiViewFX = new GUIViewFX(this, (GUIView) this.view);  // Passing setup arguments to FX
 
                     this.guiViewFX.init(); // this method is mandatory (found on stackoverflow)
 
-                    System.out.println("pre thread");
+                    //System.out.println("pre thread");
 
                     new Thread(() -> {
                         // Thread that runs JavaFX application
@@ -137,14 +137,14 @@ public class Client {
                             }
                         });
                     }).start();
-                    System.out.println("post thread");
+                    //System.out.println("post thread");
 
                 } else {
                     this.platformReady = true;
                 }
                 this.view.printCustom("You will be connected soon, wait!");
 
-                System.out.println("Entro nel loop");
+                //System.out.println("Entro nel loop");
                 while (isActive()) {
                     /*
                         When a message is received it is managed by the view.
@@ -163,9 +163,9 @@ public class Client {
 
                      */
                     if(this.platformReady) {
-                        System.out.println("platform ready");
+                        //System.out.println("platform ready");
                         inputMessage = this.socketIn.readObject();
-                        System.out.println("message received in client");
+                        //System.out.println("message received in client");
                         if (inputMessage instanceof ActiveMessageView) {
                             ((ActiveMessageView) inputMessage).manageMessage(this.view);
 
