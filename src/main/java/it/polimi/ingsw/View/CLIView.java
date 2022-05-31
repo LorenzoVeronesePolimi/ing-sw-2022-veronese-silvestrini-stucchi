@@ -9,6 +9,7 @@ import it.polimi.ingsw.Model.Enumerations.PlayerColour;
 import it.polimi.ingsw.Model.Enumerations.SPColour;
 import it.polimi.ingsw.Model.Places.Archipelago;
 import it.polimi.ingsw.Model.Places.School.School;
+import org.fusesource.jansi.AnsiConsole;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -28,16 +29,18 @@ public class CLIView extends ClientView {
 
     @Override
     public void printErrorMessage(String err) {
+        AnsiConsole.systemInstall();
         System.out.print(ANSI_RED);
         printLines(err);
         System.out.print(ANSI_RESET);
-
+        AnsiConsole.systemUninstall();
         System.out.flush();
     }
 
     public void printCustom(String msg) {
+        AnsiConsole.systemInstall();
         printLines(msg);
-
+        AnsiConsole.systemUninstall();
         System.out.flush();
     }
 
@@ -54,22 +57,27 @@ public class CLIView extends ClientView {
     }
 
     public void endView() {
+        AnsiConsole.systemInstall();
         System.out.println();
         printCustom("Closing connection...");
         System.out.println();
+        AnsiConsole.systemUninstall();
         System.out.flush();
     }
 
     @Override
     public void clientDisconnectionEnd() {
+        AnsiConsole.systemInstall();
         System.out.print(ANSI_RED);
         printCustom("An error occurred on one of the other players. The match is ended. :(");
         System.out.print(ANSI_RESET);
+        AnsiConsole.systemUninstall();
     }
 
     public void askReconnect() {
         String response;
 
+        AnsiConsole.systemInstall();
         System.out.println();
         do {
             System.out.println("> Do you want to be play another match? [Y/N]");
@@ -81,12 +89,15 @@ public class CLIView extends ClientView {
             this.client.setClientReconnect(true);
         else
             this.client.setClientReconnect(false);
+
+        AnsiConsole.systemUninstall();
     }
 
     @Override
     public void askCLIorGUI() {
         String response;
 
+        AnsiConsole.systemInstall();
         do {
             System.out.println("> Select between CLI[0] or GUI[1]:");
             System.out.print("> ");
@@ -94,6 +105,7 @@ public class CLIView extends ClientView {
             response = input.nextLine();
 
         } while (!response.equals("0") && !response.equals("1"));
+        AnsiConsole.systemUninstall();
 
         if (response.equals("1")) {
             client.setCLIorGUI(true);
@@ -105,6 +117,7 @@ public class CLIView extends ClientView {
         String nickname;
         String colour = "";
 
+        AnsiConsole.systemInstall();
         do {
             System.out.println("> Write your nickname:");
             System.out.print("> ");
@@ -191,6 +204,7 @@ public class CLIView extends ClientView {
         }
         System.out.println(ANSI_GREEN + "Please, wait for other players to connect!" + ANSI_RESET);
         System.out.flush();
+        AnsiConsole.systemUninstall();
 
         client.asyncWriteToSocket("addPlayer " + nickname + " " + colour);
         this.client.setNickname(nickname);
@@ -203,6 +217,7 @@ public class CLIView extends ClientView {
         String numPlayers;
         String gameMode;
 
+        AnsiConsole.systemInstall();
         do {
             System.out.println("> Write your nickname:");
             System.out.print("> ");
@@ -248,6 +263,7 @@ public class CLIView extends ClientView {
 
         System.out.println(ANSI_GREEN + "Please, wait for other players to connect!" + ANSI_RESET + "\n");
         System.out.flush();
+        AnsiConsole.systemUninstall();
 
         client.asyncWriteToSocket("createMatch " + nickname + " " + colour + " " + numPlayers + " " + gameMode);
         this.client.setNickname(nickname);
@@ -255,6 +271,7 @@ public class CLIView extends ClientView {
 
     @Override
     public void showBoard(SerializedBoardAbstract serializedBoardAbstract) {
+        AnsiConsole.systemInstall();
         System.out.println("\n" + TAB + " The Board is this:");
         System.out.println("Clouds: ");
         for(int i=0; i<serializedBoardAbstract.getClouds().size(); i++) {
@@ -303,12 +320,14 @@ public class CLIView extends ClientView {
             printSchool(serializedBoardAdvanced);
             printExtractedCC(serializedBoardAdvanced);
         }
+        AnsiConsole.systemUninstall();
 
         printWaitTurn(serializedBoardAbstract);
         System.out.flush();
     }
 
     private void printWaitTurn(SerializedBoardAbstract serializedBoardAbstract) {
+        AnsiConsole.systemInstall();
         System.out.print(ANSI_GREEN);
         if(this.playerNick.equals(serializedBoardAbstract.getCurrentPlayer().getNickname())) {
             System.out.println("\n> IT'S YOUR TURN! MAKE A MOVE!");
@@ -319,6 +338,8 @@ public class CLIView extends ClientView {
             System.out.println("\n> IT'S " + serializedBoardAbstract.getCurrentPlayer().getNickname() + "'s TURN! WAIT...");
         }
         System.out.print(ANSI_RESET);
+        AnsiConsole.systemUninstall();
+
         System.out.flush();
     }
 
@@ -350,6 +371,7 @@ public class CLIView extends ClientView {
         String response;
         int turnPriority = 0;
 
+        AnsiConsole.systemInstall();
         do {
             System.out.println("> Choose the turn priority of the card you want to use: ");
             System.out.print("> ");
@@ -360,6 +382,7 @@ public class CLIView extends ClientView {
                 turnPriority = Integer.parseInt(response);
             }
         } while ((turnPriority < 1 || turnPriority > 10) && !checkInt(response));
+        AnsiConsole.systemUninstall();
 
         // turnPriority is enough to identify the card: assign motherNatureMovement automatically
         client.asyncWriteToSocket("assistantCard " + cardsMotherNatureMoves[turnPriority - 1] + " " + turnPriority);
@@ -371,7 +394,9 @@ public class CLIView extends ClientView {
         possibleColours.add("pink"); possibleColours.add("red"); possibleColours.add("yellow"); possibleColours.add("blue"); possibleColours.add("green");
         String command;
         String colour;
-        String action=null;
+        String action;
+
+        AnsiConsole.systemInstall();
         do {
             do {
                 if (serializedBoardAbstract.getType().equals("advanced")) {
@@ -423,6 +448,7 @@ public class CLIView extends ClientView {
                 action=askCharacterCard((SerializedBoardAdvanced) serializedBoardAbstract);
             }
         }while(action.equalsIgnoreCase("Back"));
+        AnsiConsole.systemUninstall();
     }
 
     private boolean checkStudentInput(SerializedBoardAbstract serializedBoardAbstract, String command) {
@@ -437,12 +463,14 @@ public class CLIView extends ClientView {
     private String askCharacterCard(SerializedBoardAdvanced serializedBoardAdvanced) {
         String card;
 
+        AnsiConsole.systemInstall();
         do {
             System.out.println("> Choose a card from the extracted ones or go back [Back]:");
             System.out.print("> ");
             System.out.flush();
             card = input.nextLine();
         } while(!checkCharacterChoice(serializedBoardAdvanced, card) && !card.equalsIgnoreCase("back"));
+        AnsiConsole.systemUninstall();
 
         if(!card.equalsIgnoreCase("back")) {
             manageCard(serializedBoardAdvanced, card);
@@ -673,6 +701,7 @@ public class CLIView extends ClientView {
         List<String> cardStudents = new ArrayList<>();
         List<String> hallStudents = new ArrayList<>();
 
+        AnsiConsole.systemInstall();
         System.out.println("Students on the card: " + ex3s.printStudents());
         System.out.println("Student in the hall: " + school.getStudentsHall().toString());
 
@@ -689,6 +718,7 @@ public class CLIView extends ClientView {
             System.out.flush();
             hallStudents.add(input.nextLine());
         }
+        AnsiConsole.systemUninstall();
 
         //The space after the command is missing because it is already present in cardStudents
         this.client.asyncWriteToSocket("exchangeThreeStudents " + cardStudents.get(0) + " " +
@@ -700,6 +730,7 @@ public class CLIView extends ClientView {
         List<String> diningStudents = new ArrayList<>();
         List<String> hallStudents = new ArrayList<>();
 
+        AnsiConsole.systemInstall();
         System.out.println("Students in the hall: " + school.getStudentsHall().toString());
         System.out.print("Students in dining room: ");
         System.out.print("[BLUE: " + school.getNumStudentColour(SPColour.BLUE) + ", ");
@@ -729,6 +760,7 @@ public class CLIView extends ClientView {
             System.out.flush();
             diningStudents.add(input.nextLine());
         }
+        AnsiConsole.systemUninstall();
 
         //The space after the command is missing because it is already present in cardStudents
         this.client.asyncWriteToSocket("exchangeTwoHallDining " +
@@ -739,14 +771,16 @@ public class CLIView extends ClientView {
     private void askExcludeColourFromCounting() {
         Set<String> possibleColours = new HashSet<>();
         possibleColours.add("pink"); possibleColours.add("red"); possibleColours.add("yellow"); possibleColours.add("blue"); possibleColours.add("green");
-        String colour = null;
+        String colour;
 
+        AnsiConsole.systemInstall();
         do {
             System.out.println("> Select a colour to exclude from the next conquer attempt: ");
             System.out.print("> ");
             System.out.flush();
             colour = input.nextLine();
         } while(!possibleColours.contains(colour.toLowerCase()));
+        AnsiConsole.systemUninstall();
 
         this.client.asyncWriteToSocket("excludeColourFromCounting " +  colour);
     }
@@ -756,6 +790,7 @@ public class CLIView extends ClientView {
         possibleColours.add("pink"); possibleColours.add("red"); possibleColours.add("yellow"); possibleColours.add("blue"); possibleColours.add("green");
         String cardStudent = null;
 
+        AnsiConsole.systemInstall();
         System.out.println("Students on the card: " + exst.printStudents());
 
         do {
@@ -764,6 +799,7 @@ public class CLIView extends ClientView {
             System.out.flush();
             cardStudent = input.nextLine();
         }while(!possibleColours.contains(cardStudent.toLowerCase()));
+        AnsiConsole.systemUninstall();
 
         //The space after the command is missing because it is already present in cardStudents
         this.client.asyncWriteToSocket("extraStudentInDining " + cardStudent);
@@ -773,6 +809,7 @@ public class CLIView extends ClientView {
         String response;
         int move = 0;
 
+        AnsiConsole.systemInstall();
         do{
             System.out.println("> Insert the archipelago index on which you want to move to (and come back after): ");
             System.out.print("> ");
@@ -783,6 +820,7 @@ public class CLIView extends ClientView {
                 move = Integer.parseInt(response);
             }
         } while((move < 0 || move > serializedBoardAdvanced.getArchipelagos().size()) && !checkInt(response) );
+        AnsiConsole.systemUninstall();
 
         this.client.asyncWriteToSocket("fakeMNMovement " + move);
     }
@@ -791,6 +829,7 @@ public class CLIView extends ClientView {
         String response;
         int index = 0;
 
+        AnsiConsole.systemInstall();
         do{
             System.out.println("> Insert the archipelago index on which you want put a forbid tile: ");
             System.out.print("> ");
@@ -801,6 +840,7 @@ public class CLIView extends ClientView {
                 index = Integer.parseInt(response);
             }
         } while((index < 0 || index > serializedBoardAdvanced.getArchipelagos().size()) && !checkInt(response));
+        AnsiConsole.systemUninstall();
 
         this.client.asyncWriteToSocket("forbidIsland " + index);
     }
@@ -812,6 +852,7 @@ public class CLIView extends ClientView {
         String response;
         int move = 0;
 
+        AnsiConsole.systemInstall();
         System.out.println("Students on the card: " + place.printStudents());
 
         do {
@@ -831,6 +872,7 @@ public class CLIView extends ClientView {
                 move = Integer.parseInt(response);
             }
         } while((move < 0 || move > serializedBoardAdvanced.getArchipelagos().size()) && !checkInt(response));
+        AnsiConsole.systemUninstall();
 
         this.client.asyncWriteToSocket("placeOneStudent " + cardStudent + " " + move);
     }
@@ -839,12 +881,14 @@ public class CLIView extends ClientView {
         possibleColours.add("pink"); possibleColours.add("red"); possibleColours.add("yellow"); possibleColours.add("blue"); possibleColours.add("green");
         String colour = null;
 
+        AnsiConsole.systemInstall();
         do {
             System.out.println("> Select a colour of students that you want to remove from dining rooms: ");
             System.out.print("> ");
             System.out.flush();
             colour = input.nextLine();
         }while(!possibleColours.contains(colour.toLowerCase()));
+        AnsiConsole.systemUninstall();
 
         this.client.asyncWriteToSocket("reduceColourInDining " + colour);
 
@@ -856,6 +900,7 @@ public class CLIView extends ClientView {
         int moves = 0;
         String action = null;
 
+        AnsiConsole.systemInstall();
         do{
             do{
                 if (serializedBoardAbstract.getType().equals("advanced")) {
@@ -888,6 +933,7 @@ public class CLIView extends ClientView {
                 action = askCharacterCard((SerializedBoardAdvanced) serializedBoardAbstract);
             }
         }while(action.equalsIgnoreCase("back"));
+        AnsiConsole.systemUninstall();
     }
 
     private void askCloudChoice(SerializedBoardAbstract serializedBoardAbstract) {
@@ -895,6 +941,7 @@ public class CLIView extends ClientView {
         int cloudIndex = 0;
         String action = null;
 
+        AnsiConsole.systemInstall();
         do {
             do {
                 if(serializedBoardAbstract.getType().equals("advanced")) {
@@ -933,11 +980,13 @@ public class CLIView extends ClientView {
             else{
                 action = askCharacterCard((SerializedBoardAdvanced) serializedBoardAbstract);
             }
-        }while (response.equalsIgnoreCase("back"));
+        }while (action.equalsIgnoreCase("back"));
+        AnsiConsole.systemUninstall();
     }
 
 
     private void printSchool(SerializedBoardAbstract serializedBoardAbstract) {
+        AnsiConsole.systemInstall();
         System.out.println("Schools: ");
         for (int i = 0; i < serializedBoardAbstract.getSchools().size(); i++) {
             colourSchool(serializedBoardAbstract, i);
@@ -947,10 +996,12 @@ public class CLIView extends ClientView {
 
             removeColour();
         }
+        AnsiConsole.systemUninstall();
         System.out.flush();
     }
 
     private void printCards(SerializedBoardAbstract serializedBoardAbstract, int i) {
+        AnsiConsole.systemInstall();
         if(this.playerNick.equals(serializedBoardAbstract.getSchools().get(i).getPlayer().getNickname())) {
             if(serializedBoardAbstract.getSchools().get(i).getPlayer().getPlayerHand().size() != 0) {
                 int size = serializedBoardAbstract.getSchools().get(i).getPlayer().getPlayerHand().size();
@@ -988,11 +1039,13 @@ public class CLIView extends ClientView {
 
         }
         System.out.flush();
+        AnsiConsole.systemUninstall();
     }
 
     private void printExtractedCC(SerializedBoardAdvanced serializedBoardAdvanced) {
         int size = serializedBoardAdvanced.getExtractedCards().size();
 
+        AnsiConsole.systemInstall();
         System.out.print("Extracted character cards: [");
         for(int i = 0; i < serializedBoardAdvanced.getExtractedCards().size(); i++) {
             System.out.print(serializedBoardAdvanced.getExtractedCards().get(i).toString());
@@ -1004,14 +1057,17 @@ public class CLIView extends ClientView {
             }
         }
         System.out.flush();
+        AnsiConsole.systemUninstall();
     }
 
     private void showWinner(SerializedBoardAbstract serializedBoardAbstract) {
+        AnsiConsole.systemInstall();
         if(serializedBoardAbstract.getNicknameWinner().equals(this.playerNick)) {
             colourWinner();
         } else {
             colourLooser(serializedBoardAbstract);
         }
+        AnsiConsole.systemUninstall();
     }
 
     private boolean checkInt(String response) {
