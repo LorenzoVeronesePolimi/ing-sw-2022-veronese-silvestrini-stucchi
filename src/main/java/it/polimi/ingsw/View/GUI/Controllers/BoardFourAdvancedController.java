@@ -275,12 +275,20 @@ public class BoardFourAdvancedController implements GUIController, Initializable
                 this.schoolsFxml.get(i).setHallVisualization(board.getSchools().get(onWorkingPlayerIndex).getStudentsHall(), 1);
                 // Dining room
                 this.schoolsFxml.get(i).setDiningVisualization(board.getSchools().get(onWorkingPlayerIndex), 1);
+                // Professors
+                this.schoolsFxml.get(i).setProfessorsVisualization(board.getSchools().get(onWorkingPlayerIndex).getProfessors(), 1);
+                // Towers
+                this.schoolsFxml.get(i).setTowersVisualization(board.getSchools().get(onWorkingPlayerIndex).getTowers(),1);
             }
             else{
                 // Hall
                 this.schoolsFxml.get(i).setHallVisualization(board.getSchools().get(onWorkingPlayerIndex).getStudentsHall(), 0.78);
                 // Dining room
                 this.schoolsFxml.get(i).setDiningVisualization(board.getSchools().get(onWorkingPlayerIndex), 0.78);
+                // Professors
+                this.schoolsFxml.get(i).setProfessorsVisualization(board.getSchools().get(onWorkingPlayerIndex).getProfessors(), 0.78);
+                // Towers
+                this.schoolsFxml.get(i).setTowersVisualization(board.getSchools().get(onWorkingPlayerIndex).getTowers(), 0.78);
             }
 
 
