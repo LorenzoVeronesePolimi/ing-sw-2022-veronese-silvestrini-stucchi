@@ -1,6 +1,7 @@
 package it.polimi.ingsw.Client;
 
 import it.polimi.ingsw.Messages.ActiveMessageView;
+import it.polimi.ingsw.Model.Player;
 import it.polimi.ingsw.View.CLIView;
 import it.polimi.ingsw.View.ClientView;
 import it.polimi.ingsw.View.GUI.GUIViewFX;
@@ -196,13 +197,10 @@ public class Client {
                 } finally {
                     if(!this.serverError && this.clientError) {
                         this.socketNull = false;
-                        /*try {
-                            this.socket.close();
-                        } catch (IOException ex) {
-                            e.printStackTrace();
-                        }*/
                     }
                 }
+
+                //Platform.exit();
 
                 //e.printStackTrace();
             } catch (Exception e){

@@ -4,6 +4,7 @@ import it.polimi.ingsw.Client.Client;
 import it.polimi.ingsw.Model.Board.SerializedBoardAbstract;
 import it.polimi.ingsw.Model.Enumerations.SPColour;
 import it.polimi.ingsw.Model.Places.Archipelago;
+import it.polimi.ingsw.Model.Player;
 import it.polimi.ingsw.View.GUI.Controllers.DataStructures.ArchipelagoFxml;
 import it.polimi.ingsw.View.GUI.Controllers.DataStructures.SchoolFxml;
 import it.polimi.ingsw.View.GUI.GUIViewFX;
@@ -250,15 +251,39 @@ public class BoardFourAdvancedController implements GUIController, Initializable
         int onWorkingPlayerIndex = board.getOrderedPlayers().indexOf(board.getCurrentPlayer());
         System.out.println(onWorkingPlayerIndex);
 
+        int myIndex = computeMyIndex(board);
+
+        if(myIndex == -1) {
+            System.out.println("Error in setSchoolFxmlVisualization");
+            return;
+        }
+
+        int j = 0;
+        for(int i = 0; i < board.getOrderedPlayers().size(); i++) {
+            this.schoolsFxml.get(i).setNickVisualization(board.getOrderedPlayers().get(j).getNickname());
+            if(i == myIndex)
+                j++;
+        }
+
         for(int i = 0; i < board.getOrderedPlayers().size(); i++){
-            this.schoolsFxml.get(i).setNickVisualization(board.getOrderedPlayers().get(onWorkingPlayerIndex).getNickname());
             if(this.client.getNickname().equals(board.getOrderedPlayers().get(onWorkingPlayerIndex).getNickname()))
                 this.schoolsFxml.get(i).setHallVisualization(board.getSchools().get(onWorkingPlayerIndex).getStudentsHall());
             else
-                this.schoolsFxml.get(i).setHallVisualization(board.getSchools().get(onWorkingPlayerIndex).getStudentsHall(), 0.1);
+                this.schoolsFxml.get(i).setHallVisualization(board.getSchools().get(onWorkingPlayerIndex).getStudentsHall(), 0.01);
 
             onWorkingPlayerIndex = (onWorkingPlayerIndex  + 1) % board.getOrderedPlayers().size();
         }
+    }
+
+    private int computeMyIndex(SerializedBoardAbstract boardAbstract) {
+        int i = 0;
+        for(Player p: boardAbstract.getOrderedPlayers()) {
+            if(p.getNickname().equals(this.client.getNickname())) {
+                return i;
+            }
+            i++;
+        }
+        return -1;
     }
 
     @Override

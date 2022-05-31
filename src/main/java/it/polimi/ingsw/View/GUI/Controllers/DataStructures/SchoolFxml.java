@@ -84,8 +84,8 @@ public class SchoolFxml {
         int y = 0;
         for(Student s : students){
             ImageView image = new ImageView(getClass().getResource(studentColourPath.get(s.getColour())).toExternalForm());
-            image.setFitHeight(image.getFitHeight() * scale);
-            image.setFitWidth(image.getFitWidth() * scale);
+            image.resize(image.getFitHeight() * scale, image.getFitWidth() * scale);
+
             this.hall.add(image, x, y);
             x++;
             if(x == 2) {
