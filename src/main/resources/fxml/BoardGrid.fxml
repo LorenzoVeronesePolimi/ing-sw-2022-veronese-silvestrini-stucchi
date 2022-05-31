@@ -13,15 +13,15 @@
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="1280.0" style="-fx-background-color: #a5d9fd;" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.View.GUI.Controllers.BoardFourAdvancedController">
    <children>
-      <GridPane layoutX="519.0" layoutY="14.0" prefHeight="150.0" prefWidth="496.0">
-        <columnConstraints>
-          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+      <GridPane fx:id="character_card_grid" layoutX="519.0" layoutY="14.0" prefHeight="150.0" prefWidth="496.0">
+         <columnConstraints>
             <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-        </columnConstraints>
-        <rowConstraints>
-          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-        </rowConstraints>
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+         </columnConstraints>
+         <rowConstraints>
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+         </rowConstraints>
          <children>
             <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
                <image>
@@ -47,16 +47,16 @@
                   <Image url="@../images/Island.png" />
                </image>
             </ImageView>
-            <Circle fill="#261fff" layoutX="26.0" layoutY="33.0" radius="4.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.5" />
-            <Circle fill="#ff83e6" layoutX="26.0" layoutY="48.0" radius="4.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.5" />
-            <Circle fill="#fb1f17" layoutX="26.0" layoutY="64.0" radius="4.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.5" />
-            <Circle fill="#ebfd28" layoutX="26.0" layoutY="82.0" radius="4.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.5" />
-            <Circle fill="#18f83d" layoutX="26.0" layoutY="101.0" radius="4.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.5" />
-            <Label fx:id="archi0_num_blue" layoutX="32.0" layoutY="24.0" text="Label" />
-            <Label fx:id="archi0_num_pink" layoutX="32.0" layoutY="39.0" text="Label" />
-            <Label fx:id="archi0_num_red" layoutX="32.0" layoutY="55.0" text="Label" />
-            <Label fx:id="archi0_num_yellow" layoutX="32.0" layoutY="73.0" text="Label" />
-            <Label fx:id="archi0_num_green" layoutX="32.0" layoutY="92.0" text="Label" />
+            <Circle fill="#261fff" layoutX="35.0" layoutY="34.0" radius="4.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.5" />
+            <Circle fill="#ff83e6" layoutX="35.0" layoutY="49.0" radius="4.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.5" />
+            <Circle fill="#fb1f17" layoutX="35.0" layoutY="65.0" radius="4.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.5" />
+            <Circle fill="#ebfd28" layoutX="35.0" layoutY="83.0" radius="4.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.5" />
+            <Circle fill="#18f83d" layoutX="35.0" layoutY="102.0" radius="4.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.5" />
+            <Label fx:id="archi0_num_blue" layoutX="41.0" layoutY="25.0" text="Label" />
+            <Label fx:id="archi0_num_pink" layoutX="41.0" layoutY="40.0" text="Label" />
+            <Label fx:id="archi0_num_red" layoutX="41.0" layoutY="56.0" text="Label" />
+            <Label fx:id="archi0_num_yellow" layoutX="41.0" layoutY="74.0" text="Label" />
+            <Label fx:id="archi0_num_green" layoutX="41.0" layoutY="93.0" text="Label" />
             <ImageView fx:id="archi0_mother_nature" fitHeight="30.0" fitWidth="19.0" layoutX="67.0" layoutY="32.0" preserveRatio="true">
                <image>
                   <Image url="@../images/pawns/MN.png" />
@@ -80,7 +80,7 @@
             <Label fx:id="archi0_num_towers" layoutX="85.0" layoutY="68.0" text="Label" />
          </children>
       </AnchorPane>
-      <AnchorPane layoutY="2.0">
+      <AnchorPane fx:id="op1_anchor" layoutY="2.0">
          <children>
             <ImageView fitHeight="218.0" fitWidth="381.0" layoutX="-2.0" layoutY="24.0" preserveRatio="true">
                <image>
@@ -88,7 +88,7 @@
                </image>
             </ImageView>
             <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="29.0" layoutY="-6.0" stroke="BLACK" strokeType="INSIDE" width="472.0" />
-            <ImageView fitHeight="135.0" fitWidth="95.0" layoutX="379.0" layoutY="23.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView fx:id="opp1_a1" fitHeight="135.0" fitWidth="95.0" layoutX="379.0" layoutY="23.0" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@../images/Assistants/1.png" />
                </image>
@@ -100,11 +100,9 @@
                   <Image url="@../images/Coin.png" />
                </image>
             </ImageView>
-            <Label fx:id="opponent1_nick" layoutX="1.0" prefHeight="23.0" prefWidth="472.0" textAlignment="CENTER" />
+            <Label fx:id="opponent1_nick" layoutX="7.0" layoutY="2.0" prefHeight="23.0" prefWidth="472.0" textAlignment="CENTER" />
             <GridPane fx:id="opponent1_dining" layoutX="87.0" layoutY="39.0" prefHeight="135.0" prefWidth="180.0">
-              <columnConstraints>
-                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+               <columnConstraints>
                   <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                   <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                   <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -113,55 +111,102 @@
                   <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                   <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                   <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-              </columnConstraints>
-              <rowConstraints>
-                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+               </columnConstraints>
+               <rowConstraints>
                   <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                   <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-              </rowConstraints>
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+               </rowConstraints>
             </GridPane>
             <GridPane fx:id="opponent1_towers" layoutX="302.0" layoutY="50.0" prefHeight="110.0" prefWidth="58.0">
-              <columnConstraints>
-                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-              </columnConstraints>
-              <rowConstraints>
-                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+               <columnConstraints>
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+               </columnConstraints>
+               <rowConstraints>
                   <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-              </rowConstraints>
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+               </rowConstraints>
             </GridPane>
             <GridPane fx:id="opponent1_professors" layoutX="267.0" layoutY="43.0" prefHeight="127.0" prefWidth="19.0">
-              <columnConstraints>
-                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-              </columnConstraints>
-              <rowConstraints>
-                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+               <columnConstraints>
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+               </columnConstraints>
+               <rowConstraints>
                   <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                   <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-              </rowConstraints>
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+               </rowConstraints>
             </GridPane>
             <GridPane fx:id="opponent1_hall" layoutX="9.0" layoutY="39.0" prefHeight="135.0" prefWidth="42.0" rotate="180.0">
-              <columnConstraints>
-                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-              </columnConstraints>
-              <rowConstraints>
-                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+               <columnConstraints>
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+               </columnConstraints>
+               <rowConstraints>
                   <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                   <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-              </rowConstraints>
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+               </rowConstraints>
             </GridPane>
+            <ImageView fx:id="op1_a2" fitHeight="135.0" fitWidth="95.0" layoutX="379.0" layoutY="24.0" preserveRatio="true">
+               <image>
+                  <Image url="@../images/Assistants/2.png" />
+               </image>
+            </ImageView>
+            <ImageView fx:id="op1_a3" fitHeight="135.0" fitWidth="95.0" layoutX="377.0" layoutY="24.0">
+               <image>
+                  <Image url="@../images/Assistants/3.png" />
+               </image>
+            </ImageView>
+            <ImageView fx:id="op1_a4" fitHeight="135.0" fitWidth="95.0" layoutX="377.0" layoutY="23.0">
+               <image>
+                  <Image url="@../images/Assistants/4.png" />
+               </image>
+            </ImageView>
+            <ImageView fx:id="op1_a5" fitHeight="135.0" fitWidth="95.0" layoutX="377.0" layoutY="23.0">
+               <image>
+                  <Image url="@../images/Assistants/5.png" />
+               </image>
+            </ImageView>
+            <ImageView fx:id="op1_a6" fitHeight="135.0" fitWidth="95.0" layoutX="377.0" layoutY="24.0">
+               <image>
+                  <Image url="@../images/Assistants/6.png" />
+               </image>
+            </ImageView>
+            <ImageView fx:id="op1_a7" fitHeight="135.0" fitWidth="95.0" layoutX="378.0" layoutY="23.0">
+               <image>
+                  <Image url="@../images/Assistants/7.png" />
+               </image>
+            </ImageView>
+            <ImageView fx:id="op1_a8" fitHeight="135.0" fitWidth="95.0" layoutX="377.0" layoutY="23.0">
+               <image>
+                  <Image url="@../images/Assistants/8.png" />
+               </image>
+            </ImageView>
+            <ImageView fx:id="op1_a9" fitHeight="135.0" fitWidth="95.0" layoutX="377.0" layoutY="24.0">
+               <image>
+                  <Image url="@../images/Assistants/9.png" />
+               </image>
+            </ImageView>
+            <ImageView fx:id="op1_a10" fitHeight="135.0" fitWidth="95.0" layoutX="377.0" layoutY="23.0">
+               <image>
+                  <Image url="@../images/Assistants/10.png" />
+               </image>
+            </ImageView>
          </children>
       </AnchorPane>
-      <AnchorPane layoutX="1043.0" layoutY="155.0" prefHeight="546.0" prefWidth="239.0">
+      <AnchorPane fx:id="my_anchor" layoutX="1043.0" layoutY="155.0" prefHeight="546.0" prefWidth="239.0">
          <children>
             <ImageView fitHeight="290.0" fitWidth="544.0" layoutX="-154.0" layoutY="154.0" preserveRatio="true" rotate="270.0">
                <image>
@@ -264,7 +309,7 @@
             <Image url="@../images/cloud.png" />
          </image>
       </ImageView>
-      <AnchorPane layoutY="252.0">
+      <AnchorPane fx:id="op2_anchor" layoutY="252.0">
          <children>
             <ImageView fitHeight="218.0" fitWidth="381.0" layoutX="-2.0" layoutY="24.0" preserveRatio="true">
                <image>
@@ -272,7 +317,7 @@
                </image>
             </ImageView>
             <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="29.0" layoutY="-6.0" stroke="BLACK" strokeType="INSIDE" width="472.0" />
-            <ImageView fitHeight="135.0" fitWidth="95.0" layoutX="379.0" layoutY="23.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView fx:id="op2_a1" fitHeight="135.0" fitWidth="95.0" layoutX="379.0" layoutY="23.0" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@../images/Assistants/1.png" />
                </image>
@@ -343,9 +388,54 @@
                   <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                </rowConstraints>
             </GridPane>
+            <ImageView fx:id="op2_a2" fitHeight="135.0" fitWidth="95.0" layoutX="377.0" layoutY="23.0">
+               <image>
+                  <Image url="@../images/Assistants/2.png" />
+               </image>
+            </ImageView>
+            <ImageView fx:id="op2_a3" fitHeight="135.0" fitWidth="95.0" layoutX="375.0" layoutY="23.0">
+               <image>
+                  <Image url="@../images/Assistants/3.png" />
+               </image>
+            </ImageView>
+            <ImageView fx:id="op2_a4" fitHeight="135.0" fitWidth="95.0" layoutX="375.0" layoutY="23.0">
+               <image>
+                  <Image url="@../images/Assistants/4.png" />
+               </image>
+            </ImageView>
+            <ImageView fx:id="op2_a5" fitHeight="135.0" fitWidth="95.0" layoutX="375.0" layoutY="23.0">
+               <image>
+                  <Image url="@../images/Assistants/5.png" />
+               </image>
+            </ImageView>
+            <ImageView fx:id="op2_a6" fitHeight="135.0" fitWidth="95.0" layoutX="376.0" layoutY="23.0">
+               <image>
+                  <Image url="@../images/Assistants/6.png" />
+               </image>
+            </ImageView>
+            <ImageView fx:id="op2_a7" fitHeight="135.0" fitWidth="95.0" layoutX="376.0" layoutY="23.0">
+               <image>
+                  <Image url="@../images/Assistants/7.png" />
+               </image>
+            </ImageView>
+            <ImageView fx:id="op2_a8" fitHeight="135.0" fitWidth="95.0" layoutX="375.0" layoutY="23.0">
+               <image>
+                  <Image url="@../images/Assistants/8.png" />
+               </image>
+            </ImageView>
+            <ImageView fx:id="op2_a9" fitHeight="135.0" fitWidth="95.0" layoutX="375.0" layoutY="23.0">
+               <image>
+                  <Image url="@../images/Assistants/9.png" />
+               </image>
+            </ImageView>
+            <ImageView fx:id="op2_a10" fitHeight="135.0" fitWidth="95.0" layoutX="376.0" layoutY="23.0">
+               <image>
+                  <Image url="@../images/Assistants/10.png" />
+               </image>
+            </ImageView>
          </children>
       </AnchorPane>
-      <AnchorPane layoutY="510.0">
+      <AnchorPane fx:id="op3_anchor" layoutY="510.0">
          <children>
             <ImageView fitHeight="218.0" fitWidth="381.0" layoutX="-2.0" layoutY="24.0" preserveRatio="true">
                <image>
@@ -353,7 +443,7 @@
                </image>
             </ImageView>
             <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="29.0" layoutY="-6.0" stroke="BLACK" strokeType="INSIDE" width="472.0" />
-            <ImageView fitHeight="135.0" fitWidth="95.0" layoutX="379.0" layoutY="23.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView fx:id="op3_a1" fitHeight="135.0" fitWidth="95.0" layoutX="379.0" layoutY="23.0" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@../images/Assistants/1.png" />
                </image>
@@ -424,6 +514,51 @@
                   <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                </rowConstraints>
             </GridPane>
+            <ImageView fx:id="op3_a2" fitHeight="135.0" fitWidth="95.0" layoutX="377.0" layoutY="23.0">
+               <image>
+                  <Image url="@../images/Assistants/2.png" />
+               </image>
+            </ImageView>
+            <ImageView fx:id="op3_a3" fitHeight="135.0" fitWidth="95.0" layoutX="377.0" layoutY="23.0">
+               <image>
+                  <Image url="@../images/Assistants/3.png" />
+               </image>
+            </ImageView>
+            <ImageView fx:id="op3_a4" fitHeight="135.0" fitWidth="95.0" layoutX="377.0" layoutY="23.0">
+               <image>
+                  <Image url="@../images/Assistants/4.png" />
+               </image>
+            </ImageView>
+            <ImageView fx:id="op3_a5" fitHeight="135.0" fitWidth="95.0" layoutX="378.0" layoutY="23.0">
+               <image>
+                  <Image url="@../images/Assistants/5.png" />
+               </image>
+            </ImageView>
+            <ImageView fx:id="op3_a6" fitHeight="135.0" fitWidth="95.0" layoutX="377.0" layoutY="23.0">
+               <image>
+                  <Image url="@../images/Assistants/6.png" />
+               </image>
+            </ImageView>
+            <ImageView fx:id="op3_a7" fitHeight="135.0" fitWidth="95.0" layoutX="377.0" layoutY="23.0">
+               <image>
+                  <Image url="@../images/Assistants/7.png" />
+               </image>
+            </ImageView>
+            <ImageView fx:id="op3_a8" fitHeight="135.0" fitWidth="95.0" layoutX="377.0" layoutY="23.0">
+               <image>
+                  <Image url="@../images/Assistants/8.png" />
+               </image>
+            </ImageView>
+            <ImageView fx:id="op3_a9" fitHeight="135.0" fitWidth="95.0" layoutX="377.0" layoutY="23.0">
+               <image>
+                  <Image url="@../images/Assistants/9.png" />
+               </image>
+            </ImageView>
+            <ImageView fx:id="op3_a10" fitHeight="135.0" fitWidth="95.0" layoutX="377.0" layoutY="23.0">
+               <image>
+                  <Image url="@../images/Assistants/10.png" />
+               </image>
+            </ImageView>
          </children>
       </AnchorPane>
       <AnchorPane layoutX="506.0" layoutY="309.0">
@@ -433,16 +568,16 @@
                   <Image url="@../images/Island.png" />
                </image>
             </ImageView>
-            <Circle fill="#261fff" layoutX="26.0" layoutY="33.0" radius="4.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.5" />
-            <Circle fill="#ff83e6" layoutX="26.0" layoutY="48.0" radius="4.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.5" />
-            <Circle fill="#fb1f17" layoutX="26.0" layoutY="64.0" radius="4.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.5" />
-            <Circle fill="#ebfd28" layoutX="26.0" layoutY="82.0" radius="4.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.5" />
-            <Circle fill="#18f83d" layoutX="26.0" layoutY="101.0" radius="4.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.5" />
-            <Label fx:id="archi11_num_blue" layoutX="32.0" layoutY="24.0" text="Label" />
-            <Label fx:id="archi11_num_pink" layoutX="32.0" layoutY="39.0" text="Label" />
-            <Label fx:id="archi11_num_red" layoutX="32.0" layoutY="55.0" text="Label" />
-            <Label fx:id="archi11_num_yellow" layoutX="32.0" layoutY="73.0" text="Label" />
-            <Label fx:id="archi11_num_green" layoutX="32.0" layoutY="92.0" text="Label" />
+            <Circle fill="#261fff" layoutX="35.0" layoutY="30.0" radius="4.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.5" />
+            <Circle fill="#ff83e6" layoutX="35.0" layoutY="45.0" radius="4.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.5" />
+            <Circle fill="#fb1f17" layoutX="35.0" layoutY="61.0" radius="4.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.5" />
+            <Circle fill="#ebfd28" layoutX="35.0" layoutY="79.0" radius="4.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.5" />
+            <Circle fill="#18f83d" layoutX="35.0" layoutY="98.0" radius="4.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.5" />
+            <Label fx:id="archi11_num_blue" layoutX="41.0" layoutY="21.0" text="Label" />
+            <Label fx:id="archi11_num_pink" layoutX="41.0" layoutY="36.0" text="Label" />
+            <Label fx:id="archi11_num_red" layoutX="41.0" layoutY="52.0" text="Label" />
+            <Label fx:id="archi11_num_yellow" layoutX="41.0" layoutY="70.0" text="Label" />
+            <Label fx:id="archi11_num_green" layoutX="41.0" layoutY="89.0" text="Label" />
             <ImageView fx:id="archi11_mother_nature" fitHeight="30.0" fitWidth="19.0" layoutX="67.0" layoutY="32.0" preserveRatio="true">
                <image>
                   <Image url="@../images/pawns/MN.png" />
@@ -473,16 +608,16 @@
                   <Image url="@../images/Island.png" />
                </image>
             </ImageView>
-            <Circle fill="#261fff" layoutX="26.0" layoutY="33.0" radius="4.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.5" />
-            <Circle fill="#ff83e6" layoutX="26.0" layoutY="48.0" radius="4.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.5" />
-            <Circle fill="#fb1f17" layoutX="26.0" layoutY="64.0" radius="4.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.5" />
-            <Circle fill="#ebfd28" layoutX="26.0" layoutY="82.0" radius="4.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.5" />
-            <Circle fill="#18f83d" layoutX="26.0" layoutY="101.0" radius="4.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.5" />
-            <Label fx:id="archi10_num_blue" layoutX="32.0" layoutY="24.0" text="Label" />
-            <Label fx:id="archi10_num_pink" layoutX="32.0" layoutY="39.0" text="Label" />
-            <Label fx:id="archi10_num_red" layoutX="32.0" layoutY="55.0" text="Label" />
-            <Label fx:id="archi10_num_yellow" layoutX="32.0" layoutY="73.0" text="Label" />
-            <Label fx:id="archi10_num_green" layoutX="32.0" layoutY="92.0" text="Label" />
+            <Circle fill="#261fff" layoutX="35.0" layoutY="34.0" radius="4.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.5" />
+            <Circle fill="#ff83e6" layoutX="35.0" layoutY="49.0" radius="4.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.5" />
+            <Circle fill="#fb1f17" layoutX="35.0" layoutY="65.0" radius="4.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.5" />
+            <Circle fill="#ebfd28" layoutX="35.0" layoutY="83.0" radius="4.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.5" />
+            <Circle fill="#18f83d" layoutX="35.0" layoutY="102.0" radius="4.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.5" />
+            <Label fx:id="archi10_num_blue" layoutX="41.0" layoutY="25.0" text="Label" />
+            <Label fx:id="archi10_num_pink" layoutX="41.0" layoutY="40.0" text="Label" />
+            <Label fx:id="archi10_num_red" layoutX="41.0" layoutY="56.0" text="Label" />
+            <Label fx:id="archi10_num_yellow" layoutX="41.0" layoutY="74.0" text="Label" />
+            <Label fx:id="archi10_num_green" layoutX="41.0" layoutY="93.0" text="Label" />
             <ImageView fx:id="archi10_mother_nature" fitHeight="30.0" fitWidth="19.0" layoutX="67.0" layoutY="32.0" preserveRatio="true">
                <image>
                   <Image url="@../images/pawns/MN.png" />
@@ -513,16 +648,16 @@
                   <Image url="@../images/Island.png" />
                </image>
             </ImageView>
-            <Circle fill="#261fff" layoutX="26.0" layoutY="33.0" radius="4.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.5" />
-            <Circle fill="#ff83e6" layoutX="26.0" layoutY="48.0" radius="4.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.5" />
-            <Circle fill="#fb1f17" layoutX="26.0" layoutY="64.0" radius="4.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.5" />
-            <Circle fill="#ebfd28" layoutX="26.0" layoutY="82.0" radius="4.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.5" />
-            <Circle fill="#18f83d" layoutX="26.0" layoutY="101.0" radius="4.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.5" />
-            <Label fx:id="archi9_num_blue" layoutX="32.0" layoutY="24.0" text="Label" />
-            <Label fx:id="archi9_num_pink" layoutX="32.0" layoutY="39.0" text="Label" />
-            <Label fx:id="archi9_num_red" layoutX="32.0" layoutY="55.0" text="Label" />
-            <Label fx:id="archi9_num_yellow" layoutX="32.0" layoutY="73.0" text="Label" />
-            <Label fx:id="archi9_num_green" layoutX="32.0" layoutY="92.0" text="Label" />
+            <Circle fill="#261fff" layoutX="35.0" layoutY="32.0" radius="4.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.5" />
+            <Circle fill="#ff83e6" layoutX="35.0" layoutY="47.0" radius="4.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.5" />
+            <Circle fill="#fb1f17" layoutX="35.0" layoutY="63.0" radius="4.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.5" />
+            <Circle fill="#ebfd28" layoutX="35.0" layoutY="81.0" radius="4.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.5" />
+            <Circle fill="#18f83d" layoutX="35.0" layoutY="100.0" radius="4.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.5" />
+            <Label fx:id="archi9_num_blue" layoutX="41.0" layoutY="23.0" text="Label" />
+            <Label fx:id="archi9_num_pink" layoutX="41.0" layoutY="38.0" text="Label" />
+            <Label fx:id="archi9_num_red" layoutX="41.0" layoutY="54.0" text="Label" />
+            <Label fx:id="archi9_num_yellow" layoutX="41.0" layoutY="72.0" text="Label" />
+            <Label fx:id="archi9_num_green" layoutX="41.0" layoutY="91.0" text="Label" />
             <ImageView fx:id="archi9_mother_nature" fitHeight="30.0" fitWidth="19.0" layoutX="67.0" layoutY="32.0" preserveRatio="true">
                <image>
                   <Image url="@../images/pawns/MN.png" />
@@ -553,16 +688,16 @@
                   <Image url="@../images/Island.png" />
                </image>
             </ImageView>
-            <Circle fill="#261fff" layoutX="26.0" layoutY="33.0" radius="4.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.5" />
-            <Circle fill="#ff83e6" layoutX="26.0" layoutY="48.0" radius="4.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.5" />
-            <Circle fill="#fb1f17" layoutX="26.0" layoutY="64.0" radius="4.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.5" />
-            <Circle fill="#ebfd28" layoutX="26.0" layoutY="82.0" radius="4.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.5" />
-            <Circle fill="#18f83d" layoutX="26.0" layoutY="101.0" radius="4.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.5" />
-            <Label fx:id="archi2_num_blue" layoutX="32.0" layoutY="24.0" text="Label" />
-            <Label fx:id="archi2_num_pink" layoutX="32.0" layoutY="39.0" text="Label" />
-            <Label fx:id="archi2_num_red" layoutX="32.0" layoutY="55.0" text="Label" />
-            <Label fx:id="archi2_num_yellow" layoutX="32.0" layoutY="73.0" text="Label" />
-            <Label fx:id="archi2_num_green" layoutX="32.0" layoutY="92.0" text="Label" />
+            <Circle fill="#261fff" layoutX="35.0" layoutY="34.0" radius="4.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.5" />
+            <Circle fill="#ff83e6" layoutX="35.0" layoutY="49.0" radius="4.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.5" />
+            <Circle fill="#fb1f17" layoutX="35.0" layoutY="65.0" radius="4.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.5" />
+            <Circle fill="#ebfd28" layoutX="35.0" layoutY="83.0" radius="4.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.5" />
+            <Circle fill="#18f83d" layoutX="35.0" layoutY="102.0" radius="4.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.5" />
+            <Label fx:id="archi2_num_blue" layoutX="41.0" layoutY="25.0" text="Label" />
+            <Label fx:id="archi2_num_pink" layoutX="41.0" layoutY="40.0" text="Label" />
+            <Label fx:id="archi2_num_red" layoutX="41.0" layoutY="56.0" text="Label" />
+            <Label fx:id="archi2_num_yellow" layoutX="41.0" layoutY="74.0" text="Label" />
+            <Label fx:id="archi2_num_green" layoutX="41.0" layoutY="93.0" text="Label" />
             <ImageView fx:id="archi2_mother_nature" fitHeight="30.0" fitWidth="19.0" layoutX="67.0" layoutY="32.0" preserveRatio="true">
                <image>
                   <Image url="@../images/pawns/MN.png" />
@@ -593,16 +728,16 @@
                   <Image url="@../images/Island.png" />
                </image>
             </ImageView>
-            <Circle fill="#261fff" layoutX="26.0" layoutY="33.0" radius="4.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.5" />
-            <Circle fill="#ff83e6" layoutX="26.0" layoutY="48.0" radius="4.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.5" />
-            <Circle fill="#fb1f17" layoutX="26.0" layoutY="64.0" radius="4.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.5" />
-            <Circle fill="#ebfd28" layoutX="26.0" layoutY="82.0" radius="4.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.5" />
-            <Circle fill="#18f83d" layoutX="26.0" layoutY="101.0" radius="4.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.5" />
-            <Label fx:id="archi1_num_blue" layoutX="32.0" layoutY="24.0" text="Label" />
-            <Label fx:id="archi1_num_pink" layoutX="32.0" layoutY="39.0" text="Label" />
-            <Label fx:id="archi1_num_red" layoutX="32.0" layoutY="55.0" text="Label" />
-            <Label fx:id="archi1_num_yellow" layoutX="32.0" layoutY="73.0" text="Label" />
-            <Label fx:id="archi1_num_green" layoutX="32.0" layoutY="92.0" text="Label" />
+            <Circle fill="#261fff" layoutX="35.0" layoutY="32.0" radius="4.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.5" />
+            <Circle fill="#ff83e6" layoutX="35.0" layoutY="47.0" radius="4.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.5" />
+            <Circle fill="#fb1f17" layoutX="35.0" layoutY="63.0" radius="4.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.5" />
+            <Circle fill="#ebfd28" layoutX="35.0" layoutY="81.0" radius="4.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.5" />
+            <Circle fill="#18f83d" layoutX="35.0" layoutY="100.0" radius="4.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.5" />
+            <Label fx:id="archi1_num_blue" layoutX="41.0" layoutY="23.0" text="Label" />
+            <Label fx:id="archi1_num_pink" layoutX="41.0" layoutY="38.0" text="Label" />
+            <Label fx:id="archi1_num_red" layoutX="41.0" layoutY="54.0" text="Label" />
+            <Label fx:id="archi1_num_yellow" layoutX="41.0" layoutY="72.0" text="Label" />
+            <Label fx:id="archi1_num_green" layoutX="41.0" layoutY="91.0" text="Label" />
             <ImageView fx:id="archi1_mother_nature" fitHeight="30.0" fitWidth="19.0" layoutX="67.0" layoutY="32.0" preserveRatio="true">
                <image>
                   <Image url="@../images/pawns/MN.png" />
@@ -633,16 +768,16 @@
                   <Image url="@../images/Island.png" />
                </image>
             </ImageView>
-            <Circle fill="#261fff" layoutX="26.0" layoutY="33.0" radius="4.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.5" />
-            <Circle fill="#ff83e6" layoutX="26.0" layoutY="48.0" radius="4.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.5" />
-            <Circle fill="#fb1f17" layoutX="26.0" layoutY="64.0" radius="4.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.5" />
-            <Circle fill="#ebfd28" layoutX="26.0" layoutY="82.0" radius="4.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.5" />
-            <Circle fill="#18f83d" layoutX="26.0" layoutY="101.0" radius="4.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.5" />
-            <Label fx:id="archi3_num_blue" layoutX="32.0" layoutY="24.0" text="Label" />
-            <Label fx:id="archi3_num_pink" layoutX="32.0" layoutY="39.0" text="Label" />
-            <Label fx:id="archi3_num_red" layoutX="32.0" layoutY="55.0" text="Label" />
-            <Label fx:id="archi3_num_yellow" layoutX="32.0" layoutY="73.0" text="Label" />
-            <Label fx:id="archi3_num_green" layoutX="32.0" layoutY="92.0" text="Label" />
+            <Circle fill="#261fff" layoutX="35.0" layoutY="32.0" radius="4.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.5" />
+            <Circle fill="#ff83e6" layoutX="35.0" layoutY="47.0" radius="4.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.5" />
+            <Circle fill="#fb1f17" layoutX="35.0" layoutY="63.0" radius="4.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.5" />
+            <Circle fill="#ebfd28" layoutX="35.0" layoutY="81.0" radius="4.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.5" />
+            <Circle fill="#18f83d" layoutX="35.0" layoutY="100.0" radius="4.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.5" />
+            <Label fx:id="archi3_num_blue" layoutX="41.0" layoutY="23.0" text="Label" />
+            <Label fx:id="archi3_num_pink" layoutX="41.0" layoutY="38.0" text="Label" />
+            <Label fx:id="archi3_num_red" layoutX="41.0" layoutY="54.0" text="Label" />
+            <Label fx:id="archi3_num_yellow" layoutX="41.0" layoutY="72.0" text="Label" />
+            <Label fx:id="archi3_num_green" layoutX="41.0" layoutY="91.0" text="Label" />
             <ImageView fx:id="archi3_mother_nature" fitHeight="30.0" fitWidth="19.0" layoutX="67.0" layoutY="32.0" preserveRatio="true">
                <image>
                   <Image url="@../images/pawns/MN.png" />
@@ -673,16 +808,16 @@
                   <Image url="@../images/Island.png" />
                </image>
             </ImageView>
-            <Circle fill="#261fff" layoutX="26.0" layoutY="33.0" radius="4.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.5" />
-            <Circle fill="#ff83e6" layoutX="26.0" layoutY="48.0" radius="4.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.5" />
-            <Circle fill="#fb1f17" layoutX="26.0" layoutY="64.0" radius="4.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.5" />
-            <Circle fill="#ebfd28" layoutX="26.0" layoutY="82.0" radius="4.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.5" />
-            <Circle fill="#18f83d" layoutX="26.0" layoutY="101.0" radius="4.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.5" />
-            <Label fx:id="archi4_num_blue" layoutX="32.0" layoutY="24.0" text="Label" />
-            <Label fx:id="archi4_num_pink" layoutX="32.0" layoutY="39.0" text="Label" />
-            <Label fx:id="archi4_num_red" layoutX="32.0" layoutY="55.0" text="Label" />
-            <Label fx:id="archi4_num_yellow" layoutX="32.0" layoutY="73.0" text="Label" />
-            <Label fx:id="archi4_num_green" layoutX="32.0" layoutY="92.0" text="Label" />
+            <Circle fill="#261fff" layoutX="35.0" layoutY="31.0" radius="4.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.5" />
+            <Circle fill="#ff83e6" layoutX="35.0" layoutY="46.0" radius="4.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.5" />
+            <Circle fill="#fb1f17" layoutX="35.0" layoutY="62.0" radius="4.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.5" />
+            <Circle fill="#ebfd28" layoutX="35.0" layoutY="80.0" radius="4.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.5" />
+            <Circle fill="#18f83d" layoutX="35.0" layoutY="99.0" radius="4.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.5" />
+            <Label fx:id="archi4_num_blue" layoutX="41.0" layoutY="22.0" text="Label" />
+            <Label fx:id="archi4_num_pink" layoutX="41.0" layoutY="37.0" text="Label" />
+            <Label fx:id="archi4_num_red" layoutX="41.0" layoutY="53.0" text="Label" />
+            <Label fx:id="archi4_num_yellow" layoutX="41.0" layoutY="71.0" text="Label" />
+            <Label fx:id="archi4_num_green" layoutX="41.0" layoutY="90.0" text="Label" />
             <ImageView fx:id="archi4_mother_nature" fitHeight="30.0" fitWidth="19.0" layoutX="67.0" layoutY="32.0" preserveRatio="true">
                <image>
                   <Image url="@../images/pawns/MN.png" />
@@ -713,16 +848,16 @@
                   <Image url="@../images/Island.png" />
                </image>
             </ImageView>
-            <Circle fill="#261fff" layoutX="26.0" layoutY="33.0" radius="4.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.5" />
-            <Circle fill="#ff83e6" layoutX="26.0" layoutY="48.0" radius="4.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.5" />
-            <Circle fill="#fb1f17" layoutX="26.0" layoutY="64.0" radius="4.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.5" />
-            <Circle fill="#ebfd28" layoutX="26.0" layoutY="82.0" radius="4.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.5" />
-            <Circle fill="#18f83d" layoutX="26.0" layoutY="101.0" radius="4.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.5" />
-            <Label fx:id="archi5_num_blue" layoutX="32.0" layoutY="24.0" text="Label" />
-            <Label fx:id="archi5_num_pink" layoutX="32.0" layoutY="39.0" text="Label" />
-            <Label fx:id="archi5_num_red" layoutX="32.0" layoutY="55.0" text="Label" />
-            <Label fx:id="archi5_num_yellow" layoutX="32.0" layoutY="73.0" text="Label" />
-            <Label fx:id="archi5_num_green" layoutX="32.0" layoutY="92.0" text="Label" />
+            <Circle fill="#261fff" layoutX="35.0" layoutY="34.0" radius="4.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.5" />
+            <Circle fill="#ff83e6" layoutX="35.0" layoutY="49.0" radius="4.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.5" />
+            <Circle fill="#fb1f17" layoutX="35.0" layoutY="65.0" radius="4.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.5" />
+            <Circle fill="#ebfd28" layoutX="35.0" layoutY="83.0" radius="4.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.5" />
+            <Circle fill="#18f83d" layoutX="35.0" layoutY="102.0" radius="4.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.5" />
+            <Label fx:id="archi5_num_blue" layoutX="41.0" layoutY="25.0" text="Label" />
+            <Label fx:id="archi5_num_pink" layoutX="41.0" layoutY="40.0" text="Label" />
+            <Label fx:id="archi5_num_red" layoutX="41.0" layoutY="56.0" text="Label" />
+            <Label fx:id="archi5_num_yellow" layoutX="41.0" layoutY="74.0" text="Label" />
+            <Label fx:id="archi5_num_green" layoutX="41.0" layoutY="93.0" text="Label" />
             <ImageView fx:id="archi5_mother_nature" fitHeight="30.0" fitWidth="19.0" layoutX="67.0" layoutY="32.0" preserveRatio="true">
                <image>
                   <Image url="@../images/pawns/MN.png" />
@@ -753,16 +888,16 @@
                   <Image url="@../images/Island.png" />
                </image>
             </ImageView>
-            <Circle fill="#261fff" layoutX="26.0" layoutY="33.0" radius="4.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.5" />
-            <Circle fill="#ff83e6" layoutX="26.0" layoutY="48.0" radius="4.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.5" />
-            <Circle fill="#fb1f17" layoutX="26.0" layoutY="64.0" radius="4.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.5" />
-            <Circle fill="#ebfd28" layoutX="26.0" layoutY="82.0" radius="4.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.5" />
-            <Circle fill="#18f83d" layoutX="26.0" layoutY="101.0" radius="4.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.5" />
-            <Label fx:id="archi6_num_blue" layoutX="32.0" layoutY="24.0" text="Label" />
-            <Label fx:id="archi6_num_pink" layoutX="32.0" layoutY="39.0" text="Label" />
-            <Label fx:id="archi6_num_red" layoutX="32.0" layoutY="55.0" text="Label" />
-            <Label fx:id="archi6_num_yellow" layoutX="32.0" layoutY="73.0" text="Label" />
-            <Label fx:id="archi6_num_green" layoutX="32.0" layoutY="92.0" text="Label" />
+            <Circle fill="#261fff" layoutX="35.0" layoutY="32.0" radius="4.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.5" />
+            <Circle fill="#ff83e6" layoutX="35.0" layoutY="47.0" radius="4.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.5" />
+            <Circle fill="#fb1f17" layoutX="35.0" layoutY="63.0" radius="4.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.5" />
+            <Circle fill="#ebfd28" layoutX="35.0" layoutY="81.0" radius="4.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.5" />
+            <Circle fill="#18f83d" layoutX="35.0" layoutY="100.0" radius="4.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.5" />
+            <Label fx:id="archi6_num_blue" layoutX="41.0" layoutY="23.0" text="Label" />
+            <Label fx:id="archi6_num_pink" layoutX="41.0" layoutY="38.0" text="Label" />
+            <Label fx:id="archi6_num_red" layoutX="41.0" layoutY="54.0" text="Label" />
+            <Label fx:id="archi6_num_yellow" layoutX="41.0" layoutY="72.0" text="Label" />
+            <Label fx:id="archi6_num_green" layoutX="41.0" layoutY="91.0" text="Label" />
             <ImageView fx:id="archi6_mother_nature" fitHeight="30.0" fitWidth="19.0" layoutX="67.0" layoutY="32.0" preserveRatio="true">
                <image>
                   <Image url="@../images/pawns/MN.png" />
@@ -793,16 +928,16 @@
                   <Image url="@../images/Island.png" />
                </image>
             </ImageView>
-            <Circle fill="#261fff" layoutX="26.0" layoutY="33.0" radius="4.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.5" />
-            <Circle fill="#ff83e6" layoutX="26.0" layoutY="48.0" radius="4.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.5" />
-            <Circle fill="#fb1f17" layoutX="26.0" layoutY="64.0" radius="4.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.5" />
-            <Circle fill="#ebfd28" layoutX="26.0" layoutY="82.0" radius="4.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.5" />
-            <Circle fill="#18f83d" layoutX="26.0" layoutY="101.0" radius="4.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.5" />
-            <Label fx:id="archi8_num_blue" layoutX="32.0" layoutY="24.0" text="Label" />
-            <Label fx:id="archi8_num_pink" layoutX="32.0" layoutY="39.0" text="Label" />
-            <Label fx:id="archi8_num_red" layoutX="32.0" layoutY="55.0" text="Label" />
-            <Label fx:id="archi8_num_yellow" layoutX="32.0" layoutY="73.0" text="Label" />
-            <Label fx:id="archi8_num_green" layoutX="32.0" layoutY="92.0" text="Label" />
+            <Circle fill="#261fff" layoutX="35.0" layoutY="31.0" radius="4.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.5" />
+            <Circle fill="#ff83e6" layoutX="35.0" layoutY="46.0" radius="4.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.5" />
+            <Circle fill="#fb1f17" layoutX="35.0" layoutY="62.0" radius="4.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.5" />
+            <Circle fill="#ebfd28" layoutX="35.0" layoutY="80.0" radius="4.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.5" />
+            <Circle fill="#18f83d" layoutX="35.0" layoutY="99.0" radius="4.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.5" />
+            <Label fx:id="archi8_num_blue" layoutX="41.0" layoutY="22.0" text="Label" />
+            <Label fx:id="archi8_num_pink" layoutX="41.0" layoutY="37.0" text="Label" />
+            <Label fx:id="archi8_num_red" layoutX="41.0" layoutY="53.0" text="Label" />
+            <Label fx:id="archi8_num_yellow" layoutX="41.0" layoutY="71.0" text="Label" />
+            <Label fx:id="archi8_num_green" layoutX="41.0" layoutY="90.0" text="Label" />
             <ImageView fx:id="archi8_mother_nature" fitHeight="30.0" fitWidth="19.0" layoutX="67.0" layoutY="32.0" preserveRatio="true">
                <image>
                   <Image url="@../images/pawns/MN.png" />
@@ -833,16 +968,16 @@
                   <Image url="@../images/Island.png" />
                </image>
             </ImageView>
-            <Circle fill="#261fff" layoutX="26.0" layoutY="33.0" radius="4.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.5" />
-            <Circle fill="#ff83e6" layoutX="26.0" layoutY="48.0" radius="4.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.5" />
-            <Circle fill="#fb1f17" layoutX="26.0" layoutY="64.0" radius="4.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.5" />
-            <Circle fill="#ebfd28" layoutX="26.0" layoutY="82.0" radius="4.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.5" />
-            <Circle fill="#18f83d" layoutX="26.0" layoutY="101.0" radius="4.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.5" />
-            <Label fx:id="archi7_num_blue" layoutX="32.0" layoutY="24.0" text="Label" />
-            <Label fx:id="archi7_num_pink" layoutX="32.0" layoutY="39.0" text="Label" />
-            <Label fx:id="archi7_num_red" layoutX="32.0" layoutY="55.0" text="Label" />
-            <Label fx:id="archi7_num_yellow" layoutX="32.0" layoutY="73.0" text="Label" />
-            <Label fx:id="archi7_num_green" layoutX="32.0" layoutY="92.0" text="Label" />
+            <Circle fill="#261fff" layoutX="35.0" layoutY="31.0" radius="4.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.5" />
+            <Circle fill="#ff83e6" layoutX="35.0" layoutY="46.0" radius="4.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.5" />
+            <Circle fill="#fb1f17" layoutX="35.0" layoutY="62.0" radius="4.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.5" />
+            <Circle fill="#ebfd28" layoutX="35.0" layoutY="80.0" radius="4.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.5" />
+            <Circle fill="#18f83d" layoutX="35.0" layoutY="99.0" radius="4.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.5" />
+            <Label fx:id="archi7_num_blue" layoutX="41.0" layoutY="22.0" text="Label" />
+            <Label fx:id="archi7_num_pink" layoutX="41.0" layoutY="37.0" text="Label" />
+            <Label fx:id="archi7_num_red" layoutX="41.0" layoutY="53.0" text="Label" />
+            <Label fx:id="archi7_num_yellow" layoutX="41.0" layoutY="71.0" text="Label" />
+            <Label fx:id="archi7_num_green" layoutX="41.0" layoutY="90.0" text="Label" />
             <ImageView fx:id="archi7_mother_nature" fitHeight="30.0" fitWidth="19.0" layoutX="67.0" layoutY="32.0" preserveRatio="true">
                <image>
                   <Image url="@../images/pawns/MN.png" />
@@ -867,14 +1002,14 @@
          </children>
       </AnchorPane>
       <GridPane fx:id="cloud1" layoutX="680.0" layoutY="360.0" prefHeight="51.0" prefWidth="50.0">
-        <columnConstraints>
-          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-        </columnConstraints>
-        <rowConstraints>
-          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-        </rowConstraints>
+         <columnConstraints>
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+         </columnConstraints>
+         <rowConstraints>
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+         </rowConstraints>
       </GridPane>
       <GridPane fx:id="cloud2" layoutX="804.0" layoutY="360.0" prefHeight="51.0" prefWidth="50.0">
          <columnConstraints>
