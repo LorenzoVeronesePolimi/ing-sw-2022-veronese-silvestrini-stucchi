@@ -6,55 +6,54 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="1280.0" style="-fx-background-color: #2596be;" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fxml.AssistantCardChoice">
    <children>
-      <ImageView fitHeight="200.0" fitWidth="136.0" layoutX="249.0" layoutY="172.0">
+      <ImageView fx:id="card1" fitHeight="200.0" fitWidth="136.0" layoutX="249.0" layoutY="172.0">
          <image>
             <Image url="@../images/Assistants/1.png" />
          </image>
       </ImageView>
-      <ImageView fitHeight="200.0" fitWidth="136.0" layoutX="410.0" layoutY="172.0">
+      <ImageView fx:id="card2" fitHeight="200.0" fitWidth="136.0" layoutX="410.0" layoutY="172.0">
          <image>
             <Image url="@../images/Assistants/2.png" />
          </image>
       </ImageView>
-      <ImageView fitHeight="200.0" fitWidth="136.0" layoutX="574.0" layoutY="172.0">
+      <ImageView fx:id="card3" fitHeight="200.0" fitWidth="136.0" layoutX="574.0" layoutY="172.0">
          <image>
             <Image url="@../images/Assistants/3.png" />
          </image>
       </ImageView>
-      <ImageView fitHeight="200.0" fitWidth="136.0" layoutX="732.0" layoutY="172.0">
+      <ImageView fx:id="card4" fitHeight="200.0" fitWidth="136.0" layoutX="732.0" layoutY="172.0">
          <image>
             <Image url="@../images/Assistants/4.png" />
          </image>
       </ImageView>
-      <ImageView fitHeight="200.0" fitWidth="136.0" layoutX="894.0" layoutY="172.0">
+      <ImageView fx:id="card5" fitHeight="200.0" fitWidth="136.0" layoutX="894.0" layoutY="172.0">
          <image>
             <Image url="@../images/Assistants/5.png" />
          </image>
       </ImageView>
-      <ImageView fitHeight="200.0" fitWidth="136.0" layoutX="249.0" layoutY="413.0">
+      <ImageView fx:id="card6" fitHeight="200.0" fitWidth="136.0" layoutX="249.0" layoutY="413.0">
          <image>
             <Image url="@../images/Assistants/6.png" />
          </image>
       </ImageView>
-      <ImageView fitHeight="200.0" fitWidth="136.0" layoutX="410.0" layoutY="413.0">
+      <ImageView fx:id="card7" fitHeight="200.0" fitWidth="136.0" layoutX="410.0" layoutY="413.0">
          <image>
             <Image url="@../images/Assistants/7.png" />
          </image>
       </ImageView>
-      <ImageView fitHeight="200.0" fitWidth="136.0" layoutX="574.0" layoutY="413.0">
+      <ImageView fx:id="card8" fitHeight="200.0" fitWidth="136.0" layoutX="574.0" layoutY="413.0">
          <image>
             <Image url="@../images/Assistants/8.png" />
          </image>
       </ImageView>
-      <ImageView fitHeight="200.0" fitWidth="136.0" layoutX="732.0" layoutY="413.0">
+      <ImageView fx:id="card9" fitHeight="200.0" fitWidth="136.0" layoutX="732.0" layoutY="413.0">
          <image>
             <Image url="@../images/Assistants/9.png" />
          </image>
       </ImageView>
-      <ImageView fitHeight="200.0" fitWidth="136.0" layoutX="894.0" layoutY="413.0">
+      <ImageView fx:id="card10" fitHeight="200.0" fitWidth="136.0" layoutX="894.0" layoutY="413.0">
          <image>
             <Image url="@../images/Assistants/10.png" />
          </image>
