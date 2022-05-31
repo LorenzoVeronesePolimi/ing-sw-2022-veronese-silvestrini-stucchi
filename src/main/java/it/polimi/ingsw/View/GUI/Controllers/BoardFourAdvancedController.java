@@ -248,26 +248,28 @@ public class BoardFourAdvancedController implements GUIController, Initializable
     }
 
     public void setSchoolsFxmlVisualization(SerializedBoardAbstract board){
-        int onWorkingPlayerIndex = board.getOrderedPlayers().indexOf(board.getCurrentPlayer());
+        //int onWorkingPlayerIndex = board.getOrderedPlayers().indexOf(board.getCurrentPlayer());
+        int onWorkingPlayerIndex = computeMyIndex(board);
         System.out.println(onWorkingPlayerIndex);
 
-        int myIndex = computeMyIndex(board);
-
-        if(myIndex == -1) {
+        if(onWorkingPlayerIndex == -1) {
             System.out.println("Error in setSchoolFxmlVisualization");
             return;
         }
 
+        /*
         int j = 0;
         for(int i = 0; i < board.getOrderedPlayers().size(); i++) {
             this.schoolsFxml.get(i).setNickVisualization(board.getOrderedPlayers().get(j).getNickname());
             if(i == myIndex)
                 j++;
         }
+         */
 
         for(int i = 0; i < board.getOrderedPlayers().size(); i++){
+            this.schoolsFxml.get(i).setNickVisualization(board.getOrderedPlayers().get(onWorkingPlayerIndex).getNickname());
             if(this.client.getNickname().equals(board.getOrderedPlayers().get(onWorkingPlayerIndex).getNickname()))
-                this.schoolsFxml.get(i).setHallVisualization(board.getSchools().get(onWorkingPlayerIndex).getStudentsHall());
+                this.schoolsFxml.get(i).setHallVisualization(board.getSchools().get(onWorkingPlayerIndex).getStudentsHall(), 1);
             else
                 this.schoolsFxml.get(i).setHallVisualization(board.getSchools().get(onWorkingPlayerIndex).getStudentsHall(), 0.01);
 

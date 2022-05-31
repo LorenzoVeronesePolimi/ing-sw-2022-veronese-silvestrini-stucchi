@@ -66,26 +66,14 @@ public class SchoolFxml {
         }
     }
 
-    public void setHallVisualization(List<Student> students) {
-        int x = 0; // always 0 or 1
-        int y = 0;
-        for(Student s : students){
-            this.hall.add(new ImageView(getClass().getResource(studentColourPath.get(s.getColour())).toExternalForm()), x, y);
-            x++;
-            if(x == 2) {
-                x = 0;
-                y++;
-            }
-        }
-    }
-
     public void setHallVisualization(List<Student> students, double scale) {
         int x = 0; // always 0 or 1
         int y = 0;
         for(Student s : students){
             ImageView image = new ImageView(getClass().getResource(studentColourPath.get(s.getColour())).toExternalForm());
-            image.resize(image.getFitHeight() * scale, image.getFitWidth() * scale);
-
+            image.setFitHeight(image.getFitHeight() * scale);
+            image.setFitWidth(image.getFitWidth() * scale);
+            image.setPreserveRatio(true);
             this.hall.add(image, x, y);
             x++;
             if(x == 2) {
