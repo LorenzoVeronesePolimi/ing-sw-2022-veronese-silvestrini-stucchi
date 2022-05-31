@@ -2,6 +2,7 @@ package it.polimi.ingsw.View.GUI.Controllers.DataStructures;
 
 import it.polimi.ingsw.Model.Enumerations.SPColour;
 import it.polimi.ingsw.Model.Pawns.Student;
+import it.polimi.ingsw.Model.Places.School.School;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
@@ -19,13 +20,21 @@ public class SchoolFxml {
     @FXML private GridPane towers;
     @FXML private Label coins;
 
-    private static Map<SPColour, String> studentColourPath = Map.of(
+    private static final Map<SPColour, String> studentColourPath = Map.of(
             SPColour.BLUE, "/images/pawns/stud_blue.png",
             SPColour.PINK, "/images/pawns/stud_pink.png",
             SPColour.RED, "/images/pawns/stud_red.png",
             SPColour.YELLOW, "/images/pawns/stud_yellow.png",
             SPColour.GREEN, "/images/pawns/stud_green.png"
     ); // relates the SPColour to the image of the student of that colour
+
+    private static final Map<Integer, SPColour> rowStudent = Map.of(
+            0, SPColour.GREEN,
+            1, SPColour.RED,
+            2, SPColour.YELLOW,
+            3, SPColour.PINK,
+            4, SPColour.BLUE
+    ); // relates index of the grid to the SPColour
 
     public SchoolFxml(Label nick, GridPane hall, GridPane dining, GridPane professors, GridPane towers, Label coins) {
         this.nick = nick;
@@ -71,14 +80,27 @@ public class SchoolFxml {
         int y = 0;
         for(Student s : students){
             ImageView image = new ImageView(getClass().getResource(studentColourPath.get(s.getColour())).toExternalForm());
-            image.setFitHeight(image.getFitHeight() * scale);
-            image.setFitWidth(image.getFitWidth() * scale);
-            image.setPreserveRatio(true);
+            //image.setFitHeight(image.getFitHeight() * scale);
+            //image.setFitWidth(image.getFitWidth() * scale);
+            image.setFitHeight(30 * scale);
+            image.setFitWidth(30 * scale);
+            //image.setPreserveRatio(true);
             this.hall.add(image, x, y);
             x++;
             if(x == 2) {
                 x = 0;
                 y++;
+            }
+        }
+    }
+
+    public void setDiningVisualization(School school, double scale){
+        for(int i = 0; i < 5; i++){
+            for(int j = 0; j < school.getNumStudentColour(rowStudent.get(i)); j++){
+                ImageView image = new ImageView(getClass().getResource(studentColourPath.get(rowStudent.get(i))).toExternalForm());
+                image.setFitHeight(30 * scale);
+                image.setFitWidth(30 * scale);
+                this.dining.add(image, i, j);
             }
         }
     }

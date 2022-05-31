@@ -267,13 +267,25 @@ public class BoardFourAdvancedController implements GUIController, Initializable
          */
 
         for(int i = 0; i < board.getOrderedPlayers().size(); i++){
+            // Nicknames
             this.schoolsFxml.get(i).setNickVisualization(board.getOrderedPlayers().get(onWorkingPlayerIndex).getNickname());
-            if(this.client.getNickname().equals(board.getOrderedPlayers().get(onWorkingPlayerIndex).getNickname()))
-                this.schoolsFxml.get(i).setHallVisualization(board.getSchools().get(onWorkingPlayerIndex).getStudentsHall(), 1);
-            else
-                this.schoolsFxml.get(i).setHallVisualization(board.getSchools().get(onWorkingPlayerIndex).getStudentsHall(), 0.01);
 
-            onWorkingPlayerIndex = (onWorkingPlayerIndex  + 1) % board.getOrderedPlayers().size();
+            if(this.client.getNickname().equals(board.getOrderedPlayers().get(onWorkingPlayerIndex).getNickname())){
+                // Hall
+                this.schoolsFxml.get(i).setHallVisualization(board.getSchools().get(onWorkingPlayerIndex).getStudentsHall(), 1);
+                // Dining room
+                this.schoolsFxml.get(i).setDiningVisualization(board.getSchools().get(onWorkingPlayerIndex), 1);
+            }
+            else{
+                // Hall
+                this.schoolsFxml.get(i).setHallVisualization(board.getSchools().get(onWorkingPlayerIndex).getStudentsHall(), 0.78);
+                // Dining room
+                this.schoolsFxml.get(i).setDiningVisualization(board.getSchools().get(onWorkingPlayerIndex), 0.78);
+            }
+
+
+
+            onWorkingPlayerIndex = (onWorkingPlayerIndex + 1) % board.getOrderedPlayers().size();
         }
     }
 
