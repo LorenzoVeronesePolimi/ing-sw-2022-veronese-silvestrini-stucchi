@@ -172,7 +172,7 @@ public class GUIViewFX extends Application {
     public void sceneShowBoard(String scene, SerializedBoardAbstract board){
         BoardFourAdvancedController currentController = (BoardFourAdvancedController) controllerMap.get(scene);
         currentController.setArchipelagosFxmlVisualization(board);
-        currentController.setSchoolsFxmlVisualization(board);
+        //currentController.setSchoolsFxmlVisualization(board);
 
         this.currentScene = sceneMap.get(scene);
         this.stage.setScene(this.currentScene);

@@ -190,8 +190,8 @@ public class BoardFourAdvancedController implements GUIController, Initializable
     @FXML private GridPane cloud3;
     @FXML private GridPane cloud4;
 
-    private static List<ArchipelagoFxml> archipelagosFxml;
-    private static List<SchoolFxml> schoolsFxml;
+    private List<ArchipelagoFxml> archipelagosFxml;
+    private List<SchoolFxml> schoolsFxml;
 
     public void initialize(URL url, ResourceBundle resourceBundle) {
         // Create Archipelagos data structure
@@ -210,6 +210,7 @@ public class BoardFourAdvancedController implements GUIController, Initializable
         archipelagosFxml.add(new ArchipelagoFxml(archi11_mother_nature, archi11_white_tower, archi11_black_tower, archi11_gray_tower, archi11_num_towers, archi11_num_blue, archi11_num_pink, archi11_num_red, archi11_num_yellow, archi11_num_green));
 
         // Create Schools data structure
+        schoolsFxml = new ArrayList<>();
         schoolsFxml.add(new SchoolFxml(null, my_hall, my_dining, my_professors, my_towers, my_coins));
         schoolsFxml.add(new SchoolFxml(opponent1_nick, opponent1_hall, opponent1_dining, opponent1_professors, opponent1_towers, opponent1_coins));
         schoolsFxml.add(new SchoolFxml(opponent2_nick, opponent2_hall, opponent2_dining, opponent2_professors, opponent2_towers, opponent2_coins));
@@ -246,7 +247,14 @@ public class BoardFourAdvancedController implements GUIController, Initializable
     }
 
     public void setSchoolsFxmlVisualization(SerializedBoardAbstract board){
-        int currentPlayerIndex = board.getOrderedPlayers().indexOf(board.getCurrentPlayer());
+        int onWorkingPlayerIndex = board.getOrderedPlayers().indexOf(board.getCurrentPlayer());
+
+        for(int i = 0; i < board.getOrderedPlayers().size(); i++){
+            this.schoolsFxml.get(i).setNickVisualization(board.getOrderedPlayers().get(onWorkingPlayerIndex).getNickname());
+            this.schoolsFxml.get(i).setHallVisualization(board.getSchools().get(onWorkingPlayerIndex).getStudentsHall());
+
+            onWorkingPlayerIndex = (onWorkingPlayerIndex  + 1) % board.getOrderedPlayers().size();
+        }
     }
 
     @Override

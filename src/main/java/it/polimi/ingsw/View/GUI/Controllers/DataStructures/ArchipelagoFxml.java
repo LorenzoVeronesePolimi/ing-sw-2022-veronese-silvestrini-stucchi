@@ -40,18 +40,20 @@ public class ArchipelagoFxml {
         this.archi_num_yellow = archi_num_yellow;
         this.archi_num_green = archi_num_green;
 
-        // Set data structures
-        this.towerColourImage = new HashMap<>();
-        this.towerColourImage.put(PlayerColour.WHITE, this.archi_white_tower);
-        this.towerColourImage.put(PlayerColour.BLACK, this.archi_black_tower);
-        this.towerColourImage.put(PlayerColour.GRAY, this.archi_gray_tower);
+        // setup data structures
+        this.towerColourImage = Map.of(
+                PlayerColour.WHITE, this.archi_white_tower,
+                PlayerColour.BLACK, this.archi_black_tower,
+                PlayerColour.GRAY, this.archi_gray_tower
+        );
 
-        this.studentColourNumber = new HashMap<>();
-        this.studentColourNumber.put(SPColour.BLUE, this.archi_num_blue);
-        this.studentColourNumber.put(SPColour.PINK, this.archi_num_pink);
-        this.studentColourNumber.put(SPColour.RED, this.archi_num_red);
-        this.studentColourNumber.put(SPColour.YELLOW, this.archi_num_yellow);
-        this.studentColourNumber.put(SPColour.GREEN, this.archi_num_green);
+        this.studentColourNumber = Map.of(
+                SPColour.BLUE, this.archi_num_blue,
+                SPColour.PINK, this.archi_num_pink,
+                SPColour.RED, this.archi_num_red,
+                SPColour.YELLOW, this.archi_num_yellow,
+                SPColour.GREEN, this.archi_num_green
+        );
     }
 
     public ImageView getArchi_mother_nature() {
