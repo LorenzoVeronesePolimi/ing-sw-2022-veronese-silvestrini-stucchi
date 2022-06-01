@@ -5,6 +5,7 @@ import it.polimi.ingsw.Model.Board.SerializedBoardAbstract;
 import it.polimi.ingsw.Model.Board.SerializedBoardAdvanced;
 import it.polimi.ingsw.Model.Enumerations.SPColour;
 import it.polimi.ingsw.Model.Places.Archipelago;
+import it.polimi.ingsw.Model.Places.School.School;
 import it.polimi.ingsw.Model.Places.School.SchoolAdvanced;
 import it.polimi.ingsw.Model.Player;
 import it.polimi.ingsw.View.GUI.Controllers.DataStructures.ArchipelagoFxml;
@@ -319,61 +320,66 @@ public class BoardFourAdvancedController implements GUIController, Initializable
     public void setSchoolsFxmlVisualization(SerializedBoardAbstract board){
         //int onWorkingPlayerIndex = board.getOrderedPlayers().indexOf(board.getCurrentPlayer());
         int onWorkingPlayerIndex = computeMyIndex(board);
+        System.out.println(board.getSitPlayers().get(0).getNickname());
+        System.out.println(board.getSitPlayers().get(1).getNickname());
         System.out.println(onWorkingPlayerIndex);
-
         if(onWorkingPlayerIndex == -1) {
             System.out.println("Error in setSchoolFxmlVisualization");
             return;
         }
 
-        for(int i = 0; i < board.getOrderedPlayers().size(); i++){
+        for(int i = 0; i < board.getSitPlayers().size(); i++){
+            School onWorkingSchool = board.getSchools().get(i);
             // Reset
             this.schoolsFxml.get(i).resetVisualization(); // necessary since otherwise new images would overlap the older one (which would not be present)
             // Nicknames
-            this.schoolsFxml.get(i).setNickVisualization(board.getOrderedPlayers().get(onWorkingPlayerIndex).getNickname());
+            this.schoolsFxml.get(i).setNickVisualization(board.getSitPlayers().get(onWorkingPlayerIndex).getNickname());
 
-            if(this.client.getNickname().equals(board.getOrderedPlayers().get(onWorkingPlayerIndex).getNickname())){
+            //if(this.client.getNickname().equals(board.getOrderedPlayers().get(onWorkingPlayerIndex).getNickname())){
+            if(i == 0){
                 // Hall
-                this.schoolsFxml.get(i).setHallVisualization(board.getSchools().get(onWorkingPlayerIndex).getStudentsHall(), 1);
+                this.schoolsFxml.get(i).setHallVisualization(onWorkingSchool.getStudentsHall(), 1);
                 // Dining room
-                this.schoolsFxml.get(i).setDiningVisualization(board.getSchools().get(onWorkingPlayerIndex), 1);
+                this.schoolsFxml.get(i).setDiningVisualization(onWorkingSchool, 1);
                 // Professors
-                this.schoolsFxml.get(i).setProfessorsVisualization(board.getSchools().get(onWorkingPlayerIndex).getProfessors(), 1);
+                this.schoolsFxml.get(i).setProfessorsVisualization(onWorkingSchool.getProfessors(), 1);
                 // Towers
-                this.schoolsFxml.get(i).setTowersVisualization(board.getSchools().get(onWorkingPlayerIndex).getTowers(),1);
+                this.schoolsFxml.get(i).setTowersVisualization(onWorkingSchool.getTowers(),1);
             }
             else{
                 // Hall
-                this.schoolsFxml.get(i).setHallVisualization(board.getSchools().get(onWorkingPlayerIndex).getStudentsHall(), 0.78);
+                this.schoolsFxml.get(i).setHallVisualization(onWorkingSchool.getStudentsHall(), 0.78);
                 // Dining room
-                this.schoolsFxml.get(i).setDiningVisualization(board.getSchools().get(onWorkingPlayerIndex), 0.78);
+                this.schoolsFxml.get(i).setDiningVisualization(onWorkingSchool, 0.78);
                 // Professors
-                this.schoolsFxml.get(i).setProfessorsVisualization(board.getSchools().get(onWorkingPlayerIndex).getProfessors(), 0.78);
+                this.schoolsFxml.get(i).setProfessorsVisualization(onWorkingSchool.getProfessors(), 0.78);
                 // Towers
-                this.schoolsFxml.get(i).setTowersVisualization(board.getSchools().get(onWorkingPlayerIndex).getTowers(), 0.78);
+                this.schoolsFxml.get(i).setTowersVisualization(onWorkingSchool.getTowers(), 0.78);
             }
 
             if(board.getType().equals("advanced")){
                 this.schoolsFxml.get(i).setCoinsVisualization(((SchoolAdvanced)board.getSchools().get(onWorkingPlayerIndex)).getNumCoins());
             }
 
-            onWorkingPlayerIndex = (onWorkingPlayerIndex + 1) % board.getOrderedPlayers().size();
+            onWorkingPlayerIndex = (onWorkingPlayerIndex + 1) % board.getSitPlayers().size();
         }
     }
 
     public void setAssistantCardsVisualization(SerializedBoardAbstract board){
         int onWorkingPlayerIndex = computeMyIndex(board);
 
-        for(int i = 0; i < board.getOrderedPlayers().size(); i++){
-            this.assistantCardsFxml.get(i).setAssistantCardVisualization(board.getSchools().get(onWorkingPlayerIndex).getPlayer().getLastCard().getTurnPriority());
+        for(int i = 0; i < board.getSitPlayers().size(); i++){
+            School onWorkingSchool = board.getSchools().get(i);
 
-            onWorkingPlayerIndex = (onWorkingPlayerIndex + 1) % board.getOrderedPlayers().size();
+            this.assistantCardsFxml.get(i).setAssistantCardVisualization(onWorkingSchool.getPlayer().getLastCard().getTurnPriority());
+
+            onWorkingPlayerIndex = (onWorkingPlayerIndex + 1) % board.getSitPlayers().size();
         }
     }
 
     private int computeMyIndex(SerializedBoardAbstract boardAbstract) {
         int i = 0;
-        for(Player p: boardAbstract.getOrderedPlayers()) {
+        for(Player p: boardAbstract.getSitPlayers()) {
             if(p.getNickname().equals(this.client.getNickname())) {
                 return i;
             }

@@ -436,6 +436,7 @@ public class Controller implements ObserverController<Message> {
         this.players = orderedPlayerList;
     }
 
+
     /**
      * Create the match.
      * @param message message coming from the Client.

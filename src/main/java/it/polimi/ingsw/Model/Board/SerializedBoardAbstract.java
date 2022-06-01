@@ -24,7 +24,7 @@ public class SerializedBoardAbstract implements Serializable, ActiveMessageView 
     private State currentState;
     private Player currentPlayer;
     private String nicknameWinner;
-    private List<Player> orderedPlayers;
+    private List<Player> sitPlayers;
 
     public SerializedBoardAbstract(List<Archipelago> archipelagos, List<Cloud> clouds, MotherNature mn, List<School> schools) {
         this.type = "standard";
@@ -92,14 +92,14 @@ public class SerializedBoardAbstract implements Serializable, ActiveMessageView 
 
     public void setCurrentPlayer(Player currentPlayer){this.currentPlayer = currentPlayer;}
 
-    public List<Player> getOrderedPlayers() {
-        return orderedPlayers;
+    public List<Player> getSitPlayers() {
+        return sitPlayers;
     }
 
     public void setNicknameWinner(String winner){this.nicknameWinner = winner;}
 
-    public void setOrderedPlayers(List<Player> orderedPlayers) {
-        this.orderedPlayers = orderedPlayers;
+    public void setSitPlayers(List<Player> orderedPlayers) {
+        this.sitPlayers = orderedPlayers;
     }
 
     @Override

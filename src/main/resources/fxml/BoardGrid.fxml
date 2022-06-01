@@ -101,7 +101,7 @@
                </image>
             </ImageView>
             <Label fx:id="opponent1_nick" layoutX="7.0" layoutY="2.0" prefHeight="23.0" prefWidth="472.0" textAlignment="CENTER" />
-            <GridPane fx:id="opponent1_dining" layoutX="87.0" layoutY="39.0" prefHeight="135.0" prefWidth="180.0">
+            <GridPane fx:id="opponent1_dining" layoutX="69.0" layoutY="39.0" prefHeight="135.0" prefWidth="180.0">
                <columnConstraints>
                   <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                   <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -218,7 +218,7 @@
                   <Image url="@../images/Plancia_DEF3.png" />
                </image>
             </ImageView>
-            <GridPane fx:id="my_dining" layoutX="-9.0" layoutY="224.0" prefHeight="190.0" prefWidth="254.0" rotate="270.0">
+            <GridPane fx:id="my_dining" layoutX="-10.0" layoutY="220.0" prefHeight="190.0" prefWidth="254.0" rotate="270.0">
                <columnConstraints>
                   <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                   <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
