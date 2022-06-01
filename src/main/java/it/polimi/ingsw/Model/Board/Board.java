@@ -142,16 +142,51 @@ public interface Board {
 
     /**
      * method that assign an owner (if there is one) to the archipelago where mother nature is currently on
-     * @param currentPlayer
-     * @throws InvalidTowerNumberException
+     * @param currentPlayer player that is trying to conquer the archipelago
+     * @throws InvalidTowerNumberException if you try to put more than one tower per island that is part of an archipelago
      * @throws AnotherTowerException
-     * @throws ExceededMaxTowersException
-     * @throws TowerNotFoundException
+     * @throws ExceededMaxTowersException if you try to place in a school more towers than the maximum number it can hold
+     * @throws TowerNotFoundException if you try to grab a tower from a school, but it has none of them
      */
     void tryToConquer(Player currentPlayer) throws InvalidTowerNumberException, AnotherTowerException, ExceededMaxTowersException, TowerNotFoundException;
+
+    /**
+     * method that verifies if the archipelago where mother nature currently is placed can be conquered by a given player
+     * @param currentPlayer player that should conquer the archipelago
+     * @return true if the archipelago can be conquered by the current player, else otherwise
+     */
     boolean checkIfConquerable(Player currentPlayer);
+
+    /**
+     * method that computes who dominates the archipelago, between the previous owner and the challenger player
+     * @param owner player that owned the archipelago
+     * @param challenger player that wants to conquer the archipelago
+     * @param archipelago archipelago on which I want to compute the winner
+     * @return the player that dominate the archipelago
+     */
     Player computeWinner(Player owner, Player challenger, Archipelago archipelago);
+
+    /**
+     * method that compute the influence of a given player on a given archipelago
+     * @param player of whom I want to compute the influence on an archipelago
+     * @param archipelago on which I want to compute the influence of the player
+     * @return the sum of the number of students of the colours of which the player owns the professor, and the number of towers the player
+     * has on the archipelago
+     */
     int computeInfluenceOfPlayer(Player player, Archipelago archipelago);
+
+    /**
+     * method to use an assistant card
+     * @param usedCards list of assistant cards already used
+     * @param player player that wants to use the assistant card
+     * @param turnPriority number of turn priority that the player has chosen
+     * @throws AssistantCardAlreadyPlayedTurnException if that assistant card has already been used
+     * @throws NoAssistantCardException if all the assistant cards have already been used
+     */
     void useAssistantCard(List<Integer> usedCards, Player player, int turnPriority) throws AssistantCardAlreadyPlayedTurnException, NoAssistantCardException;
+
+    /**
+     * method that notifies every client of the changes of the board
+     */
     void notifyPlayers();
 }

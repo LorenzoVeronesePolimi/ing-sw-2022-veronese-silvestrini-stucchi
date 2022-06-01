@@ -65,6 +65,11 @@ public abstract class BoardAbstract extends Observable implements Board {
         //notifyPlayers();
     }
 
+    /**
+     * Constructor that builds a board, given another board (creates a copy of the board: useful in handle gameEndedArchipelagos
+     * in Controller)
+     * @param toCopy board that must be copied
+     */
     public BoardAbstract(BoardAbstract toCopy){ //added for gameEndedArchipelagos in Controller
         this.archipelagos = new ArrayList<>();
         int posOfMn = 0;
@@ -95,6 +100,10 @@ public abstract class BoardAbstract extends Observable implements Board {
         this.clouds = toCopy.getClouds();
     }
 
+    /**
+     *
+     * @throws ExceedingAssistantCardNumberException
+     */
     private void initializePlayersHands() throws ExceedingAssistantCardNumberException {
         // Create all needed AssistantCards
         List<AssistantCard> cardsCreated = new ArrayList<>();
