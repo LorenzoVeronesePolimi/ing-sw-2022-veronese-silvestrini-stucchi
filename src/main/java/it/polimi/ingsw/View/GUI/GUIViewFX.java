@@ -35,7 +35,7 @@ public class GUIViewFX extends Application {
     private static final String INTRO_CSS = "Intro.css";
     private static final String LOGIN_CSS = "Login.css";
     private static final String LOADING_CSS = "LoadingCSS.css";
-    private static final String BOARD_FOUR_ADVANCED_CSS = "Intro.css"; //TODO: to be changed
+    private static final String BOARD_FOUR_ADVANCED_CSS = "BoardGrid.css"; //TODO: to be changed
     private final HashMap<String, Scene> sceneMap = new HashMap<>();
     private final HashMap<String, GUIController> controllerMap = new HashMap<>();
 
@@ -90,10 +90,10 @@ public class GUIViewFX extends Application {
                         css = getClass().getResource("/css/" + LOGIN_CSS).toExternalForm();
                         sceneMap.get(LOGIN).getStylesheets().add(css);
                         break;
-                    /*case "BoardGrid.fxml":
-                        css = getClass().getResource("/css" + BOARD_FOUR_ADVANCED_CSS).toExternalForm();
+                    case "BoardGrid.fxml":
+                        css = getClass().getResource("/css/" + BOARD_FOUR_ADVANCED_CSS).toExternalForm();
                         sceneMap.get(BOARD_FOUR_ADVANCED).getStylesheets().add(css);
-                        break;*/
+                        break;
                 }
 
             }

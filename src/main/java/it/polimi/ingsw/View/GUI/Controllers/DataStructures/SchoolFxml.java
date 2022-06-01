@@ -13,9 +13,8 @@ import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.ColumnConstraints;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.RowConstraints;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -145,10 +144,12 @@ public class SchoolFxml {
         int j = 0;
         for(Student s : students){
             ImageView image = new ImageView(getClass().getResource(studentColourPath.get(s.getColour())).toExternalForm());
-            //image.setFitHeight(image.getFitHeight() * scale);
-            //image.setFitWidth(image.getFitWidth() * scale);
             image.setFitHeight(30 * scale);
             image.setFitWidth(30 * scale);
+            //image.setOnMouseDragged(event -> studentHallDragged(event, image));
+            //image.setFitHeight(image.getFitHeight() * scale);
+            //image.setFitWidth(image.getFitWidth() * scale);
+
             //image.setPreserveRatio(true);
             this.hall.add(image, i, j);
             i++;
@@ -198,5 +199,10 @@ public class SchoolFxml {
 
     public void setCoinsVisualization(int numCoins){
         this.coins.setText(Integer.toString(numCoins));
+    }
+
+    public void studentHallDragged(MouseEvent e, ImageView image){
+        image.setX(image.getX() + e.getX());
+        image.setY(image.getY() + e.getY());
     }
 }
