@@ -215,8 +215,7 @@ public class LoginController implements GUIController, Initializable {
                     colour.add("White");
                     colour.add("Black");
                 }
-            }
-            if (colourList.contains(PlayerColour.WHITE)) {
+            } else if (colourList.contains(PlayerColour.WHITE)) {
                 if (colourList.contains(PlayerColour.BLACK)) {
                     colour.add("Gray");
                 } else if (colourList.contains(PlayerColour.GRAY)) {
