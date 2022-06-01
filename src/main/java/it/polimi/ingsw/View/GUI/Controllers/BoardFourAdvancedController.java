@@ -5,12 +5,11 @@ import it.polimi.ingsw.Model.Board.SerializedBoardAbstract;
 import it.polimi.ingsw.Model.Board.SerializedBoardAdvanced;
 import it.polimi.ingsw.Model.Enumerations.SPColour;
 import it.polimi.ingsw.Model.Places.Archipelago;
+import it.polimi.ingsw.Model.Places.Cloud;
 import it.polimi.ingsw.Model.Places.School.School;
 import it.polimi.ingsw.Model.Places.School.SchoolAdvanced;
 import it.polimi.ingsw.Model.Player;
-import it.polimi.ingsw.View.GUI.Controllers.DataStructures.ArchipelagoFxml;
-import it.polimi.ingsw.View.GUI.Controllers.DataStructures.AssistantCardFxml;
-import it.polimi.ingsw.View.GUI.Controllers.DataStructures.SchoolFxml;
+import it.polimi.ingsw.View.GUI.Controllers.DataStructures.*;
 import it.polimi.ingsw.View.GUI.GUIViewFX;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -201,9 +200,13 @@ public class BoardFourAdvancedController implements GUIController, Initializable
     @FXML private Label archi11_num_green;
 
     // Clouds
+    @FXML private ImageView cloud1_image;
     @FXML private GridPane cloud1;
+    @FXML private ImageView cloud2_image;
     @FXML private GridPane cloud2;
+    @FXML private ImageView cloud3_image;
     @FXML private GridPane cloud3;
+    @FXML private ImageView cloud4_image;
     @FXML private GridPane cloud4;
 
     // AssistantCard of mine
@@ -251,9 +254,14 @@ public class BoardFourAdvancedController implements GUIController, Initializable
     @FXML private ImageView op3_a9;
     @FXML private ImageView op3_a10;
 
+    // CharacterCards
+    @FXML private GridPane character_card_grid;
+
     private List<ArchipelagoFxml> archipelagosFxml;
     private List<SchoolFxml> schoolsFxml;
     private List<AssistantCardFxml> assistantCardsFxml;
+    private List<CloudFxml> cloudsFxml;
+    private CharacterCardFxml characterCardsFxml;
 
     public void initialize(URL url, ResourceBundle resourceBundle) {
         // Create Archipelagos data structure
@@ -284,6 +292,16 @@ public class BoardFourAdvancedController implements GUIController, Initializable
         assistantCardsFxml.add(new AssistantCardFxml(op1_a1, op1_a2, op1_a3, op1_a4, op1_a5, op1_a6, op1_a7, op1_a8, op1_a9, op1_a10));
         assistantCardsFxml.add(new AssistantCardFxml(op2_a1, op2_a2, op2_a3, op2_a4, op2_a5, op2_a6, op2_a7, op2_a8, op2_a9, op2_a10));
         assistantCardsFxml.add(new AssistantCardFxml(op3_a1, op3_a2, op3_a3, op3_a4, op3_a5, op3_a6, op3_a7, op3_a8, op3_a9, op3_a10));
+
+        // Create Clouds data structure
+        cloudsFxml = new ArrayList<>();
+        cloudsFxml.add(new CloudFxml(cloud1, cloud1_image));
+        cloudsFxml.add(new CloudFxml(cloud2, cloud2_image));
+        cloudsFxml.add(new CloudFxml(cloud3, cloud3_image));
+        cloudsFxml.add(new CloudFxml(cloud4, cloud4_image));
+
+        // Character Cards data structure
+        characterCardsFxml = new CharacterCardFxml(character_card_grid);
     }
 
     public void setStandardSetup(){
@@ -393,6 +411,30 @@ public class BoardFourAdvancedController implements GUIController, Initializable
             this.assistantCardsFxml.get(i).setAssistantCardVisualization(onWorkingSchool.getPlayer().getLastCard().getTurnPriority());
 
             onWorkingPlayerIndex = (onWorkingPlayerIndex + 1) % board.getSitPlayers().size();
+        }
+    }
+
+    public void setCloudsVisualization(SerializedBoardAbstract board){
+        if(board.getClouds().size() == 2){
+            this.cloudsFxml.get(2).setVisible(false);
+            this.cloudsFxml.get(3).setVisible(false);
+        }
+        else if(board.getClouds().size() == 3){
+            this.cloudsFxml.get(3).setVisible(false);
+        }
+
+        for(int i = 0; i < board.getClouds().size(); i++){
+            this.cloudsFxml.get(i).setStudentsVisualization(board.getClouds().get(i).getStudents(), 0.78);
+        }
+    }
+
+    public void setCharacterCardsVisualization(SerializedBoardAbstract board){
+        if(board.getType().equals("advanced")){
+            this.characterCardsFxml.setVisible(true);
+            this.characterCardsFxml.setCharacterCardsVisualization(((SerializedBoardAdvanced)board).getExtractedCards(), 1);
+        }
+        else{
+            this.characterCardsFxml.setVisible(false);
         }
     }
 

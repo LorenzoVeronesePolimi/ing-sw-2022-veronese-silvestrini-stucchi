@@ -149,9 +149,9 @@ public class SchoolFxml {
             //image.setOnMouseDragged(event -> studentHallDragged(event, image));
             //image.setFitHeight(image.getFitHeight() * scale);
             //image.setFitWidth(image.getFitWidth() * scale);
-
             //image.setPreserveRatio(true);
             this.hall.add(image, i, j);
+
             i++;
             if(i == 2) {
                 i = 0;

@@ -221,7 +221,9 @@ public class GUIViewFX extends Application {
         }
         currentController.setArchipelagosFxmlVisualization(board);
         currentController.setSchoolsFxmlVisualization(board);
+        currentController.setCloudsVisualization(board);
         currentController.setAssistantCardsVisualization(board);
+        currentController.setCharacterCardsVisualization(board);
         currentController.setInstructionLabels(board);
 
         this.currentScene = sceneMap.get(scene);

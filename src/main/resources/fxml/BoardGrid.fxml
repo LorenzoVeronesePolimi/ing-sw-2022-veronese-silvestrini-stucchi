@@ -22,23 +22,6 @@
          <rowConstraints>
             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
          </rowConstraints>
-         <children>
-            <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1">
-               <image>
-                  <Image url="@../images/Characters/ExchangeTwoHallDining.jpg" />
-               </image>
-            </ImageView>
-            <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@../images/Characters/ExchangeTwoHallDining.jpg" />
-               </image>
-            </ImageView>
-            <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="2">
-               <image>
-                  <Image url="@../images/Characters/ExchangeTwoHallDining.jpg" />
-               </image>
-            </ImageView>
-         </children>
       </GridPane>
       <AnchorPane layoutX="512.0" layoutY="17.0">
          <children>
@@ -287,22 +270,22 @@
       <Label fx:id="actionLabel" layoutX="1080.0" layoutY="77.0" prefHeight="43.0" prefWidth="174.0" text="Label" />
       <Label fx:id="turnLabel" layoutX="1080.0" layoutY="17.0" prefHeight="43.0" prefWidth="173.0" text="Label" />
       <Line endX="78.0" endY="7.62939453125E-6" layoutX="1175.0" layoutY="77.0" startX="-100.0" />
-      <ImageView layoutX="784.0" layoutY="165.0">
+      <ImageView fx:id="cloud2_image" layoutX="784.0" layoutY="165.0">
          <image>
             <Image url="@../images/cloud.png" />
          </image>
       </ImageView>
-      <ImageView fitHeight="98.0" fitWidth="112.0" layoutX="661.0" layoutY="165.0" preserveRatio="true">
+      <ImageView fx:id="cloud1_image" fitHeight="98.0" fitWidth="112.0" layoutX="661.0" layoutY="165.0" preserveRatio="true">
          <image>
             <Image url="@../images/cloud.png" />
          </image>
       </ImageView>
-      <ImageView layoutX="784.0" layoutY="278.0">
+      <ImageView fx:id="cloud4_image" layoutX="784.0" layoutY="278.0">
          <image>
             <Image url="@../images/cloud.png" />
          </image>
       </ImageView>
-      <ImageView layoutX="661.0" layoutY="278.0">
+      <ImageView fx:id="cloud3_image" layoutX="661.0" layoutY="278.0">
          <image>
             <Image url="@../images/cloud.png" />
          </image>
