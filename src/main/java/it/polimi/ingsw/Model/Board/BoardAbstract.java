@@ -101,8 +101,8 @@ public abstract class BoardAbstract extends Observable implements Board {
     }
 
     /**
-     *
-     * @throws ExceedingAssistantCardNumberException
+     *method that build all the 10 assistant cards available for each player
+     * @throws ExceedingAssistantCardNumberException if you are trying to add more than 10 assistant cards to the same player
      */
     private void initializePlayersHands() throws ExceedingAssistantCardNumberException {
         // Create all needed AssistantCards
@@ -120,6 +120,10 @@ public abstract class BoardAbstract extends Observable implements Board {
         }
     }
 
+    /**
+     * method that, during the initialization of the board, for each archipelago extracts one random student from the bag and places
+     * it on that archipelago.
+     */
     private void placeStudentInitialBoard(){
         //get 10 initial students to be placed on the archipelagos (one each, except mn position and the opposite)
         List<Student> initialStudents;
@@ -134,7 +138,10 @@ public abstract class BoardAbstract extends Observable implements Board {
         }
     }
 
-    //Mother Nature is put in the first archipelago
+    /**
+     * method that, during the initialization of the board, places mother nature in the first archipelago
+     */
+
     public void placeMotherNatureInitialBoard() {
         mn.putInPosition(archipelagos.get(0));
     }
@@ -144,46 +151,91 @@ public abstract class BoardAbstract extends Observable implements Board {
 
     //--------------------------------------------------GETTER AND SETTER
 
+    /**
+     * getter of the bag
+     * @return bag
+     */
     public Bag getBag() {
         return bag;
     }
 
+    /**
+     * getter of players
+     * @return players
+     */
     public List<Player> getPlayers() {
         return players;
     }
 
+    /**
+     * getter of mother nature
+     * @return mother nature
+     */
     public MotherNature getMn() {
         return mn;
     }
 
+    /**
+     * getter of clouds
+     * @return clouds
+     */
     public List<Cloud> getClouds() {
         return new ArrayList<>(this.clouds);
     }
 
+    /**
+     * getter of archipelago of given index
+     * @param archipelagoIndex index of the archipelago that is wanted to be returned
+     * @return archipelago of archipelagoIndex index
+     */
     public Archipelago getArchipelago(int archipelagoIndex){
         return this.archipelagos.get(archipelagoIndex);
     }
 
-    //added for isGameEnded in Controller
+    /**
+     * getter of number of archipelagos (added for isGameEnded in Controller)
+     * @return number of archipelagos
+     */
     public int getNumArchipelagos(){return this.archipelagos.size();}
 
-    //added for isGameEnded in Controller
+    /**
+     * getter of the number of the student in the bag at the moment (added for isGameEnded in Controller)
+     * @return number of the student in the bag at the moment
+     */
     public int getNumStudentsInBag(){return this.bag.getNumStudents();}
 
+    /**
+     * getter of data about the students on a given archipelago
+     * @param archipelagoIndex index of the archipelago of which information is required
+     * @return map of student colours and quantity of students of that colour on the archipelago
+     */
     public Map<SPColour, Integer> getNumStudentsInArchipelago(int archipelagoIndex) {
         return this.archipelagos.get(archipelagoIndex).howManyStudents();
     }
 
-    // Returns the Archipelago's index where MotherNature is positioned
+    /**
+     * getter of the Archipelago's index where MotherNature is positioned
+     * @return Archipelago's index where MotherNature is positioned
+     */
     public int whereIsMotherNature(){
         return archipelagos.indexOf(mn.getCurrentPosition());
     }
 
+    /**
+     * getter of player's school
+     * @param player owner of the school that I want to get
+     * @return player's school
+     */
     public School getPlayerSchool(Player player) {
         return playerSchool.get(player);
     }
 
-    //The following, were introduced because useful for the Controller
+    /**
+     * method that says if there is a student of a given colour into a given student hall
+     * @param player is the owner of the school where the student of c colour is supposed to be
+     * @param c colour of student that is being looked for
+     * @return true if exists a student with colour c in player's hall, false otherwise
+     */
     public boolean isStudentInSchoolHall(Player player, SPColour c){
         for(Student s : this.playerSchool.get(player).getStudentsHall()){
             if(s.getColour() == c){
@@ -197,16 +249,32 @@ public abstract class BoardAbstract extends Observable implements Board {
 
 
     //--------------------------------------------------PAWNS MOVEMENTS
+
+    /**
+     * method that moves mother nature of a given number or archipelagos
+     * @param mnMoves number of archipelagos that I want mother nature to move through
+     */
     public void moveMotherNature(int mnMoves){
         mn.putInPosition(archipelagos.get((whereIsMotherNature() + mnMoves) % archipelagos.size()));
         //notifyPlayers();
     }
 
+    /**
+     * method that moves mother nature to a specific archipelago (with given index)
+     * @param index index of archipelago where mother nature is wanted to be moved to
+     */
     public void moveMotherNatureInArchipelagoIndex(int index){
         mn.putInPosition(archipelagos.get(index));
         notifyPlayers();
     }
 
+    /**
+     * method that moves a student of a given colour from a given player's hall to a given archipelago
+     * @param player owner of the school from which I want to move the student
+     * @param colour of the student that I want to move
+     * @param archipelagoIndex index of the archipelago where I want to move the student to
+     * @throws StudentNotFoundException if there is no such colour student in player's hall
+     */
     public void moveStudentSchoolToArchipelagos(Player player, SPColour colour, int archipelagoIndex) throws StudentNotFoundException {
         //school related to the player that made the move
         School currentSchool = playerSchool.get(player);
@@ -221,6 +289,12 @@ public abstract class BoardAbstract extends Observable implements Board {
 
     }
 
+    /**
+     * method that moves the students from a given cloud to a given player's hall
+     * @param player owner of the school where I want to move students
+     * @param cloudIndex index of the cloud that I want to empty
+     * @throws ExceededMaxStudentsHallException if you are trying to add to the hall more students that it could hold
+     */
     public void moveStudentCloudToSchool(Player player, int cloudIndex) throws ExceededMaxStudentsHallException {
         //remove all the students from one particular cloud
         List<Student> toBeMoved = clouds.get(cloudIndex).empty();
