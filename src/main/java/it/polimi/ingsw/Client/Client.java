@@ -228,7 +228,7 @@ public class Client {
                     }
                 }
 
-                //Platform.exit();
+                Platform.exit();
 
                 //e.printStackTrace();
             } catch (Exception e){
