@@ -284,8 +284,8 @@
          </image>
       </ImageView>
       <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="116.0" layoutX="1073.0" layoutY="17.0" stroke="BLACK" strokeType="INSIDE" width="180.0" />
-      <Label layoutX="1080.0" layoutY="77.0" prefHeight="43.0" prefWidth="174.0" text="Label" />
-      <Label layoutX="1080.0" layoutY="17.0" prefHeight="43.0" prefWidth="173.0" text="Label" />
+      <Label fx:id="actionLabel" layoutX="1080.0" layoutY="77.0" prefHeight="43.0" prefWidth="174.0" text="Label" />
+      <Label fx:id="turnLabel" layoutX="1080.0" layoutY="17.0" prefHeight="43.0" prefWidth="173.0" text="Label" />
       <Line endX="78.0" endY="7.62939453125E-6" layoutX="1175.0" layoutY="77.0" startX="-100.0" />
       <ImageView layoutX="784.0" layoutY="165.0">
          <image>

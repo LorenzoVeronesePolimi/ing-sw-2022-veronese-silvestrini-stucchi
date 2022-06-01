@@ -35,6 +35,10 @@ public class BoardFourAdvancedController implements GUIController, Initializable
     @FXML private AnchorPane op2_anchor;
     @FXML private AnchorPane op3_anchor;
 
+    // Label on top of my school
+    @FXML private Label actionLabel;
+    @FXML private Label turnLabel;
+
     // School of mine
     @FXML private GridPane my_hall;
     @FXML private GridPane my_dining;
@@ -363,6 +367,21 @@ public class BoardFourAdvancedController implements GUIController, Initializable
 
             onWorkingPlayerIndex = (onWorkingPlayerIndex + 1) % board.getSitPlayers().size();
         }
+
+        hydeSchools(board);
+    }
+
+    private void hydeSchools(SerializedBoardAbstract board) {
+        if(board.getSchools().size() == 2) {
+            op1_anchor.setTranslateY(+200);
+            op2_anchor.setVisible(false);
+            op3_anchor.setVisible(false);
+        }
+        if(board.getSchools().size() == 3) {
+            op1_anchor.setTranslateY(+100);
+            op2_anchor.setTranslateY(+100);
+            op3_anchor.setVisible(false);
+        }
     }
 
     public void setAssistantCardsVisualization(SerializedBoardAbstract board){
@@ -374,6 +393,66 @@ public class BoardFourAdvancedController implements GUIController, Initializable
             this.assistantCardsFxml.get(i).setAssistantCardVisualization(onWorkingSchool.getPlayer().getLastCard().getTurnPriority());
 
             onWorkingPlayerIndex = (onWorkingPlayerIndex + 1) % board.getSitPlayers().size();
+        }
+    }
+
+    public void setInstructionLabels(SerializedBoardAbstract boardAbstract) {
+        if(boardAbstract.getCurrentPlayer().getNickname().equals(this.client.getNickname())) {
+            this.turnLabel.setText("It's your turn!");
+
+            switch (boardAbstract.getCurrentState()) {
+                case ACTION1:
+                    if(boardAbstract.getType().equals("advanced")) {
+                        this.actionLabel.setText("Select a student from your hall\n or buy a card.");
+                    } else {
+                        this.actionLabel.setText("Select a student from your hall.");
+                    }
+                    break;
+
+                case ACTION2:
+                    if(boardAbstract.getType().equals("advanced")) {
+                        this.actionLabel.setText("Select an island where you want\n to put Mother Nature or buy a card.");
+                    } else {
+                        this.actionLabel.setText("Select an island where you want\n to put Mother Nature.");
+                    }
+                    break;
+
+                case ACTION3:
+                    if(boardAbstract.getType().equals("advanced")) {
+                        this.actionLabel.setText("Select a cloud or buy a card.");
+                    } else {
+                        this.actionLabel.setText("Select a cloud.");
+                    }
+                    break;
+            }
+        } else {
+            this.turnLabel.setText("It's " + boardAbstract.getCurrentPlayer().getNickname() + " turn!");
+
+            switch (boardAbstract.getCurrentState()) {
+                case ACTION1:
+                    if (boardAbstract.getType().equals("advanced")) {
+                        this.actionLabel.setText("Choosing a student\n or buying a card...");
+                    } else {
+                        this.actionLabel.setText("Choosing a student...");
+                    }
+                    break;
+
+                case ACTION2:
+                    if (boardAbstract.getType().equals("advanced")) {
+                        this.actionLabel.setText("Selecting an island\n or buying a card...");
+                    } else {
+                        this.actionLabel.setText("Selecting an island...");
+                    }
+                    break;
+
+                case ACTION3:
+                    if (boardAbstract.getType().equals("advanced")) {
+                        this.actionLabel.setText("Selecting a cloud\n or buying a card...");
+                    } else {
+                        this.actionLabel.setText("Selecting a cloud...");
+                    }
+                    break;
+            }
         }
     }
 
