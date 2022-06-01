@@ -13,7 +13,10 @@ import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.ClipboardContent;
+import javafx.scene.input.Dragboard;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.input.TransferMode;
 import javafx.scene.layout.*;
 
 import java.util.ArrayList;
@@ -146,6 +149,15 @@ public class SchoolFxml {
             ImageView image = new ImageView(getClass().getResource(studentColourPath.get(s.getColour())).toExternalForm());
             image.setFitHeight(30 * scale);
             image.setFitWidth(30 * scale);
+            /*image.setOnDragDetected((MouseEvent event) -> {
+                Dragboard db = image.startDragAndDrop(TransferMode.MOVE);
+                ClipboardContent content = new ClipboardContent();
+                // Store node ID in order to know what is dragged.
+                content.putString(image.getId());
+                db.setContent(content);
+                event.consume();
+            });*/
+            //image.setOnMouseDragged(event -> studentHallDragged(event, image));
             //image.setOnMouseDragged(event -> studentHallDragged(event, image));
             //image.setFitHeight(image.getFitHeight() * scale);
             //image.setFitWidth(image.getFitWidth() * scale);
@@ -202,7 +214,16 @@ public class SchoolFxml {
     }
 
     public void studentHallDragged(MouseEvent e, ImageView image){
+
+        Dragboard db = image.startDragAndDrop(TransferMode.MOVE);
+        ClipboardContent content = new ClipboardContent();
+        // Store node ID in order to know what is dragged.
+        content.putString(image.getId());
+        db.setContent(content);
+        //e.consume();
+        /*
         image.setX(image.getX() + e.getX());
         image.setY(image.getY() + e.getY());
+        e.consume();*/
     }
 }

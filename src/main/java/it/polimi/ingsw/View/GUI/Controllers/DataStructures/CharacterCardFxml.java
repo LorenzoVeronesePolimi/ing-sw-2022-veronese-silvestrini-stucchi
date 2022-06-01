@@ -41,7 +41,7 @@ public class CharacterCardFxml {
         int i = 0;
         for(AbstractCharacterCard c : cards){
             ImageView image = new ImageView(getClass().getResource(cardPath.get(c.getType())).toExternalForm());
-            image.setFitWidth(105 * scale);
+            image.setFitWidth(100 * scale);
             image.setPreserveRatio(true);
             this.cards.add(image, i, 0);
 
