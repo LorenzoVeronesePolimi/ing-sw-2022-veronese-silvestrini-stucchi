@@ -1,16 +1,13 @@
 package it.polimi.ingsw.Client;
 
 import it.polimi.ingsw.Messages.ActiveMessageView;
-import it.polimi.ingsw.Model.Player;
 import it.polimi.ingsw.View.CLIView;
 import it.polimi.ingsw.View.ClientView;
 import it.polimi.ingsw.View.GUI.GUIViewFX;
 import it.polimi.ingsw.View.GUIView;
-import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.stage.Stage;
 
-import java.io.EOFException;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -21,6 +18,10 @@ import java.util.Scanner;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 
+/**
+ * Class that represents the via of communication between the User and the game Server.
+ * It handles the view (CLI or GUI) and some first steps of the connection.
+ */
 public class Client {
 
     private Scanner scanner;
@@ -43,47 +44,72 @@ public class Client {
     private ScheduledExecutorService pinger;
     private GUIViewFX guiViewFX;
 
-    public Client(String ip, int port){
-        this.ip = ip;
-        this.port = port;
-    }
-
+    /**
+     * Constructor that initializes the Server port.
+     * @param port server PORT.
+     */
     public Client(int port) {
         this.port = port;
     }
 
+    /**
+     * @return whether the Client is active (true) of not (false).
+     */
     public synchronized boolean isActive(){
         return activeConnection;
     }
 
+    /**
+     * @param active value of the Client status.
+     */
     public synchronized void setActive(boolean active){
         this.activeConnection = active;
     }
+
+    /**
+     * @param rec value of clientReconnect.
+     */
     public synchronized void setClientReconnect(boolean rec) { this.clientReconnect = rec; }
 
+    /**
+     * @param clientError whether the error in communication begun with one of the Clients.
+     */
     public void setClientError(boolean clientError) {
         this.clientError = clientError;
     }
 
-    public void setServerError(boolean serverError) {
-        this.serverError = serverError;
-    }
+    /**
+     * @param endGame whether the match has ended or not.
+     */
     public void setEndGame(boolean endGame) {
         this.endGame = endGame;
     }
 
+    /**
+     * @param platformReady whether the JavaFX platform is ready.
+     */
     public void setPlatformReady(boolean platformReady) {
         this.platformReady = platformReady;
     }
 
+    /**
+     * @return String nickname of the player.
+     */
     public String getNickname() {
         return nickname;
     }
 
+    /**
+     * @param nickname String nickname of the player.
+     */
     public void setNickname(String nickname) {
         this.nickname = nickname;
     }
 
+    /**
+     * Used to receive messages from the Server. It initializes a new Thread in order to not stop the application.
+     * @return the inner thread that executes the function.
+     */
     public Thread asyncReadFromSocket(){
         Thread t = new Thread(() -> {
             try {
@@ -94,7 +120,7 @@ public class Client {
 
                 if (this.CLIorGUI) {
                     /*
-                        The GUI is activate by calling the Platform method startup()
+                        The GUI is activated by calling the Platform method startup()
                         It allows us to rely on the parameters passes to the GUI Application
                         without the worry of losing them.
 
@@ -104,12 +130,12 @@ public class Client {
                         In order to manage a better UI we need to implement a waining page for the next players waiting their
                         turn of Login actions.
 
-                        Currently the Login page is not customized at all by the GUI.
+                        Currently, the Login page is not customized at all by the GUI.
                         In order to do that, and all the other future stuff, we need to add some method to GUIViewFX, like:
                         - askFirstPlayerScene(parameter of the askFirstPLayer in GUIView received via the message) -> passing
                                 parameters to controller in order to show and customize them
                         - askNickName(parameters of the askNickName in GUIView received via the message) -> passing parameters to controller...
-                        - showBoardScene(parameter os ShowBoard method in GUIView) -> passing parameters to contrloler..
+                        - showBoardScene(parameter os ShowBoard method in GUIView) -> passing parameters to controller..
                         - and so on...
 
 
@@ -173,6 +199,8 @@ public class Client {
                             if (this.view.isErrorStatus()) {
                                 if (prevMessage != null)
                                     prevMessage.manageMessage(this.view);
+                                //TODO: in gui show the error like an alert
+                                //TODO: pinger to keep gui awake?
 
                                 this.view.setErrorStatus(false);
                             } else {
@@ -213,6 +241,11 @@ public class Client {
         return t;
     }
 
+    /**
+     * Used to send messages to the Server. It initializes a thread in order to not stop the application.
+     * @param messageToController message that needs to be sent to the Controller in the Server.
+     * @return the inner thread that executes the function.
+     */
     public Thread asyncWriteToSocket(String messageToController){
         Thread t = new Thread(() -> {
             try {
@@ -227,6 +260,10 @@ public class Client {
         return t;
     }
 
+    /**
+     * Asks the Server IP to the user and connects to the Server.
+     * @throws IOException
+     */
     public void run() throws IOException {
         this.ip = askIP();
 
@@ -234,6 +271,10 @@ public class Client {
         connecting();
     }
 
+    /**
+     * Connection to the server.
+     * @throws IOException when an error on the Socket occurs.
+     */
     private void connecting() throws IOException {
         // initialization of the parameters of the client
         this.setClientReconnect(false);
@@ -267,7 +308,7 @@ public class Client {
             // when the match is somehow ended (error or normale game end)
             if((this.clientError || this.endGame) && !this.serverError) {
                 try {
-                    this.askReconnet();
+                    this.askReconnect();
                 } catch (IOException e) {
                     this.view.printErrorMessage("reconnecting error");
                     //e.printStackTrace();
@@ -288,6 +329,10 @@ public class Client {
         }
     }
 
+    /**
+     * Asks the Server IP to the user.
+     * @return the Server IP.
+     */
     private String askIP() {
         scanner = new Scanner(System.in);
         String response;
@@ -295,27 +340,35 @@ public class Client {
             System.out.println("> Insert the server ip: ");
             System.out.print("> ");
             response = scanner.nextLine();
-        }while(checkResponse(response));
+        }while(checkIP(response));
 
         return response;
     }
 
-    private boolean checkResponse(String response) {
+    /**
+     * Checks if the response is a valid IP.
+     * @param response server IP from the user.
+     * @return true if the response is a valid IP.
+     */
+    private boolean checkIP(String response) {
         return false;
     }
 
+    /**
+     * @param CLIorGUI whether the view selected from the user is CLI (true) or GUI(false)
+     */
     public void setCLIorGUI(boolean CLIorGUI){
         this.CLIorGUI = CLIorGUI;
     }
 
-    private void askReconnet() throws IOException {
+    /**
+     * Ask the user if there is the intention to reconnect to the server after the match has ended(normally or unintentionally)
+     * @throws IOException when there is a Socket error.
+     */
+    private void askReconnect() throws IOException {
         this.view.askReconnect();
 
         if (clientReconnect)
             connecting();
-    }
-
-    public void printOut(String msg) {
-        System.out.println(msg);
     }
 }
