@@ -201,9 +201,17 @@ public class BoardFourAdvancedController implements GUIController, Initializable
     @FXML private GridPane cloud3;
     @FXML private GridPane cloud4;
 
-
-    //TODO: add assistant card of mine
-    //...
+    // AssistantCard of mine
+    @FXML private ImageView my_a1;
+    @FXML private ImageView my_a2;
+    @FXML private ImageView my_a3;
+    @FXML private ImageView my_a4;
+    @FXML private ImageView my_a5;
+    @FXML private ImageView my_a6;
+    @FXML private ImageView my_a7;
+    @FXML private ImageView my_a8;
+    @FXML private ImageView my_a9;
+    @FXML private ImageView my_a10;
     // AssistantCard 1
     @FXML private ImageView op1_a1;
     @FXML private ImageView op1_a2;
@@ -267,6 +275,7 @@ public class BoardFourAdvancedController implements GUIController, Initializable
 
         // Create AC data structure
         assistantCardsFxml = new ArrayList<>();
+        assistantCardsFxml.add(new AssistantCardFxml(my_a1, my_a2, my_a3, my_a4, my_a5, my_a6, my_a7, my_a8, my_a9, my_a10));
         assistantCardsFxml.add(new AssistantCardFxml(op1_a1, op1_a2, op1_a3, op1_a4, op1_a5, op1_a6, op1_a7, op1_a8, op1_a9, op1_a10));
         assistantCardsFxml.add(new AssistantCardFxml(op2_a1, op2_a2, op2_a3, op2_a4, op2_a5, op2_a6, op2_a7, op2_a8, op2_a9, op2_a10));
         assistantCardsFxml.add(new AssistantCardFxml(op3_a1, op3_a2, op3_a3, op3_a4, op3_a5, op3_a6, op3_a7, op3_a8, op3_a9, op3_a10));
@@ -317,15 +326,6 @@ public class BoardFourAdvancedController implements GUIController, Initializable
             return;
         }
 
-        /*
-        int j = 0;
-        for(int i = 0; i < board.getOrderedPlayers().size(); i++) {
-            this.schoolsFxml.get(i).setNickVisualization(board.getOrderedPlayers().get(j).getNickname());
-            if(i == myIndex)
-                j++;
-        }
-         */
-
         for(int i = 0; i < board.getOrderedPlayers().size(); i++){
             // Reset
             this.schoolsFxml.get(i).resetVisualization(); // necessary since otherwise new images would overlap the older one (which would not be present)
@@ -353,7 +353,7 @@ public class BoardFourAdvancedController implements GUIController, Initializable
                 this.schoolsFxml.get(i).setTowersVisualization(board.getSchools().get(onWorkingPlayerIndex).getTowers(), 0.78);
             }
 
-            if(board.getType() == "advanced"){
+            if(board.getType().equals("advanced")){
                 this.schoolsFxml.get(i).setCoinsVisualization(((SchoolAdvanced)board.getSchools().get(onWorkingPlayerIndex)).getNumCoins());
             }
 
@@ -363,9 +363,8 @@ public class BoardFourAdvancedController implements GUIController, Initializable
 
     public void setAssistantCardsVisualization(SerializedBoardAbstract board){
         int onWorkingPlayerIndex = computeMyIndex(board);
-        onWorkingPlayerIndex++; //TODO: change if we want to make current player see his AC
 
-        for(int i = 0; i < board.getOrderedPlayers().size() - 1; i++){
+        for(int i = 0; i < board.getOrderedPlayers().size(); i++){
             this.assistantCardsFxml.get(i).setAssistantCardVisualization(board.getSchools().get(onWorkingPlayerIndex).getPlayer().getLastCard().getTurnPriority());
 
             onWorkingPlayerIndex = (onWorkingPlayerIndex + 1) % board.getOrderedPlayers().size();
