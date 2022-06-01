@@ -12,20 +12,15 @@ import java.util.Map;
 public class ArchipelagoFxml {
     private static final SPColour[] availableSPColours = {SPColour.BLUE,SPColour.PINK, SPColour.RED, SPColour.YELLOW, SPColour.GREEN};
     private static final PlayerColour[] availablePlayerColours = {PlayerColour.WHITE, PlayerColour.BLACK, PlayerColour.GRAY};
-    private ImageView archi_mother_nature;
+    private final ImageView archi_mother_nature;
 
-    private Map<PlayerColour, ImageView> towerColourImage; //useful to avoid switches and to streamline the code
-    private ImageView archi_white_tower;
-    private ImageView archi_black_tower;
-    private ImageView archi_gray_tower;
-    private Label archi_num_towers;
+    private final Map<PlayerColour, ImageView> towerColourImage; //useful to avoid switches and to streamline the code
+    private final ImageView archi_white_tower;
+    private final ImageView archi_black_tower;
+    private final ImageView archi_gray_tower;
+    private final Label archi_num_towers;
 
-    private Map<SPColour, Label> studentColourNumber; //useful to avoid switches and to streamline the code
-    private Label archi_num_blue;
-    private Label archi_num_pink;
-    private Label archi_num_red;
-    private Label archi_num_yellow;
-    private Label archi_num_green;
+    private final Map<SPColour, Label> studentColourNumber; //useful to avoid switches and to streamline the code
 
 
     public ArchipelagoFxml(ImageView archi_mother_nature, ImageView archi_white_tower, ImageView archi_black_tower, ImageView archi_gray_tower, Label archi_num_towers, Label archi_num_blue, Label archi_num_pink, Label archi_num_red, Label archi_num_yellow, Label archi_num_green){
@@ -34,11 +29,6 @@ public class ArchipelagoFxml {
         this.archi_black_tower = archi_black_tower;
         this.archi_gray_tower = archi_gray_tower;
         this.archi_num_towers = archi_num_towers;
-        this.archi_num_blue = archi_num_blue;
-        this.archi_num_pink = archi_num_pink;
-        this.archi_num_red = archi_num_red;
-        this.archi_num_yellow = archi_num_yellow;
-        this.archi_num_green = archi_num_green;
 
         // setup data structures
         this.towerColourImage = Map.of(
@@ -48,11 +38,11 @@ public class ArchipelagoFxml {
         );
 
         this.studentColourNumber = Map.of(
-                SPColour.BLUE, this.archi_num_blue,
-                SPColour.PINK, this.archi_num_pink,
-                SPColour.RED, this.archi_num_red,
-                SPColour.YELLOW, this.archi_num_yellow,
-                SPColour.GREEN, this.archi_num_green
+                SPColour.BLUE, archi_num_blue,
+                SPColour.PINK, archi_num_pink,
+                SPColour.RED, archi_num_red,
+                SPColour.YELLOW, archi_num_yellow,
+                SPColour.GREEN, archi_num_green
         );
     }
 

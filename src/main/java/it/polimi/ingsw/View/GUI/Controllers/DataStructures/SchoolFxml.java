@@ -7,21 +7,27 @@ import it.polimi.ingsw.Model.Pawns.Student;
 import it.polimi.ingsw.Model.Pawns.Tower;
 import it.polimi.ingsw.Model.Places.School.School;
 import javafx.fxml.FXML;
+import javafx.geometry.HPos;
+import javafx.geometry.VPos;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.RowConstraints;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 public class SchoolFxml {
-    @FXML private Label nick;
-    @FXML private GridPane hall;
-    @FXML private GridPane dining;
-    @FXML private GridPane professors;
-    @FXML private GridPane towers;
-    @FXML private Label coins;
+    @FXML private final Label nick;
+    @FXML private final GridPane hall;
+    @FXML private final GridPane dining;
+    @FXML private final GridPane professors;
+    @FXML private final GridPane towers;
+    @FXML private final Label coins;
 
     private static final Map<SPColour, String> studentColourPath = Map.of(
             SPColour.BLUE, "/images/pawns/stud_blue.png",
@@ -69,6 +75,19 @@ public class SchoolFxml {
         this.professors = professors;
         this.towers = towers;
         this.coins = coins;
+
+        ColumnConstraints col = new ColumnConstraints();
+        col.setHalignment(HPos.CENTER);
+        RowConstraints row = new RowConstraints();
+        row.setValignment(VPos.CENTER);
+        this.hall.getColumnConstraints().add(col);
+        this.hall.getRowConstraints().add(row);
+        this.dining.getColumnConstraints().add(col);
+        this.dining.getRowConstraints().add(row);
+        this.professors.getColumnConstraints().add(col);
+        this.professors.getRowConstraints().add(row);
+        this.towers.getColumnConstraints().add(col);
+        this.towers.getRowConstraints().add(row);
     }
 
     public Label getNick() {
@@ -93,6 +112,26 @@ public class SchoolFxml {
 
     public Label getCoins() {
         return coins;
+    }
+
+    public void resetVisualization(){
+        GridPane[] gridsToReset = {
+                this.hall,
+                this.dining,
+                this.professors,
+                this.towers,
+        };
+
+        for(GridPane grid : gridsToReset){
+            removeAllNodesFromGrid(grid);
+        }
+    }
+
+    private void removeAllNodesFromGrid(GridPane grid){
+        List<Node> children = new ArrayList<>(grid.getChildren()); //clone to avoid ConcurrentModificationException
+        for(Node n : children){
+            this.hall.getChildren().remove(n);
+        }
     }
 
     public void setNickVisualization(String nick) {
@@ -126,19 +165,19 @@ public class SchoolFxml {
                 ImageView image = new ImageView(getClass().getResource(studentColourPath.get(rowSPColour.get(i))).toExternalForm());
                 image.setFitHeight(30 * scale);
                 image.setFitWidth(30 * scale);
-                this.professors.add(image, i, j);
+                this.dining.add(image, j, i);
             }
         }
     }
 
     public void setProfessorsVisualization(List<Professor> professors, double scale){
-        Professor[] ps= {new Professor(SPColour.RED)};
-        for(Professor p : ps){
+        for(Professor p : professors){
             ImageView image = new ImageView(getClass().getResource(professorColourPath.get(p.getColour())).toExternalForm());
             image.setFitHeight(30 * scale);
             image.setFitWidth(30 * scale);
-            this.dining.add(image, SPColourRow.get(p.getColour()), 0);
+            this.professors.add(image, 0, SPColourRow.get(p.getColour()));
         }
+
     }
 
     public void setTowersVisualization(List<Tower> towers, double scale){
@@ -157,21 +196,7 @@ public class SchoolFxml {
         }
     }
 
-    public void setDining(GridPane dining) {
-        this.dining = dining;
+    public void setCoinsVisualization(int numCoins){
+        this.coins.setText(Integer.toString(numCoins));
     }
-
-    public void setProfessors(GridPane professors) {
-        this.professors = professors;
-    }
-
-    public void setTowers(GridPane towers) {
-        this.towers = towers;
-    }
-
-    public void setCoins(Label coins) {
-        this.coins = coins;
-    }
-
-
 }

@@ -159,6 +159,11 @@
                   <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                </rowConstraints>
             </GridPane>
+            <ImageView fx:id="op1_a1" fitHeight="135.0" fitWidth="95.0" layoutX="379.0" layoutY="24.0" preserveRatio="true">
+               <image>
+                  <Image url="@../images/Assistants/1.png" />
+               </image>
+            </ImageView>
             <ImageView fx:id="op1_a2" fitHeight="135.0" fitWidth="95.0" layoutX="379.0" layoutY="24.0" preserveRatio="true">
                <image>
                   <Image url="@../images/Assistants/2.png" />
