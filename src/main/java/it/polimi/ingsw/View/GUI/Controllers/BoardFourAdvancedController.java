@@ -2,16 +2,20 @@ package it.polimi.ingsw.View.GUI.Controllers;
 
 import it.polimi.ingsw.Client.Client;
 import it.polimi.ingsw.Model.Board.SerializedBoardAbstract;
+import it.polimi.ingsw.Model.Board.SerializedBoardAdvanced;
 import it.polimi.ingsw.Model.Enumerations.SPColour;
 import it.polimi.ingsw.Model.Places.Archipelago;
+import it.polimi.ingsw.Model.Places.School.SchoolAdvanced;
 import it.polimi.ingsw.Model.Player;
 import it.polimi.ingsw.View.GUI.Controllers.DataStructures.ArchipelagoFxml;
+import it.polimi.ingsw.View.GUI.Controllers.DataStructures.AssistantCardFxml;
 import it.polimi.ingsw.View.GUI.Controllers.DataStructures.SchoolFxml;
 import it.polimi.ingsw.View.GUI.GUIViewFX;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 
 import java.net.URL;
@@ -23,6 +27,12 @@ import java.util.ResourceBundle;
 public class BoardFourAdvancedController implements GUIController, Initializable {
     private GUIViewFX guiViewFX;
     private Client client;
+
+    // AnchorPanes
+    @FXML private AnchorPane my_anchor;
+    @FXML private AnchorPane op1_anchor;
+    @FXML private AnchorPane op2_anchor;
+    @FXML private AnchorPane op3_anchor;
 
     // School of mine
     @FXML private GridPane my_hall;
@@ -191,8 +201,46 @@ public class BoardFourAdvancedController implements GUIController, Initializable
     @FXML private GridPane cloud3;
     @FXML private GridPane cloud4;
 
+
+    //TODO: add assistant card of mine
+    //...
+    // AssistantCard 1
+    @FXML private ImageView op1_a1;
+    @FXML private ImageView op1_a2;
+    @FXML private ImageView op1_a3;
+    @FXML private ImageView op1_a4;
+    @FXML private ImageView op1_a5;
+    @FXML private ImageView op1_a6;
+    @FXML private ImageView op1_a7;
+    @FXML private ImageView op1_a8;
+    @FXML private ImageView op1_a9;
+    @FXML private ImageView op1_a10;
+    // AssistantCard 2
+    @FXML private ImageView op2_a1;
+    @FXML private ImageView op2_a2;
+    @FXML private ImageView op2_a3;
+    @FXML private ImageView op2_a4;
+    @FXML private ImageView op2_a5;
+    @FXML private ImageView op2_a6;
+    @FXML private ImageView op2_a7;
+    @FXML private ImageView op2_a8;
+    @FXML private ImageView op2_a9;
+    @FXML private ImageView op2_a10;
+    // AssistantCard 3
+    @FXML private ImageView op3_a1;
+    @FXML private ImageView op3_a2;
+    @FXML private ImageView op3_a3;
+    @FXML private ImageView op3_a4;
+    @FXML private ImageView op3_a5;
+    @FXML private ImageView op3_a6;
+    @FXML private ImageView op3_a7;
+    @FXML private ImageView op3_a8;
+    @FXML private ImageView op3_a9;
+    @FXML private ImageView op3_a10;
+
     private List<ArchipelagoFxml> archipelagosFxml;
     private List<SchoolFxml> schoolsFxml;
+    private List<AssistantCardFxml> assistantCardsFxml;
 
     public void initialize(URL url, ResourceBundle resourceBundle) {
         // Create Archipelagos data structure
@@ -216,6 +264,18 @@ public class BoardFourAdvancedController implements GUIController, Initializable
         schoolsFxml.add(new SchoolFxml(opponent1_nick, opponent1_hall, opponent1_dining, opponent1_professors, opponent1_towers, opponent1_coins));
         schoolsFxml.add(new SchoolFxml(opponent2_nick, opponent2_hall, opponent2_dining, opponent2_professors, opponent2_towers, opponent2_coins));
         schoolsFxml.add(new SchoolFxml(opponent3_nick, opponent3_hall, opponent3_dining, opponent3_professors, opponent3_towers, opponent3_coins));
+
+        // Create AC data structure
+        assistantCardsFxml = new ArrayList<>();
+        assistantCardsFxml.add(new AssistantCardFxml(op1_a1, op1_a2, op1_a3, op1_a4, op1_a5, op1_a6, op1_a7, op1_a8, op1_a9, op1_a10));
+        assistantCardsFxml.add(new AssistantCardFxml(op2_a1, op2_a2, op2_a3, op2_a4, op2_a5, op2_a6, op2_a7, op2_a8, op2_a9, op2_a10));
+        assistantCardsFxml.add(new AssistantCardFxml(op3_a1, op3_a2, op3_a3, op3_a4, op3_a5, op3_a6, op3_a7, op3_a8, op3_a9, op3_a10));
+    }
+
+    public void setStandardSetup(){
+        for(SchoolFxml s : this.schoolsFxml){
+            s.getCoins().setVisible(false);
+        }
     }
 
     public void setArchipelagosFxmlVisualization(SerializedBoardAbstract board){
@@ -267,6 +327,8 @@ public class BoardFourAdvancedController implements GUIController, Initializable
          */
 
         for(int i = 0; i < board.getOrderedPlayers().size(); i++){
+            // Reset
+            this.schoolsFxml.get(i).resetVisualization(); // necessary since otherwise new images would overlap the older one (which would not be present)
             // Nicknames
             this.schoolsFxml.get(i).setNickVisualization(board.getOrderedPlayers().get(onWorkingPlayerIndex).getNickname());
 
@@ -291,7 +353,20 @@ public class BoardFourAdvancedController implements GUIController, Initializable
                 this.schoolsFxml.get(i).setTowersVisualization(board.getSchools().get(onWorkingPlayerIndex).getTowers(), 0.78);
             }
 
+            if(board.getType() == "advanced"){
+                this.schoolsFxml.get(i).setCoinsVisualization(((SchoolAdvanced)board.getSchools().get(onWorkingPlayerIndex)).getNumCoins());
+            }
 
+            onWorkingPlayerIndex = (onWorkingPlayerIndex + 1) % board.getOrderedPlayers().size();
+        }
+    }
+
+    public void setAssistantCardsVisualization(SerializedBoardAbstract board){
+        int onWorkingPlayerIndex = computeMyIndex(board);
+        onWorkingPlayerIndex++; //TODO: change if we want to make current player see his AC
+
+        for(int i = 0; i < board.getOrderedPlayers().size() - 1; i++){
+            this.assistantCardsFxml.get(i).setAssistantCardVisualization(board.getSchools().get(onWorkingPlayerIndex).getPlayer().getLastCard().getTurnPriority());
 
             onWorkingPlayerIndex = (onWorkingPlayerIndex + 1) % board.getOrderedPlayers().size();
         }

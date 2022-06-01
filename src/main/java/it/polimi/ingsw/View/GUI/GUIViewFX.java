@@ -216,8 +216,12 @@ public class GUIViewFX extends Application {
 
     private void sceneShowBoard(String scene, SerializedBoardAbstract board) {
         BoardFourAdvancedController currentController = (BoardFourAdvancedController) controllerMap.get(scene);
+        if(board.getType() == "advanced"){
+            currentController.setStandardSetup(); // set advanced elements to not visible in case of standard match
+        }
         currentController.setArchipelagosFxmlVisualization(board);
         currentController.setSchoolsFxmlVisualization(board);
+        currentController.setAssistantCardsVisualization(board);
 
         this.currentScene = sceneMap.get(scene);
         this.stage.setScene(this.currentScene);
