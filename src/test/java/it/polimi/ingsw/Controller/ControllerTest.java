@@ -909,8 +909,8 @@ public class ControllerTest {
 
         //give to p1 all professors to be sure he will win
         SPColour[] availableColours = {SPColour.BLUE, SPColour.PINK, SPColour.RED, SPColour.GREEN, SPColour.YELLOW};
-        for(Professor p : this.controller.getBoard().getPlayerSchool(p2).getProfessors()){
-            this.controller.getBoard().getPlayerSchool(p2).removeProfessor(p.getColour());
+        for(Professor p : controller.getBoard().getPlayerSchool(p2).getProfessors()){
+            controller.getBoard().getPlayerSchool(p2).removeProfessor(p.getColour());
         }
 
         for(SPColour c : availableColours){
@@ -1513,8 +1513,110 @@ public class ControllerTest {
         }
         Assertions.assertEquals(State.PLANNING2, controller.getControllerState().getState());
         // After reordering
-        Assertions.assertEquals("Second", controller.getPlayers().get(3).getNickname());
+        System.out.println("GIOCATORI");
+        System.out.println(controller.getPlayers().get(0));
+        System.out.println(controller.getPlayers().get(1));
+        System.out.println(controller.getPlayers().get(2));
+        System.out.println(controller.getPlayers().get(3));
         Assertions.assertFalse(controller.isAdvanced());
+
+
+        System.out.println(controller.getSitPlayers().get(0));
+        System.out.println(controller.getSitPlayers().get(1));
+        System.out.println(controller.getSitPlayers().get(2));
+        System.out.println(controller.getSitPlayers().get(3));
+        //ROUND 1: AC: First(W) -> 1, Second(B) -> 2, Third(B) -> 3, Fourth(W) -> 4
+        //-----MessageAssistantCard 1-----
+        MessageAssistantCard m4p5 = new MessageAssistantCard("First", 1, 1);
+        try {
+            controller.update(m4p5);
+        } catch (ControllerException e) {
+            e.printStackTrace();
+        }
+        Assertions.assertEquals(State.PLANNING2, controller.getControllerState().getState());
+        Assertions.assertEquals("Second", controller.getCurrentSitPlayer().getNickname());
+
+        //-----MessageAssistantCard 2-----
+        MessageAssistantCard m5p4 = new MessageAssistantCard("Second", 2, 4);
+        try {
+            controller.update(m5p4);
+        } catch (ControllerException e) {
+            e.printStackTrace();
+        }
+        Assertions.assertEquals(State.PLANNING2, controller.getControllerState().getState());
+        Assertions.assertEquals("Third", controller.getCurrentSitPlayer().getNickname());
+
+        //-----MessageAssistantCard 3-----
+        MessageAssistantCard m6p4 = new MessageAssistantCard("Third", 2, 3);
+        try {
+            controller.update(m6p4);
+        } catch (ControllerException e) {
+            e.printStackTrace();
+        }
+        Assertions.assertEquals(State.PLANNING2, controller.getControllerState().getState());
+        Assertions.assertEquals("Fourth", controller.getCurrentSitPlayer().getNickname());
+
+        //-----MessageAssistantCard 4-----
+        MessageAssistantCard m7p4 = new MessageAssistantCard("Fourth", 1, 2);
+        try {
+            controller.update(m7p4);
+        } catch (ControllerException e) {
+            e.printStackTrace();
+        }
+        Assertions.assertEquals(State.ACTION1, controller.getControllerState().getState());
+        Assertions.assertEquals("First", controller.getCurrentPlayer().getNickname());
+
+        //ROUND 1: TURN 1: First
+        //-----First: MessageStudentHallToDiningRoom 1-----
+        // choose a Student which exists
+        colourToMove = mapSPColourToString(controller.getBoard().getPlayerSchool(controller.getCurrentPlayer()).getStudentsHall().get(0).getColour());
+        //force conquering of archipelago 1
+        controller.getBoard().getArchipelago(1).addStudent(new Student(controller.getBoard().getPlayerSchool(controller.getCurrentPlayer()).getStudentsHall().get(0).getColour()));
+        MessageStudentHallToDiningRoom m8p4 = new MessageStudentHallToDiningRoom(controller.getCurrentPlayer().getNickname(), colourToMove);
+        Assertions.assertEquals(controller.getNumStudentsToMoveCurrent(), 3);
+        try {
+            controller.update(m8p4);
+        } catch (ControllerException e) {
+            e.printStackTrace();
+        }
+        Assertions.assertEquals(controller.getNumStudentsToMoveCurrent(), 2);
+        Assertions.assertEquals(State.ACTION1, controller.getControllerState().getState());
+
+        //-----First: MessageStudentHallToDiningRoom 2-----
+        // choose a Student which exists
+        colourToMove = mapSPColourToString(controller.getBoard().getPlayerSchool(controller.getCurrentPlayer()).getStudentsHall().get(0).getColour());
+
+        MessageStudentHallToDiningRoom m9p4 = new MessageStudentHallToDiningRoom(controller.getCurrentPlayer().getNickname(), colourToMove);
+        try {
+            controller.update(m9p4);
+        } catch (ControllerException e) {
+            e.printStackTrace();
+        }
+        Assertions.assertEquals(controller.getNumStudentsToMoveCurrent(), 1);
+        Assertions.assertEquals(State.ACTION1, controller.getControllerState().getState());
+
+        //-----First: MessageStudentToArchipelago-----
+        // choose a Student which exists
+        colourToMove = mapSPColourToString(controller.getBoard().getPlayerSchool(controller.getCurrentPlayer()).getStudentsHall().get(0).getColour());
+
+        MessageStudentToArchipelago m10p4 = new MessageStudentToArchipelago(controller.getCurrentPlayer().getNickname(), colourToMove, 1);
+        Assertions.assertEquals(controller.getNumStudentsToMoveCurrent(), 1);
+        try {
+            controller.update(m10p4);
+        } catch (ControllerException e) {
+            e.printStackTrace();
+        }
+        Assertions.assertEquals(controller.getNumStudentsToMoveCurrent(), 3);
+        Assertions.assertEquals(State.ACTION2, controller.getControllerState().getState());
+
+        //-----MessageMoveMotherNature-----
+        MessageMoveMotherNature m11p4 = new MessageMoveMotherNature(controller.getCurrentPlayer().getNickname(), 1);
+        try {
+            controller.update(m11p4);
+        } catch (ControllerException e) {
+            e.printStackTrace();
+        }
+        Assertions.assertEquals(State.ACTION3, controller.getControllerState().getState());
     }
 
     private String mapSPColourToString(SPColour c){
