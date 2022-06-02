@@ -44,7 +44,7 @@ public class ControllerState {
             case PING:
                 return true;
         }
-        return false;
+        return false; //unreachable
     }
 
     public State getState(){

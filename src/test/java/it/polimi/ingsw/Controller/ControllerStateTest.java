@@ -41,8 +41,12 @@ class ControllerStateTest {
         assertTrue(controllerState.checkState(INMessageType.CC_TAKE_PROFESSOR_ON_EQUITY));
         assertTrue(controllerState.checkState(INMessageType.CC_TOWER_NO_VALUE));
         assertTrue(controllerState.checkState(INMessageType.CC_TWO_EXTRA_POINTS));
+        assertTrue(controllerState.checkState(INMessageType.CC_TWO_EXTRA_ISLANDS));
+        assertTrue(controllerState.checkState(INMessageType.PING));
 
         assertFalse(controllerState.checkState(INMessageType.CREATE_MATCH));
+
+        controllerState.setState(State.WAITING_PLAYERS);
     }
 
     @Test
