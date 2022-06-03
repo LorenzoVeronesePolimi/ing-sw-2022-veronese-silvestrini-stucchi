@@ -181,6 +181,11 @@ public class GUIViewFX extends Application {
         alert.showAndWait();
     }
 
+    public void characterCardAlert(String effect){
+        Alert alert = new Alert(Alert.AlertType.INFORMATION, effect);
+        alert.showAndWait();
+    }
+
     public void manageScene(SerializedBoardAbstract board){
         switch (board.getCurrentState()) {
             case PLANNING2:
@@ -230,6 +235,7 @@ public class GUIViewFX extends Application {
         this.stage.setScene(this.currentScene);
         this.stage.show();
     }
+
 
 }
 

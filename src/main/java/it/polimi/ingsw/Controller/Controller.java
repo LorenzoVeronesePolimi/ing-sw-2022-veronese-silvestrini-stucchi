@@ -575,7 +575,7 @@ public class Controller implements ObserverController<Message> {
         // Go on within the turn
         this.currentPlayerIndex = this.sitPlayers.indexOf(this.precomputedPlayer);
 
-        if(this.iteratorAC == this.numPlayers){ //last player: all players has played their AssistantCard. No I can set the order
+        if(this.iteratorAC == this.numPlayers){ //last player: all players has played their AssistantCard. Now I can set the order
             this.changeTurnOrder(); // reset the order of the Players according to the values of the AssistantCards
             this.currentPlayerIndex = 0; // the new turn will start
             controllerState.setState(State.ACTION1);

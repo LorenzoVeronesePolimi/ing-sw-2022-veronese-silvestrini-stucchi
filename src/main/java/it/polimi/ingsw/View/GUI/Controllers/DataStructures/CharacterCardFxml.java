@@ -1,9 +1,13 @@
 package it.polimi.ingsw.View.GUI.Controllers.DataStructures;
 
+import com.sun.prism.Image;
 import it.polimi.ingsw.Model.Cards.AbstractCharacterCard;
 import it.polimi.ingsw.Model.Enumerations.CharacterCardEnumeration;
+import it.polimi.ingsw.View.GUI.GUIViewFX;
+import javafx.event.EventHandler;
 import javafx.scene.Node;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 
 import java.util.List;
@@ -27,6 +31,21 @@ public class CharacterCardFxml {
             Map.entry(CharacterCardEnumeration.TWO_EXTRA_POINTS, "/images/Characters/TwoExtraPoints.jpg")
     );
 
+    private static final Map<CharacterCardEnumeration, String> cardEffect = Map.ofEntries(
+            Map.entry(CharacterCardEnumeration.EXCHANGE_THREE_STUDENTS, "You can exchange up to three students between the ones that you have in the hall and the ones that are in placed on this card."),
+            Map.entry(CharacterCardEnumeration.EXCHANGE_TWO_HALL_DINING, "You can exchange up to two students between the ones in your dining room and the ones in your hall."),
+            Map.entry(CharacterCardEnumeration.EXCLUDE_COLOUR_FROM_COUNTING, "Chooses a colour: for that turn, during the influence computation, that colour won't be considered"),
+            Map.entry(CharacterCardEnumeration.EXTRA_STUDENT_IN_DINING, "Choose one student from the four that are on this card: put it in your dining Room, then a student is extracted from the bag and added to this card."),
+            Map.entry(CharacterCardEnumeration.FAKE_MN_MOVEMENT, "Chooses an archipelago: you can try to conquer it as if mother nature has ended her movement on that archipelago. After that, the round continues normally."),
+            Map.entry(CharacterCardEnumeration.FORBID_ISLAND, "Take one No Entry tile from this card and put it on an archipelago. The next time Mother Nature goes to that archipelago, she won't conquer it and the tile will be dropped."),
+            Map.entry(CharacterCardEnumeration.PLACE_ONE_STUDENT, "You can choose a student on this card and place it on an archipelago. Then, a new student is extracted from the bag and put on this card."),
+            Map.entry(CharacterCardEnumeration.REDUCE_COLOUR_IN_DINING, "Chose a colour. Each player puts in the bag 2 students (or less, if he has less) from his own dining room."),
+            Map.entry(CharacterCardEnumeration.TAKE_PROFESSOR_ON_EQUITY, "During this turn, you take control of the professors even if you have the same number of students in the school as the current owner of the professor."),
+            Map.entry(CharacterCardEnumeration.TOWER_NO_VALUE, "For this turn, when resolving a conquering on an archipelago, towers do not count towards influence."),
+            Map.entry(CharacterCardEnumeration.TWO_EXTRA_ISLANDS, "You can move Mother Nature up to two additional archipelagos than is indicated in the assistant card you played."),
+            Map.entry(CharacterCardEnumeration.TWO_EXTRA_POINTS, "For this turn, during the influence calculation, you will have two additional point.")
+    );
+
     public CharacterCardFxml(GridPane cards) {
         this.cards = cards;
     }
@@ -37,15 +56,25 @@ public class CharacterCardFxml {
         }
     }
 
-    public void setCharacterCardsVisualization(List<AbstractCharacterCard> cards, double scale){
+    private void setClickable(ImageView image, CharacterCardEnumeration type, GUIViewFX guiFX){
+        image.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
+            guiFX.characterCardAlert(cardEffect.get(type));
+            event.consume();
+        });
+    }
+
+    public void setCharacterCardsVisualization(List<AbstractCharacterCard> cards, double scale, GUIViewFX guiViewFX){
         int i = 0;
         for(AbstractCharacterCard c : cards){
             ImageView image = new ImageView(getClass().getResource(cardPath.get(c.getType())).toExternalForm());
             image.setFitWidth(100 * scale);
             image.setPreserveRatio(true);
+            this.setClickable(image, c.getType(), guiViewFX);
             this.cards.add(image, i, 0);
 
             i++;
         }
     }
+
+
 }

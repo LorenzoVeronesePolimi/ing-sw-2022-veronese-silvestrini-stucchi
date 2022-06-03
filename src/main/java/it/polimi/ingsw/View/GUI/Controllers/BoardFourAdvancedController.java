@@ -342,9 +342,6 @@ public class BoardFourAdvancedController implements GUIController, Initializable
     public void setSchoolsFxmlVisualization(SerializedBoardAbstract board){
         //int onWorkingPlayerIndex = board.getOrderedPlayers().indexOf(board.getCurrentPlayer());
         int onWorkingPlayerIndex = computeMyIndex(board);
-        System.out.println(board.getSitPlayers().get(0).getNickname());
-        System.out.println(board.getSitPlayers().get(1).getNickname());
-        System.out.println(onWorkingPlayerIndex);
         if(onWorkingPlayerIndex == -1) {
             System.out.println("Error in setSchoolFxmlVisualization");
             return;
@@ -431,7 +428,7 @@ public class BoardFourAdvancedController implements GUIController, Initializable
     public void setCharacterCardsVisualization(SerializedBoardAbstract board){
         if(board.getType().equals("advanced")){
             this.characterCardsFxml.setVisible(true);
-            this.characterCardsFxml.setCharacterCardsVisualization(((SerializedBoardAdvanced)board).getExtractedCards(), 1);
+            this.characterCardsFxml.setCharacterCardsVisualization(((SerializedBoardAdvanced)board).getExtractedCards(), 1, this.guiViewFX);
         }
         else{
             this.characterCardsFxml.setVisible(false);
