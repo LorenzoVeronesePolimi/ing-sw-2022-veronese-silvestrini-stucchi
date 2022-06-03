@@ -29,6 +29,7 @@ public class BoardFourAdvancedController implements GUIController, Initializable
     private Client client;
 
     // AnchorPanes
+    //@FXML public AnchorPane general_anchor;
     @FXML private AnchorPane my_anchor;
     @FXML private AnchorPane op1_anchor;
     @FXML private AnchorPane op2_anchor;

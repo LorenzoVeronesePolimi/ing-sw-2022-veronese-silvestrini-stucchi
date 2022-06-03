@@ -1,6 +1,10 @@
 package it.polimi.ingsw.View.GUI.Controllers.DataStructures;
 
 import javafx.scene.image.ImageView;
+import javafx.scene.input.ClipboardContent;
+import javafx.scene.input.Dragboard;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.input.TransferMode;
 
 import java.util.Map;
 
@@ -25,11 +29,45 @@ public class AssistantCardFxml {
     public void setAssistantCardVisualization(int turnPriority){
         for(int i = 1; i <= 10; i++){
             if(i == turnPriority){
+                //ImageView image = this.priorityImage.get(i);
                 this.priorityImage.get(i).setVisible(true);
+                //this.priorityImage.get(i).setOnMouseDragOver(event -> ACDragged(event, image));
             }
             else{
                 this.priorityImage.get(i).setVisible(false);
             }
         }
+    }
+
+    public void ACDragged(MouseEvent e, ImageView image){
+        /*Dragboard db = image.startDragAndDrop(TransferMode.MOVE);
+        ClipboardContent content = new ClipboardContent();
+        // Store node ID in order to know what is dragged.
+        content.putString(image.getId());
+        db.setContent(content);
+        //e.consume()*/
+
+        double distanceX = image.getX() - e.getX();
+        double distanceY = image.getY() - e.getY();
+
+        double x = image.getLayoutX() + distanceX;
+        double y = image.getLayoutY() + distanceY;
+        image.setTranslateX(x);
+        image.setTranslateX(y);
+        //After calculating X and y, relocate the node to the specified coordinate point (x, y)
+        //image.relocate(x, y);
+        //e.consume();
+        /*
+        image.setX(image.getX() + e.getX());
+        image.setY(image.getY() + e.getY());
+        image.relocate();*/
+
+        /*double offsetX = e.getSceneX() - image.getX();
+        double offsetY = e.getSceneY() - image.getY();
+        double newTranslateX = image.getX() + offsetX;
+        double newTranslateY = image.getY() + offsetY;
+        image.setTranslateX(newTranslateX);
+        image.setTranslateY(newTranslateY);
+        e.consume();*/
     }
 }

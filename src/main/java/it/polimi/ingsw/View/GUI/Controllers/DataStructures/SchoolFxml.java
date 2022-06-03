@@ -157,10 +157,8 @@ public class SchoolFxml {
                 db.setContent(content);
                 event.consume();
             });*/
+            //image.setOnMouseClicked(event -> studentHallClicked(event, image));
             //image.setOnMouseDragged(event -> studentHallDragged(event, image));
-            //image.setOnMouseDragged(event -> studentHallDragged(event, image));
-            //image.setFitHeight(image.getFitHeight() * scale);
-            //image.setFitWidth(image.getFitWidth() * scale);
             //image.setPreserveRatio(true);
             this.hall.add(image, i, j);
 
@@ -213,14 +211,43 @@ public class SchoolFxml {
         this.coins.setText(Integer.toString(numCoins));
     }
 
-    public void studentHallDragged(MouseEvent e, ImageView image){
+    public void studentHallClicked(MouseEvent e, ImageView image){
+        for(Node n : this.hall.getChildren()){
+            if(n == image){
+                this.hall.getChildren().remove(image);
+            }
+        }
+    }
 
+    public void studentHallDragged(MouseEvent e, ImageView image){
+        /*
         Dragboard db = image.startDragAndDrop(TransferMode.MOVE);
         ClipboardContent content = new ClipboardContent();
         // Store node ID in order to know what is dragged.
         content.putString(image.getId());
         db.setContent(content);
-        //e.consume();
+        //e.consume();*/
+
+        System.out.println("sto draggando");
+        System.out.println("MOUSE");
+        System.out.println(e.getX());
+        System.out.println(e.getY());
+        System.out.println("IMMAGINE");
+        System.out.println(image.getLayoutX());
+        System.out.println(image.getLayoutY());
+        System.out.println("DELTA");
+        System.out.println(image.getLayoutX() + e.getX());
+        System.out.println(image.getLayoutY() + e.getY());
+
+        double distanceX = image.getX() + e.getX();
+        double distanceY = image.getY() + e.getY();
+
+        double x = image.getLayoutX() + distanceX;
+        double y = image.getLayoutY() + distanceY;
+        image.setTranslateX(x);
+        image.setTranslateY(y);
+
+        e.consume();
         /*
         image.setX(image.getX() + e.getX());
         image.setY(image.getY() + e.getY());
