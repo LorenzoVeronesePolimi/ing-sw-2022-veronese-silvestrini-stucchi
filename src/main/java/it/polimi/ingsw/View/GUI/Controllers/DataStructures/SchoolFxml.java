@@ -132,7 +132,7 @@ public class SchoolFxml {
     private void removeAllNodesFromGrid(GridPane grid){
         List<Node> children = new ArrayList<>(grid.getChildren()); //clone to avoid ConcurrentModificationException
         for(Node n : children){
-            this.hall.getChildren().remove(n);
+            grid.getChildren().remove(n);
         }
     }
 
