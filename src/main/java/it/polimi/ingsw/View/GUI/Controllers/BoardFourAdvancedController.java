@@ -13,6 +13,7 @@ import it.polimi.ingsw.View.GUI.Controllers.DataStructures.*;
 import it.polimi.ingsw.View.GUI.GUIViewFX;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
@@ -414,11 +415,21 @@ public class BoardFourAdvancedController implements GUIController, Initializable
 
     public void setCloudsVisualization(SerializedBoardAbstract board){
         if(board.getClouds().size() == 2){
+            removeAllNodesFromGrid(this.cloud1);
+            removeAllNodesFromGrid(this.cloud2);
             this.cloudsFxml.get(2).setVisible(false);
             this.cloudsFxml.get(3).setVisible(false);
         }
         else if(board.getClouds().size() == 3){
+            removeAllNodesFromGrid(this.cloud1);
+            removeAllNodesFromGrid(this.cloud2);
+            removeAllNodesFromGrid(this.cloud3);
             this.cloudsFxml.get(3).setVisible(false);
+        } else if(board.getClouds().size() == 4) {
+            removeAllNodesFromGrid(this.cloud1);
+            removeAllNodesFromGrid(this.cloud2);
+            removeAllNodesFromGrid(this.cloud3);
+            removeAllNodesFromGrid(this.cloud4);
         }
 
         for(int i = 0; i < board.getClouds().size(); i++){
@@ -505,6 +516,13 @@ public class BoardFourAdvancedController implements GUIController, Initializable
             i++;
         }
         return -1;
+    }
+
+    private void removeAllNodesFromGrid(GridPane grid){
+        List<Node> children = new ArrayList<>(grid.getChildren()); //clone to avoid ConcurrentModificationException
+        for(Node n : children){
+            grid.getChildren().remove(n);
+        }
     }
 
     @Override
