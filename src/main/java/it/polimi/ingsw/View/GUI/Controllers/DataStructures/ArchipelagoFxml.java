@@ -5,6 +5,7 @@ import it.polimi.ingsw.Model.Enumerations.SPColour;
 import it.polimi.ingsw.Model.Player;
 import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.AnchorPane;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -24,6 +25,29 @@ public class ArchipelagoFxml {
 
 
     public ArchipelagoFxml(ImageView archi_mother_nature, ImageView archi_white_tower, ImageView archi_black_tower, ImageView archi_gray_tower, Label archi_num_towers, Label archi_num_blue, Label archi_num_pink, Label archi_num_red, Label archi_num_yellow, Label archi_num_green){
+        this.archi_mother_nature = archi_mother_nature;
+        this.archi_white_tower = archi_white_tower;
+        this.archi_black_tower = archi_black_tower;
+        this.archi_gray_tower = archi_gray_tower;
+        this.archi_num_towers = archi_num_towers;
+
+        // setup data structures
+        this.towerColourImage = Map.of(
+                PlayerColour.WHITE, this.archi_white_tower,
+                PlayerColour.BLACK, this.archi_black_tower,
+                PlayerColour.GRAY, this.archi_gray_tower
+        );
+
+        this.studentColourNumber = Map.of(
+                SPColour.BLUE, archi_num_blue,
+                SPColour.PINK, archi_num_pink,
+                SPColour.RED, archi_num_red,
+                SPColour.YELLOW, archi_num_yellow,
+                SPColour.GREEN, archi_num_green
+        );
+    }
+
+    public ArchipelagoFxml(AnchorPane archi, ImageView archi_mother_nature, ImageView archi_white_tower, ImageView archi_black_tower, ImageView archi_gray_tower, Label archi_num_towers, Label archi_num_blue, Label archi_num_pink, Label archi_num_red, Label archi_num_yellow, Label archi_num_green){
         this.archi_mother_nature = archi_mother_nature;
         this.archi_white_tower = archi_white_tower;
         this.archi_black_tower = archi_black_tower;

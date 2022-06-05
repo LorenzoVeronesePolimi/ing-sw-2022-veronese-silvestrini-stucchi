@@ -445,7 +445,7 @@ public class CLIView extends ClientView {
                     client.asyncWriteToSocket(command + " " + colour + " " + destArchipelagoIndex);
                 }
             } else {
-                action=askCharacterCard((SerializedBoardAdvanced) serializedBoardAbstract);
+                action = askCharacterCard((SerializedBoardAdvanced) serializedBoardAbstract);
             }
         }while(action.equalsIgnoreCase("Back"));
         AnsiConsole.systemUninstall();

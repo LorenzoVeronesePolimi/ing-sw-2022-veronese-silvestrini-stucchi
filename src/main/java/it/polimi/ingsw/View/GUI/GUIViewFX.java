@@ -224,12 +224,14 @@ public class GUIViewFX extends Application {
         if(board.getType() == "advanced"){
             currentController.setStandardSetup(); // set advanced elements to not visible in case of standard match
         }
-        currentController.setArchipelagosFxmlVisualization(board);
-        currentController.setSchoolsFxmlVisualization(board);
-        currentController.setCloudsVisualization(board);
-        currentController.setAssistantCardsVisualization(board);
-        currentController.setCharacterCardsVisualization(board);
-        currentController.setInstructionLabels(board);
+
+        currentController.setBoard(board);
+        currentController.setArchipelagosFxmlVisualization();
+        currentController.setSchoolsFxmlVisualization();
+        currentController.setCloudsVisualization();
+        currentController.setAssistantCardsVisualization();
+        currentController.setCharacterCardsVisualization();
+        currentController.setInstructionLabels();
 
         this.currentScene = sceneMap.get(scene);
         this.stage.setScene(this.currentScene);

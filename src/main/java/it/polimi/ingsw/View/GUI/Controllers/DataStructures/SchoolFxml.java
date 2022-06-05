@@ -1,25 +1,27 @@
 package it.polimi.ingsw.View.GUI.Controllers.DataStructures;
 
+import it.polimi.ingsw.Client.Client;
+import it.polimi.ingsw.Model.Board.SerializedBoardAbstract;
 import it.polimi.ingsw.Model.Enumerations.PlayerColour;
 import it.polimi.ingsw.Model.Enumerations.SPColour;
 import it.polimi.ingsw.Model.Pawns.Professor;
 import it.polimi.ingsw.Model.Pawns.Student;
 import it.polimi.ingsw.Model.Pawns.Tower;
 import it.polimi.ingsw.Model.Places.School.School;
+import it.polimi.ingsw.View.GUI.Controllers.BoardFourAdvancedController;
 import javafx.fxml.FXML;
+import javafx.geometry.Bounds;
 import javafx.geometry.HPos;
 import javafx.geometry.VPos;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.ClipboardContent;
-import javafx.scene.input.Dragboard;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.input.TransferMode;
 import javafx.scene.layout.*;
 
+import java.awt.event.ActionEvent;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -31,7 +33,14 @@ public class SchoolFxml {
     @FXML private final GridPane towers;
     @FXML private final Label coins;
 
-    private static final Map<SPColour, String> studentColourPath = Map.of(
+    private Client client;  // Client class
+    private SerializedBoardAbstract board;  // Board
+    private BoardFourAdvancedController controller; // BoardFourAdvancedController (passed in the setSchoolsFxmlVisualization method)
+    private ImageView movedStudent = null; // when a student from the hall il clicked this value is updated
+
+    private Map<ImageView, SPColour> imageColour;
+
+    private final Map<SPColour, String> studentColourPath = Map.of(
             SPColour.BLUE, "/images/pawns/stud_blue.png",
             SPColour.PINK, "/images/pawns/stud_pink.png",
             SPColour.RED, "/images/pawns/stud_red.png",
@@ -39,7 +48,7 @@ public class SchoolFxml {
             SPColour.GREEN, "/images/pawns/stud_green.png"
     ); // relates the SPColour to the image of the student of that colour
 
-    private static final Map<Integer, SPColour> rowSPColour = Map.of(
+    private final Map<Integer, SPColour> rowSPColour = Map.of(
             0, SPColour.GREEN,
             1, SPColour.RED,
             2, SPColour.YELLOW,
@@ -47,7 +56,7 @@ public class SchoolFxml {
             4, SPColour.BLUE
     ); // relates index of the grid to the SPColour
 
-    private static final Map<SPColour, String> professorColourPath = Map.of(
+    private final Map<SPColour, String> professorColourPath = Map.of(
             SPColour.BLUE, "/images/pawns/prof_blue.png",
             SPColour.PINK, "/images/pawns/prof_pink.png",
             SPColour.RED, "/images/pawns/prof_red.png",
@@ -55,7 +64,7 @@ public class SchoolFxml {
             SPColour.GREEN, "/images/pawns/prof_green.png"
     ); // relates the SPColour to the image of the professor of that colour
 
-    private static final Map<SPColour, Integer> SPColourRow = Map.of(
+    private final Map<SPColour, Integer> SPColourRow = Map.of(
             SPColour.GREEN, 0,
             SPColour.RED, 1,
             SPColour.YELLOW, 2,
@@ -63,7 +72,7 @@ public class SchoolFxml {
             SPColour.BLUE, 4
     ); // relates index of the grid to the SPColour
 
-    private static final Map<PlayerColour, String> playerColourPath = Map.of(
+    private final Map<PlayerColour, String> playerColourPath = Map.of(
             PlayerColour.WHITE, "/images/pawns/WhiteTower.png",
             PlayerColour.BLACK, "/images/pawns/BlackTower.png",
             PlayerColour.GRAY, "/images/pawns/GrayTower.png"
@@ -78,6 +87,8 @@ public class SchoolFxml {
         this.towers = towers;
         this.coins = coins;
 
+        this.imageColour = new HashMap<>();
+
         ColumnConstraints col = new ColumnConstraints();
         col.setHalignment(HPos.CENTER);
         RowConstraints row = new RowConstraints();
@@ -86,10 +97,28 @@ public class SchoolFxml {
         this.hall.getRowConstraints().add(row);
         this.dining.getColumnConstraints().add(col);
         this.dining.getRowConstraints().add(row);
+        this.dining.setOnMouseClicked(this::diningClicked);
         this.professors.getColumnConstraints().add(col);
         this.professors.getRowConstraints().add(row);
         this.towers.getColumnConstraints().add(col);
         this.towers.getRowConstraints().add(row);
+    }
+
+    public void setBoard(SerializedBoardAbstract board) {
+        this.board = board;
+    }
+
+    public void setClient(Client client) {
+        this.client = client;
+    }
+
+    public void setController(BoardFourAdvancedController controller) {
+        this.controller = controller;
+    }
+
+    // called by the controller when a student is placed on an archipelago
+    public void setMovedStudent(ImageView student) {
+        this.movedStudent = student;
     }
 
     public Label getNick() {
@@ -127,6 +156,8 @@ public class SchoolFxml {
         for(GridPane grid : gridsToReset){
             removeAllNodesFromGrid(grid);
         }
+
+        this.imageColour.clear();
     }
 
     private void removeAllNodesFromGrid(GridPane grid){
@@ -149,7 +180,11 @@ public class SchoolFxml {
             ImageView image = new ImageView(getClass().getResource(studentColourPath.get(s.getColour())).toExternalForm());
             image.setFitHeight(30 * scale);
             image.setFitWidth(30 * scale);
+
+            //THIS COMMENTED PART NEEDS TO BE CANCELLED IF WE USE CLICK INSTEAD OF DRAG AND DROP
+
             /*image.setOnDragDetected((MouseEvent event) -> {
+                System.out.println("dragga");
                 Dragboard db = image.startDragAndDrop(TransferMode.MOVE);
                 ClipboardContent content = new ClipboardContent();
                 // Store node ID in order to know what is dragged.
@@ -160,6 +195,10 @@ public class SchoolFxml {
             //image.setOnMouseClicked(event -> studentHallClicked(event, image));
             //image.setOnMouseDragged(event -> studentHallDragged(event, image));
             //image.setPreserveRatio(true);
+
+            image.setOnMouseClicked(event -> hallStudentClicked(event, image));
+            this.imageColour.put(image, s.getColour());
+
             this.hall.add(image, i, j);
 
             i++;
@@ -211,14 +250,55 @@ public class SchoolFxml {
         this.coins.setText(Integer.toString(numCoins));
     }
 
-    public void studentHallClicked(MouseEvent e, ImageView image){
-        for(Node n : this.hall.getChildren()){
+    public void studentHallClicked(MouseEvent e, ImageView image) {
+        /*for(Node n : this.hall.getChildren()){
             if(n == image){
                 this.hall.getChildren().remove(image);
+            }
+        }*/
+        /*System.out.println("MOUSE");
+        double mouseX = e.getSceneX();
+        double mouseY = e.getSceneY();
+        System.out.println(mouseX);
+        System.out.println(mouseY);
+
+        System.out.println("IMMAGINE");
+        Bounds boundsInScene = image.localToScene(image.getBoundsInLocal());
+        double imageX = boundsInScene.getMinX();
+        double imageY = boundsInScene.getMinY();
+        System.out.println(imageX);
+        System.out.println(imageY);*/
+        //System.out.println("Student y: " + image.getLayoutY());
+
+    }
+
+    private void hallStudentClicked(MouseEvent e, ImageView image) {
+        if(this.movedStudent != null) {
+            this.movedStudent.setOpacity(1);
+            this.movedStudent = null;
+            this.controller.setMovedStudent(null);
+        }
+        if(this.client.getNickname().equals(this.board.getCurrentPlayer().getNickname())) { // if it's the player turn
+            for(Node n : this.hall.getChildren()) { // if he touched a hall student
+                if (n == image) {
+                    image.setOpacity(0);    // The student is not removed otherwise we cannot put it back if the player changes his mind
+                    this.movedStudent = image;
+                    this.controller.setMovedStudent(this.imageColour.get(this.movedStudent)); // in case of studentToArchipelago
+                }
             }
         }
     }
 
+    // in case of studentHallToDiningRoom
+    private void diningClicked(MouseEvent event) {
+        if(this.movedStudent != null) {
+            this.client.asyncWriteToSocket("studentHallToDiningRoom " + this.imageColour.get(movedStudent));
+            this.movedStudent = null;
+            this.controller.setMovedStudent(null);
+        }
+    }
+
+    //THIS METHOD NEEDS TO BE CANCELLED IF WE USE CLICK INSTEAD OF DRAG AND DROP
     public void studentHallDragged(MouseEvent e, ImageView image){
         /*
         Dragboard db = image.startDragAndDrop(TransferMode.MOVE);
@@ -230,11 +310,18 @@ public class SchoolFxml {
 
         System.out.println("sto draggando");
         System.out.println("MOUSE");
-        System.out.println(e.getX());
-        System.out.println(e.getY());
+        double mouseX = e.getSceneX();
+        double mouseY = e.getSceneY();
+        System.out.println(mouseX);
+        System.out.println(mouseY);
+
         System.out.println("IMMAGINE");
-        System.out.println(image.getLayoutX());
-        System.out.println(image.getLayoutY());
+        Bounds boundsInScene = image.localToScene(image.getBoundsInLocal());
+        double imageX = boundsInScene.getMinX() + image.getFitWidth();
+        double imageY = boundsInScene.getMinY() - image.getFitHeight();
+        System.out.println(imageX);
+        System.out.println(imageY);
+        /*
         System.out.println("DELTA");
         System.out.println(image.getLayoutX() + e.getX());
         System.out.println(image.getLayoutY() + e.getY());
@@ -242,10 +329,13 @@ public class SchoolFxml {
         double distanceX = image.getX() + e.getX();
         double distanceY = image.getY() + e.getY();
 
-        double x = image.getLayoutX() + distanceX;
-        double y = image.getLayoutY() + distanceY;
-        image.setTranslateX(x);
-        image.setTranslateY(y);
+         */
+
+        double distanceX = mouseX - imageX;
+        double distanceY = mouseY - imageY;
+
+        image.setTranslateX(distanceX);
+        image.setTranslateY(distanceY);
 
         e.consume();
         /*
