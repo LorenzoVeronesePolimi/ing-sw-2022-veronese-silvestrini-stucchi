@@ -341,13 +341,21 @@ public class AssistantCardChoiceController implements GUIController, Initializab
 
             i++;
         }
-
+        /*
         for(int w = 0; w < this.cardButtons.size(); w++) {
             if(removed.contains(w)) {
                 this.cardButtons.get(w).setOpacity(0.7);
                 this.cardButtons.get(w).setOnAction(null);
                 this.cardButtons.get(w).setOnMouseEntered(null);
                 this.cardButtons.get(w).setOnMouseExited(null);
+            }
+        }*/
+        for(int w = 0; w < this.assistantCardsChoiceFxml.size(); w++) {
+            if(removed.contains(w)) {
+                this.assistantCardsChoiceFxml.get(w).getButton().setOpacity(0.7);
+                this.assistantCardsChoiceFxml.get(w).getButton().setOnAction(null);
+                this.assistantCardsChoiceFxml.get(w).getButton().setOnMouseEntered(null);
+                this.assistantCardsChoiceFxml.get(w).getButton().setOnMouseExited(null);
             }
         }
     }

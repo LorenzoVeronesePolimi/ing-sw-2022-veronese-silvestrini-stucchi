@@ -44,6 +44,10 @@ public class AssistantCardChoiceFxml {
         this.button.setOnMouseExited(this::hoverExitCard);
     }
 
+    public Button getButton() {
+        return button;
+    }
+
     public void setClient(Client client) {
         this.client = client;
     }

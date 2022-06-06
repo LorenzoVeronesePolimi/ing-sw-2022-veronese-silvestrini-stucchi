@@ -20,8 +20,8 @@ public class ArchipelagoFxml {
     private static final SPColour[] availableSPColours = {SPColour.BLUE,SPColour.PINK, SPColour.RED, SPColour.YELLOW, SPColour.GREEN};
     private static final PlayerColour[] availablePlayerColours = {PlayerColour.WHITE, PlayerColour.BLACK, PlayerColour.GRAY};
 
-    private int index;
-    private AnchorPane archiAnchor;
+    private final int index;
+    private final AnchorPane archiAnchor;
     private final ImageView archi_mother_nature;
 
     private final Map<PlayerColour, ImageView> towerColourImage; //useful to avoid switches and to streamline the code
@@ -123,6 +123,10 @@ public class ArchipelagoFxml {
         for(SPColour c : availableSPColours){
             this.studentColourNumber.get(c).setText(Integer.toString(studentsData.get(c)));
         }
+    }
+
+    public void setVisible(boolean isVisible){
+        this.archiAnchor.setVisible(isVisible);
     }
 
     private void onMouseClicked(MouseEvent event){

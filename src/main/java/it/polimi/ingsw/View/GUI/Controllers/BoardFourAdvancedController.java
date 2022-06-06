@@ -274,6 +274,9 @@ public class BoardFourAdvancedController implements GUIController, Initializable
 
     // CharacterCards
     @FXML private GridPane character_card_grid;
+    @FXML private Label card_1_cost_label;
+    @FXML private Label card_2_cost_label;
+    @FXML private Label card_3_cost_label;
 
     private SPColour movedStudent = null;
 
@@ -327,7 +330,7 @@ public class BoardFourAdvancedController implements GUIController, Initializable
         cloudsFxml.add(new CloudFxml(3, cloud4, cloud4_image));
 
         // Character Cards data structure
-        characterCardsFxml = new CharacterCardFxml(character_card_grid);
+        characterCardsFxml = new CharacterCardFxml(character_card_grid, card_1_cost_label, card_2_cost_label, card_3_cost_label);
     }
 
     public SPColour getMovedStudent() {
@@ -383,6 +386,11 @@ public class BoardFourAdvancedController implements GUIController, Initializable
             archipelagosFxml.get(i).setTextNumStudents(board.getArchipelagos().get(i).getStudentsData());
 
             i++;
+        }
+
+        // set invisible all archipelagos outside the archipelagos' list
+        for(i = (12 - board.getArchipelagos().size()); i > 0; i--){
+            this.archipelagosFxml.get(12 - i).setVisible(false);
         }
     }
 

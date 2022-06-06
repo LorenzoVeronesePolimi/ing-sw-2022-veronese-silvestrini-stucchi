@@ -6,15 +6,18 @@ import it.polimi.ingsw.Model.Enumerations.CharacterCardEnumeration;
 import it.polimi.ingsw.View.GUI.GUIViewFX;
 import javafx.event.EventHandler;
 import javafx.scene.Node;
+import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 public class CharacterCardFxml {
     private final GridPane cards;
+    private List<Label> costs;
 
     private static final Map<CharacterCardEnumeration, String> cardPath = Map.ofEntries(
             Map.entry(CharacterCardEnumeration.EXCHANGE_THREE_STUDENTS, "/images/Characters/ExchangeThreeStudents.jpg"),
@@ -61,8 +64,12 @@ public class CharacterCardFxml {
             Map.entry(CharacterCardEnumeration.TWO_EXTRA_POINTS, "Two Extra Points")
     );
 
-    public CharacterCardFxml(GridPane cards) {
+    public CharacterCardFxml(GridPane cards, Label cost1, Label cost2, Label cost3) {
         this.cards = cards;
+        this.costs = new ArrayList<>();
+        this.costs.add(cost1);
+        this.costs.add(cost2);
+        this.costs.add(cost3);
     }
 
     public void setVisible(boolean isVisible){
@@ -83,6 +90,10 @@ public class CharacterCardFxml {
     public void setCharacterCardsVisualization(List<AbstractCharacterCard> cards, double scale, GUIViewFX guiViewFX){
         int i = 0;
         for(AbstractCharacterCard c : cards){
+            // set cost
+            this.costs.get(i).setText(Integer.toString(c.getCurrentPrice()));
+
+            // set visualization
             ImageView image = new ImageView(getClass().getResource(cardPath.get(c.getType())).toExternalForm());
             image.setFitWidth(100 * scale);
             image.setPreserveRatio(true);

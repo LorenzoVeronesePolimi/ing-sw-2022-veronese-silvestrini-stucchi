@@ -1082,7 +1082,7 @@
       <AnchorPane fx:id="card_1_cost" layoutX="510.0" layoutY="534.0">
          <children>
             <Rectangle fx:id="card_1_cost_white" arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="30.0" stroke="BLACK" strokeType="INSIDE" width="42.0" />
-            <Label fx:id="card_1_cost_lable" layoutX="25.0" prefHeight="30.0" prefWidth="15.0" />
+            <Label fx:id="card_1_cost_label" layoutX="25.0" prefHeight="30.0" prefWidth="15.0" />
             <ImageView fx:id="card_1_cost_coin" fitHeight="29.0" fitWidth="30.0" preserveRatio="true">
                <image>
                   <Image url="@../images/Coin.png" />
@@ -1093,7 +1093,7 @@
       <AnchorPane fx:id="card_2_cost" layoutX="648.0" layoutY="533.0">
          <children>
             <Rectangle fx:id="card_2_cost_white" arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="30.0" stroke="BLACK" strokeType="INSIDE" width="42.0" />
-            <Label fx:id="card_2_cost_lable" layoutX="25.0" prefHeight="30.0" prefWidth="15.0" />
+            <Label fx:id="card_2_cost_label" layoutX="25.0" prefHeight="30.0" prefWidth="15.0" />
             <ImageView fx:id="card_2_cost_coin" fitHeight="29.0" fitWidth="30.0" preserveRatio="true">
                <image>
                   <Image url="@../images/Coin.png" />
@@ -1104,7 +1104,7 @@
       <AnchorPane fx:id="card_3_cost" layoutX="784.0" layoutY="535.0">
          <children>
             <Rectangle fx:id="card_3_cost_white" arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="30.0" stroke="BLACK" strokeType="INSIDE" width="42.0" />
-            <Label fx:id="card_3_cost_lable" layoutX="25.0" prefHeight="30.0" prefWidth="15.0" />
+            <Label fx:id="card_3_cost_label" layoutX="25.0" prefHeight="30.0" prefWidth="15.0" />
             <ImageView fx:id="card_3_cost_coin" fitHeight="29.0" fitWidth="30.0" preserveRatio="true">
                <image>
                   <Image url="@../images/Coin.png" />
