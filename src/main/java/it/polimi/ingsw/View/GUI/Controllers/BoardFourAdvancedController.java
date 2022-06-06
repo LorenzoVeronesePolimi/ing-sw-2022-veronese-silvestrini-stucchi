@@ -644,38 +644,6 @@ public class BoardFourAdvancedController implements GUIController, Initializable
         }
     }
 
-    private void archiZeroClicked(MouseEvent event) {
-        //TODO: modify this method in order to consider merged archipelagos (both for student move and for mother nature move)
-
-        if(isCurrentPlayer(this.client.getNickname())) {
-            if(this.movedStudent != null && board.getCurrentState().equals(State.ACTION1)) {
-
-                this.client.asyncWriteToSocket("studentToArchipelago " + this.movedStudent + " 0");
-                this.movedStudent = null;
-
-                for(SchoolFxml s : schoolsFxml) {
-                    s.setMovedStudent(null);
-                }
-            } else if(board.getCurrentState().equals(State.ACTION2)) {
-                Archipelago mnArchi = board.getMn().getCurrentPosition();
-                int i = 0;
-                boolean found = false;
-                for(Archipelago a : board.getArchipelagos()) {
-                    if(!found) {
-                        if(!a.equals(mnArchi)) {
-                            i++;
-                        } else {
-                            found = true;
-                            //TODO: break
-                        }
-                    }
-                }
-
-                this.client.asyncWriteToSocket("moveMotherNature " + computeMNMoves(i, 0));
-            }
-        }
-    }
-
     /* substituted by onMouseClicked in ArchipelagoFxml
     private void archiOneClicked(MouseEvent event) {
         //TODO: modify this method in order to consider merged archipelagos (both for student move and for mother nature move)
@@ -707,37 +675,15 @@ public class BoardFourAdvancedController implements GUIController, Initializable
         }
     }*/
 
+    /* replaced in CloudFxml
     private void cloudOneClicked(MouseEvent event) {
         if(isCurrentPlayer(this.client.getNickname())) {
             if(board.getCurrentState().equals(State.ACTION3)) {
                 this.client.asyncWriteToSocket("studentCloudToSchool " + 0);
             }
         }
-    }
+    }*/
 
-    private void cloudTwoClicked(MouseEvent event) {
-        if(isCurrentPlayer(this.client.getNickname())) {
-            if(board.getCurrentState().equals(State.ACTION3)) {
-                this.client.asyncWriteToSocket("studentCloudToSchool " + 1);
-            }
-        }
-    }
-
-    private void cloudThreeClicked(MouseEvent event) {
-        if(isCurrentPlayer(this.client.getNickname())) {
-            if(board.getCurrentState().equals(State.ACTION3)) {
-                this.client.asyncWriteToSocket("studentCloudToSchool " + 2);
-            }
-        }
-    }
-
-    private void cloudFourClicked(MouseEvent event) {
-        if(isCurrentPlayer(this.client.getNickname())) {
-            if(board.getCurrentState().equals(State.ACTION3)) {
-                this.client.asyncWriteToSocket("studentCloudToSchool " + 3);
-            }
-        }
-    }
 
     public void setCursor(String path){
         this.general_anchor.setCursor(new ImageCursor(new Image(path),
