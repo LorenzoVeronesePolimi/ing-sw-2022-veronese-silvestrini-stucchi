@@ -13,8 +13,11 @@ import it.polimi.ingsw.View.GUI.Controllers.DataStructures.*;
 import it.polimi.ingsw.View.GUI.GUIViewFX;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Cursor;
+import javafx.scene.ImageCursor;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
@@ -31,7 +34,7 @@ public class BoardFourAdvancedController implements GUIController, Initializable
     private SerializedBoardAbstract board;
 
     // AnchorPanes
-    //@FXML public AnchorPane general_anchor;
+    @FXML public AnchorPane general_anchor;
     @FXML private AnchorPane my_anchor;
     @FXML private AnchorPane op1_anchor;
     @FXML private AnchorPane op2_anchor;
@@ -273,7 +276,6 @@ public class BoardFourAdvancedController implements GUIController, Initializable
     @FXML private GridPane character_card_grid;
 
     private SPColour movedStudent = null;
-    private Integer movedStudentFxmlIndex = null;
 
     private List<ArchipelagoFxml> archipelagosFxml;
     private List<SchoolFxml> schoolsFxml;
@@ -463,6 +465,11 @@ public class BoardFourAdvancedController implements GUIController, Initializable
     }
 
     public void setCloudsVisualization(){
+        for(CloudFxml c : cloudsFxml) {
+            c.setBoard(board);
+            c.setClient(this.client);
+            c.setController(this);
+        }
         if(board.getClouds().size() == 2){
             removeAllNodesFromGrid(this.cloud1);
             removeAllNodesFromGrid(this.cloud2);
@@ -730,6 +737,16 @@ public class BoardFourAdvancedController implements GUIController, Initializable
                 this.client.asyncWriteToSocket("studentCloudToSchool " + 3);
             }
         }
+    }
+
+    public void setCursor(String path){
+        this.general_anchor.setCursor(new ImageCursor(new Image(path),
+                40,
+                40));
+    }
+
+    public void setCursorToDefault(){
+        this.general_anchor.setCursor(Cursor.DEFAULT);
     }
 
     @Override

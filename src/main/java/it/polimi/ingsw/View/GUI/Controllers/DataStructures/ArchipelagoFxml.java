@@ -141,6 +141,8 @@ public class ArchipelagoFxml {
                 this.client.asyncWriteToSocket("moveMotherNature " + computeMNMoves(this.board.getArchipelagos().indexOf(this.board.getMn().getCurrentPosition()), this.index));
             }
         }
+
+        this.controller.setCursorToDefault();
     }
 
     private int computeMNMoves(int mnArchi, int clickedArchi) {

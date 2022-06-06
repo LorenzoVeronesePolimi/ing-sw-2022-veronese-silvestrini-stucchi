@@ -9,6 +9,8 @@ import it.polimi.ingsw.Model.Pawns.Student;
 import it.polimi.ingsw.Model.Pawns.Tower;
 import it.polimi.ingsw.Model.Places.School.School;
 import it.polimi.ingsw.View.GUI.Controllers.BoardFourAdvancedController;
+import javafx.animation.Animation;
+import javafx.animation.FadeTransition;
 import javafx.fxml.FXML;
 import javafx.geometry.Bounds;
 import javafx.geometry.HPos;
@@ -18,6 +20,7 @@ import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
+import javafx.util.Duration;
 
 import java.awt.event.ActionEvent;
 import java.util.ArrayList;
@@ -180,7 +183,6 @@ public class SchoolFxml {
             ImageView image = new ImageView(getClass().getResource(studentColourPath.get(s.getColour())).toExternalForm());
             image.setFitHeight(30 * scale);
             image.setFitWidth(30 * scale);
-
             //THIS COMMENTED PART NEEDS TO BE CANCELLED IF WE USE CLICK INSTEAD OF DRAG AND DROP
 
             /*image.setOnDragDetected((MouseEvent event) -> {
@@ -281,7 +283,13 @@ public class SchoolFxml {
         if(this.client.getNickname().equals(this.board.getCurrentPlayer().getNickname())) { // if it's the player turn
             for(Node n : this.hall.getChildren()) { // if he touched a hall student
                 if (n == image) {
-                    image.setOpacity(0);    // The student is not removed otherwise we cannot put it back if the player changes his mind
+                    /* image blinking
+                    FadeTransition fadeTransition = new FadeTransition(Duration.seconds(0.1), image);
+                    fadeTransition.setFromValue(1.0);
+                    fadeTransition.setToValue(0.0);
+                    fadeTransition.setCycleCount(Animation.INDEFINITE);*/
+                    //image.setOpacity(0);    // The student is not removed otherwise we cannot put it back if the player changes his mind
+                    this.controller.setCursor(studentColourPath.get(this.imageColour.get(image)));
                     this.movedStudent = image;
                     this.controller.setMovedStudent(this.imageColour.get(this.movedStudent)); // in case of studentToArchipelago
                 }
@@ -295,6 +303,7 @@ public class SchoolFxml {
             this.client.asyncWriteToSocket("studentHallToDiningRoom " + this.imageColour.get(movedStudent));
             this.movedStudent = null;
             this.controller.setMovedStudent(null);
+            this.controller.setCursorToDefault();
         }
     }
 
