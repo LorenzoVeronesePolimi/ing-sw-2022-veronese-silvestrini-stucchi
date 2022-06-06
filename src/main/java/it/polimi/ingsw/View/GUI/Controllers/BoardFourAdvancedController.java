@@ -464,7 +464,7 @@ public class BoardFourAdvancedController implements GUIController, Initializable
         int onWorkingPlayerIndex = computeMyIndex(board);
 
         for(int i = 0; i < board.getSitPlayers().size(); i++){
-            School onWorkingSchool = board.getSchools().get(i);
+            School onWorkingSchool = board.getSchools().get(onWorkingPlayerIndex);
 
             this.assistantCardsFxml.get(i).setAssistantCardVisualization(onWorkingSchool.getPlayer().getLastCard().getTurnPriority());
 

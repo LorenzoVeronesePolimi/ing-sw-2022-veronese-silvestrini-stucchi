@@ -288,7 +288,7 @@ public class SchoolFxml {
                     fadeTransition.setFromValue(1.0);
                     fadeTransition.setToValue(0.0);
                     fadeTransition.setCycleCount(Animation.INDEFINITE);*/
-                    //image.setOpacity(0);    // The student is not removed otherwise we cannot put it back if the player changes his mind
+                    image.setOpacity(0);    // I think it is fancier if the student "disappears" from the hall
                     this.controller.setCursor(studentColourPath.get(this.imageColour.get(image)));
                     this.movedStudent = image;
                     this.controller.setMovedStudent(this.imageColour.get(this.movedStudent)); // in case of studentToArchipelago
