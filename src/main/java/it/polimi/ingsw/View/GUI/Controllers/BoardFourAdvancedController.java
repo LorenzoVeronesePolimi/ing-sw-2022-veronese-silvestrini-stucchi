@@ -13,8 +13,11 @@ import it.polimi.ingsw.View.GUI.Controllers.DataStructures.*;
 import it.polimi.ingsw.View.GUI.GUIViewFX;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Cursor;
+import javafx.scene.ImageCursor;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
@@ -31,7 +34,7 @@ public class BoardFourAdvancedController implements GUIController, Initializable
     private SerializedBoardAbstract board;
 
     // AnchorPanes
-    //@FXML public AnchorPane general_anchor;
+    @FXML public AnchorPane general_anchor;
     @FXML private AnchorPane my_anchor;
     @FXML private AnchorPane op1_anchor;
     @FXML private AnchorPane op2_anchor;
@@ -283,30 +286,21 @@ public class BoardFourAdvancedController implements GUIController, Initializable
     public void initialize(URL url, ResourceBundle resourceBundle) {
         // Create Archipelagos data structure
         archipelagosFxml = new ArrayList<>();
-        archi0.setOnMouseClicked(this::archiZeroClicked);   // When a student is moved from diningroom to archipelago
-        archi1.setOnMouseClicked(this::archiOneClicked);   // When a student is moved from diningroom to archipelago
-        archi2.setOnMouseClicked(this::archiTwoClicked);   // When a student is moved from diningroom to archipelago
-        archi3.setOnMouseClicked(this::archiThreeClicked);   // When a student is moved from diningroom to archipelago
-        archi4.setOnMouseClicked(this::archiFourClicked);   // When a student is moved from diningroom to archipelago
-        archi5.setOnMouseClicked(this::archiFiveClicked);   // When a student is moved from diningroom to archipelago
-        archi6.setOnMouseClicked(this::archiSixClicked);   // When a student is moved from diningroom to archipelago
-        archi7.setOnMouseClicked(this::archiSevenClicked);   // When a student is moved from diningroom to archipelago
-        archi8.setOnMouseClicked(this::archiEightClicked);   // When a student is moved from diningroom to archipelago
-        archi9.setOnMouseClicked(this::archiNineClicked);   // When a student is moved from diningroom to archipelago
-        archi10.setOnMouseClicked(this::archiTenClicked);   // When a student is moved from diningroom to archipelago
-        archi11.setOnMouseClicked(this::archiElevenClicked);   // When a student is moved from diningroom to archipelago
-        archipelagosFxml.add(new ArchipelagoFxml(archi0_mother_nature, archi0_white_tower, archi0_black_tower, archi0_gray_tower, archi0_num_towers, archi0_num_blue, archi0_num_pink, archi0_num_red, archi0_num_yellow, archi0_num_green));
-        archipelagosFxml.add(new ArchipelagoFxml(archi1_mother_nature, archi1_white_tower, archi1_black_tower, archi1_gray_tower, archi1_num_towers, archi1_num_blue, archi1_num_pink, archi1_num_red, archi1_num_yellow, archi1_num_green));
-        archipelagosFxml.add(new ArchipelagoFxml(archi2_mother_nature, archi2_white_tower, archi2_black_tower, archi2_gray_tower, archi2_num_towers, archi2_num_blue, archi2_num_pink, archi2_num_red, archi2_num_yellow, archi2_num_green));
-        archipelagosFxml.add(new ArchipelagoFxml(archi3_mother_nature, archi3_white_tower, archi3_black_tower, archi3_gray_tower, archi3_num_towers, archi3_num_blue, archi3_num_pink, archi3_num_red, archi3_num_yellow, archi3_num_green));
-        archipelagosFxml.add(new ArchipelagoFxml(archi4_mother_nature, archi4_white_tower, archi4_black_tower, archi4_gray_tower, archi4_num_towers, archi4_num_blue, archi4_num_pink, archi4_num_red, archi4_num_yellow, archi4_num_green));
-        archipelagosFxml.add(new ArchipelagoFxml(archi5_mother_nature, archi5_white_tower, archi5_black_tower, archi5_gray_tower, archi5_num_towers, archi5_num_blue, archi5_num_pink, archi5_num_red, archi5_num_yellow, archi5_num_green));
-        archipelagosFxml.add(new ArchipelagoFxml(archi6_mother_nature, archi6_white_tower, archi6_black_tower, archi6_gray_tower, archi6_num_towers, archi6_num_blue, archi6_num_pink, archi6_num_red, archi6_num_yellow, archi6_num_green));
-        archipelagosFxml.add(new ArchipelagoFxml(archi7_mother_nature, archi7_white_tower, archi7_black_tower, archi7_gray_tower, archi7_num_towers, archi7_num_blue, archi7_num_pink, archi7_num_red, archi7_num_yellow, archi7_num_green));
-        archipelagosFxml.add(new ArchipelagoFxml(archi8_mother_nature, archi8_white_tower, archi8_black_tower, archi8_gray_tower, archi8_num_towers, archi8_num_blue, archi8_num_pink, archi8_num_red, archi8_num_yellow, archi8_num_green));
-        archipelagosFxml.add(new ArchipelagoFxml(archi9_mother_nature, archi9_white_tower, archi9_black_tower, archi9_gray_tower, archi9_num_towers, archi9_num_blue, archi9_num_pink, archi9_num_red, archi9_num_yellow, archi9_num_green));
-        archipelagosFxml.add(new ArchipelagoFxml(archi10_mother_nature, archi10_white_tower, archi10_black_tower, archi10_gray_tower, archi10_num_towers, archi10_num_blue, archi10_num_pink, archi10_num_red, archi10_num_yellow, archi10_num_green));
-        archipelagosFxml.add(new ArchipelagoFxml(archi11_mother_nature, archi11_white_tower, archi11_black_tower, archi11_gray_tower, archi11_num_towers, archi11_num_blue, archi11_num_pink, archi11_num_red, archi11_num_yellow, archi11_num_green));
+        /* substituted by onMouseClicked in ArchipelagoFxml
+        archi0.setOnMouseClicked(this::archiZeroClicked);   // When a student is moved from dining room to archipelago
+        */
+        archipelagosFxml.add(new ArchipelagoFxml(0, archi0, archi0_mother_nature, archi0_white_tower, archi0_black_tower, archi0_gray_tower, archi0_num_towers, archi0_num_blue, archi0_num_pink, archi0_num_red, archi0_num_yellow, archi0_num_green));
+        archipelagosFxml.add(new ArchipelagoFxml(1, archi1, archi1_mother_nature, archi1_white_tower, archi1_black_tower, archi1_gray_tower, archi1_num_towers, archi1_num_blue, archi1_num_pink, archi1_num_red, archi1_num_yellow, archi1_num_green));
+        archipelagosFxml.add(new ArchipelagoFxml(2, archi2, archi2_mother_nature, archi2_white_tower, archi2_black_tower, archi2_gray_tower, archi2_num_towers, archi2_num_blue, archi2_num_pink, archi2_num_red, archi2_num_yellow, archi2_num_green));
+        archipelagosFxml.add(new ArchipelagoFxml(3, archi3, archi3_mother_nature, archi3_white_tower, archi3_black_tower, archi3_gray_tower, archi3_num_towers, archi3_num_blue, archi3_num_pink, archi3_num_red, archi3_num_yellow, archi3_num_green));
+        archipelagosFxml.add(new ArchipelagoFxml(4, archi4, archi4_mother_nature, archi4_white_tower, archi4_black_tower, archi4_gray_tower, archi4_num_towers, archi4_num_blue, archi4_num_pink, archi4_num_red, archi4_num_yellow, archi4_num_green));
+        archipelagosFxml.add(new ArchipelagoFxml(5, archi5, archi5_mother_nature, archi5_white_tower, archi5_black_tower, archi5_gray_tower, archi5_num_towers, archi5_num_blue, archi5_num_pink, archi5_num_red, archi5_num_yellow, archi5_num_green));
+        archipelagosFxml.add(new ArchipelagoFxml(6, archi6, archi6_mother_nature, archi6_white_tower, archi6_black_tower, archi6_gray_tower, archi6_num_towers, archi6_num_blue, archi6_num_pink, archi6_num_red, archi6_num_yellow, archi6_num_green));
+        archipelagosFxml.add(new ArchipelagoFxml(7, archi7, archi7_mother_nature, archi7_white_tower, archi7_black_tower, archi7_gray_tower, archi7_num_towers, archi7_num_blue, archi7_num_pink, archi7_num_red, archi7_num_yellow, archi7_num_green));
+        archipelagosFxml.add(new ArchipelagoFxml(8, archi8, archi8_mother_nature, archi8_white_tower, archi8_black_tower, archi8_gray_tower, archi8_num_towers, archi8_num_blue, archi8_num_pink, archi8_num_red, archi8_num_yellow, archi8_num_green));
+        archipelagosFxml.add(new ArchipelagoFxml(9, archi9, archi9_mother_nature, archi9_white_tower, archi9_black_tower, archi9_gray_tower, archi9_num_towers, archi9_num_blue, archi9_num_pink, archi9_num_red, archi9_num_yellow, archi9_num_green));
+        archipelagosFxml.add(new ArchipelagoFxml(10, archi10, archi10_mother_nature, archi10_white_tower, archi10_black_tower, archi10_gray_tower, archi10_num_towers, archi10_num_blue, archi10_num_pink, archi10_num_red, archi10_num_yellow, archi10_num_green));
+        archipelagosFxml.add(new ArchipelagoFxml(11, archi11, archi11_mother_nature, archi11_white_tower, archi11_black_tower, archi11_gray_tower, archi11_num_towers, archi11_num_blue, archi11_num_pink, archi11_num_red, archi11_num_yellow, archi11_num_green));
 
         // Create Schools data structure
         schoolsFxml = new ArrayList<>();
@@ -324,17 +318,24 @@ public class BoardFourAdvancedController implements GUIController, Initializable
 
         // Create Clouds data structure
         cloudsFxml = new ArrayList<>();
+        /* substituted by onMouseClicked in CloudFxml
         cloud1.setOnMouseClicked(this::cloudOneClicked);
-        cloud2.setOnMouseClicked(this::cloudTwoClicked);
-        cloud3.setOnMouseClicked(this::cloudThreeClicked);
-        cloud4.setOnMouseClicked(this::cloudFourClicked);
-        cloudsFxml.add(new CloudFxml(cloud1, cloud1_image));
-        cloudsFxml.add(new CloudFxml(cloud2, cloud2_image));
-        cloudsFxml.add(new CloudFxml(cloud3, cloud3_image));
-        cloudsFxml.add(new CloudFxml(cloud4, cloud4_image));
+        */
+        cloudsFxml.add(new CloudFxml(0, cloud1, cloud1_image));
+        cloudsFxml.add(new CloudFxml(1, cloud2, cloud2_image));
+        cloudsFxml.add(new CloudFxml(2, cloud3, cloud3_image));
+        cloudsFxml.add(new CloudFxml(3, cloud4, cloud4_image));
 
         // Character Cards data structure
         characterCardsFxml = new CharacterCardFxml(character_card_grid);
+    }
+
+    public SPColour getMovedStudent() {
+        return movedStudent;
+    }
+
+    public List<SchoolFxml> getSchoolsFxml() {
+        return schoolsFxml;
     }
 
     public void setBoard(SerializedBoardAbstract board) {
@@ -352,6 +353,11 @@ public class BoardFourAdvancedController implements GUIController, Initializable
     }
 
     public void setArchipelagosFxmlVisualization(){
+        for(ArchipelagoFxml a : this.archipelagosFxml) {
+            a.setBoard(board);
+            a.setClient(this.client);
+            a.setController(this);
+        }
         int i = 0;
         for(Archipelago a : board.getArchipelagos()){
             // MotherNature: visible or not?
@@ -459,6 +465,11 @@ public class BoardFourAdvancedController implements GUIController, Initializable
     }
 
     public void setCloudsVisualization(){
+        for(CloudFxml c : cloudsFxml) {
+            c.setBoard(board);
+            c.setClient(this.client);
+            c.setController(this);
+        }
         if(board.getClouds().size() == 2){
             removeAllNodesFromGrid(this.cloud1);
             removeAllNodesFromGrid(this.cloud2);
@@ -570,7 +581,7 @@ public class BoardFourAdvancedController implements GUIController, Initializable
         }
     }
 
-    private boolean isCurrentPlayer(String name) {
+    public boolean isCurrentPlayer(String name) {
         return name.equals(board.getCurrentPlayer().getNickname());
     }
 
@@ -601,7 +612,7 @@ public class BoardFourAdvancedController implements GUIController, Initializable
         return 0;
     }
 
-    private void archiZeroClicked(MouseEvent event) {
+    private void archiClicked(MouseEvent event){
         //TODO: modify this method in order to consider merged archipelagos (both for student move and for mother nature move)
 
         if(isCurrentPlayer(this.client.getNickname())) {
@@ -623,6 +634,7 @@ public class BoardFourAdvancedController implements GUIController, Initializable
                             i++;
                         } else {
                             found = true;
+                            //TODO: break
                         }
                     }
                 }
@@ -632,6 +644,7 @@ public class BoardFourAdvancedController implements GUIController, Initializable
         }
     }
 
+    /* substituted by onMouseClicked in ArchipelagoFxml
     private void archiOneClicked(MouseEvent event) {
         //TODO: modify this method in order to consider merged archipelagos (both for student move and for mother nature move)
 
@@ -660,338 +673,26 @@ public class BoardFourAdvancedController implements GUIController, Initializable
                 this.client.asyncWriteToSocket("moveMotherNature " + computeMNMoves(i, 1));
             }
         }
-    }
+    }*/
 
-    private void archiTwoClicked(MouseEvent event) {
-        //TODO: modify this method in order to consider merged archipelagos (both for student move and for mother nature move)
-
-        if(isCurrentPlayer(this.client.getNickname())) {
-            if(this.movedStudent != null) {
-                this.client.asyncWriteToSocket("studentToArchipelago " + this.movedStudent + " 2");
-                this.movedStudent = null;
-
-                for(SchoolFxml s : schoolsFxml) {
-                    s.setMovedStudent(null);
-                }
-            } else if(board.getCurrentState().equals(State.ACTION2)) {
-                Archipelago mnArchi = board.getMn().getCurrentPosition();
-                int i = 0;
-                boolean found = false;
-                for(Archipelago a : board.getArchipelagos()) {
-                    if(!found) {
-                        if(!a.equals(mnArchi)) {
-                            i++;
-                        } else {
-                            found = true;
-                        }
-                    }
-                }
-
-                this.client.asyncWriteToSocket("moveMotherNature " + computeMNMoves(i, 2));
-            }
-        }
-    }
-
-    private void archiThreeClicked(MouseEvent event) {
-        //TODO: modify this method in order to consider merged archipelagos (both for student move and for mother nature move)
-
-        if(isCurrentPlayer(this.client.getNickname())) {
-            if(this.movedStudent != null) {
-                this.client.asyncWriteToSocket("studentToArchipelago " + this.movedStudent + " 3");
-                this.movedStudent = null;
-
-                for(SchoolFxml s : schoolsFxml) {
-                    s.setMovedStudent(null);
-                }
-            } else if(board.getCurrentState().equals(State.ACTION2)) {
-                Archipelago mnArchi = board.getMn().getCurrentPosition();
-                int i = 0;
-                boolean found = false;
-                for(Archipelago a : board.getArchipelagos()) {
-                    if(!found) {
-                        if(!a.equals(mnArchi)) {
-                            i++;
-                        } else {
-                            found = true;
-                        }
-                    }
-                }
-
-                this.client.asyncWriteToSocket("moveMotherNature " + computeMNMoves(i, 3));
-            }
-        }
-    }
-
-    private void archiFourClicked(MouseEvent event) {
-        //TODO: modify this method in order to consider merged archipelagos (both for student move and for mother nature move)
-
-        if(isCurrentPlayer(this.client.getNickname())) {
-            if(this.movedStudent != null) {
-                this.client.asyncWriteToSocket("studentToArchipelago " + this.movedStudent + " 4");
-                this.movedStudent = null;
-
-                for(SchoolFxml s : schoolsFxml) {
-                    s.setMovedStudent(null);
-                }
-            } else if(board.getCurrentState().equals(State.ACTION2)) {
-                Archipelago mnArchi = board.getMn().getCurrentPosition();
-                int i = 0;
-                boolean found = false;
-                for(Archipelago a : board.getArchipelagos()) {
-                    if(!found) {
-                        if(!a.equals(mnArchi)) {
-                            i++;
-                        } else {
-                            found = true;
-                        }
-                    }
-                }
-
-                this.client.asyncWriteToSocket("moveMotherNature " + computeMNMoves(i, 4));
-            }
-        }
-    }
-
-    private void archiFiveClicked(MouseEvent event) {
-        //TODO: modify this method in order to consider merged archipelagos (both for student move and for mother nature move)
-
-        if(isCurrentPlayer(this.client.getNickname())) {
-            if(this.movedStudent != null) {
-                this.client.asyncWriteToSocket("studentToArchipelago " + this.movedStudent + " 5");
-                this.movedStudent = null;
-
-                for(SchoolFxml s : schoolsFxml) {
-                    s.setMovedStudent(null);
-                }
-            } else if(board.getCurrentState().equals(State.ACTION2)) {
-                Archipelago mnArchi = board.getMn().getCurrentPosition();
-                int i = 0;
-                boolean found = false;
-                for(Archipelago a : board.getArchipelagos()) {
-                    if(!found) {
-                        if(!a.equals(mnArchi)) {
-                            i++;
-                        } else {
-                            found = true;
-                        }
-                    }
-                }
-
-                this.client.asyncWriteToSocket("moveMotherNature " + computeMNMoves(i, 5));
-            }
-        }
-    }
-
-    private void archiSixClicked(MouseEvent event) {
-        //TODO: modify this method in order to consider merged archipelagos (both for student move and for mother nature move)
-
-        if(isCurrentPlayer(this.client.getNickname())) {
-            if(this.movedStudent != null) {
-                this.client.asyncWriteToSocket("studentToArchipelago " + this.movedStudent + " 6");
-                this.movedStudent = null;
-
-                for(SchoolFxml s : schoolsFxml) {
-                    s.setMovedStudent(null);
-                }
-            } else if(board.getCurrentState().equals(State.ACTION2)) {
-                Archipelago mnArchi = board.getMn().getCurrentPosition();
-                int i = 0;
-                boolean found = false;
-                for(Archipelago a : board.getArchipelagos()) {
-                    if(!found) {
-                        if(!a.equals(mnArchi)) {
-                            i++;
-                        } else {
-                            found = true;
-                        }
-                    }
-                }
-
-                this.client.asyncWriteToSocket("moveMotherNature " + computeMNMoves(i, 6));
-            }
-        }
-    }
-
-    private void archiSevenClicked(MouseEvent event) {
-        //TODO: modify this method in order to consider merged archipelagos (both for student move and for mother nature move)
-
-        if(isCurrentPlayer(this.client.getNickname())) {
-            if(this.movedStudent != null) {
-                this.client.asyncWriteToSocket("studentToArchipelago " + this.movedStudent + " 7");
-                this.movedStudent = null;
-
-                for(SchoolFxml s : schoolsFxml) {
-                    s.setMovedStudent(null);
-                }
-            } else if(board.getCurrentState().equals(State.ACTION2)) {
-                Archipelago mnArchi = board.getMn().getCurrentPosition();
-                int i = 0;
-                boolean found = false;
-                for(Archipelago a : board.getArchipelagos()) {
-                    if(!found) {
-                        if(!a.equals(mnArchi)) {
-                            i++;
-                        } else {
-                            found = true;
-                        }
-                    }
-                }
-
-                this.client.asyncWriteToSocket("moveMotherNature " + computeMNMoves(i, 7));
-            }
-        }
-    }
-
-    private void archiEightClicked(MouseEvent event) {
-        //TODO: modify this method in order to consider merged archipelagos (both for student move and for mother nature move)
-
-        if(isCurrentPlayer(this.client.getNickname())) {
-            if(this.movedStudent != null) {
-                this.client.asyncWriteToSocket("studentToArchipelago " + this.movedStudent + " 8");
-                this.movedStudent = null;
-
-                for(SchoolFxml s : schoolsFxml) {
-                    s.setMovedStudent(null);
-                }
-            } else if(board.getCurrentState().equals(State.ACTION2)) {
-                Archipelago mnArchi = board.getMn().getCurrentPosition();
-                int i = 0;
-                boolean found = false;
-                for(Archipelago a : board.getArchipelagos()) {
-                    if(!found) {
-                        if(!a.equals(mnArchi)) {
-                            i++;
-                        } else {
-                            found = true;
-                        }
-                    }
-                }
-
-                this.client.asyncWriteToSocket("moveMotherNature " + computeMNMoves(i, 8));
-            }
-        }
-    }
-
-    private void archiNineClicked(MouseEvent event) {
-        //TODO: modify this method in order to consider merged archipelagos (both for student move and for mother nature move)
-
-        if(isCurrentPlayer(this.client.getNickname())) {
-            if(this.movedStudent != null) {
-                this.client.asyncWriteToSocket("studentToArchipelago " + this.movedStudent + " 9");
-                this.movedStudent = null;
-
-                for(SchoolFxml s : schoolsFxml) {
-                    s.setMovedStudent(null);
-                }
-            } else if(board.getCurrentState().equals(State.ACTION2)) {
-                Archipelago mnArchi = board.getMn().getCurrentPosition();
-                int i = 0;
-                boolean found = false;
-                for(Archipelago a : board.getArchipelagos()) {
-                    if(!found) {
-                        if(!a.equals(mnArchi)) {
-                            i++;
-                        } else {
-                            found = true;
-                        }
-                    }
-                }
-
-                this.client.asyncWriteToSocket("moveMotherNature " + computeMNMoves(i, 9));
-            }
-        }
-    }
-
-    private void archiTenClicked(MouseEvent event) {
-        //TODO: modify this method in order to consider merged archipelagos (both for student move and for mother nature move)
-
-        if(isCurrentPlayer(this.client.getNickname())) {
-            if(this.movedStudent != null) {
-                this.client.asyncWriteToSocket("studentToArchipelago " + this.movedStudent + " 10");
-                this.movedStudent = null;
-
-                for(SchoolFxml s : schoolsFxml) {
-                    s.setMovedStudent(null);
-                }
-            } else if(board.getCurrentState().equals(State.ACTION2)) {
-                Archipelago mnArchi = board.getMn().getCurrentPosition();
-                int i = 0;
-                boolean found = false;
-                for(Archipelago a : board.getArchipelagos()) {
-                    if(!found) {
-                        if(!a.equals(mnArchi)) {
-                            i++;
-                        } else {
-                            found = true;
-                        }
-                    }
-                }
-
-                this.client.asyncWriteToSocket("moveMotherNature " + computeMNMoves(i, 10));
-            }
-        }
-    }
-
-    private void archiElevenClicked(MouseEvent event) {
-        //TODO: modify this method in order to consider merged archipelagos (both for student move and for mother nature move)
-
-        if(isCurrentPlayer(this.client.getNickname())) {
-            if(this.movedStudent != null) {
-                this.client.asyncWriteToSocket("studentToArchipelago " + this.movedStudent + " 11");
-                this.movedStudent = null;
-
-                for(SchoolFxml s : schoolsFxml) {
-                    s.setMovedStudent(null);
-                }
-            } else if(board.getCurrentState().equals(State.ACTION2)) {
-                Archipelago mnArchi = board.getMn().getCurrentPosition();
-                int i = 0;
-                boolean found = false;
-                for(Archipelago a : board.getArchipelagos()) {
-                    if(!found) {
-                        if(!a.equals(mnArchi)) {
-                            i++;
-                        } else {
-                            found = true;
-                        }
-                    }
-                }
-
-                this.client.asyncWriteToSocket("moveMotherNature " + computeMNMoves(i, 11));
-            }
-        }
-    }
-
+    /* replaced in CloudFxml
     private void cloudOneClicked(MouseEvent event) {
         if(isCurrentPlayer(this.client.getNickname())) {
             if(board.getCurrentState().equals(State.ACTION3)) {
                 this.client.asyncWriteToSocket("studentCloudToSchool " + 0);
             }
         }
+    }*/
+
+
+    public void setCursor(String path){
+        this.general_anchor.setCursor(new ImageCursor(new Image(path),
+                40,
+                40));
     }
 
-    private void cloudTwoClicked(MouseEvent event) {
-        if(isCurrentPlayer(this.client.getNickname())) {
-            if(board.getCurrentState().equals(State.ACTION3)) {
-                this.client.asyncWriteToSocket("studentCloudToSchool " + 1);
-            }
-        }
-    }
-
-    private void cloudThreeClicked(MouseEvent event) {
-        if(isCurrentPlayer(this.client.getNickname())) {
-            if(board.getCurrentState().equals(State.ACTION3)) {
-                this.client.asyncWriteToSocket("studentCloudToSchool " + 2);
-            }
-        }
-    }
-
-    private void cloudFourClicked(MouseEvent event) {
-        if(isCurrentPlayer(this.client.getNickname())) {
-            if(board.getCurrentState().equals(State.ACTION3)) {
-                this.client.asyncWriteToSocket("studentCloudToSchool " + 3);
-            }
-        }
+    public void setCursorToDefault(){
+        this.general_anchor.setCursor(Cursor.DEFAULT);
     }
 
     @Override

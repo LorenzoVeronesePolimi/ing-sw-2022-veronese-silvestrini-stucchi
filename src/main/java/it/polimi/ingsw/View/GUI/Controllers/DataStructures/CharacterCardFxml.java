@@ -46,6 +46,21 @@ public class CharacterCardFxml {
             Map.entry(CharacterCardEnumeration.TWO_EXTRA_POINTS, "For this turn, during the influence calculation, you will have two additional point.")
     );
 
+    private static final Map<CharacterCardEnumeration, String> cardName = Map.ofEntries(
+            Map.entry(CharacterCardEnumeration.EXCHANGE_THREE_STUDENTS, "Exchange Three Students"),
+            Map.entry(CharacterCardEnumeration.EXCHANGE_TWO_HALL_DINING, "Exchange Two Hall-Dining Room"),
+            Map.entry(CharacterCardEnumeration.EXCLUDE_COLOUR_FROM_COUNTING, "Exclude Colour from Counting"),
+            Map.entry(CharacterCardEnumeration.EXTRA_STUDENT_IN_DINING, "Extra Student in Dining Room"),
+            Map.entry(CharacterCardEnumeration.FAKE_MN_MOVEMENT, "Fake Mother Nature Movement"),
+            Map.entry(CharacterCardEnumeration.FORBID_ISLAND, "Forbid Island"),
+            Map.entry(CharacterCardEnumeration.PLACE_ONE_STUDENT, "Place One Student"),
+            Map.entry(CharacterCardEnumeration.REDUCE_COLOUR_IN_DINING, "Reduce Colour in Dining Room"),
+            Map.entry(CharacterCardEnumeration.TAKE_PROFESSOR_ON_EQUITY, "Take Professor on Equity"),
+            Map.entry(CharacterCardEnumeration.TOWER_NO_VALUE, "Tower No Value"),
+            Map.entry(CharacterCardEnumeration.TWO_EXTRA_ISLANDS, "Two Extra Islands"),
+            Map.entry(CharacterCardEnumeration.TWO_EXTRA_POINTS, "Two Extra Points")
+    );
+
     public CharacterCardFxml(GridPane cards) {
         this.cards = cards;
     }
@@ -58,8 +73,10 @@ public class CharacterCardFxml {
 
     private void setClickable(ImageView image, CharacterCardEnumeration type, GUIViewFX guiFX){
         image.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
+            /*
             guiFX.characterCardAlert(cardEffect.get(type));
-            event.consume();
+            event.consume();*/
+            guiFX.characterCardAlert(type, cardName.get(type), cardEffect.get(type), cardPath.get(type));
         });
     }
 

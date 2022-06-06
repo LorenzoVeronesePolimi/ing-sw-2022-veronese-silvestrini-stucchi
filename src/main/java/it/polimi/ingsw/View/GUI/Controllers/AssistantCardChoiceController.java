@@ -5,20 +5,19 @@ import it.polimi.ingsw.Model.Board.SerializedBoardAbstract;
 import it.polimi.ingsw.Model.Cards.AssistantCard;
 import it.polimi.ingsw.Model.Places.School.School;
 import it.polimi.ingsw.Model.Player;
+import it.polimi.ingsw.View.GUI.Controllers.DataStructures.AssistantCardChoiceFxml;
 import it.polimi.ingsw.View.GUI.GUIViewFX;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseEvent;
 
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
-public class AssistantCardController implements GUIController, Initializable {
+public class AssistantCardChoiceController implements GUIController, Initializable {
     private GUIViewFX guiViewFX;
     private Client client;
 
@@ -47,6 +46,31 @@ public class AssistantCardController implements GUIController, Initializable {
     @FXML private Button buttonC9;
     @FXML private Button buttonC10;
 
+    private List<AssistantCardChoiceFxml> assistantCardsChoiceFxml;
+
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+        this.assistantCardsChoiceFxml = new ArrayList<>();
+        assistantCardsChoiceFxml.add(new AssistantCardChoiceFxml(1, imageC1, buttonC1));
+        assistantCardsChoiceFxml.add(new AssistantCardChoiceFxml(2, imageC2, buttonC2));
+        assistantCardsChoiceFxml.add(new AssistantCardChoiceFxml(3, imageC3, buttonC3));
+        assistantCardsChoiceFxml.add(new AssistantCardChoiceFxml(4, imageC4, buttonC4));
+        assistantCardsChoiceFxml.add(new AssistantCardChoiceFxml(5, imageC5, buttonC5));
+        assistantCardsChoiceFxml.add(new AssistantCardChoiceFxml(6, imageC6, buttonC6));
+        assistantCardsChoiceFxml.add(new AssistantCardChoiceFxml(7, imageC7, buttonC7));
+        assistantCardsChoiceFxml.add(new AssistantCardChoiceFxml(8, imageC8, buttonC8));
+        assistantCardsChoiceFxml.add(new AssistantCardChoiceFxml(9, imageC9, buttonC9));
+        assistantCardsChoiceFxml.add(new AssistantCardChoiceFxml(10, imageC10, buttonC10));
+
+    }
+
+    public void setDataStructures(){
+        for(AssistantCardChoiceFxml c : this.assistantCardsChoiceFxml){
+            c.setController(this);
+            c.setClient(this.client);
+            c.setBoard(this.serializedBoardAbstract);
+        }
+    }
+    /*
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         // Card1
@@ -110,6 +134,7 @@ public class AssistantCardController implements GUIController, Initializable {
         this.buttonC10.setOnMouseEntered(this::hoverEnterCard10);
         this.buttonC10.setOnMouseExited(this::hoverExitCard10);
     }
+
 
     private void playCard1(ActionEvent e) {
         this.client.asyncWriteToSocket("assistantCard 1 1");
@@ -289,7 +314,7 @@ public class AssistantCardController implements GUIController, Initializable {
         this.buttonC10.setScaleY(1);
         this.imageC10.setScaleX(1);
         this.imageC10.setScaleY(1);
-    }
+    }*/
 
     public void setSerializedBoardAbstract(SerializedBoardAbstract serializedBoardAbstract) {
         this.serializedBoardAbstract = serializedBoardAbstract;

@@ -1,8 +1,8 @@
 package it.polimi.ingsw.View.GUI;
 
 import it.polimi.ingsw.Client.Client;
-import it.polimi.ingsw.Controller.Enumerations.State;
 import it.polimi.ingsw.Model.Board.SerializedBoardAbstract;
+import it.polimi.ingsw.Model.Enumerations.CharacterCardEnumeration;
 import it.polimi.ingsw.Model.Enumerations.PlayerColour;
 import it.polimi.ingsw.View.GUI.Controllers.*;
 import it.polimi.ingsw.View.GUIView;
@@ -12,11 +12,10 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
-import javafx.scene.control.ButtonType;
 import javafx.scene.image.Image;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 
-import javax.swing.text.html.Option;
 import java.io.IOException;
 import java.util.*;
 
@@ -32,10 +31,12 @@ public class GUIViewFX extends Application {
     private static final String LOADING = "LoadingPage.fxml";
     private static final String ASSISTANT_CARD = "AssistantCardChoice.fxml";
     private static final String BOARD_FOUR_ADVANCED = "BoardGrid.fxml"; //TODO: to be changed
+    private static final String CHARACTER_CARD_DIALOG = "CharacterCardDialog.fxml";
     private static final String INTRO_CSS = "Intro.css";
     private static final String LOGIN_CSS = "Login.css";
     private static final String LOADING_CSS = "LoadingCSS.css";
     private static final String BOARD_FOUR_ADVANCED_CSS = "BoardGrid.css"; //TODO: to be changed
+    private static final String CHARACTER_CARD_DIALOG_CSS = "CharacterCardDialog.css";
     private final HashMap<String, Scene> sceneMap = new HashMap<>();
     private final HashMap<String, GUIController> controllerMap = new HashMap<>();
 
@@ -181,9 +182,36 @@ public class GUIViewFX extends Application {
         alert.showAndWait();
     }
 
+    /*
     public void characterCardAlert(String effect){
         Alert alert = new Alert(Alert.AlertType.INFORMATION, effect);
         alert.showAndWait();
+    }*/
+
+    public void characterCardAlert(CharacterCardEnumeration type, String name, String effect, String imagePath) {
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/CharacterCardDialog.fxml"));
+        Parent parent = null;
+        try {
+            parent = fxmlLoader.load();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        CharacterCardDialogController controller = fxmlLoader.<CharacterCardDialogController>getController();
+
+        controller.setCardName(name);
+        controller.setCardEffect(effect);
+        controller.setCardImage(imagePath);
+        controller.setCharacterCardActions(type);
+
+        Stage alertStage = new Stage();
+        Scene alertScene = new Scene(parent);
+        Image icon = new Image("/images/eriantys.jpg");
+        alertStage.getIcons().add(icon);
+        alertScene.getStylesheets().add("/css/" + CHARACTER_CARD_DIALOG_CSS);
+        alertStage.initModality(Modality.APPLICATION_MODAL);
+        alertStage.setScene(alertScene);
+        alertStage.showAndWait();
+
     }
 
     public void manageScene(SerializedBoardAbstract board){
@@ -210,8 +238,9 @@ public class GUIViewFX extends Application {
                 this.sceneLoading("Wait for other player to do their move!");
             });
         } else {
-            AssistantCardController currentController = (AssistantCardController) controllerMap.get(scene);
+            AssistantCardChoiceController currentController = (AssistantCardChoiceController) controllerMap.get(scene);
             currentController.setSerializedBoardAbstract(board);
+            currentController.setDataStructures();
 
             this.currentScene = sceneMap.get(scene);
             this.stage.setScene(this.currentScene);

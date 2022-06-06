@@ -1,0 +1,15 @@
+#general_anchor{
+    -fx-background-color: #2596be;
+}
+
+#card_name {
+    -fx-font-size: 18;
+    -fx-text-fill: white;
+    -fx-alignment: center;
+    -fx-font-weight: bold;
+}
+
+#card_effect{
+    -fx-font-size: 14;
+    -fx-text-fill: white;
+}
