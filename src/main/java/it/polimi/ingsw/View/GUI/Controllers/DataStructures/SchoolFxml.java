@@ -40,7 +40,7 @@ public class SchoolFxml {
 
     private Map<ImageView, SPColour> imageColour;
 
-    private final Map<SPColour, String> studentColourPath = Map.of(
+    private static final Map<SPColour, String> studentColourPath = Map.of(
             SPColour.BLUE, "/images/pawns/stud_blue.png",
             SPColour.PINK, "/images/pawns/stud_pink.png",
             SPColour.RED, "/images/pawns/stud_red.png",
@@ -48,7 +48,7 @@ public class SchoolFxml {
             SPColour.GREEN, "/images/pawns/stud_green.png"
     ); // relates the SPColour to the image of the student of that colour
 
-    private final Map<Integer, SPColour> rowSPColour = Map.of(
+    private static final Map<Integer, SPColour> rowSPColour = Map.of(
             0, SPColour.GREEN,
             1, SPColour.RED,
             2, SPColour.YELLOW,
@@ -56,7 +56,7 @@ public class SchoolFxml {
             4, SPColour.BLUE
     ); // relates index of the grid to the SPColour
 
-    private final Map<SPColour, String> professorColourPath = Map.of(
+    private static final Map<SPColour, String> professorColourPath = Map.of(
             SPColour.BLUE, "/images/pawns/prof_blue.png",
             SPColour.PINK, "/images/pawns/prof_pink.png",
             SPColour.RED, "/images/pawns/prof_red.png",
@@ -64,7 +64,7 @@ public class SchoolFxml {
             SPColour.GREEN, "/images/pawns/prof_green.png"
     ); // relates the SPColour to the image of the professor of that colour
 
-    private final Map<SPColour, Integer> SPColourRow = Map.of(
+    private static final Map<SPColour, Integer> SPColourRow = Map.of(
             SPColour.GREEN, 0,
             SPColour.RED, 1,
             SPColour.YELLOW, 2,
@@ -72,7 +72,7 @@ public class SchoolFxml {
             SPColour.BLUE, 4
     ); // relates index of the grid to the SPColour
 
-    private final Map<PlayerColour, String> playerColourPath = Map.of(
+    private static final Map<PlayerColour, String> playerColourPath = Map.of(
             PlayerColour.WHITE, "/images/pawns/WhiteTower.png",
             PlayerColour.BLACK, "/images/pawns/BlackTower.png",
             PlayerColour.GRAY, "/images/pawns/GrayTower.png"

@@ -1,17 +1,27 @@
 package it.polimi.ingsw.View.GUI.Controllers.DataStructures;
 
+import it.polimi.ingsw.Client.Client;
+import it.polimi.ingsw.Controller.Enumerations.State;
+import it.polimi.ingsw.Model.Board.SerializedBoardAbstract;
 import it.polimi.ingsw.Model.Enumerations.SPColour;
 import it.polimi.ingsw.Model.Pawns.Student;
+import it.polimi.ingsw.View.GUI.Controllers.BoardFourAdvancedController;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 
 import java.util.List;
 import java.util.Map;
 
 public class CloudFxml {
+    private int index;
     private final ImageView cloudImage;
     private final GridPane cloud;
+
+    private Client client;  // Client class
+    private SerializedBoardAbstract board;  // Board
+    private BoardFourAdvancedController controller; // BoardFourAdvancedController (passed in the setCloudsFxmlVisualization method)
 
     private static final Map<SPColour, String> studentColourPath = Map.of(
             SPColour.BLUE, "/images/pawns/stud_blue.png",
@@ -21,9 +31,25 @@ public class CloudFxml {
             SPColour.GREEN, "/images/pawns/stud_green.png"
     ); // relates the SPColour to the image of the student of that colour
 
-    public CloudFxml(GridPane cloud, ImageView cloudImage) {
+    public CloudFxml(int index, GridPane cloud, ImageView cloudImage) {
+        this.index = index;
         this.cloud = cloud;
         this.cloudImage = cloudImage;
+
+        this.cloudImage.setOnMouseClicked(this::onMouseClicked);
+    }
+
+
+    public void setBoard(SerializedBoardAbstract board) {
+        this.board = board;
+    }
+
+    public void setClient(Client client) {
+        this.client = client;
+    }
+
+    public void setController(BoardFourAdvancedController controller) {
+        this.controller = controller;
     }
 
     public void setVisible(boolean isVisible){
@@ -44,6 +70,14 @@ public class CloudFxml {
             if(i == 2) {
                 i = 0;
                 j++;
+            }
+        }
+    }
+
+    private void onMouseClicked(MouseEvent event) {
+        if(this.controller.isCurrentPlayer(this.client.getNickname())) {
+            if(this.board.getCurrentState().equals(State.ACTION3)) {
+                this.client.asyncWriteToSocket("studentCloudToSchool " + this.index);
             }
         }
     }
