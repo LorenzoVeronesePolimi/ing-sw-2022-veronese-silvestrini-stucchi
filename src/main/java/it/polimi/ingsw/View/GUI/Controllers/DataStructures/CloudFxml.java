@@ -17,7 +17,7 @@ import java.util.Map;
 public class CloudFxml {
     private int index;
     private final ImageView cloudImage;
-    private final GridPane cloud;
+    private final GridPane cloudGrid;
 
     private Client client;  // Client class
     private SerializedBoardAbstract board;  // Board
@@ -33,10 +33,10 @@ public class CloudFxml {
 
     public CloudFxml(int index, GridPane cloud, ImageView cloudImage) {
         this.index = index;
-        this.cloud = cloud;
         this.cloudImage = cloudImage;
+        this.cloudGrid = cloud;
 
-        this.cloudImage.setOnMouseClicked(this::onMouseClicked);
+        this.cloudGrid.setOnMouseClicked(this::onMouseClicked);
     }
 
 
@@ -54,7 +54,7 @@ public class CloudFxml {
 
     public void setVisible(boolean isVisible){
         this.cloudImage.setVisible(isVisible);
-        this.cloud.setVisible(isVisible);
+        this.cloudGrid.setVisible(isVisible);
     }
 
     public void setStudentsVisualization(List<Student> students, double scale){
@@ -64,7 +64,7 @@ public class CloudFxml {
             ImageView image = new ImageView(getClass().getResource(studentColourPath.get(s.getColour())).toExternalForm());
             image.setFitHeight(30 * scale);
             image.setFitWidth(30 * scale);
-            cloud.add(image, i, j);
+            cloudGrid.add(image, i, j);
 
             i++;
             if(i == 2) {

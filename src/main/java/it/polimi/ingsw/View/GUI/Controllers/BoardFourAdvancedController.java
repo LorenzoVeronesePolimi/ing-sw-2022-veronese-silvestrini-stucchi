@@ -321,10 +321,10 @@ public class BoardFourAdvancedController implements GUIController, Initializable
         /* substituted by onMouseClicked in CloudFxml
         cloud1.setOnMouseClicked(this::cloudOneClicked);
         */
-        cloudsFxml.add(new CloudFxml(1, cloud1, cloud1_image));
-        cloudsFxml.add(new CloudFxml(2, cloud2, cloud2_image));
-        cloudsFxml.add(new CloudFxml(3, cloud3, cloud3_image));
-        cloudsFxml.add(new CloudFxml(4, cloud4, cloud4_image));
+        cloudsFxml.add(new CloudFxml(0, cloud1, cloud1_image));
+        cloudsFxml.add(new CloudFxml(1, cloud2, cloud2_image));
+        cloudsFxml.add(new CloudFxml(2, cloud3, cloud3_image));
+        cloudsFxml.add(new CloudFxml(3, cloud4, cloud4_image));
 
         // Character Cards data structure
         characterCardsFxml = new CharacterCardFxml(character_card_grid);

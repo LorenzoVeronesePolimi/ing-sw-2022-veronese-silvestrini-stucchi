@@ -1,7 +1,6 @@
 package it.polimi.ingsw.View.GUI;
 
 import it.polimi.ingsw.Client.Client;
-import it.polimi.ingsw.Controller.Enumerations.State;
 import it.polimi.ingsw.Model.Board.SerializedBoardAbstract;
 import it.polimi.ingsw.Model.Enumerations.PlayerColour;
 import it.polimi.ingsw.View.GUI.Controllers.*;
@@ -12,11 +11,9 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
-import javafx.scene.control.ButtonType;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
-import javax.swing.text.html.Option;
 import java.io.IOException;
 import java.util.*;
 
@@ -210,8 +207,9 @@ public class GUIViewFX extends Application {
                 this.sceneLoading("Wait for other player to do their move!");
             });
         } else {
-            AssistantCardController currentController = (AssistantCardController) controllerMap.get(scene);
+            AssistantCardChoiceController currentController = (AssistantCardChoiceController) controllerMap.get(scene);
             currentController.setSerializedBoardAbstract(board);
+            currentController.setDataStructures();
 
             this.currentScene = sceneMap.get(scene);
             this.stage.setScene(this.currentScene);
