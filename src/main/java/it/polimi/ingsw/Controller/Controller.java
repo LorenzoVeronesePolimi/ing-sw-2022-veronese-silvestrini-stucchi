@@ -704,10 +704,20 @@ public class Controller implements ObserverController<Message> {
         this.precomputedState = State.ACTION3;
         try {
             this.gameEndedArchipelagos(moves);
-        } catch (TowerNotFoundException | EmptyCaveauException | ExceededMaxStudentsHallException | StudentNotFoundException | InvalidTowerNumberException | AnotherTowerException | ExceededMaxTowersException e) {
+        } catch (EmptyCaveauException | ExceededMaxStudentsHallException | StudentNotFoundException | InvalidTowerNumberException | AnotherTowerException | ExceededMaxTowersException e) {
             e.printStackTrace();
             this.precomputedState = State.ACTION2;
             return false;
+        } catch (TowerNotFoundException e){ //TODO: ok? No towers left, so I Win
+            this.precomputedState = State.END;
+            controllerState.setState(State.END);
+            if(this.numPlayers < 4){
+                this.computeNicknameWinner();
+            }
+            else{
+                this.computeNicknameWinnerFour();
+            }
+
         }
 
         if(!isCurrentPlayer(nicknamePlayer)){
@@ -736,6 +746,9 @@ public class Controller implements ObserverController<Message> {
             }
             if(this.precomputedState != State.END){
                 controllerState.setState(State.ACTION3);
+            }
+            else{
+                controllerState.setState(State.END); //TODO: ok?
             }
 
             return true;

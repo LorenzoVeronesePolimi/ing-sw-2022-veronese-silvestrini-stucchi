@@ -184,12 +184,16 @@ class ControllerIntegrityTest {
     void checkStudentCloudToSchool() {
         //Case void Cloud chosen
         board.getClouds().get(0).empty();
-
         controllerIntegrity.setBoard(board);
-        assertFalse(controllerIntegrity.checkStudentCloudToSchool(players.get(0), 0));
+        assertFalse(controllerIntegrity.checkStudentCloudToSchool(players.get(0), 0)); // he has choice: not possible to choose that
 
         //Case not enough space in the School Hall
         assertFalse(controllerIntegrity.checkStudentCloudToSchool(players.get(1), 0));
+
+        board.getClouds().get(1).empty();
+        board.getClouds().get(2).empty();
+        board.getClouds().get(3).empty();
+        assertTrue(controllerIntegrity.checkStudentCloudToSchool(players.get(0), 0));
 
     }
 

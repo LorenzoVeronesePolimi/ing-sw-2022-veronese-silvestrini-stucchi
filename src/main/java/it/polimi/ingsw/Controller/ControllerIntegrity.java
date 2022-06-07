@@ -118,13 +118,19 @@ public class ControllerIntegrity {
 
         if(clouds.size() <= indexCloud){return false;}
 
-        if(clouds.get(indexCloud).getStudents().size() > 0){ //I can't choose a void Cloud
+        if(clouds.get(indexCloud).getStudents().size() > 0){ //I can't choose a void Cloud...
             School s = board.getPlayerSchool(player);
             // Is there enough space in the Hall?
             return s.getNumMaxStudentsHall() - s.getStudentsHall().size() <= clouds.get(0).getNumMaxStudents();
         }
-
-        return false;
+        else{ //...  unless I have no choice
+            for(Cloud c : clouds){
+                if(c.getStudents().size() > 0){
+                    return false; // a cloud has students: I can't choose a void one
+                }
+            }
+            return true; // no cloud has students: I can choose a void one
+        }
     }
 
     public boolean checkCCExchangeThreeStudents(Player player, List<SPColour> coloursCard, List<SPColour> coloursSchool, ExchangeThreeStudents chosenCard){

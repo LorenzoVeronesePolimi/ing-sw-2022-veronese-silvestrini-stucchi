@@ -1477,38 +1477,169 @@ public class ControllerTest {
 
 
 
-        //**********CASE BOARD NOT ADVANCED (4 players)**********
-        List<String> players = new ArrayList<>();
-        players.add("First"); players.add("Second"); players.add("Third"); players.add("Fourth");
-        setMatch(players, false);
+        for(int i = 0; i < 1; i++) { //TODO: max i has to be modified, but for now it's taken low
+            //**********CASE BOARD NOT ADVANCED (4 players)**********
+            List<String> players = new ArrayList<>();
+            players.add("First");
+            players.add("Second");
+            players.add("Third");
+            players.add("Fourth");
+            setMatch(players, false);
 
-        Map<String, Integer> playerPriority = Map.of(
-                "First", 1,
-                "Second", 2,
-                "Third", 3,
-                "Fourth", 4
-        );
-        makeRound(players, playerPriority);
+            boolean finished = false;
+            // Round 1
+            Map<String, Integer> playerPriority = Map.of(
+                    "First", 1,
+                    "Second", 2,
+                    "Third", 3,
+                    "Fourth", 4
+            );
+            try {
+                finished = makeRound(players, playerPriority);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
 
-        playerPriority = Map.of(
-                "First", 2,
-                "Second", 5,
-                "Third", 4,
-                "Fourth", 3
-        );
-        players.clear();
-        players.add("First"); players.add("Fourth"); players.add("Third"); players.add("Second");
-        makeRound(players, playerPriority);
+            if (!finished) {
+                // Round 2
+                playerPriority = Map.of(
+                        "First", 2,
+                        "Second", 5,
+                        "Third", 4,
+                        "Fourth", 3
+                );
+                players.clear();
+                players.add("First");
+                players.add("Fourth");
+                players.add("Third");
+                players.add("Second");
+                try {
+                    finished = makeRound(players, playerPriority);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
 
-        playerPriority = Map.of(
-                "First", 3,
-                "Second", 4,
-                "Third", 5,
-                "Fourth", 6
-        );
-        players.clear();
-        players.add("First"); players.add("Second"); players.add("Third"); players.add("Fourth");
-        makeRound(players, playerPriority);
+            if (!finished) {
+                // Round 3
+                playerPriority = Map.of(
+                        "First", 3,
+                        "Second", 4,
+                        "Third", 5,
+                        "Fourth", 6
+                );
+                players.clear();
+                players.add("First");
+                players.add("Second");
+                players.add("Third");
+                players.add("Fourth");
+                try {
+                    finished = makeRound(players, playerPriority);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
+            if (!finished) {
+                // Round 4
+                playerPriority = Map.of(
+                        "First", 4,
+                        "Second", 6,
+                        "Third", 7,
+                        "Fourth", 8
+                );
+                players.clear();
+                players.add("First");
+                players.add("Second");
+                players.add("Third");
+                players.add("Fourth");
+                try {
+                    finished = makeRound(players, playerPriority);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
+            if (!finished) {
+                // Round 5
+                playerPriority = Map.of(
+                        "First", 5,
+                        "Second", 3,
+                        "Third", 2,
+                        "Fourth", 1
+                );
+                players.clear();
+                players.add("Fourth");
+                players.add("Third");
+                players.add("Second");
+                players.add("First");
+                try {
+                    finished = makeRound(players, playerPriority);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
+            if (!finished) {
+                // Round 6
+                playerPriority = Map.of(
+                        "First", 6,
+                        "Second", 1,
+                        "Third", 8,
+                        "Fourth", 2
+                );
+                players.clear();
+                players.add("Second");
+                players.add("Fourth");
+                players.add("First");
+                players.add("Third");
+                try {
+                    finished = makeRound(players, playerPriority);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
+            if (!finished) {
+                // Round 7
+                playerPriority = Map.of(
+                        "First", 10,
+                        "Second", 7,
+                        "Third", 1,
+                        "Fourth", 5
+                );
+                players.clear();
+                players.add("Third");
+                players.add("Fourth");
+                players.add("Second");
+                players.add("First");
+                try {
+                    finished = makeRound(players, playerPriority);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
+            if (!finished) {
+                // Round 8
+                playerPriority = Map.of(
+                        "First", 7,
+                        "Second", 8,
+                        "Third", 6,
+                        "Fourth", 9
+                );
+                players.clear();
+                players.add("Third");
+                players.add("First");
+                players.add("Second");
+                players.add("Fourth");
+                try {
+                    makeRound(players, playerPriority);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }
     }
 
     /**
@@ -1561,12 +1692,13 @@ public class ControllerTest {
      * This makes a round of play making no errors in choices
      * @param orderedNickname list of players in order od play after choosing their assistant cards
      * @param nicknamePriority associates to the nickname, the priority of the assistant card he will play
+     * @return true if game ended, false otherwise
      */
-    private void makeRound(List<String> orderedNickname, Map<String, Integer> nicknamePriority){
+    private boolean makeRound(List<String> orderedNickname, Map<String, Integer> nicknamePriority) throws Exception {
         // Find index of the first player who has to play in sitPlayers (AC order starts from him and goes in clockwise sense)
         int sitPlayerIndex = 0;
         for(Player p : controller.getSitPlayers()){
-            if(p.getNickname().equals(orderedNickname.get(0))){
+            if(p.getNickname().equals(controller.getPlayers().get(0).getNickname())){
                 break;
             }
             sitPlayerIndex++;
@@ -1592,13 +1724,12 @@ public class ControllerTest {
             }
             else{ //finished PLANNING2 => go to ACTION1
                 Assertions.assertEquals(State.ACTION1, controller.getControllerState().getState());
-                Assertions.assertEquals(orderedNickname.get(0), controller.getCurrentSitPlayer().getNickname());
+                Assertions.assertEquals(orderedNickname.get(0), controller.getCurrentPlayer().getNickname());
             }
         }
 
         String colourToMove;
         int archipelagoToChoose = 0;
-        //ROUND 3: TURN 1: First
         for(int turn = 0; turn < orderedNickname.size(); turn++){
             Assertions.assertEquals(controller.getNumStudentsToMoveCurrent(), 3);
             //-----MessageStudentHallToDiningRoom 1-----
@@ -1647,6 +1778,20 @@ public class ControllerTest {
             } catch (ControllerException e) {
                 e.printStackTrace();
             }
+            if(controller.getControllerState().getState() == State.END){
+                if(controller.getBoard().getNumArchipelagos() <= 3){
+                    return true;
+                }
+                else{
+                    for(Player p: controller.getBoard().getPlayers()){
+                        if(controller.getBoard().getPlayerSchool(p).getNumTowers() == 0){
+                            return true;
+                        }
+                    }
+                    throw new Exception();
+
+                }
+            }
             Assertions.assertEquals(State.ACTION3, controller.getControllerState().getState());
 
             //-----MessageStudentCloudToSchool-----
@@ -1656,6 +1801,23 @@ public class ControllerTest {
             } catch (ControllerException e) {
                 e.printStackTrace();
             }
+            if(controller.getControllerState().getState() == State.END){
+                for(int i = 0; i < orderedNickname.size(); i++){
+                    if(controller.getBoard().getPlayers().get(i).getPlayerHand().size() == 0){
+                        return true;
+                    }
+                    else if(controller.getBoard().getBag().getNumStudents() == 0){
+                        return true;
+                    }
+                    else if(controller.getBoard().getNumArchipelagos() <= 3){
+                        return true;
+                    }
+                    else{
+                        throw new Exception();
+                    }
+                }
+
+            }
             if(turn < orderedNickname.size() - 1){
                 Assertions.assertEquals(State.ACTION1, controller.getControllerState().getState());
                 Assertions.assertEquals(orderedNickname.get(turn + 1), controller.getCurrentPlayer().getNickname());
@@ -1664,6 +1826,7 @@ public class ControllerTest {
                 Assertions.assertEquals(State.PLANNING2, controller.getControllerState().getState());
             }
         }
+        return false;
     }
 
     private String mapSPColourToString(SPColour c){
