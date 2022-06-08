@@ -632,7 +632,7 @@ public class Controller implements ObserverController<Message> {
                     if(this.boardAdvanced.getPlayerSchool(this.getCurrentPlayer()).getStudentsHall().size() == 0) { //no students left: it's ok if he doesn't choose
                         this.numStudentsToMoveCurrent--;
                         if(this.numStudentsToMoveCurrent == 0 || // all possible Students moved
-                                this.board.getPlayerSchool(getCurrentPlayer()).getStudentsHall().size() == 0){ // no Students remained
+                                this.boardAdvanced.getPlayerSchool(getCurrentPlayer()).getStudentsHall().size() == 0){ // no Students remained
                             this.numStudentsToMoveCurrent = this.numStudentsToMove;
                             controllerState.setState(State.ACTION2);
                         }
@@ -698,7 +698,7 @@ public class Controller implements ObserverController<Message> {
                     if(this.boardAdvanced.getPlayerSchool(this.getCurrentPlayer()).getStudentsHall().size() == 0) { //no students left: it's ok if he doesn't choose
                         this.numStudentsToMoveCurrent--;
                         if(this.numStudentsToMoveCurrent == 0 || // all possible Students moved
-                                this.board.getPlayerSchool(getCurrentPlayer()).getStudentsHall().size() == 0){ // no Students remained
+                                this.boardAdvanced.getPlayerSchool(getCurrentPlayer()).getStudentsHall().size() == 0){ // no Students remained
                             this.numStudentsToMoveCurrent = this.numStudentsToMove;
                             controllerState.setState(State.ACTION2);
                         }

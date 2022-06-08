@@ -1477,7 +1477,7 @@ public class ControllerTest {
 
 
 
-        for(int i = 0; i < 1; i++) { //TODO: max i has to be modified, but for now it's taken low
+        for(int i = 0; i < 10; i++) { //TODO: max i has to be modified, but for now it's taken low
             //**********CASE BOARD NOT ADVANCED (4 players)**********
             List<String> players = new ArrayList<>();
             players.add("First");
@@ -1733,25 +1733,47 @@ public class ControllerTest {
         for(int turn = 0; turn < orderedNickname.size(); turn++){
             Assertions.assertEquals(controller.getNumStudentsToMoveCurrent(), 3);
             //-----MessageStudentHallToDiningRoom 1-----
-            // choose a Student which exists
-            colourToMove = mapSPColourToString(controller.getBoard().getPlayerSchool(controller.getCurrentPlayer()).getStudentsHall().get(0).getColour());
+            // choose a Student which exists and such that it doesn't go over the maximum size of the dining room
+            colourToMove = null;
+            for(int i = 0; i < controller.getBoard().getPlayerSchool(controller.getCurrentPlayer()).getStudentsHall().size(); i++){
+                SPColour colourGoingToChoose = controller.getBoard().getPlayerSchool(controller.getCurrentPlayer()).getStudentsHall().get(i).getColour();
+                if(controller.getBoard().getPlayerSchool(controller.getCurrentPlayer()).getNumStudentColour(colourGoingToChoose) < 10){
+                    colourToMove = mapSPColourToString(colourGoingToChoose);
+                }
+            }
+            //colourToMove = mapSPColourToString(controller.getBoard().getPlayerSchool(controller.getCurrentPlayer()).getStudentsHall().get(0).getColour());
             MessageStudentHallToDiningRoom m1 = new MessageStudentHallToDiningRoom(controller.getCurrentPlayer().getNickname(), colourToMove);
             try {
                 controller.update(m1);
             } catch (ControllerException e) {
+                System.out.println("Current player: " + controller.getCurrentPlayer().getNickname());
+                System.out.println("Student chosen " + colourToMove);
+                System.out.println("His hall " + controller.getBoard().getPlayerSchool(controller.getCurrentPlayer()).getStudentsHall());
+                System.out.println("Students of that colour" + controller.getBoard().getPlayerSchool(controller.getCurrentPlayer()).getNumStudentColour(controller.getBoard().getPlayerSchool(controller.getCurrentPlayer()).getStudentsHall().get(0).getColour()));
                 e.printStackTrace();
             }
             Assertions.assertEquals(controller.getNumStudentsToMoveCurrent(), 2);
             Assertions.assertEquals(State.ACTION1, controller.getControllerState().getState());
 
             //-----MessageStudentHallToDiningRoom 2-----
-            // choose a Student which exists
-            colourToMove = mapSPColourToString(controller.getBoard().getPlayerSchool(controller.getCurrentPlayer()).getStudentsHall().get(0).getColour());
+            // choose a Student which exists and such that it doesn't go over the maximum size of the dining room
+            for(int i = 0; i < controller.getBoard().getPlayerSchool(controller.getCurrentPlayer()).getStudentsHall().size(); i++){
+                SPColour colourGoingToChoose = controller.getBoard().getPlayerSchool(controller.getCurrentPlayer()).getStudentsHall().get(i).getColour();
+                if(controller.getBoard().getPlayerSchool(controller.getCurrentPlayer()).getNumStudentColour(colourGoingToChoose) < 10){
+                    colourToMove = mapSPColourToString(colourGoingToChoose);
+                }
+            }
+            //colourToMove = mapSPColourToString(controller.getBoard().getPlayerSchool(controller.getCurrentPlayer()).getStudentsHall().get(0).getColour());
+
 
             MessageStudentHallToDiningRoom m2p4 = new MessageStudentHallToDiningRoom(controller.getCurrentPlayer().getNickname(), colourToMove);
             try {
                 controller.update(m2p4);
             } catch (ControllerException e) {
+                System.out.println("Current player: " + controller.getCurrentPlayer().getNickname());
+                System.out.println("Student chosen " + colourToMove);
+                System.out.println("His hall " + controller.getBoard().getPlayerSchool(controller.getCurrentPlayer()).getStudentsHall());
+                System.out.println("Students of that colour" + controller.getBoard().getPlayerSchool(controller.getCurrentPlayer()).getNumStudentColour(controller.getBoard().getPlayerSchool(controller.getCurrentPlayer()).getStudentsHall().get(0).getColour()));
                 e.printStackTrace();
             }
             Assertions.assertEquals(controller.getNumStudentsToMoveCurrent(), 1);
@@ -1759,7 +1781,12 @@ public class ControllerTest {
 
             //-----MessageStudentToArchipelago-----
             // choose a Student which exists
-            colourToMove = mapSPColourToString(controller.getBoard().getPlayerSchool(controller.getCurrentPlayer()).getStudentsHall().get(0).getColour());
+            if(controller.isAdvanced()){
+                colourToMove = mapSPColourToString(controller.getBoardAdvanced().getPlayerSchool(controller.getCurrentPlayer()).getStudentsHall().get(0).getColour());
+            }
+            else{
+                colourToMove = mapSPColourToString(controller.getBoard().getPlayerSchool(controller.getCurrentPlayer()).getStudentsHall().get(0).getColour());
+            }
 
             MessageStudentToArchipelago m3 = new MessageStudentToArchipelago(controller.getCurrentPlayer().getNickname(), colourToMove, archipelagoToChoose);
             Assertions.assertEquals(controller.getNumStudentsToMoveCurrent(), 1);
