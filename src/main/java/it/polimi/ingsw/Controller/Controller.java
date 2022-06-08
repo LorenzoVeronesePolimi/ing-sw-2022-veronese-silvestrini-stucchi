@@ -625,15 +625,39 @@ public class Controller implements ObserverController<Message> {
             if(this.advanced){
                 try {
                     boardAdvanced.moveStudentHallToDiningRoom(getCurrentPlayer(), studentColour);
-                } catch (StudentNotFoundException | ExceededMaxStudentsDiningRoomException | EmptyCaveauException |
+                } catch (ExceededMaxStudentsDiningRoomException | EmptyCaveauException |
                         ProfessorNotFoundException | NoProfessorBagException e) {
+                    return false;
+                } catch(StudentNotFoundException e){ //TODO: ok?
+                    if(this.boardAdvanced.getPlayerSchool(this.getCurrentPlayer()).getStudentsHall().size() == 0) { //no students left: it's ok if he doesn't choose
+                        this.numStudentsToMoveCurrent--;
+                        if(this.numStudentsToMoveCurrent == 0 || // all possible Students moved
+                                this.board.getPlayerSchool(getCurrentPlayer()).getStudentsHall().size() == 0){ // no Students remained
+                            this.numStudentsToMoveCurrent = this.numStudentsToMove;
+                            controllerState.setState(State.ACTION2);
+                        }
+
+                        return true;
+                    }
                     return false;
                 }
             } else{
                 try {
                     board.moveStudentHallToDiningRoom(getCurrentPlayer(), studentColour);
-                } catch (StudentNotFoundException | ExceededMaxStudentsDiningRoomException |
+                } catch (ExceededMaxStudentsDiningRoomException |
                         ProfessorNotFoundException | NoProfessorBagException e) {
+                    return false;
+                } catch(StudentNotFoundException e){
+                    if(this.board.getPlayerSchool(this.getCurrentPlayer()).getStudentsHall().size() == 0) { //no students left: it's ok if he doesn't choose
+                        this.numStudentsToMoveCurrent--;
+                        if(this.numStudentsToMoveCurrent == 0 || // all possible Students moved
+                                this.board.getPlayerSchool(getCurrentPlayer()).getStudentsHall().size() == 0){ // no Students remained
+                            this.numStudentsToMoveCurrent = this.numStudentsToMove;
+                            controllerState.setState(State.ACTION2);
+                        }
+
+                        return true;
+                    }
                     return false;
                 }
             }
@@ -670,13 +694,33 @@ public class Controller implements ObserverController<Message> {
             if(isAdvanced()){
                 try {
                     boardAdvanced.moveStudentSchoolToArchipelagos(getCurrentPlayer(), studentColour, destinationArchipelagoIndex);
-                } catch (StudentNotFoundException e) {
+                } catch (StudentNotFoundException e) { //TODO: ok?
+                    if(this.boardAdvanced.getPlayerSchool(this.getCurrentPlayer()).getStudentsHall().size() == 0) { //no students left: it's ok if he doesn't choose
+                        this.numStudentsToMoveCurrent--;
+                        if(this.numStudentsToMoveCurrent == 0 || // all possible Students moved
+                                this.board.getPlayerSchool(getCurrentPlayer()).getStudentsHall().size() == 0){ // no Students remained
+                            this.numStudentsToMoveCurrent = this.numStudentsToMove;
+                            controllerState.setState(State.ACTION2);
+                        }
+
+                        return true;
+                    }
                     return false;
                 }
             } else {
                 try {
                     board.moveStudentSchoolToArchipelagos(getCurrentPlayer(), studentColour, destinationArchipelagoIndex);
                 } catch (StudentNotFoundException e) {
+                    if(this.board.getPlayerSchool(this.getCurrentPlayer()).getStudentsHall().size() == 0) { //no students left: it's ok if he doesn't choose
+                        this.numStudentsToMoveCurrent--;
+                        if(this.numStudentsToMoveCurrent == 0 || // all possible Students moved
+                                this.board.getPlayerSchool(getCurrentPlayer()).getStudentsHall().size() == 0){ // no Students remained
+                            this.numStudentsToMoveCurrent = this.numStudentsToMove;
+                            controllerState.setState(State.ACTION2);
+                        }
+
+                        return true;
+                    }
                     return false;
                 }
             }
