@@ -292,6 +292,8 @@ public class SchoolFxml {
                     this.controller.setCursor(studentColourPath.get(this.imageColour.get(image)));
                     this.movedStudent = image;
                     this.controller.setMovedStudent(this.imageColour.get(this.movedStudent)); // in case of studentToArchipelago
+
+                    this.controller.setActionLabel("Select your DiningRoom \nor an Island.");
                 }
             }
         }

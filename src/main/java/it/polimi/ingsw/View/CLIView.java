@@ -762,6 +762,9 @@ public class CLIView extends ClientView {
         }
         AnsiConsole.systemUninstall();
 
+        System.out.println("exchangeTwoHallDining " +
+                hallStudents.get(0) + " " + hallStudents.get(1) + " " +
+                diningStudents.get(0) + " " + diningStudents.get(1));
         //The space after the command is missing because it is already present in cardStudents
         this.client.asyncWriteToSocket("exchangeTwoHallDining " +
                 hallStudents.get(0) + " " + hallStudents.get(1) + " " +

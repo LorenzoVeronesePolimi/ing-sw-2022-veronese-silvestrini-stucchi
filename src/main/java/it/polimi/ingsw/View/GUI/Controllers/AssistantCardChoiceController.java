@@ -319,6 +319,7 @@ public class AssistantCardChoiceController implements GUIController, Initializab
     public void setSerializedBoardAbstract(SerializedBoardAbstract serializedBoardAbstract) {
         this.serializedBoardAbstract = serializedBoardAbstract;
         Player player = null;
+        // retrieve the corresponding Player class
         for(School s : serializedBoardAbstract.getSchools()) {
             if(s.getPlayer().getNickname().equals(this.client.getNickname())) {
                 player = s.getPlayer();
@@ -331,16 +332,23 @@ public class AssistantCardChoiceController implements GUIController, Initializab
 
         List<AssistantCard> playerHand = new ArrayList<>(player.getPlayerHand());
         List<Integer> removed = new ArrayList<>();
+        List<Integer> present = new ArrayList<>();
 
+        // searching for cards to remove from visualization
         int i = 1;
-        for(int k = 0; k < playerHand.size(); k++) {
+        int k = 0;
+        for(k = 0; k < playerHand.size(); k++) {
             if(playerHand.get(k).getTurnPriority() != i) {
-                removed.add(i);
+                System.out.println("[AssistantCardChoiceController, setSerializedBoardAbstract]: removing #" + i);
+                removed.add(i); // card with turn priority i has already been played
                 k--;
+            } else {
+                present.add(i);
             }
 
             i++;
         }
+
         /*
         for(int w = 0; w < this.cardButtons.size(); w++) {
             if(removed.contains(w)) {
@@ -350,12 +358,12 @@ public class AssistantCardChoiceController implements GUIController, Initializab
                 this.cardButtons.get(w).setOnMouseExited(null);
             }
         }*/
-        for(int w = 0; w < this.assistantCardsChoiceFxml.size(); w++) {
-            if(removed.contains(w)) {
-                this.assistantCardsChoiceFxml.get(w).getButton().setOpacity(0.7);
-                this.assistantCardsChoiceFxml.get(w).getButton().setOnAction(null);
-                this.assistantCardsChoiceFxml.get(w).getButton().setOnMouseEntered(null);
-                this.assistantCardsChoiceFxml.get(w).getButton().setOnMouseExited(null);
+        for(int w = 1; w <= this.assistantCardsChoiceFxml.size(); w++) {
+            if(removed.contains(w) || !present.contains(w)) {
+                this.assistantCardsChoiceFxml.get(w-1).getButton().setOpacity(0.7);
+                this.assistantCardsChoiceFxml.get(w-1).getButton().setOnAction(null);
+                this.assistantCardsChoiceFxml.get(w-1).getButton().setOnMouseEntered(null);
+                this.assistantCardsChoiceFxml.get(w-1).getButton().setOnMouseExited(null);
             }
         }
     }

@@ -158,17 +158,17 @@ public class Controller implements ObserverController<Message> {
      */
     public void update(Message message) throws ControllerException {
         if(!controllerInput.checkFormat(message)){
-            System.out.println("Invalid format");
+            System.out.println("[Controller, update]: Invalid format");
             throw new ControllerException(ControllerErrorType.FORMAT_ERROR);
         }
 
         if(!controllerState.checkState(message.getType())){
-            System.out.println("You can't do that now");
+            System.out.println("[Controller, update]: You can't do that now");
             throw new ControllerException(ControllerErrorType.STATE_ERROR);
         }
 
         if(!message.manageMessage(this)){
-            System.out.println("Integrity error");
+            System.out.println("[Controller, update]: Integrity error");
             throw new ControllerException(ControllerErrorType.INTEGRITY_ERROR);
         }
 
@@ -183,7 +183,7 @@ public class Controller implements ObserverController<Message> {
                     this.boardAdvanced.notifyPlayers();
                 else
                     this.board.notifyPlayers();
-                System.out.println("notify");
+                System.out.println("[Controller, update]: notify");
             }
             else{
                 controllerState.setState(State.PLANNING2);
@@ -355,9 +355,9 @@ public class Controller implements ObserverController<Message> {
             this.numStudentsToMoveCurrent = NUM_STUDENTS_TO_MOVE_TWO_PLAYERS;
         }
 
-        System.out.println("init match");
+        System.out.println("[Controller, initMatch]: init match");
         this.addBoardObserver();
-        System.out.println("add obs");
+        System.out.println("[Controller, initMatch]: add obs");
     }
 
     /**
@@ -540,10 +540,11 @@ public class Controller implements ObserverController<Message> {
     public boolean manageAssistantCard(MessageAssistantCard message){
         String nicknamePlayer = message.getNickname();
         int turnPriority = message.getTurnPriority();
+        Player revertErrorPlayer; // in case of an error we have to revert the precomputeNextPLayer result
 
         // Is him the currentPlayer? Can he use that AssistantCard?
         if(!isCurrentSitPlayer(nicknamePlayer)){
-            System.out.println("here");
+            System.out.println("[Controller, manageAssistantCard]: not current player");
             return false;
         }
 
@@ -551,6 +552,7 @@ public class Controller implements ObserverController<Message> {
             return false;
         }
 
+        revertErrorPlayer = this.precomputedPlayer; // in case this player committed an error we can revert the precompute
         //precompute
         this.precomputeNextPlayer(turnPriority);
 
@@ -564,7 +566,8 @@ public class Controller implements ObserverController<Message> {
             }
         } catch(AssistantCardAlreadyPlayedTurnException | NoAssistantCardException ex){
             this.iteratorAC --;
-            System.out.println("catch");
+            this.precomputedPlayer = revertErrorPlayer; // reverting the error in precompute
+            System.out.println("[Controller, manageAssistantCard]: catch");
             return false;
         } // card already used or no AssistantCard present
 

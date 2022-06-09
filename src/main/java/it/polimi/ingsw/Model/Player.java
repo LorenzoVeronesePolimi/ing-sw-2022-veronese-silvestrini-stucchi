@@ -105,7 +105,9 @@ public class Player implements Serializable {
         AssistantCard removed = null;
 
         for(AssistantCard c : this.playerHand){
+            System.out.println("[Player, useAssistantCard]: checking #" + c.getTurnPriority());
             if(c.getTurnPriority() == turnPriority){
+                System.out.println("[Player, useAssistantCard]: found #" + c.getTurnPriority());
                 this.lastCard = c;
                 removed = c;
                 cardCorrectlyPlayed = true;

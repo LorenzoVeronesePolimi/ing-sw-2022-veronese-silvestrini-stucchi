@@ -115,7 +115,7 @@ public abstract class BoardAbstract extends Observable implements Board {
         // give them to Players
         for(Player p : this.players){
             for(AssistantCard c : cardsCreated){
-                p.addAssistantCard(c);
+                p.addAssistantCard(new AssistantCard(c.getMotherNatureMovement(), c.getTurnPriority()));
             }
         }
     }

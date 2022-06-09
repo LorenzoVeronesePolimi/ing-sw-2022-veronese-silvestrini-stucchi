@@ -521,7 +521,7 @@ public class BoardFourAdvancedController implements GUIController, Initializable
             switch (board.getCurrentState()) {
                 case ACTION1:
                     if(board.getType().equals("advanced")) {
-                        this.actionLabel.setText("Select a student from your hall\n or buy a card.");
+                        this.actionLabel.setText("Select a student from your hall\nor buy a card.");
                     } else {
                         this.actionLabel.setText("Select a student from your hall.");
                     }
@@ -529,9 +529,9 @@ public class BoardFourAdvancedController implements GUIController, Initializable
 
                 case ACTION2:
                     if(board.getType().equals("advanced")) {
-                        this.actionLabel.setText("Select an island where you want\n to put Mother Nature or buy a card.");
+                        this.actionLabel.setText("Select an island where you want\nto put Mother Nature or buy\na card.");
                     } else {
-                        this.actionLabel.setText("Select an island where you want\n to put Mother Nature.");
+                        this.actionLabel.setText("Select an island where you want\nto put Mother Nature.");
                     }
                     break;
 
@@ -549,7 +549,7 @@ public class BoardFourAdvancedController implements GUIController, Initializable
             switch (board.getCurrentState()) {
                 case ACTION1:
                     if (board.getType().equals("advanced")) {
-                        this.actionLabel.setText("Choosing a student\n or buying a card...");
+                        this.actionLabel.setText("Choosing a student\nor buying a card...");
                     } else {
                         this.actionLabel.setText("Choosing a student...");
                     }
@@ -557,7 +557,7 @@ public class BoardFourAdvancedController implements GUIController, Initializable
 
                 case ACTION2:
                     if (board.getType().equals("advanced")) {
-                        this.actionLabel.setText("Selecting an island\n or buying a card...");
+                        this.actionLabel.setText("Selecting an island\nor buying a card...");
                     } else {
                         this.actionLabel.setText("Selecting an island...");
                     }
@@ -565,13 +565,17 @@ public class BoardFourAdvancedController implements GUIController, Initializable
 
                 case ACTION3:
                     if (board.getType().equals("advanced")) {
-                        this.actionLabel.setText("Selecting a cloud\n or buying a card...");
+                        this.actionLabel.setText("Selecting a cloud\nor buying a card...");
                     } else {
                         this.actionLabel.setText("Selecting a cloud...");
                     }
                     break;
             }
         }
+    }
+
+    public void setActionLabel(String txt) {
+        this.actionLabel.setText(txt);
     }
 
     private int computeMyIndex(SerializedBoardAbstract boardAbstract) {

@@ -2,6 +2,7 @@ package it.polimi.ingsw.Model.Exceptions;
 
 public class ExceededMaxTowersException extends Exception{
      public ExceededMaxTowersException(){
-         System.out.println("Number of towers exceeded");
+         System.out.println("[Exception]: Number of towers exceeded");
+         printStackTrace();
      }
 }

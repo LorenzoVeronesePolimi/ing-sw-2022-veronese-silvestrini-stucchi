@@ -40,7 +40,7 @@ public class ServerView implements Observer<SerializedBoardAbstract> {
         public void update(String messageInput) {
             //Parsing of messages (from String to Message)
             try{
-                System.out.println("The message contains: " + messageInput);
+                System.out.println("[ServerView, update]: The message contains: " + this.serverView.playerNickname + " " + messageInput);
                 Message messageToController = this.parseStringToMessage(messageInput);
                 notify(messageToController);
             } catch(NoCharacterCardException ex){
