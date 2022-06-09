@@ -1,13 +1,11 @@
 package it.polimi.ingsw.View.GUI.Controllers;
 
+import it.polimi.ingsw.Messages.Enumerations.INMessageType;
 import it.polimi.ingsw.Model.Board.SerializedBoardAbstract;
 import it.polimi.ingsw.Model.Board.SerializedBoardAdvanced;
 import it.polimi.ingsw.Model.Enumerations.CharacterCardEnumeration;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.Dialog;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextArea;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
@@ -19,6 +17,13 @@ public class CharacterCardDialogController {
     @FXML private Label card_name;
     @FXML private Label card_effect;
     @FXML private ImageView card_image;
+    @FXML private AnchorPane anchor_choices;
+    @FXML private ChoiceBox<String> choice1_left;
+    @FXML private ChoiceBox<String> choice2_left;
+    @FXML private ChoiceBox<String> choice3_left;
+    @FXML private ChoiceBox<String> choice1_right;
+    @FXML private ChoiceBox<String> choice2_right;
+    @FXML private ChoiceBox<String> choice3_right;
     @FXML private Button use_yes;
     @FXML private Button use_no;
 
@@ -83,25 +88,99 @@ public class CharacterCardDialogController {
     }
 
     public void setVisualization(){
-        this.setCardName(cardName.get(this.cardType));
-        this.setCardEffect(cardEffect.get(this.cardType));
-        this.setCardImage(cardPath.get(this.cardType));
+        this.card_name.setText(cardName.get(this.cardType));
+        this.card_effect.setText(cardEffect.get(this.cardType));
+        this.card_image.setImage(new Image(getClass().getResource(cardPath.get(this.cardType)).toExternalForm()));
+
+        switch(this.cardType){
+            case EXCHANGE_THREE_STUDENTS:
+                this.visualizeExchangeThreeStudents();
+                break;
+            case EXCHANGE_TWO_HALL_DINING:
+                this.visualizeExchangeTwoHallDining();
+                break;
+            case EXCLUDE_COLOUR_FROM_COUNTING:
+                this.visualizeExcludeColourFromCounting();
+                break;
+            case EXTRA_STUDENT_IN_DINING:
+                this.visualizeExtraStudentInDining();
+                break;
+            case FAKE_MN_MOVEMENT:
+                this.visualizeFakeMNMovement();
+                break;
+            case FORBID_ISLAND:
+                this.visualizeForbidIsland();
+                break;
+            case PLACE_ONE_STUDENT:
+                this.visualizePlaceOneStudent();
+                break;
+            case REDUCE_COLOUR_IN_DINING:
+                this.visualizeReduceColourInDining();
+                break;
+            case TAKE_PROFESSOR_ON_EQUITY:
+                this.visualizeTakeProfessorOnEquity();
+                break;
+            case TOWER_NO_VALUE:
+                this.visualizeTowerNoValue();
+                break;
+            case TWO_EXTRA_ISLANDS:
+                this.visualizeTowExtraIslands();
+                break;
+            case TWO_EXTRA_POINTS:
+                this.visualizeTwoExtraPoints();
+                break;
+        }
     }
 
-    public void setCardName(String name) {
-        this.card_name.setText(name);
-    }
-
-    public void setCardEffect(String effect) {
-        this.card_effect.setText(effect);
-    }
-
-    public void setCardImage(String imagePath) {
-        this.card_image.setImage(new Image(getClass().getResource(imagePath).toExternalForm()));
-    }
-
-    public void setCharacterCardActions(CharacterCardEnumeration type){
+    public void visualizeExchangeThreeStudents(){
 
     }
+
+    public void visualizeExchangeTwoHallDining(){
+
+    }
+
+    public void visualizeExcludeColourFromCounting(){
+
+    }
+
+    public void visualizeExtraStudentInDining(){
+
+    }
+
+    public void visualizeFakeMNMovement(){
+
+    }
+
+    public void visualizeForbidIsland(){
+
+    }
+
+    public void visualizePlaceOneStudent(){
+
+    }
+
+    public void visualizeReduceColourInDining(){
+
+    }
+
+    public void visualizeTakeProfessorOnEquity(){
+
+    }
+
+    public void visualizeTowerNoValue(){
+
+    }
+
+    public void visualizeTowExtraIslands(){
+
+    }
+
+    public void visualizeTwoExtraPoints(){
+
+    }
+
+
+
 
 }
