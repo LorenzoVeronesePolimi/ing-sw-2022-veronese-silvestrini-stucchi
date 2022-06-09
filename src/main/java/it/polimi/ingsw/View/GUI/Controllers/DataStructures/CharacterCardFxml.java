@@ -1,8 +1,12 @@
 package it.polimi.ingsw.View.GUI.Controllers.DataStructures;
 
 import com.sun.prism.Image;
+import it.polimi.ingsw.Client.Client;
+import it.polimi.ingsw.Model.Board.SerializedBoardAbstract;
+import it.polimi.ingsw.Model.Board.SerializedBoardAdvanced;
 import it.polimi.ingsw.Model.Cards.AbstractCharacterCard;
 import it.polimi.ingsw.Model.Enumerations.CharacterCardEnumeration;
+import it.polimi.ingsw.View.GUI.Controllers.BoardFourAdvancedController;
 import it.polimi.ingsw.View.GUI.GUIViewFX;
 import javafx.event.EventHandler;
 import javafx.scene.Node;
@@ -18,6 +22,9 @@ import java.util.Map;
 public class CharacterCardFxml {
     private final GridPane cards;
     private List<Label> costs;
+
+    private Client client;  // Client class
+    private SerializedBoardAdvanced board;  // Board
 
     private static final Map<CharacterCardEnumeration, String> cardPath = Map.ofEntries(
             Map.entry(CharacterCardEnumeration.EXCHANGE_THREE_STUDENTS, "/images/Characters/ExchangeThreeStudents.jpg"),
@@ -72,18 +79,28 @@ public class CharacterCardFxml {
         this.costs.add(cost3);
     }
 
+    public void setClient(Client client) {
+        this.client = client;
+    }
+
+    public void setBoard(SerializedBoardAdvanced board) {
+        this.board = board;
+    }
+
+
     public void setVisible(boolean isVisible){
         for(Node c : this.cards.getChildren()){
             c.setVisible(isVisible);
         }
     }
 
-    private void setClickable(ImageView image, CharacterCardEnumeration type, GUIViewFX guiFX){
+    private void onMouseClicked(ImageView image, CharacterCardEnumeration type, GUIViewFX guiFX){
         image.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
             /*
             guiFX.characterCardAlert(cardEffect.get(type));
             event.consume();*/
-            guiFX.characterCardAlert(type, cardName.get(type), cardEffect.get(type), cardPath.get(type));
+            //guiFX.characterCardAlert(type, cardName.get(type), cardEffect.get(type), cardPath.get(type));
+            guiFX.characterCardAlert(type, this.board);
         });
     }
 
@@ -97,7 +114,7 @@ public class CharacterCardFxml {
             ImageView image = new ImageView(getClass().getResource(cardPath.get(c.getType())).toExternalForm());
             image.setFitWidth(100 * scale);
             image.setPreserveRatio(true);
-            this.setClickable(image, c.getType(), guiViewFX);
+            this.onMouseClicked(image, c.getType(), guiViewFX);
             this.cards.add(image, i, 0);
 
             i++;

@@ -2,6 +2,7 @@ package it.polimi.ingsw.View.GUI;
 
 import it.polimi.ingsw.Client.Client;
 import it.polimi.ingsw.Model.Board.SerializedBoardAbstract;
+import it.polimi.ingsw.Model.Board.SerializedBoardAdvanced;
 import it.polimi.ingsw.Model.Enumerations.CharacterCardEnumeration;
 import it.polimi.ingsw.Model.Enumerations.PlayerColour;
 import it.polimi.ingsw.View.GUI.Controllers.*;
@@ -188,7 +189,7 @@ public class GUIViewFX extends Application {
         alert.showAndWait();
     }*/
 
-    public void characterCardAlert(CharacterCardEnumeration type, String name, String effect, String imagePath) {
+    public void characterCardAlert(CharacterCardEnumeration type, SerializedBoardAdvanced board) {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/CharacterCardDialog.fxml"));
         Parent parent = null;
         try {
@@ -198,10 +199,13 @@ public class GUIViewFX extends Application {
         }
         CharacterCardDialogController controller = fxmlLoader.<CharacterCardDialogController>getController();
 
-        controller.setCardName(name);
+        controller.setCardType(type);
+        controller.setBoard(board);
+        controller.setVisualization();
+        /*controller.setCardName(name);
         controller.setCardEffect(effect);
         controller.setCardImage(imagePath);
-        controller.setCharacterCardActions(type);
+        controller.setCharacterCardActions(type);*/
 
         Stage alertStage = new Stage();
         Scene alertScene = new Scene(parent);
@@ -250,7 +254,7 @@ public class GUIViewFX extends Application {
 
     private void sceneShowBoard(String scene, SerializedBoardAbstract board) {
         BoardFourAdvancedController currentController = (BoardFourAdvancedController) controllerMap.get(scene);
-        if(board.getType() == "advanced"){
+        if(board.getType().equals("standard")){
             currentController.setStandardSetup(); // set advanced elements to not visible in case of standard match
         }
 
@@ -259,7 +263,9 @@ public class GUIViewFX extends Application {
         currentController.setSchoolsFxmlVisualization();
         currentController.setCloudsVisualization();
         currentController.setAssistantCardsVisualization();
-        currentController.setCharacterCardsVisualization();
+        if(board.getType().equals("advanced")) {
+            currentController.setCharacterCardsVisualization();
+        }
         currentController.setInstructionLabels();
 
         this.currentScene = sceneMap.get(scene);

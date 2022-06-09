@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.Map;
 
 public class CloudFxml {
-    private int index;
+    private final int index;
     private final ImageView cloudImage;
     private final GridPane cloudGrid;
 

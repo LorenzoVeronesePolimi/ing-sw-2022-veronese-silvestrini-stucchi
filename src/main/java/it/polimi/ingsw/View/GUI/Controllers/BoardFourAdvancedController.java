@@ -501,7 +501,10 @@ public class BoardFourAdvancedController implements GUIController, Initializable
         }
     }
 
-    public void setCharacterCardsVisualization(){
+    public void setCharacterCardsVisualization(){ //assumes that the baord is advanced
+        this.characterCardsFxml.setBoard((SerializedBoardAdvanced) this.board);
+        this.characterCardsFxml.setClient(this.client);
+
         if(board.getType().equals("advanced")){
             this.characterCardsFxml.setVisible(true);
             this.characterCardsFxml.setCharacterCardsVisualization(((SerializedBoardAdvanced)board).getExtractedCards(), 1, this.guiViewFX);
