@@ -14,6 +14,9 @@ import it.polimi.ingsw.Model.Player;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Class that performs input checking. It checks if the message received from the client is allowed by the rules of the game.
+ */
 public class ControllerIntegrity {
     private BoardAbstract board;
     private BoardAdvanced boardAdvanced;

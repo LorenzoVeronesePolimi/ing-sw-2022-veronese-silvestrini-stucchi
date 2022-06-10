@@ -48,6 +48,9 @@ public abstract class AbstractCharacterCard implements Serializable {
         return basePrice + addedPrice.size();
     }
 
+    /**
+     * @return Current price of the card.
+     */
     public String printPrice() {
         return "[c. " + getCurrentPrice() + "]";
     }

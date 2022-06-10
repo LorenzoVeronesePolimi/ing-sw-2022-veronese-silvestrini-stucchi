@@ -16,7 +16,6 @@ import java.util.List;
 public class SerializedBoardAdvancedTest {
     List<Player> playerList = null;
     BoardAbstract b2;
-    BoardAbstract b3;
 
     @BeforeEach
     void init() {
@@ -42,6 +41,7 @@ public class SerializedBoardAdvancedTest {
             e.printStackTrace();
         }
 
+        assert boardAdvanced != null;
         SerializedBoardAdvanced serializedBoard = new SerializedBoardAdvanced(b2.archipelagos, b2.clouds, b2.mn, b2.schools, boardAdvanced.getColourToExclude(), boardAdvanced.getExtractedCards());
         Assertions.assertEquals(b2.archipelagos, serializedBoard.getArchipelagos());
         Assertions.assertEquals(b2.clouds, serializedBoard.getClouds());

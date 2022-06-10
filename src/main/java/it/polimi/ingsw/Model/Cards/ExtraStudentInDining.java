@@ -68,6 +68,9 @@ public class ExtraStudentInDining extends AbstractCharacterCard implements Seria
         students.add(student.get(0));
     }
 
+    /**
+     * @return String representation of student of the card.
+     */
     public String printStudents() {
         return this.students.toString();
     }

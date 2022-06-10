@@ -33,6 +33,9 @@ public class TwoExtraPointsTest {
         }
 
         TwoExtraPoints card = new TwoExtraPoints(boardAdvanced);
+        Assertions.assertEquals("TwoExtraPoints [c. " + 2 + "]", card.toString());
+
+        assert boardAdvanced != null;
         boardAdvanced.setExtractedCards(card);
 
         for (int i = 0; i < 7; i++) {

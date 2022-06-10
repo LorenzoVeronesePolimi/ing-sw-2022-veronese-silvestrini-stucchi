@@ -5,7 +5,6 @@ import it.polimi.ingsw.Controller.Enumerations.State;
 import it.polimi.ingsw.Controller.Exceptions.ControllerException;
 import it.polimi.ingsw.Messages.INMessages.*;
 import it.polimi.ingsw.Model.Cards.*;
-import it.polimi.ingsw.Model.Enumerations.PlayerColour;
 import it.polimi.ingsw.Model.Enumerations.SPColour;
 import it.polimi.ingsw.Model.Exceptions.*;
 import it.polimi.ingsw.Model.Pawns.Coin;
@@ -16,12 +15,11 @@ import it.polimi.ingsw.Model.Places.School.SchoolAdvanced;
 import it.polimi.ingsw.Model.Player;
 import it.polimi.ingsw.Server.Server;
 import it.polimi.ingsw.Server.SocketClientConnection;
-import it.polimi.ingsw.View.ServerView;
+import it.polimi.ingsw.Server.ServerView;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 

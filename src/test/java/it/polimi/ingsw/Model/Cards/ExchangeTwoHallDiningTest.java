@@ -17,7 +17,7 @@ import java.util.List;
 
 public class ExchangeTwoHallDiningTest {
     @Test
-    void ExchangeTwoHallDiningTest() {
+    void ExchangeTwoHallDiningTests() {
         List<Player> playerList = new ArrayList<>();
         Player p1 = new Player("player one", PlayerColour.BLACK);
         Player p2 = new Player("player two", PlayerColour.WHITE);
@@ -35,8 +35,11 @@ public class ExchangeTwoHallDiningTest {
 
         ExchangeTwoHallDining card = new ExchangeTwoHallDining(boardAdvanced);
 
+        Assertions.assertEquals("ExchangeTwoHallDining [c. " + 1 + "]", card.toString());
+
         for (int i = 0; i < 7; i++) {
             try {
+                assert boardAdvanced != null;
                 boardAdvanced.getSchools().get(0).removeStudentHall(boardAdvanced.getSchools().get(0).getStudentsHall().get(0).getColour());
             } catch (StudentNotFoundException e) {
                 e.printStackTrace();

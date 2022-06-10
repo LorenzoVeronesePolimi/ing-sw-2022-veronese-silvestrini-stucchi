@@ -22,14 +22,14 @@ public class ArchipelagoTest {
     @Test
     void getNumIslands(){
         Archipelago tested = new Archipelago();
-        assertEquals(1, tested.getNumIslands());
+        Assertions.assertEquals(1, tested.getNumIslands());
         Archipelago toMerge = new Archipelago();
         try {
             tested.mergeArchipelagos(toMerge);
         } catch (MergeDifferentOwnersException e) {
             e.printStackTrace();
         }
-        assertEquals(2, tested.getNumIslands());
+        Assertions.assertEquals(2, tested.getNumIslands());
     }
     @Test
     void getOwner(){
@@ -45,7 +45,7 @@ public class ArchipelagoTest {
         } catch (InvalidTowerNumberException | AnotherTowerException e) {
             e.printStackTrace();
         }
-        assertEquals(p, tested.getOwner());
+        Assertions.assertEquals(p, tested.getOwner());
 
     }
 
@@ -57,7 +57,7 @@ public class ArchipelagoTest {
     @Test
     void getForbidFlag(){
         Archipelago tested = new Archipelago();
-        assertTrue(tested.getForbidFlag() == 0);
+        Assertions.assertEquals(0, tested.getForbidFlag());
 
         Player p1 = new Player("p1", PlayerColour.WHITE);
         Player p2 = new Player("p2", PlayerColour.BLACK);
@@ -82,7 +82,8 @@ public class ArchipelagoTest {
         } catch (ExceededNumberForbidFlagException e) {
             e.printStackTrace();
         }
-        assertTrue(boardAdvanced.getArchiList().get(6).getForbidFlag() == 1);
+        assert boardAdvanced != null;
+        Assertions.assertEquals(1, boardAdvanced.getArchiList().get(6).getForbidFlag());
     }
 
     @Test
@@ -108,8 +109,10 @@ public class ArchipelagoTest {
             e.printStackTrace();
         }
         TowerNoValue card= new TowerNoValue(boardAdvanced);
+        assert board != null;
         board.moveMotherNature(4);
         card.useEffect();
+        assert boardAdvanced != null;
         assertTrue(boardAdvanced.getArchiList().get(4).getTowerNoValueFlag());
     }
     @Test
@@ -118,7 +121,7 @@ public class ArchipelagoTest {
         tested.removeForbidFlag();
         assertTrue(tested.getForbidFlag() >= 0);
         tested.addForbidFlag();
-        assertTrue(tested.getForbidFlag() == 1);
+        Assertions.assertEquals(1, tested.getForbidFlag());
     }
     @Test
     void setTowerNoValueFlag(){
@@ -136,14 +139,14 @@ public class ArchipelagoTest {
         for(SPColour c : availableColours){
             studentsDataCopy.put(c, 0);
         }
-        assertEquals(studentsDataCopy, tested.howManyStudents());
+        Assertions.assertEquals(studentsDataCopy, tested.howManyStudents());
         Student s = new Student(SPColour.BLUE);
         tested.addStudent(s);
         studentsDataCopy.put(SPColour.BLUE,1);
         s = new Student(SPColour.RED);
         tested.addStudent(s);
         studentsDataCopy.put(SPColour.RED,1);
-        assertEquals(studentsDataCopy,tested.howManyStudents());
+        Assertions.assertEquals(studentsDataCopy, tested.howManyStudents());
     }
     @Test
     void conquerArchipelago(){
@@ -158,7 +161,7 @@ public class ArchipelagoTest {
             } catch (AnotherTowerException e) {
                 e.printStackTrace();
             }
-            assertEquals(p,tested.getOwner());
+            Assertions.assertEquals(p, tested.getOwner());
         } catch (InvalidTowerNumberException e) {
             e.printStackTrace();
         }
@@ -187,9 +190,7 @@ public class ArchipelagoTest {
             tested.conquerArchipelago(towersT1);
             towersT1.add(t2);
             toMerge.conquerArchipelago(towersT1);
-        } catch (InvalidTowerNumberException e) {
-            e.printStackTrace();
-        } catch (AnotherTowerException e) {
+        } catch (InvalidTowerNumberException | AnotherTowerException e) {
             e.printStackTrace();
         }
         Assertions.assertEquals(p1, tested.getOwner());
@@ -197,7 +198,7 @@ public class ArchipelagoTest {
 
         try {
             tested.mergeArchipelagos(toMerge);
-            assertEquals(2, tested.getNumIslands());
+            Assertions.assertEquals(2, tested.getNumIslands());
         } catch (MergeDifferentOwnersException e) {
             e.printStackTrace();
         }
@@ -205,9 +206,7 @@ public class ArchipelagoTest {
         toMerge = new Archipelago();
         try {
             toMerge.conquerArchipelago(towersT2);
-        } catch (InvalidTowerNumberException e) {
-            e.printStackTrace();
-        } catch (AnotherTowerException e) {
+        } catch (InvalidTowerNumberException | AnotherTowerException e) {
             e.printStackTrace();
         }
 
@@ -219,18 +218,18 @@ public class ArchipelagoTest {
         Archipelago tested = new Archipelago();
         Student s = new Student(SPColour.BLUE);
         tested.addStudent(s);
-        assertEquals("1", tested.howManyStudents().get(SPColour.BLUE).toString());
+        Assertions.assertEquals("1", tested.howManyStudents().get(SPColour.BLUE).toString());
         s = new Student(SPColour.BLUE);
         tested.addStudent(s);
         s = new Student(SPColour.BLUE);
         tested.addStudent(s);
-        assertEquals("3", tested.howManyStudents().get(SPColour.BLUE).toString());
+        Assertions.assertEquals("3", tested.howManyStudents().get(SPColour.BLUE).toString());
     }
     @Test
     public void toStringTest() {
         Archipelago tested = new Archipelago();
 
-        assertEquals("owner=" + (tested.getOwner()==null?"nobody":tested.getOwner()) +
+        Assertions.assertEquals("owner=" + (tested.getOwner()==null?"nobody":tested.getOwner()) +
                 ", number of towers=" + 0 +
                 ", students on archipelago=" + tested.howManyStudents(), tested.toString());
         Player p = new Player("conqueror", PlayerColour.WHITE);
@@ -242,7 +241,7 @@ public class ArchipelagoTest {
         } catch (InvalidTowerNumberException | AnotherTowerException e) {
             e.printStackTrace();
         }
-        assertEquals("owner=" + (tested.getOwner()==null?"nobody":tested.getOwner().getNickname()) +
+        Assertions.assertEquals("owner=" + (tested.getOwner()==null?"nobody":tested.getOwner().getNickname()) +
                 ", number of towers=" + 1 +
                 ", students on archipelago=" + tested.howManyStudents(), tested.toString());
     }

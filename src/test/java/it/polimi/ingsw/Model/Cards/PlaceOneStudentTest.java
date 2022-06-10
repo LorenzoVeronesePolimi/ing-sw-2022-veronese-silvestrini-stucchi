@@ -16,7 +16,7 @@ import java.util.List;
 
 public class PlaceOneStudentTest {
     @Test
-    void PlaceOneStudentTest(){
+    void PlaceOneStudentTests(){
         List<Player> playerList = new ArrayList<>();
         Player p1 = new Player("player one", PlayerColour.BLACK);
         Player p2 = new Player("player two", PlayerColour.WHITE);
@@ -38,22 +38,26 @@ public class PlaceOneStudentTest {
         } catch (StudentNotFoundException e) {
             e.printStackTrace();
         }
+        assert card != null;
+        Assertions.assertEquals("PlaceOneStudent [c. " + 1 + "]", card.toString());
+
+        assert boardAdvanced != null;
         boardAdvanced.setExtractedCards(card);
 
-        Assertions.assertTrue(boardAdvanced.getArchipelago(6).howManyStudents().get(SPColour.BLUE) == 0);
-        Assertions.assertTrue(boardAdvanced.getArchipelago(6).howManyStudents().get(SPColour.PINK) == 0);
-        Assertions.assertTrue(boardAdvanced.getArchipelago(6).howManyStudents().get(SPColour.RED) == 0);
-        Assertions.assertTrue(boardAdvanced.getArchipelago(6).howManyStudents().get(SPColour.GREEN) == 0);
-        Assertions.assertTrue(boardAdvanced.getArchipelago(6).howManyStudents().get(SPColour.YELLOW) == 0);
+        Assertions.assertEquals(0, (int) boardAdvanced.getArchipelago(6).howManyStudents().get(SPColour.BLUE));
+        Assertions.assertEquals(0, (int) boardAdvanced.getArchipelago(6).howManyStudents().get(SPColour.PINK));
+        Assertions.assertEquals(0, (int) boardAdvanced.getArchipelago(6).howManyStudents().get(SPColour.RED));
+        Assertions.assertEquals(0, (int) boardAdvanced.getArchipelago(6).howManyStudents().get(SPColour.GREEN));
+        Assertions.assertEquals(0, (int) boardAdvanced.getArchipelago(6).howManyStudents().get(SPColour.YELLOW));
 
         if(card.getStudentsOnCard().stream().anyMatch(x -> x.getColour().equals(SPColour.BLUE))){
             try {
                 boardAdvanced.usePlaceOneStudent(p1,SPColour.BLUE,6, 0);
-                Assertions.assertTrue(boardAdvanced.getArchipelago(6).howManyStudents().get(SPColour.BLUE) == 1);
-                Assertions.assertTrue(boardAdvanced.getArchipelago(6).howManyStudents().get(SPColour.PINK) == 0);
-                Assertions.assertTrue(boardAdvanced.getArchipelago(6).howManyStudents().get(SPColour.RED) == 0);
-                Assertions.assertTrue(boardAdvanced.getArchipelago(6).howManyStudents().get(SPColour.GREEN) == 0);
-                Assertions.assertTrue(boardAdvanced.getArchipelago(6).howManyStudents().get(SPColour.YELLOW) == 0);
+                Assertions.assertEquals(1, (int) boardAdvanced.getArchipelago(6).howManyStudents().get(SPColour.BLUE));
+                Assertions.assertEquals(0, (int) boardAdvanced.getArchipelago(6).howManyStudents().get(SPColour.PINK));
+                Assertions.assertEquals(0, (int) boardAdvanced.getArchipelago(6).howManyStudents().get(SPColour.RED));
+                Assertions.assertEquals(0, (int) boardAdvanced.getArchipelago(6).howManyStudents().get(SPColour.GREEN));
+                Assertions.assertEquals(0, (int) boardAdvanced.getArchipelago(6).howManyStudents().get(SPColour.YELLOW));
 
             } catch (StudentNotFoundException | CoinNotFoundException | ExceededMaxNumCoinException | EmptyCaveauException e) {
                 e.printStackTrace();

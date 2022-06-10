@@ -89,10 +89,16 @@ public class ExchangeThreeStudents extends AbstractCharacterCard implements Seri
         students.addAll(hallToCard);
     }
 
+    /**
+     * @return String representation of students on the card.
+     */
     public String printStudents() {
         return this.students.toString();
     }
 
+    /**
+     * @return name of the card and its price.
+     */
     @Override
     public String toString() {
         return "ExchangeThreeStudents " + this.printPrice();

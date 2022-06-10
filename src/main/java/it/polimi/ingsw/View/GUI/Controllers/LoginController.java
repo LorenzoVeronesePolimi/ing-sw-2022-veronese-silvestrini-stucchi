@@ -6,10 +6,7 @@ import it.polimi.ingsw.View.GUI.GUIViewFX;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
-import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.shape.Rectangle;
 
@@ -109,14 +106,14 @@ public class LoginController implements GUIController, Initializable {
 
         if(this.chosenNick == "") {
             var msg = "NickName not selected!";
-            this.guiViewFX.sceneAlert(msg);
+            this.guiViewFX.sceneAlert(msg, Alert.AlertType.ERROR);
             this.nicknameError.setVisible(true);
             System.out.println("NickName not selected!");
             return;
         }
         if(this.chosenColour == null) {
             var msg = "Colour not selected!";
-            this.guiViewFX.sceneAlert(msg);
+            this.guiViewFX.sceneAlert(msg, Alert.AlertType.ERROR);
             this.colourError.setVisible(true);
             this.colourError.setTranslateZ(-1);
             System.out.println("Colour not selected!");
@@ -126,7 +123,7 @@ public class LoginController implements GUIController, Initializable {
         if(this.firstPlayer) {
             if(this.chosenNumPlayers == null) {
                 var msg = "Number of players not selected!";
-                this.guiViewFX.sceneAlert(msg);
+                this.guiViewFX.sceneAlert(msg, Alert.AlertType.ERROR);
                 this.numPlayerError.setVisible(true);
                 this.numPlayerError.setTranslateZ(-1);
                 System.out.println("Number of players not selected!");
@@ -135,7 +132,7 @@ public class LoginController implements GUIController, Initializable {
             if(this.chosenNumPlayers == 2 || this.chosenNumPlayers == 4) {
                 if(this.chosenColour.equals("Gray")) {
                     var msg = "You cannot chose Gray as colour with this number of players.";
-                    this.guiViewFX.sceneAlert(msg);
+                    this.guiViewFX.sceneAlert(msg, Alert.AlertType.ERROR);
                     this.colourError.setVisible(true);
                     this.colourError.setTranslateZ(-1);
                     System.out.println("You cannot chose Gray as colour with this number of players.");
@@ -144,7 +141,7 @@ public class LoginController implements GUIController, Initializable {
             }
             if(this.chosenMode == null) {
                 var msg = "Game mode not selected!";
-                this.guiViewFX.sceneAlert(msg);
+                this.guiViewFX.sceneAlert(msg, Alert.AlertType.ERROR);
                 this.gameModeError.setVisible(true);
                 this.gameModeError.setTranslateZ(-1);
                 System.out.println("Game mode not selected!");

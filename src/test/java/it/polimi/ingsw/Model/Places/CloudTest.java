@@ -5,6 +5,7 @@ import static org.junit.Assert.*;
 import it.polimi.ingsw.Model.Enumerations.SPColour;
 import it.polimi.ingsw.Model.Exceptions.ExceededMaxStudentsCloudException;
 import it.polimi.ingsw.Model.Pawns.Student;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -22,7 +23,7 @@ public class CloudTest {
     @Test
     void getStudents() {
         //no students before inserting
-        assertEquals(testedCloud.getStudents().size(), 0);
+        Assertions.assertEquals(testedCloud.getStudents().size(), 0);
 
         List<Student> students = new ArrayList<>();
         students.add(new Student(SPColour.RED));
@@ -38,17 +39,17 @@ public class CloudTest {
         }
 
         //check for correct filling
-        assertEquals(students, testedCloud.getStudents());
+        Assertions.assertEquals(students, testedCloud.getStudents());
 
         //students should not be removed
-        assertEquals(testedCloud.getStudents().size(), 4);
+        Assertions.assertEquals(testedCloud.getStudents().size(), 4);
     }
 
     @Test
     void toStringTest() {
         System.out.println(testedCloud.toString());
 
-        assertEquals("students="+testedCloud.getStudents() , testedCloud.toString());
+        Assertions.assertEquals("students="+testedCloud.getStudents(), testedCloud.toString());
 
         List<Student> students = new ArrayList<>();
         students.add(new Student(SPColour.RED));
@@ -65,7 +66,7 @@ public class CloudTest {
 
         System.out.println(testedCloud.toString());
 
-        assertEquals("students=" + testedCloud.getStudents() , testedCloud.toString());
+        Assertions.assertEquals("students=" + testedCloud.getStudents(), testedCloud.toString());
     }
 
     @Test
@@ -84,7 +85,7 @@ public class CloudTest {
         }
 
         //check for correct filling
-        assertEquals(students, testedCloud.getStudents());
+        Assertions.assertEquals(students, testedCloud.getStudents());
 
         //new student
         students.add(new Student(SPColour.PINK));
@@ -110,6 +111,6 @@ public class CloudTest {
         List<Student> returnedStudents = new ArrayList<>(testedCloud.empty());
 
         //no students should be left
-        assertEquals(testedCloud.getStudents().size(), 0);
+        Assertions.assertEquals(testedCloud.getStudents().size(), 0);
     }
 }

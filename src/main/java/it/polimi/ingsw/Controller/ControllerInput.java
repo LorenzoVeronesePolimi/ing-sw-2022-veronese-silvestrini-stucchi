@@ -4,7 +4,9 @@ import it.polimi.ingsw.Messages.INMessages.Message;
 
 import java.util.List;
 
-
+/**
+ * Class that performs input checking. It checks if the message received from the client is valid int it's input form.
+ */
 public class ControllerInput {
     private static final int MAX_NUM_ARCHIPELAGOS = 12;
 

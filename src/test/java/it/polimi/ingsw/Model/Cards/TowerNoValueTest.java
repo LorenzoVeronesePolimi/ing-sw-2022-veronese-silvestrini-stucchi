@@ -33,6 +33,9 @@ public class TowerNoValueTest {
         }
 
         TowerNoValue card = new TowerNoValue(boardAdvanced);
+        Assertions.assertEquals("TowerNoValue [c. " + 3 + "]", card.toString());
+
+        assert boardAdvanced != null;
         boardAdvanced.setExtractedCards(card);
 
         for (int i = 0; i < 7; i++) {

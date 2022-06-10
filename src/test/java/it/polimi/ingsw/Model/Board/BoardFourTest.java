@@ -180,6 +180,7 @@ public class BoardFourTest {
         }
 
         // Schools
+        assert boardAdvanced != null;
         Assertions.assertEquals(_1, boardAdvanced.getPlayerSchool(_1).getPlayer());
         Assertions.assertEquals(_2, boardAdvanced.getPlayerSchool(_2).getPlayer());
         Assertions.assertEquals(_3, boardAdvanced.getPlayerSchool(_3).getPlayer());

@@ -6,13 +6,14 @@ import it.polimi.ingsw.Model.Cards.AssistantCard;
 import it.polimi.ingsw.Model.Enumerations.PlayerColour;
 import it.polimi.ingsw.Model.Exceptions.ExceedingAssistantCardNumberException;
 import it.polimi.ingsw.Model.Exceptions.NoAssistantCardException;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 public class PlayerTest {
     @Test
     void getNickname() {
         Player tested = new Player("nickname", PlayerColour.BLACK);
-        assertEquals("nickname", tested.getNickname());
+        Assertions.assertEquals("nickname", tested.getNickname());
     }
 
     @Test
@@ -24,9 +25,10 @@ public class PlayerTest {
         } catch (ExceedingAssistantCardNumberException e) {
             e.printStackTrace();
         }
+        Assertions.assertEquals("(" + 6 + ", " + 2 + ")", tested.getPlayerHand().get(0).toString());
 
         //no card was played, so no value to the attribute lastCard
-        assertEquals(null, tested.getLastCard());
+        Assertions.assertNull(tested.getLastCard());
 
         try {
             tested.useAssistantCard(6);
@@ -35,19 +37,19 @@ public class PlayerTest {
         }
 
         //card was played, so value to the attribute lastCard
-        assertEquals(assistantCard, tested.getLastCard());
+        Assertions.assertEquals(assistantCard, tested.getLastCard());
     }
 
     @Test
     public void getColour() {
         Player tested = new Player("nickname", PlayerColour.BLACK);
-        assertEquals(PlayerColour.BLACK, tested.getColour());
+        Assertions.assertEquals(PlayerColour.BLACK, tested.getColour());
 
         tested = new Player("nickname", PlayerColour.WHITE);
-        assertEquals(PlayerColour.WHITE, tested.getColour());
+        Assertions.assertEquals(PlayerColour.WHITE, tested.getColour());
 
         tested = new Player("nickname", PlayerColour.GRAY);
-        assertEquals(PlayerColour.GRAY, tested.getColour());
+        Assertions.assertEquals(PlayerColour.GRAY, tested.getColour());
     }
 
 
@@ -66,7 +68,7 @@ public class PlayerTest {
                 e.printStackTrace();
             }
             //check the length of the playerHand
-            assertEquals(testedPlayer.getHandLength(), i + 1);
+            Assertions.assertEquals(testedPlayer.getHandLength(), i + 1);
         }
 
         //test the usage of the cards (decreasing playerHand)
@@ -78,11 +80,11 @@ public class PlayerTest {
             }
 
             //check the length of the playerHand
-            assertEquals(testedPlayer.getHandLength(), i);
+            Assertions.assertEquals(testedPlayer.getHandLength(), i);
         }
 
         //no cards left in playerHand
-        assertEquals(testedPlayer.getHandLength(), 0);
+        Assertions.assertEquals(testedPlayer.getHandLength(), 0);
     }
 
     @Test
@@ -99,7 +101,7 @@ public class PlayerTest {
                 e.printStackTrace();
             }
             //check the length of the playerHand
-            assertEquals(testedPlayer.getHandLength(), i + 1);
+            Assertions.assertEquals(testedPlayer.getHandLength(), i + 1);
         }
 
         assertThrows(ExceedingAssistantCardNumberException.class, () -> testedPlayer.addAssistantCard(new AssistantCard(1,1)));
@@ -120,7 +122,7 @@ public class PlayerTest {
                 e.printStackTrace();
             }
             //check the length of the playerHand
-            assertEquals(testedPlayer.getHandLength(), i + 1);
+            Assertions.assertEquals(testedPlayer.getHandLength(), i + 1);
         }
 
         //test the usage of the cards (decreasing playerHand)
@@ -132,7 +134,7 @@ public class PlayerTest {
             }
 
             //check the length of the playerHand
-            assertEquals(testedPlayer.getHandLength(), i);
+            Assertions.assertEquals(testedPlayer.getHandLength(), i);
         }
 
         assertThrows(NoAssistantCardException.class, () -> testedPlayer.useAssistantCard(1000));
@@ -142,7 +144,7 @@ public class PlayerTest {
     public void toStringTest() {
         Player testedPlayer = new Player("nickname", PlayerColour.BLACK);
 
-        assertEquals("nickname=" + testedPlayer.getNickname() +
+        Assertions.assertEquals("nickname=" + testedPlayer.getNickname() +
                 ", colour=" + testedPlayer.getColour(), testedPlayer.toString());
     }
 }

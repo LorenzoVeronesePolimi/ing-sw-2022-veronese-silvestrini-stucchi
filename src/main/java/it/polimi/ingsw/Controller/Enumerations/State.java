@@ -1,5 +1,8 @@
 package it.polimi.ingsw.Controller.Enumerations;
 
+/**
+ * Enumeration for Controller states.
+ */
 public enum State {
     CONNECTING,
     WAITING_PLAYERS,

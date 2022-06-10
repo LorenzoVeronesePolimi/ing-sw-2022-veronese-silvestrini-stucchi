@@ -34,6 +34,8 @@ public class ExcludeColourFromCountingTest {
         }
 
         ExcludeColourFromCounting card = new ExcludeColourFromCounting(boardAdvanced);
+        Assertions.assertEquals("ExcludeColourFromCounting [c. " + 3 + "]", card.toString());
+
         assert boardAdvanced != null;
         boardAdvanced.setExtractedCards(card);
 

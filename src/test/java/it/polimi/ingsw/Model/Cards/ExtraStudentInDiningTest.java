@@ -39,6 +39,9 @@ public class ExtraStudentInDiningTest {
         } catch (StudentNotFoundException e) {
             e.printStackTrace();
         }
+        Assertions.assertEquals("ExtraStudentInDining [c. " + 2 + "]", card.toString());
+
+        assert boardAdvanced != null;
         boardAdvanced.setExtractedCards(card);
 
         for(int i=0; i<7; i++) {
@@ -68,6 +71,7 @@ public class ExtraStudentInDiningTest {
 
         Assertions.assertEquals(2,((SchoolAdvanced)boardAdvanced.getSchools().get(0)).getNumCoins());
 
+        assert card != null;
         if(card.getStudentsOnCard().stream().anyMatch(x -> x.getColour().equals(SPColour.PINK))){
             try {
                 boardAdvanced.useExtraStudentInDining(p1,SPColour.PINK, 0);

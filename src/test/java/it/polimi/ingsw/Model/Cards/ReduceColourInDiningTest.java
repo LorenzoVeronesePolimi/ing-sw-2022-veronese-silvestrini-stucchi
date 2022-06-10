@@ -17,7 +17,7 @@ import java.util.List;
 
 public class ReduceColourInDiningTest {
     @Test
-    void ReduceColourInDiningTest(){
+    void ReduceColourInDiningTests(){
         List<Player> playerList = new ArrayList<>();
         Player p1 = new Player("player one", PlayerColour.BLACK);
         Player p2 = new Player("player two", PlayerColour.WHITE);
@@ -34,6 +34,9 @@ public class ReduceColourInDiningTest {
         }
 
         ReduceColourInDining card = new ReduceColourInDining(boardAdvanced);
+        Assertions.assertEquals("ReduceColourInDining [c. " + 3 + "]", card.toString());
+
+        assert boardAdvanced != null;
         boardAdvanced.setExtractedCards(card);
 
         for(int i=0; i<7; i++) {

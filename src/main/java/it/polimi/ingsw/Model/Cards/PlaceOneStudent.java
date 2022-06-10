@@ -60,6 +60,9 @@ public class PlaceOneStudent extends AbstractCharacterCard implements Serializab
         students.add(s.get(0));
     }
 
+    /**
+     * @return String representation of students on the card.
+     */
     public String printStudents() {
         return this.students.toString();
     }

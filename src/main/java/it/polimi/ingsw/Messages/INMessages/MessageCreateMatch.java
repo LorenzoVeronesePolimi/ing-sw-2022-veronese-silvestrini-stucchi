@@ -2,7 +2,7 @@ package it.polimi.ingsw.Messages.INMessages;
 
 import it.polimi.ingsw.Controller.Controller;
 import it.polimi.ingsw.Controller.ControllerInput;
-import it.polimi.ingsw.View.ServerView;
+import it.polimi.ingsw.Server.ServerView;
 
 import static it.polimi.ingsw.Messages.Enumerations.INMessageType.CREATE_MATCH;
 

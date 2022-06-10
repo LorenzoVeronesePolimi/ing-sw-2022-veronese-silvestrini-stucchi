@@ -15,7 +15,6 @@ import java.util.List;
 class BoardAbstractTest {
     List<Player> playerList = null;
     BoardAbstract b2;
-    BoardAbstract b3;
 
     @BeforeEach
     void init() {
@@ -98,7 +97,7 @@ class BoardAbstractTest {
             e.printStackTrace();
         }
         // check correct conquer professor
-        Assertions.assertTrue(this.b2.whereIsProfessor(SPColour.RED) == this.b2.schools.get(0));
+        Assertions.assertSame(this.b2.whereIsProfessor(SPColour.RED), this.b2.schools.get(0));
         // check owner equals owner
         Assertions.assertFalse(this.b2.checkIfConquerable(this.b2.players.get(0)));
 
@@ -271,7 +270,7 @@ class BoardAbstractTest {
 
         Assertions.assertEquals(5, this.b2.getPlayerSchool(playerList.get(0)).getStudentsHall().size());
         //empty cloud
-        Assertions.assertTrue(this.b2.clouds.get(0).getStudents().size() == 0);
+        Assertions.assertEquals(0, this.b2.clouds.get(0).getStudents().size());
 
         // conquer archipelago 7
         Student _1 = new Student(SPColour.RED);

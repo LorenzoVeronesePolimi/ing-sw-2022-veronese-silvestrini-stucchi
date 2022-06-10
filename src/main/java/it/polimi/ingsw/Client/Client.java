@@ -112,6 +112,8 @@ public class Client {
      */
     public Thread asyncReadFromSocket(){
         Thread t = new Thread(() -> {
+            boolean exception = false; // to check wheather the client experienced an exception
+
             try {
                 Object inputMessage = this.socketIn.readObject();
 
@@ -211,9 +213,11 @@ public class Client {
 
                 }
             } catch (SocketException e) {
+                System.out.println("[Client, asyncReadFromSocket]: SocketException");
                 this.view.printErrorMessage("Error. You have been disconnected!");
-                this.setClientError(true);
+                this.clientError = true;
                 this.socketNull = true;
+                exception = true;
 
                 // testing reconnection in order to identify server status
                 try {
@@ -234,6 +238,10 @@ public class Client {
             } catch (Exception e){
                 e.printStackTrace();
             } finally {
+                if(!exception)
+                    this.socketNull = true;
+
+                Platform.exit();
                 this.setActive(false);
             }
         });
@@ -277,9 +285,9 @@ public class Client {
      */
     private void connecting() throws IOException {
         // initialization of the parameters of the client
-        this.setClientReconnect(false);
-        this.setClientError(false);
-        this.setEndGame(false);
+        this.clientReconnect = false;
+        this.clientError = false;
+        this.endGame = false;
 
         // connection to the server
         if(this.socketNull)
@@ -290,7 +298,7 @@ public class Client {
         this.socketNull = false;
 
         //Ping for establishing connection
-        this.pinger = Executors.newSingleThreadScheduledExecutor();
+        //this.pinger = Executors.newSingleThreadScheduledExecutor();
 
         //Socket for communication
         this.socketOut = new ObjectOutputStream(socket.getOutputStream());
@@ -311,7 +319,7 @@ public class Client {
                     this.askReconnect();
                 } catch (IOException e) {
                     this.view.printErrorMessage("reconnecting error");
-                    //e.printStackTrace();
+                    e.printStackTrace();
                 }
             }
 
@@ -355,13 +363,6 @@ public class Client {
     }
 
     /**
-     * @param CLIorGUI whether the view selected from the user is CLI (true) or GUI(false)
-     */
-    public void setCLIorGUI(boolean CLIorGUI){
-        this.CLIorGUI = CLIorGUI;
-    }
-
-    /**
      * Ask the user if there is the intention to reconnect to the server after the match has ended(normally or unintentionally)
      * @throws IOException when there is a Socket error.
      */
@@ -370,5 +371,12 @@ public class Client {
 
         if (clientReconnect)
             connecting();
+    }
+
+    /**
+     * @param CLIorGUI whether the view selected from the user is CLI (true) or GUI(false)
+     */
+    public void setCLIorGUI(boolean CLIorGUI){
+        this.CLIorGUI = CLIorGUI;
     }
 }

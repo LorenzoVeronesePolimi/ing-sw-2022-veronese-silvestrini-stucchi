@@ -34,6 +34,9 @@ public class TwoExtraIslandsTest {
         List<Integer> usedCards = new ArrayList<>();
 
         TwoExtraIslands card = new TwoExtraIslands();
+        Assertions.assertEquals("TwoExtraIslands [c. " + 1 + "]", card.toString());
+
+        assert boardAdvanced != null;
         boardAdvanced.setExtractedCards(card);
 
         Assertions.assertEquals(card, boardAdvanced.getExtractedCards().get(0));
@@ -48,11 +51,7 @@ public class TwoExtraIslandsTest {
 
         try {
             boardAdvanced.useTwoExtraIslands(p1, 0);
-        } catch (EmptyCaveauException e) {
-            e.printStackTrace();
-        } catch (ExceededMaxNumCoinException e) {
-            e.printStackTrace();
-        } catch (CoinNotFoundException e) {
+        } catch (EmptyCaveauException | ExceededMaxNumCoinException | CoinNotFoundException e) {
             e.printStackTrace();
         }
 

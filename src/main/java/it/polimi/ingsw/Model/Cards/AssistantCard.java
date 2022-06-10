@@ -55,6 +55,9 @@ public class AssistantCard implements Serializable {
         this.motherNatureMovement+=2;
     }
 
+    /**
+     * @return Turn priority and mother nature movement of the card.
+     */
     public String toString() {
         return "(" + this.turnPriority + ", " + this.motherNatureMovement + ")";
     }

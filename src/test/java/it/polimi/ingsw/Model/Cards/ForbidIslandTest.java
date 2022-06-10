@@ -34,6 +34,8 @@ public class ForbidIslandTest {
         }
 
         ForbidIsland card = new ForbidIsland(boardAdvanced);
+        Assertions.assertEquals("ForbidIsland [c. " + 2 + "]", card.toString());
+
         assert boardAdvanced != null;
         boardAdvanced.setExtractedCards(card);
 

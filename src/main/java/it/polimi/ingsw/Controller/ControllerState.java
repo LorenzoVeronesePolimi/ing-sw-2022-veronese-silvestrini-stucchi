@@ -4,14 +4,25 @@ import it.polimi.ingsw.Messages.Enumerations.INMessageType;
 
 import it.polimi.ingsw.Controller.Enumerations.State;
 
+/**
+ * Class that represents and modifies the Controller states based on the message received from the client.
+ */
 public class ControllerState {
 
     private State state;
 
+    /**
+     * Constructor that initializes the State of the Controller.
+     */
     public ControllerState(){
         this.state = State.CONNECTING;
     }
 
+    /**
+     * This method checks if the message received is performed at the correct time, so if the player has made an allowed move with respect to the state of the game.
+     * @param type Type of the message received from the Client.
+     * @return  true if the action is correctly performed by the client.
+     */
     public boolean checkState(INMessageType type){
         switch(type){
             case CREATE_MATCH:
@@ -47,10 +58,16 @@ public class ControllerState {
         return false; //unreachable
     }
 
+    /**
+     * @return The Controller state.
+     */
     public State getState(){
         return this.state;
     }
 
+    /**
+     * @param newState The new Controller state.
+     */
     public void setState(State newState){
         this.state = newState;
     }

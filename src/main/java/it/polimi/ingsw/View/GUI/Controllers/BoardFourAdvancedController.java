@@ -274,6 +274,9 @@ public class BoardFourAdvancedController implements GUIController, Initializable
 
     // CharacterCards
     @FXML private GridPane character_card_grid;
+    @FXML private AnchorPane card_1_cost;
+    @FXML private AnchorPane card_2_cost;
+    @FXML private AnchorPane card_3_cost;
     @FXML private Label card_1_cost_label;
     @FXML private Label card_2_cost_label;
     @FXML private Label card_3_cost_label;
@@ -353,6 +356,9 @@ public class BoardFourAdvancedController implements GUIController, Initializable
         for(SchoolFxml s : this.schoolsFxml){
             s.getCoins().setVisible(false);
         }
+        card_1_cost.setVisible(false);
+        card_2_cost.setVisible(false);
+        card_3_cost.setVisible(false);
     }
 
     public void setArchipelagosFxmlVisualization(){
@@ -521,23 +527,23 @@ public class BoardFourAdvancedController implements GUIController, Initializable
             switch (board.getCurrentState()) {
                 case ACTION1:
                     if(board.getType().equals("advanced")) {
-                        this.actionLabel.setText("Select a student from your hall\nor buy a card.");
+                        this.actionLabel.setText("Select Hall student\nor buy a card.");
                     } else {
-                        this.actionLabel.setText("Select a student from your hall.");
+                        this.actionLabel.setText("Select a student \nfrom your Hall.");
                     }
                     break;
 
                 case ACTION2:
                     if(board.getType().equals("advanced")) {
-                        this.actionLabel.setText("Select an island where you want\nto put Mother Nature or buy\na card.");
+                        this.actionLabel.setText("Select Island for \nMother Nature or buy\na card.");
                     } else {
-                        this.actionLabel.setText("Select an island where you want\nto put Mother Nature.");
+                        this.actionLabel.setText("Select Island\nfor Mother Nature.");
                     }
                     break;
 
                 case ACTION3:
                     if(board.getType().equals("advanced")) {
-                        this.actionLabel.setText("Select a cloud or buy a card.");
+                        this.actionLabel.setText("Select Cloud or \nbuy a card.");
                     } else {
                         this.actionLabel.setText("Select a cloud.");
                     }

@@ -3,7 +3,7 @@ package it.polimi.ingsw.Messages.INMessages;
 import it.polimi.ingsw.Controller.Controller;
 import it.polimi.ingsw.Controller.ControllerInput;
 import it.polimi.ingsw.Messages.Enumerations.INMessageType;
-import it.polimi.ingsw.View.ServerView;
+import it.polimi.ingsw.Server.ServerView;
 
 public class MessageAddPlayer extends Message {
     private final String colour;

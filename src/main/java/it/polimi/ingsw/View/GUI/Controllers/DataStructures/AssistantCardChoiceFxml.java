@@ -3,7 +3,6 @@ package it.polimi.ingsw.View.GUI.Controllers.DataStructures;
 import it.polimi.ingsw.Client.Client;
 import it.polimi.ingsw.Model.Board.SerializedBoardAbstract;
 import it.polimi.ingsw.View.GUI.Controllers.AssistantCardChoiceController;
-import it.polimi.ingsw.View.GUI.Controllers.BoardFourAdvancedController;
 import javafx.event.ActionEvent;
 import javafx.scene.control.Button;
 import javafx.scene.image.ImageView;

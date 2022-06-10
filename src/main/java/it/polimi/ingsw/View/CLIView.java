@@ -310,7 +310,7 @@ public class CLIView extends ClientView {
                     System.out.print(TAB + "Mother nature is here!");
                 }
                 if(serializedBoardAdvanced.getArchipelagos().get(i).getForbidFlag()>0) {
-                    System.out.print("Forbidden conquer!");
+                    System.out.print(TAB + "Forbidden conquer!");
                 }
                 System.out.println();
 

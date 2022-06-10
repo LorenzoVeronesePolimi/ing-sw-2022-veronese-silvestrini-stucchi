@@ -3,7 +3,6 @@ package it.polimi.ingsw.Server;
 import it.polimi.ingsw.Controller.Controller;
 import it.polimi.ingsw.Messages.OUTMessages.OUTMessage;
 import it.polimi.ingsw.Model.Board.SerializedBoardAbstract;
-import it.polimi.ingsw.View.ServerView;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -74,7 +73,8 @@ public class SocketClientConnection extends ClientConnection implements Runnable
             this.out.flush();
             this.in = new ObjectInputStream(socket.getInputStream());
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            //throw new RuntimeException(e);
+            System.out.println("[SocketClientConnection, SocketClientConnection]: error in player connecting");
         }
     }
 

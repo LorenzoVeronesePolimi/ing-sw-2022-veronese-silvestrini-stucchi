@@ -17,7 +17,7 @@ import java.util.List;
 
 public class FakeMNMovementTest {
     @Test
-    void FakeMNMovementTest(){
+    void FakeMNMovementTests(){
         List<Player> playerList = new ArrayList<>();
         Player p1 = new Player("player one", PlayerColour.BLACK);
         Player p2 = new Player("player two", PlayerColour.WHITE);
@@ -34,6 +34,9 @@ public class FakeMNMovementTest {
         }
 
         FakeMNMovement card = new FakeMNMovement(boardAdvanced);
+        Assertions.assertEquals("FakeMNMovement [c. " + 3 + "]", card.toString());
+
+        assert boardAdvanced != null;
         boardAdvanced.setExtractedCards(card);
 
         for(int i=0; i<7; i++) {

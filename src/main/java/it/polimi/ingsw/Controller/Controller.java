@@ -15,7 +15,7 @@ import it.polimi.ingsw.Model.Player;
 import it.polimi.ingsw.Observer.ObserverController;
 import it.polimi.ingsw.Server.Server;
 import it.polimi.ingsw.View.Exceptions.NoCharacterCardException;
-import it.polimi.ingsw.View.ServerView;
+import it.polimi.ingsw.Server.ServerView;
 
 import java.util.*;
 import java.util.stream.Collectors;

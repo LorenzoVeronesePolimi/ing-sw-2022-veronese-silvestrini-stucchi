@@ -187,8 +187,8 @@ public class GUIViewFX extends Application {
         this.stage.show();
     }
 
-    public void sceneAlert(String msg) {
-        Alert alert = new Alert(Alert.AlertType.ERROR, msg);
+    public void sceneAlert(String msg, Alert.AlertType type) {
+        Alert alert = new Alert(type, msg);
         alert.showAndWait();
     }
 

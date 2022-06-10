@@ -36,10 +36,11 @@ public class BoardAdvancedTest {
         List<Integer> usedCards = new ArrayList<>();
 
         try {
+            assert boardAdvanced != null;
             boardAdvanced.useAssistantCard(usedCards, board.players.get(0), 1);
             usedCards.add(1);
             Assertions.assertEquals(1, board.players.get(0).getLastCard().getTurnPriority());
-            Assertions.assertEquals(boardAdvanced.computeWinner(board.players.get(0), board.players.get(0), board.archipelagos.get(0)), null);
+            Assertions.assertNull(boardAdvanced.computeWinner(board.players.get(0), board.players.get(0), board.archipelagos.get(0)));
             Assertions.assertEquals(boardAdvanced.computeInfluenceOfPlayer(board.players.get(0), board.archipelagos.get(0)), 0);
             Assertions.assertEquals(1, ((SchoolAdvanced)boardAdvanced.getPlayerSchool(p2)).getNumCoins());
 

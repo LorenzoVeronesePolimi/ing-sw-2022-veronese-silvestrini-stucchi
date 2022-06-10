@@ -1,4 +1,4 @@
-package it.polimi.ingsw.View;
+package it.polimi.ingsw.Server;
 
 import it.polimi.ingsw.Controller.Controller;
 import it.polimi.ingsw.Controller.Exceptions.ControllerException;
@@ -8,7 +8,6 @@ import it.polimi.ingsw.Model.Board.SerializedBoardAbstract;
 import it.polimi.ingsw.Model.Board.SerializedBoardAdvanced;
 import it.polimi.ingsw.Observer.ObservableController;
 import it.polimi.ingsw.Observer.Observer;
-import it.polimi.ingsw.Server.SocketClientConnection;
 import it.polimi.ingsw.View.Exceptions.NoCharacterCardException;
 
 /*

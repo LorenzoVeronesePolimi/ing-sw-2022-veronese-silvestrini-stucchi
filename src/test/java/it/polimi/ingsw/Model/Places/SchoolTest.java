@@ -42,6 +42,7 @@ public class SchoolTest {
             e.printStackTrace();
         }
         try {
+            assert boardTwo != null;
             boardTwo.moveProfessor(p, SPColour.BLUE); //this method calls school method getProfessor and addProfessor
         } catch (NoProfessorBagException | ProfessorNotFoundException e) {
             e.printStackTrace();
@@ -169,7 +170,7 @@ public class SchoolTest {
         }
         Assertions.assertEquals(0, school.getNumTowers());
 
-        Assertions.assertThrows(TowerNotFoundException.class, () -> school.removeTower());
+        Assertions.assertThrows(TowerNotFoundException.class, school::removeTower);
     }
 
     @Test

@@ -31,7 +31,7 @@ public class SerializedBoardAbstractTest {
 
     }
     @Test
-    public void SerializedBoardAbstractTest(){
+    public void SerializedBoardAbstractTests(){
         SerializedBoardAbstract serializedBoard = new SerializedBoardAbstract(b2.archipelagos, b2.clouds, b2.mn, b2.schools);
         Assertions.assertEquals(b2.archipelagos, serializedBoard.getArchipelagos());
         Assertions.assertEquals(b2.clouds, serializedBoard.getClouds());
@@ -42,9 +42,7 @@ public class SerializedBoardAbstractTest {
 
         try {
             b2.useAssistantCard(usedCards, p1, 1);
-        } catch (AssistantCardAlreadyPlayedTurnException e) {
-            e.printStackTrace();
-        } catch (NoAssistantCardException e) {
+        } catch (AssistantCardAlreadyPlayedTurnException | NoAssistantCardException e) {
             e.printStackTrace();
         }
 
@@ -52,11 +50,11 @@ public class SerializedBoardAbstractTest {
 
         if(serializedBoard2.getSchools().get(0).getPlayer().getNickname().equals(p1.getNickname())) {
             Assertions.assertNotEquals(b2.getPlayerSchool(p1), serializedBoard2.getSchools().get(0));
-            Assertions.assertTrue(serializedBoard2.getSchools().get(1).getPlayer().getNickname().equals(p2.getNickname()));
+            Assertions.assertEquals(serializedBoard2.getSchools().get(1).getPlayer().getNickname(), p2.getNickname());
         }
         else {
             Assertions.assertNotEquals(b2.getPlayerSchool(p1), serializedBoard2.getSchools().get(1));
-            Assertions.assertTrue(serializedBoard2.getSchools().get(0).getPlayer().getNickname().equals(p2.getNickname()));
+            Assertions.assertEquals(serializedBoard2.getSchools().get(0).getPlayer().getNickname(), p2.getNickname());
         }
 
     }

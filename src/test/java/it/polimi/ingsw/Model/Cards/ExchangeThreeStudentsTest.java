@@ -40,11 +40,17 @@ public class ExchangeThreeStudentsTest {
         } catch (StudentNotFoundException e) {
             e.printStackTrace();
         }
+        assert card != null;
+        Assertions.assertEquals("[c. " + 1 + "]", card.printPrice());
+        Assertions.assertEquals("ExchangeThreeStudents [c. " + 1 + "]", card.toString());
+        Assertions.assertNotNull(card.getStudentsOnCard());
 
+        assert card != null;
         Assertions.assertEquals(CharacterCardEnumeration.EXCHANGE_THREE_STUDENTS, card.getType());
 
         for (int i = 0; i < 7; i++) {
             try {
+                assert boardAdvanced != null;
                 boardAdvanced.getSchools().get(0).removeStudentHall(boardAdvanced.getSchools().get(0).getStudentsHall().get(0).getColour());
             } catch (StudentNotFoundException e) {
                 e.printStackTrace();
@@ -147,13 +153,8 @@ public class ExchangeThreeStudentsTest {
         BoardAdvanced boardAdvanced = null;
         try {
             boardAdvanced = new BoardAdvanced(board);
-        } catch (ExceededMaxStudentsHallException e) {
-            e.printStackTrace();
-        } catch (StudentNotFoundException e) {
-            e.printStackTrace();
-        } catch (TowerNotFoundException e) {
-            e.printStackTrace();
-        } catch (EmptyCaveauException e) {
+        } catch (ExceededMaxStudentsHallException | StudentNotFoundException | TowerNotFoundException |
+                 EmptyCaveauException e) {
             e.printStackTrace();
         }
 
@@ -163,6 +164,7 @@ public class ExchangeThreeStudentsTest {
         } catch (StudentNotFoundException e) {
             e.printStackTrace();
         }
+        assert boardAdvanced != null;
         boardAdvanced.setExtractedCards(card);
 
 
@@ -208,6 +210,7 @@ public class ExchangeThreeStudentsTest {
         Assertions.assertEquals(0, numYellowBefore);
 
         List<SPColour> exchangeColours = new ArrayList<>();
+        assert card != null;
         exchangeColours.add(card.getStudentsOnCard().get(0).getColour());
         exchangeColours.add(card.getStudentsOnCard().get(1).getColour());
 

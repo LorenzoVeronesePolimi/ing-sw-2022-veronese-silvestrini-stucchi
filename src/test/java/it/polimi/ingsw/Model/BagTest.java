@@ -7,6 +7,7 @@ import it.polimi.ingsw.Model.Exceptions.NoProfessorBagException;
 import it.polimi.ingsw.Model.Exceptions.StudentNotFoundException;
 import it.polimi.ingsw.Model.Pawns.Professor;
 import it.polimi.ingsw.Model.Pawns.Student;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -25,10 +26,10 @@ public class BagTest {
         students = bag.getInitialStudents();
 
         //check if initial students are always 10
-        assertEquals(students.size(), 10);
+        Assertions.assertEquals(students.size(), 10);
 
         //check if initial students are removed from the list in bag after one call of getInitialStudents
-        assertEquals(0, bag.getInitialStudents().size());
+        Assertions.assertEquals(0, bag.getInitialStudents().size());
     }
 
     @Test
@@ -41,7 +42,8 @@ public class BagTest {
         } catch (StudentNotFoundException e) {
             e.printStackTrace();
         }
-        assertEquals(students.size(), 120);
+        assert students != null;
+        Assertions.assertEquals(students.size(), 120);
 
         //check if no student remaining
         assertThrows(StudentNotFoundException.class, () -> bag.extractStudents(1));
@@ -69,7 +71,8 @@ public class BagTest {
             e.printStackTrace();
         }
         //check if it's the same students that was put in the bag
-        assertEquals(s, students.get(0));
+        assert students != null;
+        Assertions.assertEquals(s, students.get(0));
 
         //check if no other student left
         assertThrows(StudentNotFoundException.class, () -> bag.extractStudents(1));
@@ -95,11 +98,16 @@ public class BagTest {
         }
 
         //check correct return statement
-        assertEquals(p1.getColour(), SPColour.BLUE);
-        assertEquals(p2.getColour(), SPColour.RED);
-        assertEquals(p3.getColour(), SPColour.GREEN);
-        assertEquals(p4.getColour(), SPColour.YELLOW);
-        assertEquals(p5.getColour(), SPColour.PINK);
+        assert p1 != null;
+        assert p2 != null;
+        assert p3 != null;
+        assert p4 != null;
+        assert p5 != null;
+        Assertions.assertEquals(p1.getColour(), SPColour.BLUE);
+        Assertions.assertEquals(p2.getColour(), SPColour.RED);
+        Assertions.assertEquals(p3.getColour(), SPColour.GREEN);
+        Assertions.assertEquals(p4.getColour(), SPColour.YELLOW);
+        Assertions.assertEquals(p5.getColour(), SPColour.PINK);
 
         //check no professors left in the bag
         assertThrows(NoProfessorBagException.class, () -> bag.takeProfessor(SPColour.BLUE));
