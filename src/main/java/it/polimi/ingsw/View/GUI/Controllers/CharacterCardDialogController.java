@@ -7,6 +7,7 @@ import it.polimi.ingsw.Model.Board.SerializedBoardAdvanced;
 import it.polimi.ingsw.Model.Cards.AbstractCharacterCard;
 import it.polimi.ingsw.Model.Cards.ExchangeThreeStudents;
 import it.polimi.ingsw.Model.Cards.ExchangeTwoHallDining;
+import it.polimi.ingsw.Model.Cards.PlaceOneStudent;
 import it.polimi.ingsw.Model.Enumerations.CharacterCardEnumeration;
 import it.polimi.ingsw.Model.Enumerations.SPColour;
 import it.polimi.ingsw.Model.Pawns.Student;
@@ -69,7 +70,7 @@ public class CharacterCardDialogController {
             Map.entry(CharacterCardEnumeration.EXTRA_STUDENT_IN_DINING, "Choose one student from the four that are on this card: put it in your dining Room, then a student is extracted from the bag and added to this card."),
             Map.entry(CharacterCardEnumeration.FAKE_MN_MOVEMENT, "Chooses an archipelago: you can try to conquer it as if mother nature has ended her movement on that archipelago. After that, the round continues normally."),
             Map.entry(CharacterCardEnumeration.FORBID_ISLAND, "Take one No Entry tile from this card and put it on an archipelago. The next time Mother Nature goes to that archipelago, she won't conquer it and the tile will be dropped."),
-            Map.entry(CharacterCardEnumeration.PLACE_ONE_STUDENT, "You can choose a student on this card and place it on an archipelago. Then, a new student is extracted from the bag and put on this card."),
+            Map.entry(CharacterCardEnumeration.PLACE_ONE_STUDENT, "You can take a student from this card and place it on an archipelago. Then, a new student is extracted from the bag and put on this card."),
             Map.entry(CharacterCardEnumeration.REDUCE_COLOUR_IN_DINING, "Chose a colour. Each player puts in the bag 2 students (or less, if he has less) from his own dining room."),
             Map.entry(CharacterCardEnumeration.TAKE_PROFESSOR_ON_EQUITY, "During this turn, you take control of the professors even if you have the same number of students in the school as the current owner of the professor."),
             Map.entry(CharacterCardEnumeration.TOWER_NO_VALUE, "For this turn, when resolving a conquering on an archipelago, towers do not count towards influence."),
@@ -192,7 +193,7 @@ public class CharacterCardDialogController {
                 this.visualizeTowerNoValue();
                 break;
             case TWO_EXTRA_ISLANDS:
-                this.visualizeTowExtraIslands();
+                this.visualizeTwoExtraIslands();
                 break;
             case TWO_EXTRA_POINTS:
                 this.visualizeTwoExtraPoints();
@@ -393,43 +394,136 @@ public class CharacterCardDialogController {
     }
 
     public void visualizeExcludeColourFromCounting(){
+        this.choice_left_label.setText("Colour to exclude");
 
+        String[] colours = {"blue", "pink", "red", "yellow", "green"};
+        for(String c : colours){
+            this.choice1_left.getItems().add(c);
+        }
+        oneChoiceVisualization();
+
+        this.use_yes.setOnAction(actionEvent -> {
+            this.client.asyncWriteToSocket("excludeColourFromCounting " + choice1_left.getValue());
+        });
     }
 
     public void visualizeExtraStudentInDining(){
+        this.choice_left_label.setText("Extra colour:");
 
+        String[] colours = {"blue", "pink", "red", "yellow", "green"};
+        for(String c : colours){
+            this.choice1_left.getItems().add(c);
+        }
+        oneChoiceVisualization();
+
+        this.use_yes.setOnAction(actionEvent -> {
+            this.client.asyncWriteToSocket("extraStudentInDining " + choice1_left.getValue());
+        });
     }
 
     public void visualizeFakeMNMovement(){
+        this.choice_left_label.setText("Archipelago:");
 
+        for(int i = 0; i < 9; i++){
+            this.choice1_left.getItems().add(Integer.toString(i));
+        }
+        oneChoiceVisualization();
+
+        this.use_yes.setOnAction(actionEvent -> {
+            this.client.asyncWriteToSocket("fakeMNMovement " + choice1_left.getValue());
+        });
     }
 
     public void visualizeForbidIsland(){
+        this.choice_left_label.setText("Archipelago to forbid:");
 
+        for(int i = 0; i < 9; i++){
+            this.choice1_left.getItems().add(Integer.toString(i));
+        }
+        oneChoiceVisualization();
+
+        this.use_yes.setOnAction(actionEvent -> {
+            this.client.asyncWriteToSocket("forbidIsland " + choice1_left.getValue());
+        });
     }
 
     public void visualizePlaceOneStudent(){
+        this.choice_left_label.setText("Student to take:");
+        oneChoiceVisualization();
 
+        List<String> cardStudents = new ArrayList();
+        for(Student s : ((PlaceOneStudent)this.card).getStudentsOnCard()){
+            cardStudents.add(SPColourString.get(s.getColour()));
+        }
+        this.setStudentsVisualization(((ExchangeThreeStudents)this.card).getStudentsOnCard());
+
+        this.choice1_left.getItems().addAll(cardStudents);
+
+        this.use_yes.setOnAction(actionEvent -> {
+            this.client.asyncWriteToSocket("placeOneStudent " + choice1_left.getValue());
+        });
     }
 
     public void visualizeReduceColourInDining(){
+        this.choice_left_label.setText("Colour:");
 
+        String[] colours = {"blue", "pink", "red", "yellow", "green"};
+        for(String c : colours){
+            this.choice1_left.getItems().add(c);
+        }
+        oneChoiceVisualization();
+
+        this.use_yes.setOnAction(actionEvent -> {
+            this.client.asyncWriteToSocket("reduceColourInDining " + choice1_left.getValue());
+        });
     }
 
     public void visualizeTakeProfessorOnEquity(){
+        noChoiceVisualization();
 
+        this.use_yes.setOnAction(actionEvent -> {
+            this.client.asyncWriteToSocket("takeProfessorOnEquity ");
+        });
     }
 
     public void visualizeTowerNoValue(){
+        noChoiceVisualization();
 
+        this.use_yes.setOnAction(actionEvent -> {
+            this.client.asyncWriteToSocket("towerNoValue ");
+        });
     }
 
-    public void visualizeTowExtraIslands(){
+    public void visualizeTwoExtraIslands(){
+        noChoiceVisualization();
 
+        this.use_yes.setOnAction(actionEvent -> {
+            this.client.asyncWriteToSocket("twoExtraIslands ");
+        });
     }
 
     public void visualizeTwoExtraPoints(){
+        noChoiceVisualization();
 
+        this.use_yes.setOnAction(actionEvent -> {
+            this.client.asyncWriteToSocket("twoExtraPoints ");
+        });
+    }
+
+    private void noChoiceVisualization() {
+        this.choice_left_label.setVisible(false);
+        this.choice1_left.setVisible(false);
+        oneChoiceVisualization();
+    }
+
+    private void oneChoiceVisualization() {
+        this.choice_right_label.setVisible(false);
+
+        this.choice2_left.setVisible(false);
+        this.choice3_left.setVisible(false);
+        this.choice1_right.setVisible(false);
+        this.choice2_right.setVisible(false);
+        this.choice3_right.setVisible(false);
     }
 
     private int computeMyIndex(SerializedBoardAbstract boardAbstract) {
@@ -442,6 +536,4 @@ public class CharacterCardDialogController {
         }
         return -1;
     }
-
-
 }
