@@ -6,6 +6,7 @@ import it.polimi.ingsw.Model.Board.SerializedBoardAbstract;
 import it.polimi.ingsw.Model.Board.SerializedBoardAdvanced;
 import it.polimi.ingsw.Model.Cards.AbstractCharacterCard;
 import it.polimi.ingsw.Model.Cards.ExchangeThreeStudents;
+import it.polimi.ingsw.Model.Cards.ExchangeTwoHallDining;
 import it.polimi.ingsw.Model.Enumerations.CharacterCardEnumeration;
 import it.polimi.ingsw.Model.Enumerations.SPColour;
 import it.polimi.ingsw.Model.Pawns.Student;
@@ -19,8 +20,10 @@ import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.GridPane;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -29,16 +32,20 @@ public class CharacterCardDialogController {
     @FXML private Label card_name;
     @FXML private Label card_effect;
     @FXML private ImageView card_image;
+    @FXML private GridPane students;
+    @FXML private Label choice_left_label;
     @FXML private AnchorPane anchor_choices;
     private List<ChoiceBox<String>> choicesLeft;
     @FXML private ChoiceBox<String> choice1_left;
     @FXML private ChoiceBox<String> choice2_left;
     @FXML private ChoiceBox<String> choice3_left;
+    @FXML private Label choice_right_label;
     private List<ChoiceBox<String>> choicesRight;
     @FXML private ChoiceBox<String> choice1_right;
     @FXML private ChoiceBox<String> choice2_right;
     @FXML private ChoiceBox<String> choice3_right;
     @FXML private Button use_yes;
+
 
     private static final Map<CharacterCardEnumeration, String> cardPath = Map.ofEntries(
             Map.entry(CharacterCardEnumeration.EXCHANGE_THREE_STUDENTS, "/images/Characters/ExchangeThreeStudents.jpg"),
@@ -92,6 +99,14 @@ public class CharacterCardDialogController {
             SPColour.PINK, "pink",
             SPColour.BLUE, "blue"
     );
+
+    private static final Map<SPColour, String> studentColourPath = Map.of(
+            SPColour.BLUE, "/images/pawns/stud_blue.png",
+            SPColour.PINK, "/images/pawns/stud_pink.png",
+            SPColour.RED, "/images/pawns/stud_red.png",
+            SPColour.YELLOW, "/images/pawns/stud_yellow.png",
+            SPColour.GREEN, "/images/pawns/stud_green.png"
+    ); // relates the SPColour to the image of the student of that colour
 
     private CharacterCardEnumeration cardType;
     private SerializedBoardAdvanced board;
@@ -185,11 +200,33 @@ public class CharacterCardDialogController {
         }
     }
 
+    private void setStudentsVisualization(List<Student> students){
+        int i = 0; // always 0 or 1
+        int j = 0;
+        for(Student s : students){
+            ImageView image = new ImageView(getClass().getResource(studentColourPath.get(s.getColour())).toExternalForm());
+            image.setFitHeight(30);
+            image.setFitWidth(30);
+
+            this.students.add(image, i, j);
+
+            i++;
+            if(i == 2) {
+                i = 0;
+                j++;
+            }
+        }
+    }
+
     public void visualizeExchangeThreeStudents(){
+        this.choice_left_label.setText("Card:");
+        this.choice_right_label.setText("Hall:");
         List<String> cardStudents = new ArrayList();
         for(Student s : ((ExchangeThreeStudents)this.card).getStudentsOnCard()){
             cardStudents.add(SPColourString.get(s.getColour()));
         }
+        this.setStudentsVisualization(((ExchangeThreeStudents)this.card).getStudentsOnCard());
+
         List<String> hallStudents = new ArrayList();
         for(Student s : this.board.getSchools().get(this.playerIndex).getStudentsHall()){
             hallStudents.add(SPColourString.get(s.getColour()));
@@ -252,6 +289,7 @@ public class CharacterCardDialogController {
                         for(String s : hallStudentsSelected){
                             outMessage.append(s);
                             outMessage.append(" ");
+                            i--;
                         }
                         while(i > 0){ //add "-" if no choice
                             outMessage.append("- ");
@@ -265,7 +303,93 @@ public class CharacterCardDialogController {
     }
 
     public void visualizeExchangeTwoHallDining(){
+        this.choice_left_label.setText("Hall");
+        this.choice_right_label.setText("Dining Room");
 
+        List<String> hallStudents = new ArrayList();
+        for(Student s : this.board.getSchools().get(this.playerIndex).getStudentsHall()){
+            hallStudents.add(SPColourString.get(s.getColour()));
+        }
+
+        List<String> diningStudents = new ArrayList();
+        for(SPColour c : SPColourString.keySet()){
+            if(this.board.getSchools().get(this.playerIndex).getNumStudentColour(c) > 1){ // add up to two strings of that name
+                diningStudents.add(SPColourString.get(c));
+                diningStudents.add(SPColourString.get(c));
+            }
+            else if(this.board.getSchools().get(this.playerIndex).getNumStudentColour(c) > 0){
+                diningStudents.add(SPColourString.get(c));
+            }
+        }
+
+        this.choice1_left.getItems().addAll(hallStudents);
+        this.choice2_left.getItems().addAll(hallStudents);
+        this.choice3_left.setVisible(false);
+        this.choice1_right.getItems().addAll(diningStudents);
+        this.choice2_right.getItems().addAll(diningStudents);
+        this.choice3_right.setVisible(false);
+
+        this.use_yes.setOnAction(actionEvent -> {
+            StringBuilder outMessage = new StringBuilder("exchangeTwoHallDining ");
+            List<String> hallStudentsSelected = new ArrayList<>();
+            List<String> diningStudentsSelected = new ArrayList<>();
+            for(ChoiceBox<String> c : choicesLeft){
+                if(c.getValue() != null){
+                    //cardStudentsSelected.add(c.getSelectionModel().getSelectedItem());
+                    hallStudentsSelected.add(c.getValue());
+                }
+            }
+            for(ChoiceBox<String> c : choicesRight){
+                if(c.getValue() != null){
+                    diningStudentsSelected.add(c.getValue());
+                }
+            }
+            if(hallStudentsSelected.size() != diningStudentsSelected.size()){
+                guiViewFX.sceneAlert("Incorrect colours selected", Alert.AlertType.ERROR);
+            }
+            else{
+                int initialHallSize = hallStudents.size();
+                for(String s : hallStudentsSelected){
+                    hallStudents.remove(s);
+                    //if(Collections.frequency(animals, "bat");
+                }
+                if(hallStudents.size() != initialHallSize - hallStudentsSelected.size()){
+                    guiViewFX.sceneAlert("You've chosen more students than the card has!", Alert.AlertType.ERROR);
+                }
+                else{
+                    int initialDiningSize = diningStudents.size();
+                    for(String s : diningStudentsSelected){
+                        hallStudents.remove(s);
+                    }
+                    if(diningStudents.size() != initialDiningSize - diningStudentsSelected.size()){
+                        guiViewFX.sceneAlert("You've chosen more students than you have!", Alert.AlertType.ERROR);
+                    }
+                    else{
+                        int i = hallStudentsSelected.size();
+                        for(String s : hallStudentsSelected){
+                            outMessage.append(s);
+                            outMessage.append(" ");
+                            i--;
+                        }
+                        while(i > 0){ //add "-" if no choice
+                            outMessage.append("- ");
+                            i--;
+                        }
+                        i = hallStudentsSelected.size();
+                        for(String s : diningStudentsSelected){
+                            outMessage.append(s);
+                            outMessage.append(" ");
+                            i--;
+                        }
+                        while(i > 0){ //add "-" if no choice
+                            outMessage.append("- ");
+                            i--;
+                        }
+                        this.client.asyncWriteToSocket(String.valueOf(outMessage));
+                    }
+                }
+            }
+        });
     }
 
     public void visualizeExcludeColourFromCounting(){
