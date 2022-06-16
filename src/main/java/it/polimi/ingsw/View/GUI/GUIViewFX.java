@@ -210,6 +210,8 @@ public class GUIViewFX extends Application {
 
         controller.setCardType(type);
         controller.setBoard(board);
+        controller.setClient(this.client);
+        controller.setGuiViewFX(this);
         controller.setVisualization();
         /*controller.setCardName(name);
         controller.setCardEffect(effect);
@@ -224,7 +226,6 @@ public class GUIViewFX extends Application {
         alertStage.initModality(Modality.APPLICATION_MODAL);
         alertStage.setScene(alertScene);
         alertStage.showAndWait();
-
     }
 
     public void manageScene(SerializedBoardAbstract board){

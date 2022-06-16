@@ -22,16 +22,17 @@
           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
         </rowConstraints>
       </GridPane>
-      <Label fx:id="card_name" layoutX="20.0" layoutY="54.0" prefHeight="18.0" prefWidth="297.0" text="Label" textAlignment="CENTER" />
-      <Button fx:id="use_yes" layoutX="50.0" layoutY="335.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="77.0" text="Use it" />
-      <Button fx:id="use_no" layoutX="212.0" layoutY="335.0" mnemonicParsing="false" text="Don't use it" />
-      <Label fx:id="card_effect" layoutX="36.0" layoutY="99.0" prefHeight="69.0" prefWidth="266.0" text="Label" wrapText="true" />
-      <AnchorPane fx:id="anchor_choices" layoutX="20.0" layoutY="164.0" prefHeight="150.0" prefWidth="298.0" />
-      <ChoiceBox fx:id="choice1_left" layoutX="46.0" layoutY="176.0" prefHeight="26.0" prefWidth="108.0" />
-      <ChoiceBox fx:id="choice3_left" layoutX="47.0" layoutY="264.0" prefHeight="26.0" prefWidth="108.0" />
-      <ChoiceBox fx:id="choice2_left" layoutX="47.0" layoutY="221.0" prefHeight="26.0" prefWidth="108.0" />
-      <ChoiceBox fx:id="choice2_right" layoutX="181.0" layoutY="221.0" prefHeight="26.0" prefWidth="108.0" />
-      <ChoiceBox fx:id="choice1_right" layoutX="181.0" layoutY="176.0" prefHeight="26.0" prefWidth="108.0" />
-      <ChoiceBox fx:id="choice2_right" layoutX="181.0" layoutY="264.0" prefHeight="26.0" prefWidth="108.0" />
+      <Label fx:id="card_name" layoutX="20.0" layoutY="35.0" prefHeight="18.0" prefWidth="297.0" text="Label" textAlignment="CENTER" />
+      <Button fx:id="use_yes" layoutX="130.0" layoutY="334.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="77.0" text="Use it" />
+      <Label fx:id="card_effect" layoutX="36.0" layoutY="54.0" prefHeight="126.0" prefWidth="266.0" text="Label" wrapText="true" />
+      <AnchorPane fx:id="anchor_choices" layoutX="20.0" layoutY="164.0" prefHeight="150.0" prefWidth="298.0">
+         <children>
+            <ChoiceBox fx:id="choice1_left" layoutX="28.0" layoutY="21.0" prefHeight="26.0" prefWidth="108.0" />
+            <ChoiceBox fx:id="choice3_left" layoutX="29.0" layoutY="109.0" prefHeight="26.0" prefWidth="108.0" />
+            <ChoiceBox fx:id="choice2_left" layoutX="29.0" layoutY="66.0" prefHeight="26.0" prefWidth="108.0" />
+            <ChoiceBox fx:id="choice2_right" layoutX="163.0" layoutY="66.0" prefHeight="26.0" prefWidth="108.0" />
+            <ChoiceBox fx:id="choice1_right" layoutX="163.0" layoutY="21.0" prefHeight="26.0" prefWidth="108.0" />
+            <ChoiceBox fx:id="choice3_right" layoutX="163.0" layoutY="109.0" prefHeight="26.0" prefWidth="108.0" />
+         </children></AnchorPane>
    </children>
 </AnchorPane>

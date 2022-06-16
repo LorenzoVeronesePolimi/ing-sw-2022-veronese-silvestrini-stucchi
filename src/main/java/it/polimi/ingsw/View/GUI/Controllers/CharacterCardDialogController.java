@@ -1,15 +1,27 @@
 package it.polimi.ingsw.View.GUI.Controllers;
 
+import it.polimi.ingsw.Client.Client;
 import it.polimi.ingsw.Messages.Enumerations.INMessageType;
 import it.polimi.ingsw.Model.Board.SerializedBoardAbstract;
 import it.polimi.ingsw.Model.Board.SerializedBoardAdvanced;
+import it.polimi.ingsw.Model.Cards.AbstractCharacterCard;
+import it.polimi.ingsw.Model.Cards.ExchangeThreeStudents;
 import it.polimi.ingsw.Model.Enumerations.CharacterCardEnumeration;
+import it.polimi.ingsw.Model.Enumerations.SPColour;
+import it.polimi.ingsw.Model.Pawns.Student;
+import it.polimi.ingsw.Model.Player;
+import it.polimi.ingsw.View.GUI.GUIViewFX;
+import javafx.collections.FXCollections;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 public class CharacterCardDialogController {
@@ -18,14 +30,15 @@ public class CharacterCardDialogController {
     @FXML private Label card_effect;
     @FXML private ImageView card_image;
     @FXML private AnchorPane anchor_choices;
+    private List<ChoiceBox<String>> choicesLeft;
     @FXML private ChoiceBox<String> choice1_left;
     @FXML private ChoiceBox<String> choice2_left;
     @FXML private ChoiceBox<String> choice3_left;
+    private List<ChoiceBox<String>> choicesRight;
     @FXML private ChoiceBox<String> choice1_right;
     @FXML private ChoiceBox<String> choice2_right;
     @FXML private ChoiceBox<String> choice3_right;
     @FXML private Button use_yes;
-    @FXML private Button use_no;
 
     private static final Map<CharacterCardEnumeration, String> cardPath = Map.ofEntries(
             Map.entry(CharacterCardEnumeration.EXCHANGE_THREE_STUDENTS, "/images/Characters/ExchangeThreeStudents.jpg"),
@@ -72,11 +85,30 @@ public class CharacterCardDialogController {
             Map.entry(CharacterCardEnumeration.TWO_EXTRA_POINTS, "Two Extra Points")
     );
 
+    private static final Map<SPColour, String> SPColourString = Map.of(
+            SPColour.GREEN, "green",
+            SPColour.RED, "red",
+            SPColour.YELLOW, "yellow",
+            SPColour.PINK, "pink",
+            SPColour.BLUE, "blue"
+    );
+
     private CharacterCardEnumeration cardType;
     private SerializedBoardAdvanced board;
+    private Client client;
+    private GUIViewFX guiViewFX;
+    private AbstractCharacterCard card;
+    private int playerIndex; // index of the player who wants to use the Character card inside schools list and sitPlayers
 
     public void initialize(){
-
+        this.choicesLeft = new ArrayList<>();
+        this.choicesLeft.add(this.choice1_left);
+        this.choicesLeft.add(this.choice2_left);
+        this.choicesLeft.add(this.choice3_left);
+        this.choicesRight = new ArrayList<>();
+        this.choicesRight.add(this.choice1_right);
+        this.choicesRight.add(this.choice2_right);
+        this.choicesRight.add(this.choice3_right);
     }
 
     public void setCardType(CharacterCardEnumeration cardType) {
@@ -87,10 +119,31 @@ public class CharacterCardDialogController {
         this.board = board;
     }
 
+    public void setClient(Client client) {
+        this.client = client;
+    }
+
+    public void setGuiViewFX(GUIViewFX guiViewFX) {
+        this.guiViewFX = guiViewFX;
+    }
+
     public void setVisualization(){
         this.card_name.setText(cardName.get(this.cardType));
         this.card_effect.setText(cardEffect.get(this.cardType));
         this.card_image.setImage(new Image(getClass().getResource(cardPath.get(this.cardType)).toExternalForm()));
+
+        // set player index
+        this.playerIndex = computeMyIndex(this.board);
+
+        // set character card chosen
+        for(AbstractCharacterCard c : this.board.getExtractedCards()){
+            if(c.getType() == this.cardType){
+                this.card = c;
+            }
+        }
+        if(this.card == null){
+            System.out.println("Problem with visualization");
+        }
 
         switch(this.cardType){
             case EXCHANGE_THREE_STUDENTS:
@@ -133,7 +186,82 @@ public class CharacterCardDialogController {
     }
 
     public void visualizeExchangeThreeStudents(){
+        List<String> cardStudents = new ArrayList();
+        for(Student s : ((ExchangeThreeStudents)this.card).getStudentsOnCard()){
+            cardStudents.add(SPColourString.get(s.getColour()));
+        }
+        List<String> hallStudents = new ArrayList();
+        for(Student s : this.board.getSchools().get(this.playerIndex).getStudentsHall()){
+            hallStudents.add(SPColourString.get(s.getColour()));
+        }
 
+        this.choice1_left.getItems().addAll(cardStudents);
+        this.choice2_left.getItems().addAll(cardStudents);
+        this.choice3_left.getItems().addAll(cardStudents);
+        this.choice1_right.getItems().addAll(hallStudents);
+        this.choice2_right.getItems().addAll(hallStudents);
+        this.choice3_right.getItems().addAll(hallStudents);
+
+        this.use_yes.setOnAction(actionEvent -> {
+            StringBuilder outMessage = new StringBuilder("exchangeThreeStudents ");
+            List<String> cardStudentsSelected = new ArrayList<>();
+            List<String> hallStudentsSelected = new ArrayList<>();
+            for(ChoiceBox<String> c : choicesLeft){
+                System.out.println(c.getValue());
+                if(c.getValue() != null){
+                    //cardStudentsSelected.add(c.getSelectionModel().getSelectedItem());
+                    cardStudentsSelected.add(c.getValue());
+                }
+            }
+            for(ChoiceBox<String> c : choicesRight){
+                if(c.getValue() != null){
+                    hallStudentsSelected.add(c.getValue());
+                }
+            }
+            if(cardStudentsSelected.size() != hallStudentsSelected.size()){
+                guiViewFX.sceneAlert("Incorrect colours selected", Alert.AlertType.ERROR);
+            }
+            else{
+                int initialCardSize = cardStudents.size();
+                for(String s : cardStudentsSelected){
+                    cardStudents.remove(s);
+                }
+                if(cardStudents.size() != initialCardSize - cardStudentsSelected.size()){
+                    guiViewFX.sceneAlert("You've chosen more students than the card has!", Alert.AlertType.ERROR);
+                }
+                else{
+                    int initialHallSize = hallStudents.size();
+                    for(String s : hallStudentsSelected){
+                        hallStudents.remove(s);
+                    }
+                    if(cardStudents.size() != initialCardSize - cardStudentsSelected.size()){
+                        guiViewFX.sceneAlert("You've chosen more students than you have!", Alert.AlertType.ERROR);
+                    }
+                    else{
+                        int i = cardStudentsSelected.size();
+                        for(String s : cardStudentsSelected){
+                            outMessage.append(s);
+                            outMessage.append(" ");
+                            i--;
+                        }
+                        while(i > 0){ //add "-" if no choice
+                            outMessage.append("- ");
+                            i--;
+                        }
+                        i = hallStudentsSelected.size();
+                        for(String s : hallStudentsSelected){
+                            outMessage.append(s);
+                            outMessage.append(" ");
+                        }
+                        while(i > 0){ //add "-" if no choice
+                            outMessage.append("- ");
+                            i--;
+                        }
+                        this.client.asyncWriteToSocket(String.valueOf(outMessage));
+                    }
+                }
+            }
+        });
     }
 
     public void visualizeExchangeTwoHallDining(){
@@ -180,7 +308,16 @@ public class CharacterCardDialogController {
 
     }
 
-
+    private int computeMyIndex(SerializedBoardAbstract boardAbstract) {
+        int i = 0;
+        for(Player p: boardAbstract.getSitPlayers()) {
+            if(p.getNickname().equals(this.client.getNickname())) {
+                return i;
+            }
+            i++;
+        }
+        return -1;
+    }
 
 
 }
