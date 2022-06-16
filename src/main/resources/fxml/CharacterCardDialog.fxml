@@ -23,8 +23,8 @@
             <ChoiceBox fx:id="choice2_right" layoutX="163.0" layoutY="66.0" prefHeight="26.0" prefWidth="108.0" />
             <ChoiceBox fx:id="choice1_right" layoutX="163.0" layoutY="21.0" prefHeight="26.0" prefWidth="108.0" />
             <ChoiceBox fx:id="choice3_right" layoutX="163.0" layoutY="109.0" prefHeight="26.0" prefWidth="108.0" />
-            <Label fx:id="choice_left_label" layoutX="68.0" text="Label" />
-            <Label fx:id="choice_right_label" layoutX="203.0" text="Label" />
+            <Label fx:id="choice_left_label" layoutX="27.0" prefHeight="18.0" prefWidth="108.0" text="Label" />
+            <Label fx:id="choice_right_label" layoutX="161.0" prefHeight="18.0" prefWidth="108.0" text="Label" />
          </children></AnchorPane>
       <GridPane fx:id="students" layoutX="515.0" layoutY="164.0" prefHeight="105.0" prefWidth="70.0">
         <columnConstraints>

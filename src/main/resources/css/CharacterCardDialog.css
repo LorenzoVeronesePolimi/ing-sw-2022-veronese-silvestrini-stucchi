@@ -13,3 +13,13 @@
     -fx-font-size: 14;
     -fx-text-fill: white;
 }
+
+#choice_left_label{
+    -fx-text-fill: white;
+    -fx-alignment: center;
+}
+
+#choice_right_label{
+    -fx-text-fill: white;
+    -fx-alignment: center;
+}
