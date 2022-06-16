@@ -1,21 +1,16 @@
 package it.polimi.ingsw.View.GUI.Controllers;
 
 import it.polimi.ingsw.Client.Client;
-import it.polimi.ingsw.Messages.Enumerations.INMessageType;
 import it.polimi.ingsw.Model.Board.SerializedBoardAbstract;
 import it.polimi.ingsw.Model.Board.SerializedBoardAdvanced;
 import it.polimi.ingsw.Model.Cards.AbstractCharacterCard;
 import it.polimi.ingsw.Model.Cards.ExchangeThreeStudents;
-import it.polimi.ingsw.Model.Cards.ExchangeTwoHallDining;
 import it.polimi.ingsw.Model.Cards.PlaceOneStudent;
 import it.polimi.ingsw.Model.Enumerations.CharacterCardEnumeration;
 import it.polimi.ingsw.Model.Enumerations.SPColour;
 import it.polimi.ingsw.Model.Pawns.Student;
 import it.polimi.ingsw.Model.Player;
 import it.polimi.ingsw.View.GUI.GUIViewFX;
-import javafx.collections.FXCollections;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
@@ -24,7 +19,6 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 

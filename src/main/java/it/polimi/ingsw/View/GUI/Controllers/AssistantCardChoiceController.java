@@ -7,6 +7,7 @@ import it.polimi.ingsw.Model.Places.School.School;
 import it.polimi.ingsw.Model.Player;
 import it.polimi.ingsw.View.GUI.Controllers.DataStructures.AssistantCardChoiceFxml;
 import it.polimi.ingsw.View.GUI.GUIViewFX;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
@@ -46,6 +47,7 @@ public class AssistantCardChoiceController implements GUIController, Initializab
     @FXML private Button buttonC9;
     @FXML private Button buttonC10;
 
+
     private List<AssistantCardChoiceFxml> assistantCardsChoiceFxml;
 
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -60,7 +62,6 @@ public class AssistantCardChoiceController implements GUIController, Initializab
         assistantCardsChoiceFxml.add(new AssistantCardChoiceFxml(8, imageC8, buttonC8));
         assistantCardsChoiceFxml.add(new AssistantCardChoiceFxml(9, imageC9, buttonC9));
         assistantCardsChoiceFxml.add(new AssistantCardChoiceFxml(10, imageC10, buttonC10));
-
     }
 
     public void setDataStructures(){

@@ -17,6 +17,7 @@ import it.polimi.ingsw.Server.Server;
 import it.polimi.ingsw.View.Exceptions.NoCharacterCardException;
 import it.polimi.ingsw.Server.ServerView;
 
+import java.io.Serializable;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -24,8 +25,9 @@ import java.util.stream.Collectors;
 /**
  * This class is the controller of the MVC pattern. It observes the view and plays actions on the model.
  */
-public class Controller implements ObserverController<Message> {
-    private final Server server;
+public class Controller implements ObserverController<Message>, Serializable {
+    private static final long serialVersionUID = 1L;
+    private transient final Server server;
     private int numPlayers;
     private boolean advanced = false;
     private BoardAbstract board;
@@ -40,11 +42,11 @@ public class Controller implements ObserverController<Message> {
     private String nicknameWinner = null; //nickname of the winner
 
     private int currentPlayerIndex = 0;
-    private final List<ServerView> serverViews;
+    private transient final List<ServerView> serverViews;
 
-    private final ControllerInput controllerInput;
-    private final ControllerState controllerState;
-    private final ControllerIntegrity controllerIntegrity;
+    private ControllerInput controllerInput;
+    private ControllerState controllerState;
+    private ControllerIntegrity controllerIntegrity;
 
     private int numStudentsToMove;
     private int numStudentsToMoveCurrent;
@@ -521,9 +523,28 @@ public class Controller implements ObserverController<Message> {
         this.serverViews.add(serverView);
 
         if(this.players.size() == numPlayers){ // The requested number of players has been reached: let's go on
-            this.initMatch();
-            this.precomputedState = State.PLANNING1;
-            controllerState.setState(State.PLANNING1);
+            // are there saved matches?
+            PersistenceHandler storageData = new PersistenceHandler();
+            Controller recoveredController = storageData.restoreMatch();
+            if (recoveredController != null) { //restore
+                List<String> currentNicknames = new ArrayList<>();
+                for (Player p : this.players) {
+                    currentNicknames.add(p.getNickname());
+                }
+                List<String> recoveredNicknames = new ArrayList<>();
+                for (Player p : recoveredController.getPlayers()) {
+                    recoveredNicknames.add(p.getNickname());
+                }
+                if (recoveredNicknames.containsAll(currentNicknames)) {
+                    restoreController(recoveredController);
+                }
+            }
+            else{ //start from zero
+                this.initMatch();
+                this.precomputedState = State.PLANNING1;
+                controllerState.setState(State.PLANNING1);
+            }
+
         }
         else if(this.players.size() < numPlayers) {
             List<PlayerColour> playerColourList = players.stream().map(Player::getColour).collect(Collectors.toList());
@@ -853,6 +874,8 @@ public class Controller implements ObserverController<Message> {
             // change current Player
             this.currentPlayerIndex++;
             this.characterCardUsed = false;
+            PersistenceHandler persistenceHandler = new PersistenceHandler();
+            persistenceHandler.saveMatch(this); //save match
             if(this.currentPlayerIndex >= this.players.size()){ //all Players made their move => new turn
                 if(this.gameEnded){ //case game ends at the end of the turn
                     controllerState.setState(State.END);
@@ -1643,5 +1666,27 @@ public class Controller implements ObserverController<Message> {
                 this.boardAdvanced.addObserver(s);
         }
     }
-}
 
+    private void restoreController(Controller controller) {
+        this.numPlayers = controller.numPlayers;
+        this.advanced = controller.advanced;
+        this.board = controller.board;
+        this.boardAdvanced = controller.boardAdvanced;
+        this.sitPlayers = controller.sitPlayers;
+        this.players = controller.players;
+        this.precomputedPlayer = controller.precomputedPlayer;
+        this.iteratorAC = controller.iteratorAC;
+        this.precomputedState = controller.precomputedState;
+        this.usedCards = controller.usedCards;
+        this.gameEnded = controller.gameEnded;
+        this.nicknameWinner = controller.nicknameWinner;
+        this.currentPlayerIndex = controller.currentPlayerIndex;
+        this.controllerInput = controller.controllerInput;
+        this.controllerState = controller.controllerState;
+        this.controllerIntegrity = controller.controllerIntegrity;
+        this.numStudentsToMove = controller.numStudentsToMove;
+        this.numStudentsToMoveCurrent = controller.numStudentsToMoveCurrent;
+        this.just_started = controller.just_started;
+        this.characterCardUsed = controller.characterCardUsed;
+    }
+}

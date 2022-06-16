@@ -2,12 +2,14 @@ package it.polimi.ingsw.Controller;
 
 import it.polimi.ingsw.Messages.INMessages.Message;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
  * Class that performs input checking. It checks if the message received from the client is valid int it's input form.
  */
-public class ControllerInput {
+public class ControllerInput implements Serializable {
+    private static final long serialVersionUID = 1L;
     private static final int MAX_NUM_ARCHIPELAGOS = 12;
 
 

@@ -11,13 +11,15 @@ import it.polimi.ingsw.Model.Places.Cloud;
 import it.polimi.ingsw.Model.Places.School.School;
 import it.polimi.ingsw.Model.Player;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Class that performs input checking. It checks if the message received from the client is allowed by the rules of the game.
  */
-public class ControllerIntegrity {
+public class ControllerIntegrity implements Serializable {
+    private static final long serialVersionUID = 1L;
     private BoardAbstract board;
     private BoardAdvanced boardAdvanced;
     private boolean advanced; //0: simple, 1: advanced

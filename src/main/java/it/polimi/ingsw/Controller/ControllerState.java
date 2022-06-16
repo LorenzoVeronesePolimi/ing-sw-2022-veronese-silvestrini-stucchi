@@ -4,11 +4,13 @@ import it.polimi.ingsw.Messages.Enumerations.INMessageType;
 
 import it.polimi.ingsw.Controller.Enumerations.State;
 
+import java.io.Serializable;
+
 /**
  * Class that represents and modifies the Controller states based on the message received from the client.
  */
-public class ControllerState {
-
+public class ControllerState implements Serializable {
+    private static final long serialVersionUID = 1L;
     private State state;
 
     /**
