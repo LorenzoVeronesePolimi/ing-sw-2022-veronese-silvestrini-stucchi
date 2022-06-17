@@ -83,6 +83,7 @@ public class ControllerTest {
 
     @Test
     void controllerTest() throws ProfessorNotFoundException {
+        controller.setUsePersistence(false);
         /*-----MessageCreateMatch-----*/
         //ERRORS IN FORMAT
         //Error because of wrong name ("")
@@ -805,6 +806,7 @@ public class ControllerTest {
         //**********CASE BOARD ADVANCED (2 players): test ending due to 3 archipelagos**********
         server.resetServer();
         ControllerTest.controller = new Controller(server);
+        controller.setUsePersistence(false);
         //CREATE MATCH
         MessageCreateMatch ma1 = new MessageCreateMatch("First", "white", 2, true, view1);
         try {
@@ -951,6 +953,7 @@ public class ControllerTest {
         //**********CASE BOARD NOT ADVANCED (2 players): test ending due to 3 archipelagos**********
         server.resetServer();
         ControllerTest.controller = new Controller(server);
+        controller.setUsePersistence(false);
         //CREATE MATCH
         MessageCreateMatch mna1 = new MessageCreateMatch("First", "white", 2, false, view1);
         try {
@@ -1063,6 +1066,7 @@ public class ControllerTest {
         //**********CASE BOARD ADVANCED (2 players): test ending due to finished towers**********
         server.resetServer();
         ControllerTest.controller = new Controller(server);
+        controller.setUsePersistence(false);
         //CREATE MATCH
         MessageCreateMatch mt1 = new MessageCreateMatch("First", "white", 2, false, view1);
         try {
@@ -1168,6 +1172,7 @@ public class ControllerTest {
         //**********CASE BOARD ADVANCED (2 players): test ending due to void bag**********
         server.resetServer();
         ControllerTest.controller = new Controller(server);
+        controller.setUsePersistence(false);
         //CREATE MATCH
         MessageCreateMatch mb1 = new MessageCreateMatch("First", "white", 2, true, view1);
         try {
@@ -1648,6 +1653,7 @@ public class ControllerTest {
     private void setMatch(List<String> nicknames, boolean isAdvanced){
         server.resetServer();
         ControllerTest.controller = new Controller(server);
+        controller.setUsePersistence(false);
 
         //CREATE MATCH
         List<String> coloursToChoose = new ArrayList<>();

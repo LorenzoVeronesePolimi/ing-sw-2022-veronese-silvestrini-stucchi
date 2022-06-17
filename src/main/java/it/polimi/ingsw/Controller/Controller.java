@@ -41,6 +41,7 @@ public class Controller implements ObserverController<Message>, Serializable {
     private boolean gameEnded = false; //true when the game is going to end at the end of the round
     private String nicknameWinner = null; //nickname of the winner
 
+    private boolean usePersistence = true;
     private int currentPlayerIndex = 0;
     private transient final List<ServerView> serverViews;
 
@@ -132,6 +133,10 @@ public class Controller implements ObserverController<Message>, Serializable {
 
     public void setCharacterCardUsed(boolean newValue){
         this.characterCardUsed = newValue;
+    }
+
+    public void setUsePersistence(boolean usePersistence) {
+        this.usePersistence = usePersistence;
     }
 
     /* To be used if we want the client to write only "characterCard" when he uses one CC
@@ -526,7 +531,7 @@ public class Controller implements ObserverController<Message>, Serializable {
             // are there saved matches?
             PersistenceHandler persistenceHandler = new PersistenceHandler();
             Controller recoveredController = persistenceHandler.restoreMatch();
-            if (recoveredController != null) { // check if you have to restore
+            if (recoveredController != null && this.usePersistence) { // check if you have to restore
                 List<String> currentNicknames = new ArrayList<>();
                 for (Player p : this.players) {
                     currentNicknames.add(p.getNickname());
