@@ -6,6 +6,7 @@ import it.polimi.ingsw.Model.Exceptions.StudentNotFoundException;
 import it.polimi.ingsw.Model.Pawns.Professor;
 import it.polimi.ingsw.Model.Pawns.Student;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -14,7 +15,8 @@ import java.util.Random;
 /**
  * This class creates every student and professor that can be used in the game.
  */
-public class Bag {
+public class Bag implements Serializable {
+    private static final long serialVersionUID = 1L;
     private final List<Student> initialStudents; //Students we have at the start, to distribute among all Islands
     private final List<Student> students; //remaining students
     private final List<Professor> professors; //At the start of the game, all Professors are in the Bag

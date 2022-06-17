@@ -5,12 +5,14 @@ import it.polimi.ingsw.Model.Places.Cloud;
 import it.polimi.ingsw.Model.Places.School.School;
 import it.polimi.ingsw.Model.Player;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class BoardTwo extends BoardAbstract {
+public class BoardTwo extends BoardAbstract implements Serializable {
+    private static final long serialVersionUID = 1L;
     public BoardTwo(List<Player> playersParam) throws
             StudentNotFoundException, ExceededMaxStudentsCloudException, ExceededMaxStudentsHallException,
             ExceedingAssistantCardNumberException {

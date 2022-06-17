@@ -22,7 +22,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public abstract class BoardAbstract extends Observable implements Board {
+public abstract class BoardAbstract extends Observable implements Board, Serializable {
+    private static final long serialVersionUID = 1L;
     protected List<School> schools;   //list of all school in the game (one for each player)
     protected List<Player> players;   //list of all players in the game (in order)
     protected Map<Player, School> playerSchool;   //map of players and their relative school
@@ -31,9 +32,6 @@ public abstract class BoardAbstract extends Observable implements Board {
     protected MotherNature mn;    //reference to MotherNature(Singleton)
     protected Bag bag;   //reference to the Bag
     private final static int playerHandLength = 10;
-
-
-
 
 
     //--------------------------------------------------INITIALIZATION OF BOARD

@@ -524,9 +524,9 @@ public class Controller implements ObserverController<Message>, Serializable {
 
         if(this.players.size() == numPlayers){ // The requested number of players has been reached: let's go on
             // are there saved matches?
-            PersistenceHandler storageData = new PersistenceHandler();
-            Controller recoveredController = storageData.restoreMatch();
-            if (recoveredController != null) { //restore
+            PersistenceHandler persistenceHandler = new PersistenceHandler();
+            Controller recoveredController = persistenceHandler.restoreMatch();
+            if (recoveredController != null) { // check if you have to restore
                 List<String> currentNicknames = new ArrayList<>();
                 for (Player p : this.players) {
                     currentNicknames.add(p.getNickname());
@@ -535,11 +535,25 @@ public class Controller implements ObserverController<Message>, Serializable {
                 for (Player p : recoveredController.getPlayers()) {
                     recoveredNicknames.add(p.getNickname());
                 }
-                if (recoveredNicknames.containsAll(currentNicknames)) {
+                if (currentNicknames.containsAll(recoveredNicknames)) {
                     restoreController(recoveredController);
+                    System.out.println("[Controller, manageAddPlayer: restoring match]: init match");
+                    this.addBoardObserver();
+                    System.out.println("[Controller, manageAddPlayer: restoring match]: add obs");
+                    if(isAdvanced()){
+                        this.boardAdvanced.notifyPlayers();
+                    }
+                    else{
+                        this.board.notifyPlayers();
+                    }
+                }
+                else{ // start from zero: no need to restore (different players' nicknames)
+                    this.initMatch();
+                    this.precomputedState = State.PLANNING1;
+                    controllerState.setState(State.PLANNING1);
                 }
             }
-            else{ //start from zero
+            else{ // start from zero
                 this.initMatch();
                 this.precomputedState = State.PLANNING1;
                 controllerState.setState(State.PLANNING1);
@@ -874,8 +888,6 @@ public class Controller implements ObserverController<Message>, Serializable {
             // change current Player
             this.currentPlayerIndex++;
             this.characterCardUsed = false;
-            PersistenceHandler persistenceHandler = new PersistenceHandler();
-            persistenceHandler.saveMatch(this); //save match
             if(this.currentPlayerIndex >= this.players.size()){ //all Players made their move => new turn
                 if(this.gameEnded){ //case game ends at the end of the turn
                     controllerState.setState(State.END);
@@ -889,6 +901,15 @@ public class Controller implements ObserverController<Message>, Serializable {
             else{
                 controllerState.setState(State.ACTION1);
             }
+
+            PersistenceHandler persistenceHandler = new PersistenceHandler();
+            if(controllerState.getState() == State.END){ //if match has ended no need to save
+                persistenceHandler.deleteMatch();
+            }
+            else{
+                persistenceHandler.saveMatch(this); //save match
+            }
+
             //TODO: remove some card effects (colourtoexclude, towernovalue...)
 
             return true;

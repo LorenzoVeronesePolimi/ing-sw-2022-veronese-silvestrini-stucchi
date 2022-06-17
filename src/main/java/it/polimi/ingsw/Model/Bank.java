@@ -4,6 +4,7 @@ import it.polimi.ingsw.Model.Exceptions.EmptyCaveauException;
 import it.polimi.ingsw.Model.Exceptions.ExceededMaxNumCoinException;
 import it.polimi.ingsw.Model.Pawns.Coin;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,7 +12,8 @@ import java.util.List;
  * This class is used as a repository of coins. Every coin of the game is created in (and then taken from)
  * this class.
  */
-public class Bank {
+public class Bank implements Serializable {
+    private static final long serialVersionUID = 1L;
     private final List<Coin> caveau;
     private final int MAXNUMCOIN=20;
 

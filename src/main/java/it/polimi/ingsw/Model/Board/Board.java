@@ -8,6 +8,7 @@ import it.polimi.ingsw.Model.Places.School.School;
 import it.polimi.ingsw.Model.Player;
 import it.polimi.ingsw.Observer.Observable;
 
+import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 

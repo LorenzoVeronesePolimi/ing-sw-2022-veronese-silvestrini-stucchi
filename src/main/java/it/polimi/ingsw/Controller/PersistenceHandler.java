@@ -24,6 +24,7 @@ public class PersistenceHandler {
 
         try {
             FileInputStream fileInput = new FileInputStream(GAME_SAVED_PATH);
+
             ObjectInputStream objectInput = new ObjectInputStream(fileInput);
 
             serializedController = (SerializedController) objectInput.readObject();

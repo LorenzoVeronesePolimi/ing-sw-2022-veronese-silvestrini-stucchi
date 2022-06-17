@@ -18,7 +18,8 @@ import org.json.JSONObject;
 import java.io.Serializable;
 import java.util.*;
 
-public class BoardAdvanced extends Observable implements Board{
+public class BoardAdvanced extends Observable implements Board, Serializable{
+    private static final long serialVersionUID = 1L;
     private final BoardAbstract board;
     private boolean twoExtraPointsFlag = false;
     private SPColour colourToExclude = null;
