@@ -1,4 +1,6 @@
-package it.polimi.ingsw.Controller;
+package it.polimi.ingsw.Persistence;
+
+import it.polimi.ingsw.Controller.Controller;
 
 import java.io.*;
 import java.nio.file.Files;

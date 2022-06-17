@@ -1480,14 +1480,25 @@ public class ControllerTest {
 
 
 
+        //**********TEST PERSISTENCE (4 players)**********
+        List<String> playersPersistence = new ArrayList<>();
+        playersPersistence.add("First");
+        playersPersistence.add("Second");
+        playersPersistence.add("Third");
+        playersPersistence.add("Fourth");
+        setMatch(playersPersistence, false, true);
+
+
+
+
+        //**********CASE BOARD NOT ADVANCED (4 players)**********
         for(int i = 0; i < 10; i++) { //TODO: max i has to be modified, but for now it's taken low
-            //**********CASE BOARD NOT ADVANCED (4 players)**********
             List<String> players = new ArrayList<>();
             players.add("First");
             players.add("Second");
             players.add("Third");
             players.add("Fourth");
-            setMatch(players, false);
+            setMatch(players, false, false);
 
             boolean finished = false;
             // Round 1
@@ -1650,10 +1661,10 @@ public class ControllerTest {
      * @param nicknames list of players of the match
      * @param isAdvanced true if advanced, false if not
      */
-    private void setMatch(List<String> nicknames, boolean isAdvanced){
+    private void setMatch(List<String> nicknames, boolean isAdvanced, boolean persistenceOn){
         server.resetServer();
         ControllerTest.controller = new Controller(server);
-        controller.setUsePersistence(false);
+        controller.setUsePersistence(persistenceOn);
 
         //CREATE MATCH
         List<String> coloursToChoose = new ArrayList<>();
@@ -1682,13 +1693,16 @@ public class ControllerTest {
             } catch (ControllerException e) {
                 e.printStackTrace();
             }
-            if(i < nicknames.size() - 1){
-                Assertions.assertEquals(State.WAITING_PLAYERS, controller.getControllerState().getState());
-                Assertions.assertEquals(nicknames.get(i), controller.getPlayers().get(i).getNickname());
+            if(!persistenceOn){ //persistence make States "strange", so it's probable I'll not have PLANNING2
+                if(i < nicknames.size() - 1){
+                    Assertions.assertEquals(State.WAITING_PLAYERS, controller.getControllerState().getState());
+                    Assertions.assertEquals(nicknames.get(i), controller.getPlayers().get(i).getNickname());
+                }
+                else{
+                    Assertions.assertEquals(State.PLANNING2, controller.getControllerState().getState());
+                }
             }
-            else{
-                Assertions.assertEquals(State.PLANNING2, controller.getControllerState().getState());
-            }
+
         }
     }
 
