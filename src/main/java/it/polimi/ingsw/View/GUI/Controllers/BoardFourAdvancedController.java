@@ -84,6 +84,7 @@ public class BoardFourAdvancedController implements GUIController, Initializable
     @FXML private Label archi0_num_red;
     @FXML private Label archi0_num_yellow;
     @FXML private Label archi0_num_green;
+    @FXML private ImageView forbid_icon0;
     // Archipelago 1
     @FXML private AnchorPane archi1;
     @FXML private ImageView archi1_mother_nature;
@@ -96,6 +97,7 @@ public class BoardFourAdvancedController implements GUIController, Initializable
     @FXML private Label archi1_num_red;
     @FXML private Label archi1_num_yellow;
     @FXML private Label archi1_num_green;
+    @FXML private ImageView forbid_icon1;
     // Archipelago 2
     @FXML private AnchorPane archi2;
     @FXML private ImageView archi2_mother_nature;
@@ -108,6 +110,7 @@ public class BoardFourAdvancedController implements GUIController, Initializable
     @FXML private Label archi2_num_red;
     @FXML private Label archi2_num_yellow;
     @FXML private Label archi2_num_green;
+    @FXML private ImageView forbid_icon2;
     // Archipelago 3
     @FXML private AnchorPane archi3;
     @FXML private ImageView archi3_mother_nature;
@@ -120,6 +123,7 @@ public class BoardFourAdvancedController implements GUIController, Initializable
     @FXML private Label archi3_num_red;
     @FXML private Label archi3_num_yellow;
     @FXML private Label archi3_num_green;
+    @FXML private ImageView forbid_icon3;
     // Archipelago 4
     @FXML private AnchorPane archi4;
     @FXML private ImageView archi4_mother_nature;
@@ -132,6 +136,7 @@ public class BoardFourAdvancedController implements GUIController, Initializable
     @FXML private Label archi4_num_red;
     @FXML private Label archi4_num_yellow;
     @FXML private Label archi4_num_green;
+    @FXML private ImageView forbid_icon4;
     // Archipelago 5
     @FXML private AnchorPane archi5;
     @FXML private ImageView archi5_mother_nature;
@@ -144,6 +149,7 @@ public class BoardFourAdvancedController implements GUIController, Initializable
     @FXML private Label archi5_num_red;
     @FXML private Label archi5_num_yellow;
     @FXML private Label archi5_num_green;
+    @FXML private ImageView forbid_icon5;
     // Archipelago 6
     @FXML private AnchorPane archi6;
     @FXML private ImageView archi6_mother_nature;
@@ -156,6 +162,7 @@ public class BoardFourAdvancedController implements GUIController, Initializable
     @FXML private Label archi6_num_red;
     @FXML private Label archi6_num_yellow;
     @FXML private Label archi6_num_green;
+    @FXML private ImageView forbid_icon6;
     // Archipelago 7
     @FXML private AnchorPane archi7;
     @FXML private ImageView archi7_mother_nature;
@@ -168,6 +175,7 @@ public class BoardFourAdvancedController implements GUIController, Initializable
     @FXML private Label archi7_num_red;
     @FXML private Label archi7_num_yellow;
     @FXML private Label archi7_num_green;
+    @FXML private ImageView forbid_icon7;
     // Archipelago 8
     @FXML private AnchorPane archi8;
     @FXML private ImageView archi8_mother_nature;
@@ -180,6 +188,7 @@ public class BoardFourAdvancedController implements GUIController, Initializable
     @FXML private Label archi8_num_red;
     @FXML private Label archi8_num_yellow;
     @FXML private Label archi8_num_green;
+    @FXML private ImageView forbid_icon8;
     // Archipelago 9
     @FXML private AnchorPane archi9;
     @FXML private ImageView archi9_mother_nature;
@@ -192,6 +201,7 @@ public class BoardFourAdvancedController implements GUIController, Initializable
     @FXML private Label archi9_num_red;
     @FXML private Label archi9_num_yellow;
     @FXML private Label archi9_num_green;
+    @FXML private ImageView forbid_icon9;
     // Archipelago 10
     @FXML private AnchorPane archi10;
     @FXML private ImageView archi10_mother_nature;
@@ -204,6 +214,7 @@ public class BoardFourAdvancedController implements GUIController, Initializable
     @FXML private Label archi10_num_red;
     @FXML private Label archi10_num_yellow;
     @FXML private Label archi10_num_green;
+    @FXML private ImageView forbid_icon10;
     // Archipelago 11
     @FXML private AnchorPane archi11;
     @FXML private ImageView archi11_mother_nature;
@@ -216,6 +227,7 @@ public class BoardFourAdvancedController implements GUIController, Initializable
     @FXML private Label archi11_num_red;
     @FXML private Label archi11_num_yellow;
     @FXML private Label archi11_num_green;
+    @FXML private ImageView forbid_icon11;
 
     // Clouds
     @FXML private ImageView cloud1_image;
@@ -295,18 +307,18 @@ public class BoardFourAdvancedController implements GUIController, Initializable
         /* substituted by onMouseClicked in ArchipelagoFxml
         archi0.setOnMouseClicked(this::archiZeroClicked);   // When a student is moved from dining room to archipelago
         */
-        archipelagosFxml.add(new ArchipelagoFxml(0, archi0, archi0_mother_nature, archi0_white_tower, archi0_black_tower, archi0_gray_tower, archi0_num_towers, archi0_num_blue, archi0_num_pink, archi0_num_red, archi0_num_yellow, archi0_num_green));
-        archipelagosFxml.add(new ArchipelagoFxml(1, archi1, archi1_mother_nature, archi1_white_tower, archi1_black_tower, archi1_gray_tower, archi1_num_towers, archi1_num_blue, archi1_num_pink, archi1_num_red, archi1_num_yellow, archi1_num_green));
-        archipelagosFxml.add(new ArchipelagoFxml(2, archi2, archi2_mother_nature, archi2_white_tower, archi2_black_tower, archi2_gray_tower, archi2_num_towers, archi2_num_blue, archi2_num_pink, archi2_num_red, archi2_num_yellow, archi2_num_green));
-        archipelagosFxml.add(new ArchipelagoFxml(3, archi3, archi3_mother_nature, archi3_white_tower, archi3_black_tower, archi3_gray_tower, archi3_num_towers, archi3_num_blue, archi3_num_pink, archi3_num_red, archi3_num_yellow, archi3_num_green));
-        archipelagosFxml.add(new ArchipelagoFxml(4, archi4, archi4_mother_nature, archi4_white_tower, archi4_black_tower, archi4_gray_tower, archi4_num_towers, archi4_num_blue, archi4_num_pink, archi4_num_red, archi4_num_yellow, archi4_num_green));
-        archipelagosFxml.add(new ArchipelagoFxml(5, archi5, archi5_mother_nature, archi5_white_tower, archi5_black_tower, archi5_gray_tower, archi5_num_towers, archi5_num_blue, archi5_num_pink, archi5_num_red, archi5_num_yellow, archi5_num_green));
-        archipelagosFxml.add(new ArchipelagoFxml(6, archi6, archi6_mother_nature, archi6_white_tower, archi6_black_tower, archi6_gray_tower, archi6_num_towers, archi6_num_blue, archi6_num_pink, archi6_num_red, archi6_num_yellow, archi6_num_green));
-        archipelagosFxml.add(new ArchipelagoFxml(7, archi7, archi7_mother_nature, archi7_white_tower, archi7_black_tower, archi7_gray_tower, archi7_num_towers, archi7_num_blue, archi7_num_pink, archi7_num_red, archi7_num_yellow, archi7_num_green));
-        archipelagosFxml.add(new ArchipelagoFxml(8, archi8, archi8_mother_nature, archi8_white_tower, archi8_black_tower, archi8_gray_tower, archi8_num_towers, archi8_num_blue, archi8_num_pink, archi8_num_red, archi8_num_yellow, archi8_num_green));
-        archipelagosFxml.add(new ArchipelagoFxml(9, archi9, archi9_mother_nature, archi9_white_tower, archi9_black_tower, archi9_gray_tower, archi9_num_towers, archi9_num_blue, archi9_num_pink, archi9_num_red, archi9_num_yellow, archi9_num_green));
-        archipelagosFxml.add(new ArchipelagoFxml(10, archi10, archi10_mother_nature, archi10_white_tower, archi10_black_tower, archi10_gray_tower, archi10_num_towers, archi10_num_blue, archi10_num_pink, archi10_num_red, archi10_num_yellow, archi10_num_green));
-        archipelagosFxml.add(new ArchipelagoFxml(11, archi11, archi11_mother_nature, archi11_white_tower, archi11_black_tower, archi11_gray_tower, archi11_num_towers, archi11_num_blue, archi11_num_pink, archi11_num_red, archi11_num_yellow, archi11_num_green));
+        archipelagosFxml.add(new ArchipelagoFxml(0, archi0, archi0_mother_nature, archi0_white_tower, archi0_black_tower, archi0_gray_tower, archi0_num_towers, archi0_num_blue, archi0_num_pink, archi0_num_red, archi0_num_yellow, archi0_num_green, forbid_icon0));
+        archipelagosFxml.add(new ArchipelagoFxml(1, archi1, archi1_mother_nature, archi1_white_tower, archi1_black_tower, archi1_gray_tower, archi1_num_towers, archi1_num_blue, archi1_num_pink, archi1_num_red, archi1_num_yellow, archi1_num_green, forbid_icon1));
+        archipelagosFxml.add(new ArchipelagoFxml(2, archi2, archi2_mother_nature, archi2_white_tower, archi2_black_tower, archi2_gray_tower, archi2_num_towers, archi2_num_blue, archi2_num_pink, archi2_num_red, archi2_num_yellow, archi2_num_green, forbid_icon2));
+        archipelagosFxml.add(new ArchipelagoFxml(3, archi3, archi3_mother_nature, archi3_white_tower, archi3_black_tower, archi3_gray_tower, archi3_num_towers, archi3_num_blue, archi3_num_pink, archi3_num_red, archi3_num_yellow, archi3_num_green, forbid_icon3));
+        archipelagosFxml.add(new ArchipelagoFxml(4, archi4, archi4_mother_nature, archi4_white_tower, archi4_black_tower, archi4_gray_tower, archi4_num_towers, archi4_num_blue, archi4_num_pink, archi4_num_red, archi4_num_yellow, archi4_num_green, forbid_icon4));
+        archipelagosFxml.add(new ArchipelagoFxml(5, archi5, archi5_mother_nature, archi5_white_tower, archi5_black_tower, archi5_gray_tower, archi5_num_towers, archi5_num_blue, archi5_num_pink, archi5_num_red, archi5_num_yellow, archi5_num_green, forbid_icon5));
+        archipelagosFxml.add(new ArchipelagoFxml(6, archi6, archi6_mother_nature, archi6_white_tower, archi6_black_tower, archi6_gray_tower, archi6_num_towers, archi6_num_blue, archi6_num_pink, archi6_num_red, archi6_num_yellow, archi6_num_green, forbid_icon6));
+        archipelagosFxml.add(new ArchipelagoFxml(7, archi7, archi7_mother_nature, archi7_white_tower, archi7_black_tower, archi7_gray_tower, archi7_num_towers, archi7_num_blue, archi7_num_pink, archi7_num_red, archi7_num_yellow, archi7_num_green, forbid_icon7));
+        archipelagosFxml.add(new ArchipelagoFxml(8, archi8, archi8_mother_nature, archi8_white_tower, archi8_black_tower, archi8_gray_tower, archi8_num_towers, archi8_num_blue, archi8_num_pink, archi8_num_red, archi8_num_yellow, archi8_num_green, forbid_icon8));
+        archipelagosFxml.add(new ArchipelagoFxml(9, archi9, archi9_mother_nature, archi9_white_tower, archi9_black_tower, archi9_gray_tower, archi9_num_towers, archi9_num_blue, archi9_num_pink, archi9_num_red, archi9_num_yellow, archi9_num_green, forbid_icon9));
+        archipelagosFxml.add(new ArchipelagoFxml(10, archi10, archi10_mother_nature, archi10_white_tower, archi10_black_tower, archi10_gray_tower, archi10_num_towers, archi10_num_blue, archi10_num_pink, archi10_num_red, archi10_num_yellow, archi10_num_green, forbid_icon10));
+        archipelagosFxml.add(new ArchipelagoFxml(11, archi11, archi11_mother_nature, archi11_white_tower, archi11_black_tower, archi11_gray_tower, archi11_num_towers, archi11_num_blue, archi11_num_pink, archi11_num_red, archi11_num_yellow, archi11_num_green, forbid_icon11));
 
         // Create Schools data structure
         schoolsFxml = new ArrayList<>();
@@ -391,6 +403,8 @@ public class BoardFourAdvancedController implements GUIController, Initializable
             // Students: How many of them?
             archipelagosFxml.get(i).setTextNumStudents(board.getArchipelagos().get(i).getStudentsData());
 
+            // Forbid Icon: is it present?
+            archipelagosFxml.get(i).setVisibleForbidIcon(board.getArchipelagos().get(i).getForbidFlag());
             i++;
         }
 

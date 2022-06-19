@@ -30,13 +30,15 @@ public class ArchipelagoFxml {
     private final ImageView archi_gray_tower;
     private final Label archi_num_towers;
 
+    private final ImageView forbid_icon;
+
     private final Map<SPColour, Label> studentColourNumber; //useful to avoid switches and to streamline the code
 
     private Client client;  // Client class
     private SerializedBoardAbstract board;  // Board
     private BoardFourAdvancedController controller; // BoardFourAdvancedController (passed in the setArchipelagosFxmlVisualization method)
 
-    public ArchipelagoFxml(int index, AnchorPane archi, ImageView archi_mother_nature, ImageView archi_white_tower, ImageView archi_black_tower, ImageView archi_gray_tower, Label archi_num_towers, Label archi_num_blue, Label archi_num_pink, Label archi_num_red, Label archi_num_yellow, Label archi_num_green){
+    public ArchipelagoFxml(int index, AnchorPane archi, ImageView archi_mother_nature, ImageView archi_white_tower, ImageView archi_black_tower, ImageView archi_gray_tower, Label archi_num_towers, Label archi_num_blue, Label archi_num_pink, Label archi_num_red, Label archi_num_yellow, Label archi_num_green, ImageView forbid_icon){
         this.index = index;
         this.archiAnchor = archi;
         this.archi_mother_nature = archi_mother_nature;
@@ -44,6 +46,7 @@ public class ArchipelagoFxml {
         this.archi_black_tower = archi_black_tower;
         this.archi_gray_tower = archi_gray_tower;
         this.archi_num_towers = archi_num_towers;
+        this.forbid_icon = forbid_icon;
 
         // setup data structures
         this.towerColourImage = Map.of(
@@ -123,6 +126,16 @@ public class ArchipelagoFxml {
         for(SPColour c : availableSPColours){
             this.studentColourNumber.get(c).setText(Integer.toString(studentsData.get(c)));
         }
+    }
+
+    public void setVisibleForbidIcon(int numForbid){
+        if(numForbid > 0){
+            this.forbid_icon.setVisible(true);
+        }
+        else{
+            this.forbid_icon.setVisible(false);
+        }
+
     }
 
     public void setVisible(boolean isVisible){

@@ -80,6 +80,11 @@
                <font>
                   <Font name="Segoe UI Black" size="12.0" />
                </font></Label>
+            <ImageView fx:id="forbid_icon0" fitHeight="30.0" fitWidth="32.0" layoutX="86.0" layoutY="91.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../images/Characters/ForbidIcon.png" />
+               </image>
+            </ImageView>
          </children>
       </AnchorPane>
       <AnchorPane fx:id="op1_anchor" layoutY="2.0">
@@ -638,6 +643,11 @@
                <font>
                   <Font name="Segoe UI Black" size="12.0" />
                </font></Label>
+            <ImageView fx:id="forbid_icon11" fitHeight="30.0" fitWidth="32.0" layoutX="86.0" layoutY="92.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../images/Characters/ForbidIcon.png" />
+               </image>
+            </ImageView>
          </children>
       </AnchorPane>
       <AnchorPane fx:id="archi10" layoutX="512.0" layoutY="263.0">
@@ -696,6 +706,11 @@
                <font>
                   <Font name="Segoe UI Black" size="12.0" />
                </font></Label>
+            <ImageView fx:id="forbid_icon10" fitHeight="30.0" fitWidth="32.0" layoutX="86.0" layoutY="91.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../images/Characters/ForbidIcon.png" />
+               </image>
+            </ImageView>
          </children>
       </AnchorPane>
       <AnchorPane fx:id="archi9" layoutX="512.0" layoutY="390.0">
@@ -754,6 +769,11 @@
                <font>
                   <Font name="Segoe UI Black" size="12.0" />
                </font></Label>
+            <ImageView fx:id="forbid_icon9" fitHeight="30.0" fitWidth="32.0" layoutX="86.0" layoutY="94.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../images/Characters/ForbidIcon.png" />
+               </image>
+            </ImageView>
          </children>
       </AnchorPane>
       <AnchorPane fx:id="archi2" layoutX="775.0" layoutY="17.0">
@@ -812,6 +832,11 @@
                <font>
                   <Font name="Segoe UI Black" size="12.0" />
                </font></Label>
+            <ImageView fx:id="forbid_icon2" fitHeight="30.0" fitWidth="32.0" layoutX="86.0" layoutY="91.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../images/Characters/ForbidIcon.png" />
+               </image>
+            </ImageView>
          </children>
       </AnchorPane>
       <AnchorPane fx:id="archi1" layoutX="642.0" layoutY="17.0">
@@ -870,6 +895,11 @@
                <font>
                   <Font name="Segoe UI Black" size="12.0" />
                </font></Label>
+            <ImageView fx:id="forbid_icon1" fitHeight="30.0" fitWidth="32.0" layoutX="86.0" layoutY="94.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../images/Characters/ForbidIcon.png" />
+               </image>
+            </ImageView>
          </children>
       </AnchorPane>
       <AnchorPane fx:id="archi3" layoutX="902.0" layoutY="23.0">
@@ -928,6 +958,11 @@
                <font>
                   <Font name="Segoe UI Black" size="12.0" />
                </font></Label>
+            <ImageView fx:id="forbid_icon3" fitHeight="30.0" fitWidth="32.0" layoutX="86.0" layoutY="89.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../images/Characters/ForbidIcon.png" />
+               </image>
+            </ImageView>
          </children>
       </AnchorPane>
       <AnchorPane fx:id="archi4" layoutX="902.0" layoutY="144.0">
@@ -986,6 +1021,11 @@
                <font>
                   <Font name="Segoe UI Black" size="12.0" />
                </font></Label>
+            <ImageView fx:id="forbid_icon4" fitHeight="30.0" fitWidth="32.0" layoutX="86.0" layoutY="93.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../images/Characters/ForbidIcon.png" />
+               </image>
+            </ImageView>
          </children>
       </AnchorPane>
       <AnchorPane fx:id="archi5" layoutX="902.0" layoutY="263.0">
@@ -1044,6 +1084,11 @@
                <font>
                   <Font name="Segoe UI Black" size="12.0" />
                </font></Label>
+            <ImageView fx:id="forbid_icon5" fitHeight="30.0" fitWidth="32.0" layoutX="86.0" layoutY="91.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../images/Characters/ForbidIcon.png" />
+               </image>
+            </ImageView>
          </children>
       </AnchorPane>
       <AnchorPane fx:id="archi6" layoutX="902.0" layoutY="390.0">
@@ -1102,6 +1147,11 @@
                <font>
                   <Font name="Segoe UI Black" size="12.0" />
                </font></Label>
+            <ImageView fx:id="forbid_icon6" fitHeight="30.0" fitWidth="32.0" layoutX="86.0" layoutY="94.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../images/Characters/ForbidIcon.png" />
+               </image>
+            </ImageView>
          </children>
       </AnchorPane>
       <AnchorPane fx:id="archi8" layoutX="642.0" layoutY="390.0">
@@ -1160,6 +1210,11 @@
                <font>
                   <Font name="Segoe UI Black" size="12.0" />
                </font></Label>
+            <ImageView fx:id="forbid_icon8" fitHeight="30.0" fitWidth="32.0" layoutX="86.0" layoutY="93.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../images/Characters/ForbidIcon.png" />
+               </image>
+            </ImageView>
          </children>
       </AnchorPane>
       <AnchorPane fx:id="archi7" layoutX="773.0" layoutY="390.0">
@@ -1218,6 +1273,11 @@
                <font>
                   <Font name="Segoe UI Black" size="12.0" />
                </font></Label>
+            <ImageView fx:id="forbid_icon7" fitHeight="30.0" fitWidth="32.0" layoutX="86.0" layoutY="93.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../images/Characters/ForbidIcon.png" />
+               </image>
+            </ImageView>
          </children>
       </AnchorPane>
       <GridPane fx:id="cloud1" layoutX="686.0" layoutY="195.0" prefHeight="51.0" prefWidth="50.0">
