@@ -199,8 +199,12 @@ public class Controller implements ObserverController<Message>, Serializable {
                 try {
                     if(isAdvanced())
                         this.boardAdvanced.moveStudentBagToCloud();
+
                     else
                         this.board.moveStudentBagToCloud();
+                    if(this.board.getBag().getNumStudents() == 0){ // last student extracted: game will end at the end of the round
+                        gameEndedBag(this.board.getNumStudentsInBag());
+                    }
                 } catch (ExceededMaxStudentsCloudException e) {
                     return; //case of first turn, in which clouds are filled immediately
                 } catch (StudentNotFoundException e){ //CASE 2.1 of end of the game
@@ -797,6 +801,7 @@ public class Controller implements ObserverController<Message>, Serializable {
             this.precomputedState = State.ACTION2;
             return false;
         } catch (TowerNotFoundException e){ //TODO: ok? No towers left, so I Win
+            System.out.println("partita finitaaaaaaaaaaaaaaaf");
             this.precomputedState = State.END;
             controllerState.setState(State.END);
             if(this.numPlayers < 4){
@@ -1533,9 +1538,10 @@ public class Controller implements ObserverController<Message>, Serializable {
      * @param numStudentsInBag number of students in the bag.
      */
     private void gameEndedBag(int numStudentsInBag){
-        //TODO: test
         //CASE 2.1: no more Students in the Bag
         //game ends at the end of round
+        System.out.println("THESE ARE STUDETNS IN BAG");
+        System.out.println(numStudentsInBag);
         if(numStudentsInBag == 0){
             this.gameEnded = true;
         }

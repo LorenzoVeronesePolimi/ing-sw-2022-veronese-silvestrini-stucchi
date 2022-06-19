@@ -88,17 +88,27 @@ public class Bag implements Serializable {
      * @throws StudentNotFoundException is students list does not contain enough students.
      */
     public List<Student> extractStudents(int num) throws StudentNotFoundException {
-        if(num > students.size()) {
+        /*if(num > students.size()) {
             throw new StudentNotFoundException();
-        }
+        }*/
 
         List<Student> extracted = new ArrayList<>();
 
-        for(int i = 0; i < num; i++){
+        int i;
+        for (i = 0; i < num && this.students.size() > 0; i++) {
             Student removed = this.students.get(0);
             this.students.remove(removed);
             extracted.add(removed);
         }
+
+        //TODO: this is a possible solution to the bag problem. Also the first 3 lines of this method would have to be deleted
+        /*if(this.students.size() == 0){
+            throw new StudentNotFoundException();
+        }*/
+        if (i < num) {
+            throw new StudentNotFoundException();
+        }
+
         return extracted;
     }
 

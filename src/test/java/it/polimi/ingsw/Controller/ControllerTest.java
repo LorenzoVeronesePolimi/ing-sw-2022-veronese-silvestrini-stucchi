@@ -1653,6 +1653,46 @@ public class ControllerTest {
                     e.printStackTrace();
                 }
             }
+
+            /*if (!finished) {
+                // Round 9
+                playerPriority = Map.of(
+                        "First", 8,
+                        "Second", 9,
+                        "Third", 10,
+                        "Fourth", 7
+                );
+                players.clear();
+                players.add("Fourth");
+                players.add("First");
+                players.add("Second");
+                players.add("Third");
+                try {
+                    makeRound(players, playerPriority);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
+            if (!finished) {
+                // Round 10
+                playerPriority = Map.of(
+                        "First", 9,
+                        "Second", 10,
+                        "Third", 9,
+                        "Fourth", 10
+                );
+                players.clear();
+                players.add("First");
+                players.add("Third");
+                players.add("Fourth");
+                players.add("Second");
+                try {
+                    makeRound(players, playerPriority);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }*/
         }
     }
 
