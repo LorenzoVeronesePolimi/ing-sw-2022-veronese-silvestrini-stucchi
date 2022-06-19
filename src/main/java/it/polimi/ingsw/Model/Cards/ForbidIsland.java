@@ -11,7 +11,7 @@ import java.io.Serializable;
  * in setup, 4 no Entry tiles are placed on the card.
  */
 public class ForbidIsland extends AbstractCharacterCard implements Serializable {
-
+    private int forbidIconsRemained = 4;
     /**
      * Constructor of the card. It sets the price.
      * @param boardAdvanced The object modified by the card.
@@ -26,10 +26,20 @@ public class ForbidIsland extends AbstractCharacterCard implements Serializable 
      * @throws ExceededNumberForbidFlagException When there are already 4 No Entry tiles on an archipelago.
      */
     public void useEffect(int archipelago) throws ExceededNumberForbidFlagException {
-        if(boardAdvanced.getArchipelago(archipelago).getForbidFlag() < 4)
+        if(boardAdvanced.getArchipelago(archipelago).getForbidFlag() < 4 && this.forbidIconsRemained > 0){
             boardAdvanced.getArchipelago(archipelago).addForbidFlag();
+            this.forbidIconsRemained--;
+        }
         else
             throw new ExceededNumberForbidFlagException();
+    }
+
+    public int getForbidIconsRemained(){
+        return this.forbidIconsRemained;
+    }
+
+    public void addForbidIconsRemained(){
+        this.forbidIconsRemained++;
     }
 
     @Override

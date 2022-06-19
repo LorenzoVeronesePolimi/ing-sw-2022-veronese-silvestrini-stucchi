@@ -23,3 +23,7 @@
     -fx-text-fill: white;
     -fx-alignment: center;
 }
+
+#forbid_label{
+    -fx-alignment: center;
+}

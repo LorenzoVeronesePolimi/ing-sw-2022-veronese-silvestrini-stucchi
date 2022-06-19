@@ -5,6 +5,7 @@ import it.polimi.ingsw.Model.Board.SerializedBoardAbstract;
 import it.polimi.ingsw.Model.Board.SerializedBoardAdvanced;
 import it.polimi.ingsw.Model.Cards.AbstractCharacterCard;
 import it.polimi.ingsw.Model.Cards.ExchangeThreeStudents;
+import it.polimi.ingsw.Model.Cards.ForbidIsland;
 import it.polimi.ingsw.Model.Cards.PlaceOneStudent;
 import it.polimi.ingsw.Model.Enumerations.CharacterCardEnumeration;
 import it.polimi.ingsw.Model.Enumerations.SPColour;
@@ -40,6 +41,9 @@ public class CharacterCardDialogController {
     @FXML private ChoiceBox<String> choice2_right;
     @FXML private ChoiceBox<String> choice3_right;
     @FXML private Button use_yes;
+
+    @FXML private Label forbid_label;
+    @FXML private ImageView forbid_icon;
 
 
     private static final Map<CharacterCardEnumeration, String> cardPath = Map.ofEntries(
@@ -119,6 +123,9 @@ public class CharacterCardDialogController {
         this.choicesRight.add(this.choice1_right);
         this.choicesRight.add(this.choice2_right);
         this.choicesRight.add(this.choice3_right);
+
+        this.forbid_label.setVisible(false);
+        this.forbid_icon.setVisible(false);
     }
 
     public void setCardType(CharacterCardEnumeration cardType) {
@@ -435,6 +442,10 @@ public class CharacterCardDialogController {
             this.choice1_left.getItems().add(Integer.toString(i));
         }
         oneChoiceVisualization();
+
+        this.forbid_label.setVisible(true);
+        this.forbid_label.setText(Integer.toString(((ForbidIsland)this.card).getForbidIconsRemained()));
+        this.forbid_icon.setVisible(true);
 
         this.use_yes.setOnAction(actionEvent -> {
             this.client.asyncWriteToSocket("forbidIsland " + choice1_left.getValue());

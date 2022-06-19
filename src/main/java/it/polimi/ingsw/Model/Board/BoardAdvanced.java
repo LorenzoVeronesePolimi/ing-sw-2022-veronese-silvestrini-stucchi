@@ -3,6 +3,7 @@ package it.polimi.ingsw.Model.Board;
 import it.polimi.ingsw.Model.Bag;
 import it.polimi.ingsw.Model.Bank;
 import it.polimi.ingsw.Model.Cards.*;
+import it.polimi.ingsw.Model.Enumerations.CharacterCardEnumeration;
 import it.polimi.ingsw.Model.Enumerations.SPColour;
 import it.polimi.ingsw.Model.Exceptions.*;
 import it.polimi.ingsw.Model.Pawns.Professor;
@@ -248,6 +249,11 @@ public class BoardAdvanced extends Observable implements Board, Serializable{
             //if the owner of the Archipelago is the current Player, he conquers nothing
             if (currentArchipelago.getForbidFlag()>0) { //This is an advanced function => see comment above(*)
                 currentArchipelago.removeForbidFlag();
+                for(AbstractCharacterCard c : this.extractedCards){ // re-put the icon on the card (which has max 4 icons, min 0)
+                    if(c.getType() == CharacterCardEnumeration.FORBID_ISLAND){
+                        ((ForbidIsland)c).addForbidIconsRemained();
+                    }
+                }
                 return false;
             }
 
@@ -269,6 +275,11 @@ public class BoardAdvanced extends Observable implements Board, Serializable{
         } else if(this.board instanceof BoardFour){
             if (currentArchipelago.getForbidFlag()>0) { //This is an advanced function => see comment above(*)
                 currentArchipelago.removeForbidFlag();
+                for(AbstractCharacterCard c : this.extractedCards){ // re-put the icon on the card (which has max 4 icons, min 0)
+                    if(c.getType() == CharacterCardEnumeration.FORBID_ISLAND){
+                        ((ForbidIsland)c).addForbidIconsRemained();
+                    }
+                }
                 return false;
             }
             if (currentArchipelago.getOwner() == currentPlayer || currentArchipelago.getOwner() == ((BoardFour)this.board).teammates.get(currentPlayer)) {
