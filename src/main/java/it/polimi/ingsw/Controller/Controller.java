@@ -203,9 +203,9 @@ public class Controller implements ObserverController<Message>, Serializable {
                     else
                         this.board.moveStudentBagToCloud();
                     if(this.board.getBag().getNumStudents() == 0){ // last student extracted: game will end at the end of the round
-                        gameEndedBag(this.board.getNumStudentsInBag());
+                        gameEndedBag(this.board.getNumStudentsInBag()); //TODO: test
                     }
-                } catch (ExceededMaxStudentsCloudException e) {
+                } catch (ExceededMaxStudentsCloudException e) { //TODO: test
                     return; //case of first turn, in which clouds are filled immediately
                 } catch (StudentNotFoundException e){ //CASE 2.1 of end of the game
                     gameEndedBag(this.board.getNumStudentsInBag());
@@ -267,7 +267,7 @@ public class Controller implements ObserverController<Message>, Serializable {
             case "black":
                 return PlayerColour.BLACK;
             case "gray":
-                return PlayerColour.GRAY;
+                return PlayerColour.GRAY; //TODO: test
         }
         return null; //impossible
     }
@@ -310,7 +310,7 @@ public class Controller implements ObserverController<Message>, Serializable {
             if(getCurrentSitPlayer() == player){
                 return true;
             }
-        } catch(NoPlayerException ex){
+        } catch(NoPlayerException ex){ //TODO: test
             return false;
         }
         return false;
@@ -326,11 +326,11 @@ public class Controller implements ObserverController<Message>, Serializable {
         if(numPlayers==4){
             if(!players.get(0).getColour().equals(players.get(1).getColour())){
                 Player park;
-                if(!players.get(0).getColour().equals(players.get(2).getColour())){
+                if(!players.get(0).getColour().equals(players.get(2).getColour())){//TODO: test
                     park = players.remove(3);
                     players.add(players.size()-1,players.remove(1));
                 }
-                else{
+                else{//TODO: test
                     park = players.remove(2);
                     players.add(players.size()-2,players.remove(1));
                 }
@@ -350,7 +350,7 @@ public class Controller implements ObserverController<Message>, Serializable {
             try {
                 this.boardAdvanced = new BoardAdvanced(this.board);
             } catch (ExceededMaxStudentsHallException | StudentNotFoundException | TowerNotFoundException | EmptyCaveauException e) {
-                e.printStackTrace();
+                e.printStackTrace();//TODO: test
             }
         }
 
@@ -359,7 +359,7 @@ public class Controller implements ObserverController<Message>, Serializable {
         controllerIntegrity.setAdvanced(this.advanced);
 
         //set number of Students to move at each ACTION1
-        if(this.players.size() == 3){
+        if(this.players.size() == 3){//TODO: test
             this.numStudentsToMove = NUM_STUDENTS_TO_MOVE_THREE_PLAYERS;
             this.numStudentsToMoveCurrent = NUM_STUDENTS_TO_MOVE_THREE_PLAYERS;
         } else{
@@ -507,18 +507,18 @@ public class Controller implements ObserverController<Message>, Serializable {
                 if(this.players.stream().anyMatch(x -> x.getColour().equals(PlayerColour.WHITE))) {
                     if(this.players.stream().anyMatch(x -> x.getColour().equals(PlayerColour.BLACK)) ||
                             this.players.stream().anyMatch(x -> x.getColour().equals(PlayerColour.GRAY))) {
-                        return false;
+                        return false;//TODO: test
                     }
                 } else if(this.players.stream().anyMatch(x -> x.getColour().equals(PlayerColour.BLACK))) {
                     if(this.players.stream().anyMatch(x -> x.getColour().equals(PlayerColour.GRAY))) {
-                        return false;
+                        return false;//TODO: test
                     }
                 }
             }
 
             // check is the chosen colour has already been chosen by two players
             if(numSameColour >= 2){
-                return false;
+                return false;//TODO: test
             }
         }
         else{
@@ -554,11 +554,11 @@ public class Controller implements ObserverController<Message>, Serializable {
                         this.boardAdvanced.notifyPlayers();
                     }
                     else{
-                        this.board.notifyPlayers();
+                        this.board.notifyPlayers();//TODO: test
                     }
                 }
                 else{ // start from zero: no need to restore (different players' nicknames)
-                    this.initMatch();
+                    this.initMatch();//TODO: test
                     this.precomputedState = State.PLANNING1;
                     controllerState.setState(State.PLANNING1);
                 }
@@ -594,7 +594,7 @@ public class Controller implements ObserverController<Message>, Serializable {
         }
 
         if(!controllerIntegrity.checkAssistantCard(this.usedCards, getCurrentSitPlayer(), turnPriority)) {
-            return false;
+            return false;//TODO: test
         }
 
         revertErrorPlayer = this.precomputedPlayer; // in case this player committed an error we can revert the precompute
@@ -609,7 +609,7 @@ public class Controller implements ObserverController<Message>, Serializable {
             else{
                 board.useAssistantCard(this.usedCards, getCurrentSitPlayer(), turnPriority);
             }
-        } catch(AssistantCardAlreadyPlayedTurnException | NoAssistantCardException ex){
+        } catch(AssistantCardAlreadyPlayedTurnException | NoAssistantCardException ex){//TODO: test
             this.iteratorAC --;
             this.precomputedPlayer = revertErrorPlayer; // reverting the error in precompute
             System.out.println("[Controller, manageAssistantCard]: catch");
@@ -666,7 +666,7 @@ public class Controller implements ObserverController<Message>, Serializable {
 
         if(this.numStudentsToMoveCurrent == 1 || // all possible Students are going to be moved
                 this.board.getPlayerSchool(getCurrentPlayer()).getStudentsHall().size() == 1){
-            this.precomputedState = State.ACTION2;
+            this.precomputedState = State.ACTION2;//TODO: test
         }
 
         if(controllerIntegrity.checkStudentHallToDiningRoom(getCurrentPlayer(), studentColour)){
@@ -674,9 +674,9 @@ public class Controller implements ObserverController<Message>, Serializable {
                 try {
                     boardAdvanced.moveStudentHallToDiningRoom(getCurrentPlayer(), studentColour);
                 } catch (ExceededMaxStudentsDiningRoomException | EmptyCaveauException |
-                        ProfessorNotFoundException | NoProfessorBagException e) {
+                        ProfessorNotFoundException | NoProfessorBagException e) {//TODO: test
                     return false;
-                } catch(StudentNotFoundException e){ //TODO: ok?
+                } catch(StudentNotFoundException e){ //TODO: ok? //TODO: test
                     if(this.boardAdvanced.getPlayerSchool(this.getCurrentPlayer()).getStudentsHall().size() == 0) { //no students left: it's ok if he doesn't choose
                         this.numStudentsToMoveCurrent--;
                         if(this.numStudentsToMoveCurrent == 0 || // all possible Students moved
@@ -685,17 +685,17 @@ public class Controller implements ObserverController<Message>, Serializable {
                             controllerState.setState(State.ACTION2);
                         }
 
-                        return true;
+                        return true;//TODO: test
                     }
-                    return false;
+                    return false;//TODO: test
                 }
             } else{
                 try {
                     board.moveStudentHallToDiningRoom(getCurrentPlayer(), studentColour);
                 } catch (ExceededMaxStudentsDiningRoomException |
-                        ProfessorNotFoundException | NoProfessorBagException e) {
+                        ProfessorNotFoundException | NoProfessorBagException e) {//TODO: test
                     return false;
-                } catch(StudentNotFoundException e){
+                } catch(StudentNotFoundException e){//TODO: test
                     if(this.board.getPlayerSchool(this.getCurrentPlayer()).getStudentsHall().size() == 0) { //no students left: it's ok if he doesn't choose
                         this.numStudentsToMoveCurrent--;
                         if(this.numStudentsToMoveCurrent == 0 || // all possible Students moved
@@ -704,14 +704,14 @@ public class Controller implements ObserverController<Message>, Serializable {
                             controllerState.setState(State.ACTION2);
                         }
 
-                        return true;
+                        return true;//TODO: test
                     }
-                    return false;
+                    return false;//TODO: test
                 }
             }
             this.numStudentsToMoveCurrent--;
             if(this.numStudentsToMoveCurrent == 0 || // all possible Students moved
-                    this.board.getPlayerSchool(getCurrentPlayer()).getStudentsHall().size() == 0){ // no Students remained
+                    this.board.getPlayerSchool(getCurrentPlayer()).getStudentsHall().size() == 0){//TODO: test // no Students remained
                 this.numStudentsToMoveCurrent = this.numStudentsToMove;
                 controllerState.setState(State.ACTION2);
             }
@@ -734,7 +734,7 @@ public class Controller implements ObserverController<Message>, Serializable {
         if(!isCurrentPlayer(nicknamePlayer)){return false;}
 
         if(this.numStudentsToMoveCurrent == 1 || // all possible Students are going to be moved
-                this.board.getPlayerSchool(getCurrentPlayer()).getStudentsHall().size() == 1){
+                this.board.getPlayerSchool(getCurrentPlayer()).getStudentsHall().size() == 1){//TODO: test (second condition)
             this.precomputedState = State.ACTION2;
         }
 
@@ -742,7 +742,7 @@ public class Controller implements ObserverController<Message>, Serializable {
             if(isAdvanced()){
                 try {
                     boardAdvanced.moveStudentSchoolToArchipelagos(getCurrentPlayer(), studentColour, destinationArchipelagoIndex);
-                } catch (StudentNotFoundException e) { //TODO: ok?
+                } catch (StudentNotFoundException e) { //TODO: ok? //TODO: test
                     if(this.boardAdvanced.getPlayerSchool(this.getCurrentPlayer()).getStudentsHall().size() == 0) { //no students left: it's ok if he doesn't choose
                         this.numStudentsToMoveCurrent--;
                         if(this.numStudentsToMoveCurrent == 0 || // all possible Students moved
@@ -751,14 +751,14 @@ public class Controller implements ObserverController<Message>, Serializable {
                             controllerState.setState(State.ACTION2);
                         }
 
-                        return true;
+                        return true;//TODO: test
                     }
-                    return false;
+                    return false;//TODO: test
                 }
             } else {
                 try {
                     board.moveStudentSchoolToArchipelagos(getCurrentPlayer(), studentColour, destinationArchipelagoIndex);
-                } catch (StudentNotFoundException e) {
+                } catch (StudentNotFoundException e) {//TODO: test
                     if(this.board.getPlayerSchool(this.getCurrentPlayer()).getStudentsHall().size() == 0) { //no students left: it's ok if he doesn't choose
                         this.numStudentsToMoveCurrent--;
                         if(this.numStudentsToMoveCurrent == 0 || // all possible Students moved
@@ -767,21 +767,21 @@ public class Controller implements ObserverController<Message>, Serializable {
                             controllerState.setState(State.ACTION2);
                         }
 
-                        return true;
+                        return true;//TODO: test
                     }
-                    return false;
+                    return false;//TODO: test
                 }
             }
 
             this.numStudentsToMoveCurrent--;
             if(this.numStudentsToMoveCurrent == 0 || // all possible Students moved
-                    this.board.getPlayerSchool(getCurrentPlayer()).getStudentsHall().size() == 0){ // no Students remained
+                    this.board.getPlayerSchool(getCurrentPlayer()).getStudentsHall().size() == 0){ // no Students remained //TODO: test (second condition)
                 this.numStudentsToMoveCurrent = this.numStudentsToMove;
                 controllerState.setState(State.ACTION2);
             }
             return true;
         }
-        return false;
+        return false;//TODO: test
     }
 
     /**
@@ -797,7 +797,7 @@ public class Controller implements ObserverController<Message>, Serializable {
         try {
             this.gameEndedArchipelagos(moves);
         } catch (EmptyCaveauException | ExceededMaxStudentsHallException | StudentNotFoundException | InvalidTowerNumberException | AnotherTowerException | ExceededMaxTowersException e) {
-            e.printStackTrace();
+            e.printStackTrace();//TODO: test
             this.precomputedState = State.ACTION2;
             return false;
         } catch (TowerNotFoundException e){ //TODO: ok? No towers left, so I Win
@@ -805,7 +805,7 @@ public class Controller implements ObserverController<Message>, Serializable {
             this.precomputedState = State.END;
             controllerState.setState(State.END);
             if(this.numPlayers < 4){
-                this.computeNicknameWinner();
+                this.computeNicknameWinner();//TODO: test
             }
             else{
                 this.computeNicknameWinnerFour();
@@ -824,7 +824,7 @@ public class Controller implements ObserverController<Message>, Serializable {
                 try {
                     boardAdvanced.tryToConquer(getCurrentPlayer());
                 } catch (InvalidTowerNumberException | AnotherTowerException | ExceededMaxTowersException | TowerNotFoundException e) {
-                    this.precomputedState = State.ACTION2;
+                    this.precomputedState = State.ACTION2;//TODO: test
                     return false;
                 }
             }else {
@@ -884,13 +884,13 @@ public class Controller implements ObserverController<Message>, Serializable {
             if(isAdvanced()) {
                 try{
                     boardAdvanced.moveStudentCloudToSchool(getCurrentPlayer(), indexCloud);
-                } catch(ExceededMaxStudentsHallException ex){
+                } catch(ExceededMaxStudentsHallException ex){//TODO: test
                     return false;
                 }
             } else {
                 try{
                     board.moveStudentCloudToSchool(getCurrentPlayer(), indexCloud);
-                } catch(ExceededMaxStudentsHallException ex){
+                } catch(ExceededMaxStudentsHallException ex){//TODO: test
                     ex.printStackTrace();
                     return false;
                 }
@@ -925,7 +925,7 @@ public class Controller implements ObserverController<Message>, Serializable {
 
             return true;
         }
-        return false;
+        return false;//TODO: test
     }
 
     //--------------------------------------------------CHARACTER CARDS
@@ -939,7 +939,7 @@ public class Controller implements ObserverController<Message>, Serializable {
         try {
             indexCard = this.ccTypeToIndex(message.getType());
         } catch (NoCharacterCardException e) {
-            return false;
+            return false;//TODO: test
         }
         String nicknamePlayer = message.getNickname();
         List<SPColour> coloursCard = this.mapListStringToColour(message.getColoursCard());
@@ -961,10 +961,10 @@ public class Controller implements ObserverController<Message>, Serializable {
             }
 
         } catch(WrongNumberOfStudentsTransferException | StudentNotFoundException | ExceededMaxStudentsHallException | CoinNotFoundException | EmptyCaveauException | ExceededMaxNumCoinException ex){
-            return false;
+            return false;//TODO: test
         }
 
-        return false;
+        return false;//TODO: test
     }
 
     /**
@@ -977,7 +977,7 @@ public class Controller implements ObserverController<Message>, Serializable {
         try {
             indexCard = this.ccTypeToIndex(message.getType());
         } catch (NoCharacterCardException e) {
-            return false;
+            return false;//TODO: test
         }
         String nicknamePlayer = message.getNickname();
         List<SPColour> coloursHall = this.mapListStringToColour(message.getColoursHall());
@@ -997,9 +997,9 @@ public class Controller implements ObserverController<Message>, Serializable {
             }
         } catch (WrongNumberOfStudentsTransferException | StudentNotFoundException | ExceededMaxStudentsHallException |
                  ExceededMaxStudentsDiningRoomException | EmptyCaveauException | ExceededMaxNumCoinException |
-                 CoinNotFoundException | ProfessorNotFoundException | NoProfessorBagException e) {return false;}
+                 CoinNotFoundException | ProfessorNotFoundException | NoProfessorBagException e) {return false;}//TODO: test
 
-        return false;
+        return false;//TODO: test
     }
 
     /**
@@ -1011,7 +1011,7 @@ public class Controller implements ObserverController<Message>, Serializable {
         int indexCard;
         try {
             indexCard = this.ccTypeToIndex(message.getType());
-        } catch (NoCharacterCardException e) {
+        } catch (NoCharacterCardException e) {//TODO: test
             return false;
         }
         String nicknamePlayer = message.getNickname();
@@ -1031,7 +1031,7 @@ public class Controller implements ObserverController<Message>, Serializable {
                     AnotherTowerException |
                     ExceededMaxTowersException |
                     TowerNotFoundException e) {
-                e.printStackTrace();
+                e.printStackTrace();//TODO: test
             }
 
             this.characterCardUsed = true;
@@ -1039,7 +1039,7 @@ public class Controller implements ObserverController<Message>, Serializable {
             return true;
         }
 
-        return false;
+        return false;//TODO: test
     }
 
     /**
@@ -1051,7 +1051,7 @@ public class Controller implements ObserverController<Message>, Serializable {
         int indexCard;
         try {
             indexCard = this.ccTypeToIndex(message.getType());
-        } catch (NoCharacterCardException e) {
+        } catch (NoCharacterCardException e) {//TODO: test
             return false;
         }
         String nicknamePlayer = message.getNickname();
@@ -1073,11 +1073,11 @@ public class Controller implements ObserverController<Message>, Serializable {
                     EmptyCaveauException |
                     ExceededMaxNumCoinException |
                     CoinNotFoundException e) {
-                return false;
+                return false;//TODO: test
             }
         }
 
-        return false;
+        return false;//TODO: test
     }
 
     /**
@@ -1113,11 +1113,11 @@ public class Controller implements ObserverController<Message>, Serializable {
                     EmptyCaveauException |
                     ExceededMaxNumCoinException |
                     CoinNotFoundException e) {
-                return false;
+                return false;//TODO: test
             }
         }
 
-        return false;
+        return false;//TODO: test
     }
 
     /**
@@ -1130,7 +1130,7 @@ public class Controller implements ObserverController<Message>, Serializable {
         try {
             indexCard = this.ccTypeToIndex(message.getType());
         } catch (NoCharacterCardException e) {
-            return false;
+            return false;//TODO: test
         }
         String nicknamePlayer = message.getNickname();
         int archipelagoIndexToForbid = message.getArchipelagoIndexToForbid();
@@ -1150,10 +1150,10 @@ public class Controller implements ObserverController<Message>, Serializable {
                     EmptyCaveauException |
                     ExceededMaxNumCoinException |
                     CoinNotFoundException e) {
-                e.printStackTrace();
+                e.printStackTrace();//TODO: test
             }
         }
-        return false;
+        return false;//TODO: test
     }
 
     /**
@@ -1166,7 +1166,7 @@ public class Controller implements ObserverController<Message>, Serializable {
         try {
             indexCard = this.ccTypeToIndex(message.getType());
         } catch (NoCharacterCardException e) {
-            return false;
+            return false;//TODO: test
         }
         String nicknamePlayer = message.getNickname();
         SPColour colourToMove = mapStringToSPColour(message.getColourToMove());
@@ -1189,10 +1189,10 @@ public class Controller implements ObserverController<Message>, Serializable {
                 EmptyCaveauException |
                 ExceededMaxNumCoinException |
                 CoinNotFoundException e) {
-            return false;
+            return false;//TODO: test
         }
 
-        return false;
+        return false;//TODO: test
     }
 
     /**
@@ -1205,7 +1205,7 @@ public class Controller implements ObserverController<Message>, Serializable {
         try {
             indexCard = this.ccTypeToIndex(message.getType());
         } catch (NoCharacterCardException e) {
-            return false;
+            return false;//TODO: test
         }
         String nicknamePlayer = message.getNickname();
         SPColour colourToReduce = mapStringToSPColour(message.getColourToReduce());
@@ -1226,10 +1226,10 @@ public class Controller implements ObserverController<Message>, Serializable {
                 EmptyCaveauException |
                 ExceededMaxNumCoinException |
                 CoinNotFoundException e) {
-            return false;
+            return false;//TODO: test
         }
 
-        return false;
+        return false;//TODO: test
     }
 
     /**
@@ -1242,7 +1242,7 @@ public class Controller implements ObserverController<Message>, Serializable {
         try {
             indexCard = this.ccTypeToIndex(message.getType());
         } catch (NoCharacterCardException e) {
-            return false;
+            return false;//TODO: test
         }
         String nicknamePlayer = message.getNickname();
 
@@ -1256,7 +1256,7 @@ public class Controller implements ObserverController<Message>, Serializable {
             } catch (EmptyCaveauException |
                     ExceededMaxNumCoinException |
                     CoinNotFoundException e) {
-                e.printStackTrace();
+                e.printStackTrace();//TODO: test
             }
 
             this.characterCardUsed = true;
@@ -1264,7 +1264,7 @@ public class Controller implements ObserverController<Message>, Serializable {
             return true;
         }
 
-        return false;
+        return false;//TODO: test
     }
 
     /**
@@ -1277,7 +1277,7 @@ public class Controller implements ObserverController<Message>, Serializable {
         try {
             indexCard = this.ccTypeToIndex(message.getType());
         } catch (NoCharacterCardException e) {
-            return false;
+            return false;//TODO: test
         }
         String nicknamePlayer = message.getNickname();
 
@@ -1291,7 +1291,7 @@ public class Controller implements ObserverController<Message>, Serializable {
             } catch (EmptyCaveauException |
                     ExceededMaxNumCoinException |
                     CoinNotFoundException e) {
-                e.printStackTrace();
+                e.printStackTrace();//TODO: test
             }
 
             this.characterCardUsed = true;
@@ -1299,7 +1299,7 @@ public class Controller implements ObserverController<Message>, Serializable {
             return true;
         }
 
-        return false;
+        return false;//TODO: test
     }
 
     /**
@@ -1312,7 +1312,7 @@ public class Controller implements ObserverController<Message>, Serializable {
         try {
             indexCard = this.ccTypeToIndex(message.getType());
         } catch (NoCharacterCardException e) {
-            return false;
+            return false;//TODO: test
         }
         String nicknamePlayer = message.getNickname();
 
@@ -1337,10 +1337,10 @@ public class Controller implements ObserverController<Message>, Serializable {
                 EmptyCaveauException |
                 ExceededMaxNumCoinException |
                 CoinNotFoundException e) {
-            return false;
+            return false;//TODO: test
         }
 
-        return false;
+        return false;//TODO: test
     }
 
     /**
@@ -1353,7 +1353,7 @@ public class Controller implements ObserverController<Message>, Serializable {
         try {
             indexCard = this.ccTypeToIndex(message.getType());
         } catch (NoCharacterCardException e) {
-            return false;
+            return false;//TODO: test
         }
         String nicknamePlayer = message.getNickname();
 
@@ -1367,7 +1367,7 @@ public class Controller implements ObserverController<Message>, Serializable {
             } catch (EmptyCaveauException |
                     ExceededMaxNumCoinException |
                     CoinNotFoundException e) {
-                e.printStackTrace();
+                e.printStackTrace();//TODO: test
             }
 
             this.characterCardUsed = true;
@@ -1375,7 +1375,7 @@ public class Controller implements ObserverController<Message>, Serializable {
             return true;
         }
 
-        return false;
+        return false;//TODO: test
     }
 
     /**
@@ -1471,7 +1471,7 @@ public class Controller implements ObserverController<Message>, Serializable {
             boardCopy = new BoardTwo(this.board);
         }
         else if(this.numPlayers == 3){
-            boardCopy = new BoardThree(this.board);
+            boardCopy = new BoardThree(this.board);//TODO: test
         }
         else{
             boardCopy = new BoardFour((BoardFour) this.board);
@@ -1511,7 +1511,7 @@ public class Controller implements ObserverController<Message>, Serializable {
                 this.precomputedState = State.END; //game ends immediately
                 controllerState.setState(State.END);
                 if(this.players.size() <= 3){
-                    computeNicknameWinner();
+                    computeNicknameWinner();//TODO: test
                 }
                 else{
                     computeNicknameWinnerFour();
@@ -1526,7 +1526,7 @@ public class Controller implements ObserverController<Message>, Serializable {
                     computeNicknameWinner();
                 }
                 else{
-                    computeNicknameWinnerFour();
+                    computeNicknameWinnerFour();//TODO: test
                 }
             }
         }
@@ -1587,7 +1587,7 @@ public class Controller implements ObserverController<Message>, Serializable {
             this.nicknameWinner = orderedPlayerTowerLeft.get(0).getNickname();
         }
         else if(this.board.getPlayerSchool(orderedPlayerTowerLeft.get(0)).getNumTowers() > this.board.getPlayerSchool(orderedPlayerTowerLeft.get(1)).getNumTowers()){
-            this.nicknameWinner = orderedPlayerTowerLeft.get(1).getNickname();
+            this.nicknameWinner = orderedPlayerTowerLeft.get(1).getNickname();//TODO: test
         }
         else{//CASE 2: between the players with same number of towers left, the one with more professors win
             //remove all Players with too many towers
@@ -1595,7 +1595,7 @@ public class Controller implements ObserverController<Message>, Serializable {
             for(int i = 1; i < this.numPlayers; i++){
                 Player p = orderedPlayerTowerLeft.get(i);
                 if(this.board.getPlayerSchool(p).getNumTowers() > maxNumTowers){
-                    orderedPlayerTowerLeft.remove(p);
+                    orderedPlayerTowerLeft.remove(p);//TODO: test
                 }
             }
 
@@ -1660,7 +1660,7 @@ public class Controller implements ObserverController<Message>, Serializable {
             this.nicknameWinner = orderedPlayerTowerLeft.get(0).getNickname() + '+' + ((BoardFour)this.board).getTeammates().get(orderedPlayerTowerLeft.get(0)).getNickname();
         }
         else if(this.board.getPlayerSchool(orderedPlayerTowerLeft.get(0)).getNumTowers() > this.board.getPlayerSchool(orderedPlayerTowerLeft.get(1)).getNumTowers()){
-            this.nicknameWinner = orderedPlayerTowerLeft.get(1).getNickname() + '*' + ((BoardFour)this.board).getTeammates().get(orderedPlayerTowerLeft.get(1)).getNickname();
+            this.nicknameWinner = orderedPlayerTowerLeft.get(1).getNickname() + '*' + ((BoardFour)this.board).getTeammates().get(orderedPlayerTowerLeft.get(1)).getNickname();//TODO: test
         }
         else{//CASE 2: between the players with same number of towers left, the one with more professors win
             Map<Player, Integer> playerProfessors = new HashMap<>();

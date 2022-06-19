@@ -1492,7 +1492,7 @@ public class ControllerTest {
 
 
         //**********CASE BOARD NOT ADVANCED (4 players)**********
-        for(int i = 0; i < 10; i++) { //TODO: max i has to be modified, but for now it's taken low
+        for(int i = 0; i < 100; i++) { //TODO: max i has to be modified, but for now it's taken low
             List<String> players = new ArrayList<>();
             players.add("First");
             players.add("Second");
@@ -1648,13 +1648,13 @@ public class ControllerTest {
                 players.add("Second");
                 players.add("Fourth");
                 try {
-                    makeRound(players, playerPriority);
+                    finished = makeRound(players, playerPriority);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
 
-            /*if (!finished) {
+            if (!finished) {
                 // Round 9
                 playerPriority = Map.of(
                         "First", 8,
@@ -1668,7 +1668,7 @@ public class ControllerTest {
                 players.add("Second");
                 players.add("Third");
                 try {
-                    makeRound(players, playerPriority);
+                    finished = makeRound(players, playerPriority);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -1688,11 +1688,32 @@ public class ControllerTest {
                 players.add("Fourth");
                 players.add("Second");
                 try {
+                    finished = makeRound(players, playerPriority);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
+            if (!finished) {
+                System.out.println("ERROR: entered in 11^th turn");
+                // Round 11: impossible to play since players should have finished their AC cards
+                playerPriority = Map.of(
+                        "First", 9,
+                        "Second", 10,
+                        "Third", 9,
+                        "Fourth", 10
+                );
+                players.clear();
+                players.add("First");
+                players.add("Third");
+                players.add("Fourth");
+                players.add("Second");
+                try {
                     makeRound(players, playerPriority);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-            }*/
+            }
         }
     }
 
