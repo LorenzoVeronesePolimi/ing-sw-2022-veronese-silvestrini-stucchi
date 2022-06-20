@@ -19,9 +19,7 @@ import it.polimi.ingsw.Server.ServerView;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import org.junit.jupiter.api.Assertions;
 
@@ -1488,11 +1486,98 @@ public class ControllerTest {
         playersPersistence.add("Fourth");
         setMatch(playersPersistence, false, true);
 
+        //**********TEST BOARD TWO NOT ADVANCED**********
+        for(int i = 0; i < 1; i++) { //TODO: max i has to be modified, but for now it's taken low
+            List<String> players = new ArrayList<>();
+            players.add("First");
+            players.add("Second");
+            setMatch(players, false, false);
 
+            boolean finished = false;
+            // Round 1
+            finished = makeParametricRound(finished, new int[]{1, 2}, new String[]{"First", "Second"});
+            finished = makeParametricRound(finished, new int[]{2, 5}, new String[]{"First", "Second"});
+            finished = makeParametricRound(finished, new int[]{3, 4}, new String[]{"First", "Second"});
+            finished = makeParametricRound(finished, new int[]{4, 6}, new String[]{"First", "Second"});
+            finished = makeParametricRound(finished, new int[]{5, 3}, new String[]{"Second", "First"});
+            finished = makeParametricRound(finished, new int[]{6, 1}, new String[]{"Second", "First"});
+            finished = makeParametricRound(finished, new int[]{10, 7}, new String[]{"Second", "First"});
+            finished = makeParametricRound(finished, new int[]{7, 8}, new String[]{"First", "Second"});
+            finished = makeParametricRound(finished, new int[]{8, 9}, new String[]{"First", "Second"});
+            finished = makeParametricRound(finished, new int[]{9, 10}, new String[]{"First", "Second"});
+            Assertions.assertTrue(finished);
+        }
 
+        //**********TEST BOARD TWO ADVANCED**********
+        for(int i = 0; i < 1; i++) { //TODO: max i has to be modified, but for now it's taken low
+            List<String> players = new ArrayList<>();
+            players.add("First");
+            players.add("Second");
+            setMatch(players, true, false);
 
-        //**********CASE BOARD NOT ADVANCED (4 players)**********
-        for(int i = 0; i < 100; i++) { //TODO: max i has to be modified, but for now it's taken low
+            boolean finished = false;
+            // Round 1
+            finished = makeParametricRound(finished, new int[]{1, 2}, new String[]{"First", "Second"});
+            finished = makeParametricRound(finished, new int[]{2, 5}, new String[]{"First", "Second"});
+            finished = makeParametricRound(finished, new int[]{3, 4}, new String[]{"First", "Second"});
+            finished = makeParametricRound(finished, new int[]{4, 6}, new String[]{"First", "Second"});
+            finished = makeParametricRound(finished, new int[]{5, 3}, new String[]{"Second", "First"});
+            finished = makeParametricRound(finished, new int[]{6, 1}, new String[]{"Second", "First"});
+            finished = makeParametricRound(finished, new int[]{10, 7}, new String[]{"Second", "First"});
+            finished = makeParametricRound(finished, new int[]{7, 8}, new String[]{"First", "Second"});
+            finished = makeParametricRound(finished, new int[]{8, 9}, new String[]{"First", "Second"});
+            finished = makeParametricRound(finished, new int[]{9, 10}, new String[]{"First", "Second"});
+            Assertions.assertTrue(finished);
+        }
+
+        //**********TEST BOARD THREE NOT ADVANCED**********
+        for(int i = 0; i < 1; i++) { //TODO: max i has to be modified, but for now it's taken low
+            List<String> players = new ArrayList<>();
+            players.add("First");
+            players.add("Second");
+            players.add("Third");
+            setMatch(players, false, false);
+
+            boolean finished = false;
+            // Round 1
+            finished = makeParametricRound(finished, new int[]{1, 2, 3}, new String[]{"First", "Second", "Third"});
+            finished = makeParametricRound(finished, new int[]{2, 5, 4}, new String[]{"First", "Third", "Second"});
+            finished = makeParametricRound(finished, new int[]{3, 4, 5}, new String[]{"First", "Second", "Third"});
+            finished = makeParametricRound(finished, new int[]{4, 6, 7}, new String[]{"First", "Second", "Third"});
+            finished = makeParametricRound(finished, new int[]{5, 3, 2}, new String[]{"Third", "Second", "First"});
+            finished = makeParametricRound(finished, new int[]{6, 1, 8}, new String[]{"Second", "First", "Third"});
+            finished = makeParametricRound(finished, new int[]{10, 7, 1}, new String[]{"Third", "Second", "First"});
+            finished = makeParametricRound(finished, new int[]{7, 8, 6}, new String[]{"Third", "First", "Second"});
+            finished = makeParametricRound(finished, new int[]{8, 9, 10}, new String[]{"First", "Second", "Third"});
+            finished = makeParametricRound(finished, new int[]{9, 10, 9}, new String[]{"First", "Third", "Second"});
+            Assertions.assertTrue(finished);
+        }
+
+        //**********TEST BOARD THREE ADVANCED**********
+        for(int i = 0; i < 1; i++) { //TODO: max i has to be modified, but for now it's taken low
+            List<String> players = new ArrayList<>();
+            players.add("First");
+            players.add("Second");
+            players.add("Third");
+            setMatch(players, true, false);
+
+            boolean finished = false;
+            // Round 1
+            finished = makeParametricRound(finished, new int[]{1, 2, 3}, new String[]{"First", "Second", "Third"});
+            finished = makeParametricRound(finished, new int[]{2, 5, 4}, new String[]{"First", "Third", "Second"});
+            finished = makeParametricRound(finished, new int[]{3, 4, 5}, new String[]{"First", "Second", "Third"});
+            finished = makeParametricRound(finished, new int[]{4, 6, 7}, new String[]{"First", "Second", "Third"});
+            finished = makeParametricRound(finished, new int[]{5, 3, 2}, new String[]{"Third", "Second", "First"});
+            finished = makeParametricRound(finished, new int[]{6, 1, 8}, new String[]{"Second", "First", "Third"});
+            finished = makeParametricRound(finished, new int[]{10, 7, 1}, new String[]{"Third", "Second", "First"});
+            finished = makeParametricRound(finished, new int[]{7, 8, 6}, new String[]{"Third", "First", "Second"});
+            finished = makeParametricRound(finished, new int[]{8, 9, 10}, new String[]{"First", "Second", "Third"});
+            finished = makeParametricRound(finished, new int[]{9, 10, 9}, new String[]{"First", "Third", "Second"});
+            Assertions.assertTrue(finished);
+        }
+
+        //**********CASE BOARD FOUR NOT ADVANCED**********
+        for(int i = 0; i < 5; i++) { //TODO: max i has to be modified, but for now it's taken low
             List<String> players = new ArrayList<>();
             players.add("First");
             players.add("Second");
@@ -1502,218 +1587,41 @@ public class ControllerTest {
 
             boolean finished = false;
             // Round 1
-            Map<String, Integer> playerPriority = Map.of(
-                    "First", 1,
-                    "Second", 2,
-                    "Third", 3,
-                    "Fourth", 4
-            );
-            try {
-                finished = makeRound(players, playerPriority);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+            finished = makeParametricRound(finished, new int[]{1, 2, 3, 4}, new String[]{"First", "Second", "Third", "Fourth"});
+            finished = makeParametricRound(finished, new int[]{2, 5, 4, 3}, new String[]{"First", "Fourth", "Third", "Second"});
+            finished = makeParametricRound(finished, new int[]{3, 4, 5, 6}, new String[]{"First", "Second", "Third", "Fourth"});
+            finished = makeParametricRound(finished, new int[]{4, 6, 7, 8}, new String[]{"First", "Second", "Third", "Fourth"});
+            finished = makeParametricRound(finished, new int[]{5, 3, 2, 1}, new String[]{"Fourth", "Third", "Second", "First"});
+            finished = makeParametricRound(finished, new int[]{6, 1, 8, 2}, new String[]{"Second", "Fourth", "First", "Third"});
+            finished = makeParametricRound(finished, new int[]{10, 7, 1, 5}, new String[]{"Third", "Fourth", "Second", "First"});
+            finished = makeParametricRound(finished, new int[]{7, 8, 6, 9}, new String[]{"Third", "First", "Second", "Fourth"});
+            finished = makeParametricRound(finished, new int[]{8, 9, 10, 7}, new String[]{"Fourth", "First", "Second", "Third"});
+            finished = makeParametricRound(finished, new int[]{9, 10, 9, 10}, new String[]{"First", "Third", "Fourth", "Second"});
+            Assertions.assertTrue(finished);
+        }
 
-            if (!finished) {
-                // Round 2
-                playerPriority = Map.of(
-                        "First", 2,
-                        "Second", 5,
-                        "Third", 4,
-                        "Fourth", 3
-                );
-                players.clear();
-                players.add("First");
-                players.add("Fourth");
-                players.add("Third");
-                players.add("Second");
-                try {
-                    finished = makeRound(players, playerPriority);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
+        //**********CASE BOARD FOUR ADVANCED**********
+        for(int i = 0; i < 10; i++) { //TODO: max i has to be modified, but for now it's taken low
+            List<String> players = new ArrayList<>();
+            players.add("First");
+            players.add("Second");
+            players.add("Third");
+            players.add("Fourth");
+            setMatch(players, true, false);
 
-            if (!finished) {
-                // Round 3
-                playerPriority = Map.of(
-                        "First", 3,
-                        "Second", 4,
-                        "Third", 5,
-                        "Fourth", 6
-                );
-                players.clear();
-                players.add("First");
-                players.add("Second");
-                players.add("Third");
-                players.add("Fourth");
-                try {
-                    finished = makeRound(players, playerPriority);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-
-            if (!finished) {
-                // Round 4
-                playerPriority = Map.of(
-                        "First", 4,
-                        "Second", 6,
-                        "Third", 7,
-                        "Fourth", 8
-                );
-                players.clear();
-                players.add("First");
-                players.add("Second");
-                players.add("Third");
-                players.add("Fourth");
-                try {
-                    finished = makeRound(players, playerPriority);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-
-            if (!finished) {
-                // Round 5
-                playerPriority = Map.of(
-                        "First", 5,
-                        "Second", 3,
-                        "Third", 2,
-                        "Fourth", 1
-                );
-                players.clear();
-                players.add("Fourth");
-                players.add("Third");
-                players.add("Second");
-                players.add("First");
-                try {
-                    finished = makeRound(players, playerPriority);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-
-            if (!finished) {
-                // Round 6
-                playerPriority = Map.of(
-                        "First", 6,
-                        "Second", 1,
-                        "Third", 8,
-                        "Fourth", 2
-                );
-                players.clear();
-                players.add("Second");
-                players.add("Fourth");
-                players.add("First");
-                players.add("Third");
-                try {
-                    finished = makeRound(players, playerPriority);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-
-            if (!finished) {
-                // Round 7
-                playerPriority = Map.of(
-                        "First", 10,
-                        "Second", 7,
-                        "Third", 1,
-                        "Fourth", 5
-                );
-                players.clear();
-                players.add("Third");
-                players.add("Fourth");
-                players.add("Second");
-                players.add("First");
-                try {
-                    finished = makeRound(players, playerPriority);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-
-            if (!finished) {
-                // Round 8
-                playerPriority = Map.of(
-                        "First", 7,
-                        "Second", 8,
-                        "Third", 6,
-                        "Fourth", 9
-                );
-                players.clear();
-                players.add("Third");
-                players.add("First");
-                players.add("Second");
-                players.add("Fourth");
-                try {
-                    finished = makeRound(players, playerPriority);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-
-            if (!finished) {
-                // Round 9
-                playerPriority = Map.of(
-                        "First", 8,
-                        "Second", 9,
-                        "Third", 10,
-                        "Fourth", 7
-                );
-                players.clear();
-                players.add("Fourth");
-                players.add("First");
-                players.add("Second");
-                players.add("Third");
-                try {
-                    finished = makeRound(players, playerPriority);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-
-            if (!finished) {
-                // Round 10
-                playerPriority = Map.of(
-                        "First", 9,
-                        "Second", 10,
-                        "Third", 9,
-                        "Fourth", 10
-                );
-                players.clear();
-                players.add("First");
-                players.add("Third");
-                players.add("Fourth");
-                players.add("Second");
-                try {
-                    finished = makeRound(players, playerPriority);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-
-            if (!finished) {
-                System.out.println("ERROR: entered in 11^th turn");
-                // Round 11: impossible to play since players should have finished their AC cards
-                playerPriority = Map.of(
-                        "First", 9,
-                        "Second", 10,
-                        "Third", 9,
-                        "Fourth", 10
-                );
-                players.clear();
-                players.add("First");
-                players.add("Third");
-                players.add("Fourth");
-                players.add("Second");
-                try {
-                    makeRound(players, playerPriority);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
+            boolean finished = false;
+            // Round 1
+            finished = makeParametricRound(finished, new int[]{1, 2, 3, 4}, new String[]{"First", "Second", "Third", "Fourth"});
+            finished = makeParametricRound(finished, new int[]{2, 5, 4, 3}, new String[]{"First", "Fourth", "Third", "Second"});
+            finished = makeParametricRound(finished, new int[]{3, 4, 5, 6}, new String[]{"First", "Second", "Third", "Fourth"});
+            finished = makeParametricRound(finished, new int[]{4, 6, 7, 8}, new String[]{"First", "Second", "Third", "Fourth"});
+            finished = makeParametricRound(finished, new int[]{5, 3, 2, 1}, new String[]{"Fourth", "Third", "Second", "First"});
+            finished = makeParametricRound(finished, new int[]{6, 1, 8, 2}, new String[]{"Second", "Fourth", "First", "Third"});
+            finished = makeParametricRound(finished, new int[]{10, 7, 1, 5}, new String[]{"Third", "Fourth", "Second", "First"});
+            finished = makeParametricRound(finished, new int[]{7, 8, 6, 9}, new String[]{"Third", "First", "Second", "Fourth"});
+            finished = makeParametricRound(finished, new int[]{8, 9, 10, 7}, new String[]{"Fourth", "First", "Second", "Third"});
+            finished = makeParametricRound(finished, new int[]{9, 10, 9, 10}, new String[]{"First", "Third", "Fourth", "Second"});
+            Assertions.assertTrue(finished);
         }
     }
 
@@ -1767,6 +1675,26 @@ public class ControllerTest {
         }
     }
 
+    private boolean makeParametricRound(boolean finished, int[] priorities, String[] orderedPlayers){
+        String[] sitPLayers = {"First", "Second", "Third", "Fourth"};
+        if (!finished) {
+            // Set player's priorities
+            Map<String, Integer> playerPriority  = new HashMap<>();
+            for(int i = 0; i < priorities.length; i++){
+                playerPriority.put(sitPLayers[i], priorities[i]);
+            }
+            // Set ordered players
+            List<String> players = new ArrayList<>(Arrays.asList(orderedPlayers));
+            // Do round
+            try {
+                return makeRound(players, playerPriority);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return true;
+    }
+
     /**
      * This makes a round of play making no errors in choices
      * @param orderedNickname list of players in order od play after choosing their assistant cards
@@ -1807,17 +1735,25 @@ public class ControllerTest {
             }
         }
 
-        String colourToMove;
+        int maxNumStudentsToMove;
+        if(orderedNickname.size() == 3){
+            maxNumStudentsToMove = 4;
+        }
+        else{
+            maxNumStudentsToMove = 3;
+        }
+        String colourToMove = null;
         int archipelagoToChoose = 0;
         for(int turn = 0; turn < orderedNickname.size(); turn++){
-            Assertions.assertEquals(controller.getNumStudentsToMoveCurrent(), 3);
+            Assertions.assertEquals(controller.getNumStudentsToMoveCurrent(), maxNumStudentsToMove);
             //-----MessageStudentHallToDiningRoom 1-----
             // choose a Student which exists and such that it doesn't go over the maximum size of the dining room
-            colourToMove = null;
+            SPColour colourGoingToChoose = null;
             for(int i = 0; i < controller.getBoard().getPlayerSchool(controller.getCurrentPlayer()).getStudentsHall().size(); i++){
-                SPColour colourGoingToChoose = controller.getBoard().getPlayerSchool(controller.getCurrentPlayer()).getStudentsHall().get(i).getColour();
+                colourGoingToChoose = controller.getBoard().getPlayerSchool(controller.getCurrentPlayer()).getStudentsHall().get(i).getColour();
                 if(controller.getBoard().getPlayerSchool(controller.getCurrentPlayer()).getNumStudentColour(colourGoingToChoose) < 10){
                     colourToMove = mapSPColourToString(colourGoingToChoose);
+                    break;
                 }
             }
             //colourToMove = mapSPColourToString(controller.getBoard().getPlayerSchool(controller.getCurrentPlayer()).getStudentsHall().get(0).getColour());
@@ -1828,34 +1764,35 @@ public class ControllerTest {
                 System.out.println("Current player: " + controller.getCurrentPlayer().getNickname());
                 System.out.println("Student chosen " + colourToMove);
                 System.out.println("His hall " + controller.getBoard().getPlayerSchool(controller.getCurrentPlayer()).getStudentsHall());
-                System.out.println("Students of that colour" + controller.getBoard().getPlayerSchool(controller.getCurrentPlayer()).getNumStudentColour(controller.getBoard().getPlayerSchool(controller.getCurrentPlayer()).getStudentsHall().get(0).getColour()));
+                System.out.println("Students of that colour in dining " + controller.getBoard().getPlayerSchool(controller.getCurrentPlayer()).getNumStudentColour(colourGoingToChoose));
                 e.printStackTrace();
             }
-            Assertions.assertEquals(controller.getNumStudentsToMoveCurrent(), 2);
+            Assertions.assertEquals(controller.getNumStudentsToMoveCurrent(), maxNumStudentsToMove - 1);
             Assertions.assertEquals(State.ACTION1, controller.getControllerState().getState());
 
             //-----MessageStudentHallToDiningRoom 2-----
             // choose a Student which exists and such that it doesn't go over the maximum size of the dining room
             for(int i = 0; i < controller.getBoard().getPlayerSchool(controller.getCurrentPlayer()).getStudentsHall().size(); i++){
-                SPColour colourGoingToChoose = controller.getBoard().getPlayerSchool(controller.getCurrentPlayer()).getStudentsHall().get(i).getColour();
+                colourGoingToChoose = controller.getBoard().getPlayerSchool(controller.getCurrentPlayer()).getStudentsHall().get(i).getColour();
                 if(controller.getBoard().getPlayerSchool(controller.getCurrentPlayer()).getNumStudentColour(colourGoingToChoose) < 10){
                     colourToMove = mapSPColourToString(colourGoingToChoose);
+                    break;
                 }
             }
             //colourToMove = mapSPColourToString(controller.getBoard().getPlayerSchool(controller.getCurrentPlayer()).getStudentsHall().get(0).getColour());
 
 
-            MessageStudentHallToDiningRoom m2p4 = new MessageStudentHallToDiningRoom(controller.getCurrentPlayer().getNickname(), colourToMove);
+            MessageStudentHallToDiningRoom m2 = new MessageStudentHallToDiningRoom(controller.getCurrentPlayer().getNickname(), colourToMove);
             try {
-                controller.update(m2p4);
+                controller.update(m2);
             } catch (ControllerException e) {
                 System.out.println("Current player: " + controller.getCurrentPlayer().getNickname());
                 System.out.println("Student chosen " + colourToMove);
                 System.out.println("His hall " + controller.getBoard().getPlayerSchool(controller.getCurrentPlayer()).getStudentsHall());
-                System.out.println("Students of that colour" + controller.getBoard().getPlayerSchool(controller.getCurrentPlayer()).getNumStudentColour(controller.getBoard().getPlayerSchool(controller.getCurrentPlayer()).getStudentsHall().get(0).getColour()));
+                System.out.println("Students of that colour in dining " + controller.getBoard().getPlayerSchool(controller.getCurrentPlayer()).getNumStudentColour(colourGoingToChoose));
                 e.printStackTrace();
             }
-            Assertions.assertEquals(controller.getNumStudentsToMoveCurrent(), 1);
+            Assertions.assertEquals(controller.getNumStudentsToMoveCurrent(), maxNumStudentsToMove - 2);
             Assertions.assertEquals(State.ACTION1, controller.getControllerState().getState());
 
             //-----MessageStudentToArchipelago-----
@@ -1868,14 +1805,46 @@ public class ControllerTest {
             }
 
             MessageStudentToArchipelago m3 = new MessageStudentToArchipelago(controller.getCurrentPlayer().getNickname(), colourToMove, archipelagoToChoose);
-            Assertions.assertEquals(controller.getNumStudentsToMoveCurrent(), 1);
+            Assertions.assertEquals(controller.getNumStudentsToMoveCurrent(), maxNumStudentsToMove - 2);
             try {
                 controller.update(m3);
             } catch (ControllerException e) {
                 e.printStackTrace();
             }
-            Assertions.assertEquals(State.ACTION2, controller.getControllerState().getState());
-            archipelagoToChoose++;
+            if(orderedNickname.size() == 3){
+                Assertions.assertEquals(State.ACTION1, controller.getControllerState().getState());
+            }
+            else{
+                Assertions.assertEquals(State.ACTION2, controller.getControllerState().getState());
+                archipelagoToChoose++;
+            }
+
+            if(orderedNickname.size() == 3){
+                //-----MessageStudentHallToDiningRoom 4 (case BoardThree)-----
+                // choose a Student which exists and such that it doesn't go over the maximum size of the dining room
+                for(int i = 0; i < controller.getBoard().getPlayerSchool(controller.getCurrentPlayer()).getStudentsHall().size(); i++){
+                    colourGoingToChoose = controller.getBoard().getPlayerSchool(controller.getCurrentPlayer()).getStudentsHall().get(i).getColour();
+                    if(controller.getBoard().getPlayerSchool(controller.getCurrentPlayer()).getNumStudentColour(colourGoingToChoose) < 10){
+                        colourToMove = mapSPColourToString(colourGoingToChoose);
+                        break;
+                    }
+                }
+                //colourToMove = mapSPColourToString(controller.getBoard().getPlayerSchool(controller.getCurrentPlayer()).getStudentsHall().get(0).getColour());
+
+
+                MessageStudentHallToDiningRoom m4p3 = new MessageStudentHallToDiningRoom(controller.getCurrentPlayer().getNickname(), colourToMove);
+                try {
+                    controller.update(m4p3);
+                } catch (ControllerException e) {
+                    System.out.println("Current player: " + controller.getCurrentPlayer().getNickname());
+                    System.out.println("Student chosen " + colourToMove);
+                    System.out.println("His hall " + controller.getBoard().getPlayerSchool(controller.getCurrentPlayer()).getStudentsHall());
+                    System.out.println("Students of that colour in dining " + controller.getBoard().getPlayerSchool(controller.getCurrentPlayer()).getNumStudentColour(colourGoingToChoose));
+                    e.printStackTrace();
+                }
+                Assertions.assertEquals(State.ACTION2, controller.getControllerState().getState());
+                archipelagoToChoose++;
+            }
 
             //-----MessageMoveMotherNature-----
             MessageMoveMotherNature m4 = new MessageMoveMotherNature(controller.getCurrentPlayer().getNickname(), priorityMNMovement.get(nicknamePriority.get(controller.getCurrentPlayer().getNickname())));

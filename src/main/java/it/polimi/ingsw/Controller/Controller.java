@@ -673,7 +673,7 @@ public class Controller implements ObserverController<Message>, Serializable {
             if(this.advanced){
                 try {
                     boardAdvanced.moveStudentHallToDiningRoom(getCurrentPlayer(), studentColour);
-                } catch (ExceededMaxStudentsDiningRoomException | EmptyCaveauException |
+                } catch (ExceededMaxStudentsDiningRoomException |
                         ProfessorNotFoundException | NoProfessorBagException e) {//TODO: test
                     return false;
                 } catch(StudentNotFoundException e){ //TODO: ok? //TODO: test
@@ -688,6 +688,8 @@ public class Controller implements ObserverController<Message>, Serializable {
                         return true;//TODO: test
                     }
                     return false;//TODO: test
+                } catch(EmptyCaveauException e){
+                    // do nothing: simply he doesn't receive the coin
                 }
             } else{
                 try {
