@@ -12,14 +12,12 @@ import javafx.stage.Stage;
 public class IntroController implements GUIController {
     private Client client;
     private GUIViewFX guiViewFX;
-    public static Stage firstStage;
 
-    @FXML private Label titleLable;
-    @FXML private Label subtitleLable;
+    @FXML private Label titleLabel;
+    @FXML private Label subtitleLabel;
     @FXML private Button startGame;
 
     public void onButtonClicked(ActionEvent e) {
-        //System.out.println("Button pressed");
         this.client.setPlatformReady(true);
         this.guiViewFX.sceneLoading("You will be connected soon!");
 

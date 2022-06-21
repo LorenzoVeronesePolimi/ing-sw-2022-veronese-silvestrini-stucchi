@@ -39,7 +39,9 @@ public class GUIView extends ClientView {
 
     @Override
     public void printErrorMessage(String err) {
-
+        Platform.runLater(() -> {
+            this.guiViewFX.sceneClientDisconnect(err);
+        });
     }
 
     @Override
@@ -49,7 +51,9 @@ public class GUIView extends ClientView {
 
     @Override
     public void clientDisconnectionEnd() {
-
+        Platform.runLater(() -> {
+                this.guiViewFX.sceneClientDisconnect(null);
+        });
     }
 
     @Override

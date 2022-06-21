@@ -41,7 +41,6 @@ public class Client {
     private boolean socketNull = true;
     private boolean platformReady = false;
     private ActiveMessageView prevMessage = null;
-    private ScheduledExecutorService pinger;
     private GUIViewFX guiViewFX;
 
     /**
@@ -113,7 +112,7 @@ public class Client {
     public Thread asyncReadFromSocket(){
         Thread t = new Thread(() -> {
             boolean exception = false; // to check wheather the client experienced an exception
-
+            this.activeConnection = true;
             try {
                 Object inputMessage = this.socketIn.readObject();
 
@@ -142,18 +141,13 @@ public class Client {
 
 
                      */
-
-                    //System.out.println("Activating GUI in client");
-                    //System.out.println("Server socket: " + this.socket.hashCode());
+                    this.platformReady = false; // in order to way for Platform to initialize
 
                     this.view = new GUIView(this);  //Creating the GUIView which will call methods of GUIViewFX
 
-                    //System.out.println("Passing client: " + this.hashCode());
                     this.guiViewFX = new GUIViewFX(this, (GUIView) this.view);  // Passing setup arguments to FX
 
                     this.guiViewFX.init(); // this method is mandatory (found on stackoverflow)
-
-                    //System.out.println("pre thread");
 
                     new Thread(() -> {
                         // Thread that runs JavaFX application
@@ -166,14 +160,12 @@ public class Client {
                             }
                         });
                     }).start();
-                    //System.out.println("post thread");
 
                 } else {
                     this.platformReady = true;
                 }
                 this.view.printCustom("You will be connected soon, wait!");
 
-                //System.out.println("Entro nel loop");
                 while (isActive()) {
                     /*
                         When a message is received it is managed by the view.
@@ -192,9 +184,8 @@ public class Client {
 
                      */
                     if(this.platformReady) {
-                        //System.out.println("platform ready");
                         inputMessage = this.socketIn.readObject();
-                        //System.out.println("message received in client");
+
                         if (inputMessage instanceof ActiveMessageView) {
                             ((ActiveMessageView) inputMessage).manageMessage(this.view);
 
@@ -202,7 +193,6 @@ public class Client {
                                 if (prevMessage != null)
                                     prevMessage.manageMessage(this.view);
                                 //TODO: in gui show the error like an alert
-                                //TODO: pinger to keep gui awake?
 
                                 this.view.setErrorStatus(false);
                             } else {
@@ -232,16 +222,17 @@ public class Client {
                     }
                 }
 
-                Platform.exit();
+                //Platform.exit();
 
                 //e.printStackTrace();
             } catch (Exception e){
+                //System.out.println("[Client, asyncReadFromSocket]: exception");
                 e.printStackTrace();
             } finally {
                 if(!exception)
                     this.socketNull = true;
-
-                Platform.exit();
+                //System.out.println("[Client, asyncReadFromSocket]: finally");
+                //Platform.exit();
                 this.setActive(false);
             }
         });
@@ -297,9 +288,6 @@ public class Client {
         this.setActive(true);
         this.socketNull = false;
 
-        //Ping for establishing connection
-        //this.pinger = Executors.newSingleThreadScheduledExecutor();
-
         //Socket for communication
         this.socketOut = new ObjectOutputStream(socket.getOutputStream());
         this.socketOut.flush();
@@ -348,7 +336,7 @@ public class Client {
             System.out.println("> Insert the server ip: ");
             System.out.print("> ");
             response = scanner.nextLine();
-        }while(checkIP(response));
+        }while(invalidIP(response));
 
         return response;
     }
@@ -358,7 +346,8 @@ public class Client {
      * @param response server IP from the user.
      * @return true if the response is a valid IP.
      */
-    private boolean checkIP(String response) {
+    private boolean invalidIP(String response) {
+        //TODO: check IP
         return false;
     }
 

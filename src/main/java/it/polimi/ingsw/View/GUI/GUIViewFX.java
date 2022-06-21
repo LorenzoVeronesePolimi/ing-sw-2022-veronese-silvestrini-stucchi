@@ -32,6 +32,7 @@ public class GUIViewFX extends Application {
     private static final String INTRO = "Intro.fxml";
     private static final String LOGIN = "Login.fxml";
     private static final String LOADING = "LoadingPage.fxml";
+    private static final String DISCONNECT = "Disconnect.fxml";
     private static final String ASSISTANT_CARD = "AssistantCardChoice.fxml";
     private static final String BOARD_FOUR_ADVANCED = "BoardGrid.fxml"; //TODO: to be changed
     private static final String CHARACTER_CARD_DIALOG = "CharacterCardDialog.fxml";
@@ -65,7 +66,7 @@ public class GUIViewFX extends Application {
 
     private void setupControllers() {
         // creating an array of scenes (All the scenes of the application)
-        List<String> sceneList = new ArrayList<>(Arrays.asList(INTRO, LOADING, LOGIN, ASSISTANT_CARD, BOARD_FOUR_ADVANCED));
+        List<String> sceneList = new ArrayList<>(Arrays.asList(INTRO, LOADING, LOGIN, DISCONNECT, ASSISTANT_CARD, BOARD_FOUR_ADVANCED));
         try {
             for(String path : sceneList) {
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/" + path)); // prepare the scene
@@ -148,41 +149,36 @@ public class GUIViewFX extends Application {
     }
 
     public void sceneLoading(String message) {
-        String scene = "LoadingPage.fxml";
-
-        LoaderController currentController = (LoaderController) controllerMap.get(scene);
+        LoaderController currentController = (LoaderController) controllerMap.get(LOADING);
         currentController.setMessage(message);
 
-        this.currentScene = sceneMap.get(scene);
+        this.currentScene = sceneMap.get(LOADING);
         this.stage.setScene(this.currentScene);
         this.stage.show();
     }
 
     public void sceneAskFirstPlayerInfo(){
-        String scene = "Login.fxml";
-        LoginController currentController = (LoginController) controllerMap.get(scene);
+        LoginController currentController = (LoginController) controllerMap.get(LOGIN);
         currentController.setFirstPlayer(true);
 
-        this.currentScene = sceneMap.get(scene);
+        this.currentScene = sceneMap.get(LOGIN);
         this.stage.setScene(this.currentScene);
         this.stage.show();
     }
 
     public void sceneAskNickname(List<PlayerColour> colourList, int numPlayers){
-        String scene = "Login.fxml";
-
         /*  Example of what should be done for every scene:
              - receiving the parameters from Message->GUIView
              - passing them to the scene controller in order to show personalized info
              - when showing a scene the controller SHOULD execute the initialize method first (try this, I'm not sure)
         */
-        LoginController currentController = (LoginController) controllerMap.get(scene);
+        LoginController currentController = (LoginController) controllerMap.get(LOGIN);
         currentController.setFirstPlayer(false);    //used to show firstPlayer or not
         currentController.setNumPlayers(numPlayers);    // used to choose the colour automatically
         currentController.setAvailableColours(colourList);  // used to modify the possible colour (it uses the numPlayer value)
 
 
-        this.currentScene = sceneMap.get(scene);
+        this.currentScene = sceneMap.get(LOGIN);
         this.stage.setScene(this.currentScene);
         this.stage.show();
     }
@@ -283,6 +279,14 @@ public class GUIViewFX extends Application {
         this.stage.show();
     }
 
+    public void sceneClientDisconnect(String msg) {
+        DisconnectController currentController = (DisconnectController) controllerMap.get(DISCONNECT);
+        currentController.setMessage(msg);
+
+        this.currentScene = sceneMap.get(DISCONNECT);
+        this.stage.setScene(this.currentScene);
+        this.stage.show();
+    }
 
 }
 
