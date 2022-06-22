@@ -304,6 +304,8 @@ public class CharacterCardDialogController {
         });
     }
 
+
+    //TODO: error in this card "You've chosen more students than the card has!" when choosing correct students
     public void visualizeExchangeTwoHallDining(){
         this.choice_left_label.setText("Hall");
         this.choice_right_label.setText("Dining Room");
@@ -361,7 +363,7 @@ public class CharacterCardDialogController {
                 else{
                     int initialDiningSize = diningStudents.size();
                     for(String s : diningStudentsSelected){
-                        hallStudents.remove(s);
+                        hallStudents.remove(s); //TODO: isn't this diningStudents ?
                     }
                     if(diningStudents.size() != initialDiningSize - diningStudentsSelected.size()){
                         guiViewFX.sceneAlert("You've chosen more students than you have!", Alert.AlertType.ERROR);
