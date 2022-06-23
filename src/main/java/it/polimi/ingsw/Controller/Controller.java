@@ -594,7 +594,8 @@ public class Controller implements ObserverController<Message>, Serializable {
         }
 
         if(!controllerIntegrity.checkAssistantCard(this.usedCards, getCurrentSitPlayer(), turnPriority)) {
-            return false;//TODO: test
+            System.out.println("[Controller, manageAssistantCard]: card already played");
+            return false;
         }
 
         revertErrorPlayer = this.precomputedPlayer; // in case this player committed an error we can revert the precompute
@@ -941,7 +942,7 @@ public class Controller implements ObserverController<Message>, Serializable {
         try {
             indexCard = this.ccTypeToIndex(message.getType());
         } catch (NoCharacterCardException e) {
-            return false;//TODO: test
+            return false;
         }
         String nicknamePlayer = message.getNickname();
         List<SPColour> coloursCard = this.mapListStringToColour(message.getColoursCard());
@@ -979,7 +980,7 @@ public class Controller implements ObserverController<Message>, Serializable {
         try {
             indexCard = this.ccTypeToIndex(message.getType());
         } catch (NoCharacterCardException e) {
-            return false;//TODO: test
+            return false;
         }
         String nicknamePlayer = message.getNickname();
         List<SPColour> coloursHall = this.mapListStringToColour(message.getColoursHall());
@@ -1013,7 +1014,7 @@ public class Controller implements ObserverController<Message>, Serializable {
         int indexCard;
         try {
             indexCard = this.ccTypeToIndex(message.getType());
-        } catch (NoCharacterCardException e) {//TODO: test
+        } catch (NoCharacterCardException e) {
             return false;
         }
         String nicknamePlayer = message.getNickname();
@@ -1053,7 +1054,7 @@ public class Controller implements ObserverController<Message>, Serializable {
         int indexCard;
         try {
             indexCard = this.ccTypeToIndex(message.getType());
-        } catch (NoCharacterCardException e) {//TODO: test
+        } catch (NoCharacterCardException e) {
             return false;
         }
         String nicknamePlayer = message.getNickname();
@@ -1132,7 +1133,7 @@ public class Controller implements ObserverController<Message>, Serializable {
         try {
             indexCard = this.ccTypeToIndex(message.getType());
         } catch (NoCharacterCardException e) {
-            return false;//TODO: test
+            return false;
         }
         String nicknamePlayer = message.getNickname();
         int archipelagoIndexToForbid = message.getArchipelagoIndexToForbid();
@@ -1168,7 +1169,7 @@ public class Controller implements ObserverController<Message>, Serializable {
         try {
             indexCard = this.ccTypeToIndex(message.getType());
         } catch (NoCharacterCardException e) {
-            return false;//TODO: test
+            return false;
         }
         String nicknamePlayer = message.getNickname();
         SPColour colourToMove = mapStringToSPColour(message.getColourToMove());
@@ -1207,7 +1208,7 @@ public class Controller implements ObserverController<Message>, Serializable {
         try {
             indexCard = this.ccTypeToIndex(message.getType());
         } catch (NoCharacterCardException e) {
-            return false;//TODO: test
+            return false;
         }
         String nicknamePlayer = message.getNickname();
         SPColour colourToReduce = mapStringToSPColour(message.getColourToReduce());
@@ -1244,7 +1245,7 @@ public class Controller implements ObserverController<Message>, Serializable {
         try {
             indexCard = this.ccTypeToIndex(message.getType());
         } catch (NoCharacterCardException e) {
-            return false;//TODO: test
+            return false;
         }
         String nicknamePlayer = message.getNickname();
 
@@ -1279,7 +1280,7 @@ public class Controller implements ObserverController<Message>, Serializable {
         try {
             indexCard = this.ccTypeToIndex(message.getType());
         } catch (NoCharacterCardException e) {
-            return false;//TODO: test
+            return false;
         }
         String nicknamePlayer = message.getNickname();
 
@@ -1314,7 +1315,7 @@ public class Controller implements ObserverController<Message>, Serializable {
         try {
             indexCard = this.ccTypeToIndex(message.getType());
         } catch (NoCharacterCardException e) {
-            return false;//TODO: test
+            return false;
         }
         String nicknamePlayer = message.getNickname();
 
@@ -1355,7 +1356,7 @@ public class Controller implements ObserverController<Message>, Serializable {
         try {
             indexCard = this.ccTypeToIndex(message.getType());
         } catch (NoCharacterCardException e) {
-            return false;//TODO: test
+            return false;
         }
         String nicknamePlayer = message.getNickname();
 
