@@ -3,10 +3,7 @@ package it.polimi.ingsw.View.GUI.Controllers;
 import it.polimi.ingsw.Client.Client;
 import it.polimi.ingsw.Model.Board.SerializedBoardAbstract;
 import it.polimi.ingsw.Model.Board.SerializedBoardAdvanced;
-import it.polimi.ingsw.Model.Cards.AbstractCharacterCard;
-import it.polimi.ingsw.Model.Cards.ExchangeThreeStudents;
-import it.polimi.ingsw.Model.Cards.ForbidIsland;
-import it.polimi.ingsw.Model.Cards.PlaceOneStudent;
+import it.polimi.ingsw.Model.Cards.*;
 import it.polimi.ingsw.Model.Enumerations.CharacterCardEnumeration;
 import it.polimi.ingsw.Model.Enumerations.SPColour;
 import it.polimi.ingsw.Model.Pawns.Student;
@@ -438,11 +435,16 @@ public class CharacterCardDialogController {
     public void visualizeExtraStudentInDining(){
         this.choice_left_label.setText("Extra colour:");
 
-        String[] colours = {"blue", "pink", "red", "yellow", "green"};
-        for(String c : colours){
-            this.choice1_left.getItems().add(c);
+        List<String> cardColours = new ArrayList<>();
+        for(Student s : ((ExtraStudentInDining)this.card).getStudentsOnCard()){
+            if(!cardColours.contains(s.getColour())){
+                cardColours.add(SPColourString.get(s.getColour()));
+            }
         }
+        this.choice1_left.getItems().addAll(cardColours);
         oneChoiceVisualization();
+
+        this.setStudentsVisualization(((ExtraStudentInDining)this.card).getStudentsOnCard());
 
         this.use_yes.setOnAction(actionEvent -> {
             if(!this.canIBuyCard(((SchoolAdvanced)this.board.getSchools().get(this.playerIndex)).getNumCoins(), this.card.getCurrentPrice())){
