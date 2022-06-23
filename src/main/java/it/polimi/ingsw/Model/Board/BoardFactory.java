@@ -5,14 +5,25 @@ import it.polimi.ingsw.Model.Player;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * class that builds the right concrete (not advanced) board (BoardTwo/BoardThree/BoardFour), given the list of players connected to the server
+ */
 public class BoardFactory {
     private final List<Player> players;
 
+    /**
+     * constructor of the factory
+     * @param players list of player connected to the server
+     */
     public BoardFactory(List<Player> players) {
         this.players = new ArrayList<>();
         this.players.addAll(players);
     }
 
+    /**
+     * method that creates the right board
+     * @return
+     */
     public BoardAbstract createBoard(){
         try {
             if (this.players.size() == 2) {

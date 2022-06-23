@@ -13,6 +13,15 @@ import java.util.stream.Collectors;
 
 public class BoardThree extends BoardAbstract implements Serializable {
     private static final long serialVersionUID = 1L;
+
+    /**
+     * constructor of BoardThree
+     * @param playersParam list of the player
+     * @throws StudentNotFoundException
+     * @throws ExceededMaxStudentsCloudException
+     * @throws ExceededMaxStudentsHallException
+     * @throws ExceedingAssistantCardNumberException
+     */
     public BoardThree(List<Player> playersParam) throws
             StudentNotFoundException, ExceededMaxStudentsCloudException, ExceededMaxStudentsHallException,
             ExceedingAssistantCardNumberException {
@@ -35,6 +44,10 @@ public class BoardThree extends BoardAbstract implements Serializable {
         moveStudentBagToSchool(9);
     }
 
+    /**
+     * constructor of BoardThree: builds a copy of a given BoardAbstract
+     * @param toCopy board to copy
+     */
     public BoardThree(BoardAbstract toCopy){
         super(toCopy);
     }

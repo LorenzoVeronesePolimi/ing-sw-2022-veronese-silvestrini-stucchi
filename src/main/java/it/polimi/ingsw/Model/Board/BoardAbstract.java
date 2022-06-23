@@ -310,6 +310,16 @@ public abstract class BoardAbstract extends Observable implements Board, Seriali
             notifyPlayers();
     }
 
+    /**
+     * method that moves a student from a player's hall to the same player's dining room
+     * @param player owner of the school from which I want to move the student
+     * @param colour of the student that I want to move to the dining room
+     * @throws StudentNotFoundException if there is not any student of that colour in the dining room
+     * @throws ExceededMaxStudentsDiningRoomException if the movement is not possible because there are already 10 students of that colour
+     * in the dining room
+     * @throws ProfessorNotFoundException if the professor of that colour is not in anu school
+     * @throws NoProfessorBagException if the professor of that colour is not in the bag
+     */
     public void moveStudentHallToDiningRoom(Player player, SPColour colour) throws
             StudentNotFoundException, ExceededMaxStudentsDiningRoomException, ProfessorNotFoundException, NoProfessorBagException {
 
@@ -322,6 +332,11 @@ public abstract class BoardAbstract extends Observable implements Board, Seriali
         notifyPlayers();
     }
 
+    /**
+     * method that moves a student from the gab to a cloud
+     * @throws ExceededMaxStudentsCloudException if the movement fails because the cloud if already full
+     * @throws StudentNotFoundException if the movement fail because the bag is empty
+     */
     public void moveStudentBagToCloud() throws ExceededMaxStudentsCloudException, StudentNotFoundException {
         int numStudents = this.clouds.get(0).getNumMaxStudents();
         for(Cloud c: clouds) {
@@ -334,6 +349,12 @@ public abstract class BoardAbstract extends Observable implements Board, Seriali
             notifyPlayers();
     }
 
+    /**
+     * method that moves a given number of students from the gab to a school
+     * @param numStudents number of student that I want to move
+     * @throws StudentNotFoundException if there are not enough students in the bag
+     * @throws ExceededMaxStudentsHallException if during the movement the hall exceeds the maximum number of students
+     */
     public void moveStudentBagToSchool(int numStudents) throws StudentNotFoundException, ExceededMaxStudentsHallException {
         for(School s: this.schools) {
             List<Student> toBePlaced;
@@ -345,6 +366,13 @@ public abstract class BoardAbstract extends Observable implements Board, Seriali
         }
     }
 
+    /**
+     * method that moves the professor of a given colour from its current position to a given school
+     * @param destinationPlayer owner of the school that I want to move mother the professor to
+     * @param colour of the professor I want to move
+     * @throws NoProfessorBagException if that professor is not in the bag
+     * @throws ProfessorNotFoundException if that professor is not in any school
+     */
     public void moveProfessor(Player destinationPlayer, SPColour colour) throws NoProfessorBagException, ProfessorNotFoundException {
         //school related to the player that gets the professor
         School receiverSchool = playerSchool.get(destinationPlayer);
@@ -369,7 +397,9 @@ public abstract class BoardAbstract extends Observable implements Board, Seriali
 
 
     //--------------------------------------------------PROFESSORS
-    //Check if professor is in onw of the schools or in the bag
+    /**
+     * method that checks if professor is in any of the schools or in the bag
+     */
     public boolean isProfessorInSchool(SPColour colour) {
         for(School s: schools) {
             for(Professor p: s.getProfessors()) {
@@ -382,7 +412,9 @@ public abstract class BoardAbstract extends Observable implements Board, Seriali
         return false;
     }
 
-    // Find the School where the Professor is in
+    /**
+     * method that finds the School where the Professor is in
+     */
     public School whereIsProfessor(SPColour colour){
         for(School s: schools) {
             for(Professor p: s.getProfessors()) {
@@ -396,6 +428,14 @@ public abstract class BoardAbstract extends Observable implements Board, Seriali
         return null;
     }
 
+    /**
+     * method that moves the professor of a given colour from its current school to the school of the challenger if he has more students
+     * of that colour in his dining room
+     * @param currentPlayer is the current player
+     * @param colour of the professor to conquer
+     * @throws NoProfessorBagException if that professor is not in the bag
+     * @throws ProfessorNotFoundException if that professor is not in any school
+     */
     public void conquerProfessor(Player currentPlayer, SPColour colour) throws NoProfessorBagException, ProfessorNotFoundException {
         School currentSchool = this.whereIsProfessor(colour);
         if(currentSchool == null){ // it's in the bag
@@ -422,6 +462,15 @@ public abstract class BoardAbstract extends Observable implements Board, Seriali
 
 
     //--------------------------------------------------CONQUERING ISLANDS
+
+    /**
+     * method that tries to conquer the archipelago for a given player
+     * @param currentPlayer player that is trying to conquer the archipelago
+     * @throws InvalidTowerNumberException
+     * @throws AnotherTowerException
+     * @throws ExceededMaxTowersException
+     * @throws TowerNotFoundException
+     */
     public void tryToConquer(Player currentPlayer) throws
             InvalidTowerNumberException, AnotherTowerException, ExceededMaxTowersException, TowerNotFoundException {
 
@@ -437,7 +486,12 @@ public abstract class BoardAbstract extends Observable implements Board, Seriali
         notifyPlayers();
     }
 
-    // true if the current Player (who moved MotherNature) will conquer the Archipelago, false otherwise
+
+    /**
+     * method that verifies if a player can conquer the archipelago on which is placed mother nature
+     * @param currentPlayer player that should conquer the archipelago
+     * @return true if the current Player (who moved MotherNature) will conquer the Archipelago, false otherwise
+     */
     public boolean checkIfConquerable(Player currentPlayer){
         int currPosMotherNature = this.whereIsMotherNature();
         Archipelago currentArchipelago = this.archipelagos.get(currPosMotherNature);
@@ -464,7 +518,15 @@ public abstract class BoardAbstract extends Observable implements Board, Seriali
         }
     }
 
-    // Computes which of two players has most influence on an Archipelago
+
+
+    /**
+     * method that computes which of two players has most influence on an Archipelago
+     * @param owner player that owned the archipelago
+     * @param challenger player that wants to conquer the archipelago
+     * @param archipelago archipelago on which I want to compute the winner
+     * @return the player who has most influence
+     */
     public Player computeWinner(Player owner, Player challenger, Archipelago archipelago){
         int ownerInfluence = this.computeInfluenceOfPlayer(owner, archipelago);
         int challengerInfluence = this.computeInfluenceOfPlayer(challenger, archipelago);
@@ -477,7 +539,13 @@ public abstract class BoardAbstract extends Observable implements Board, Seriali
         }
     }
 
-    // Returns the influence of a Player on an Archipelago
+
+    /**
+     * Returns the influence of a Player on an Archipelago
+     * @param player of whom I want to compute the influence on an archipelago
+     * @param archipelago on which I want to compute the influence of the player
+     * @return  Returns the influence of a Player on an Archipelago
+     */
     public int computeInfluenceOfPlayer(Player player, Archipelago archipelago){
         int influence = 0;
 
@@ -495,7 +563,15 @@ public abstract class BoardAbstract extends Observable implements Board, Seriali
         return influence;
     }
 
-    // the Player conquers the Archipelago putting his own Towers and removing the previous ones (if present)
+    /**
+     * the Player conquers the Archipelago putting his own Towers and removing the previous ones (if present)
+     * @param conqueror new owner of the archipelago
+     * @param toConquer old owner of the archipelago
+     * @throws InvalidTowerNumberException
+     * @throws AnotherTowerException
+     * @throws ExceededMaxTowersException
+     * @throws TowerNotFoundException
+     */
     protected void conquerArchipelago(Player conqueror, Archipelago toConquer) throws InvalidTowerNumberException, AnotherTowerException, ExceededMaxTowersException, TowerNotFoundException {
         // conqueror's Towers to put on the Archipelago
         List<Tower> conquerorTowers;
@@ -503,6 +579,14 @@ public abstract class BoardAbstract extends Observable implements Board, Seriali
         moveTower(conquerorTowers, toConquer);
     }
 
+    /**
+     * method that mover a list of towers of the new owner of an archipelago on that archipelago
+     * @param conquerorTowers list of towers of the conqueror
+     * @param toConquer archipelago to conquer
+     * @throws InvalidTowerNumberException
+     * @throws AnotherTowerException
+     * @throws ExceededMaxTowersException
+     */
     protected void moveTower(List<Tower> conquerorTowers, Archipelago toConquer) throws InvalidTowerNumberException, AnotherTowerException, ExceededMaxTowersException {
         List<Tower> looserTowers = null;
         if (conquerorTowers != null) {
@@ -516,7 +600,9 @@ public abstract class BoardAbstract extends Observable implements Board, Seriali
         }
     }
 
-    // This merges as much adjacent Archipelagos as possible removing the old one from the this.archipelagos
+    /**
+     * This merges as much adjacent Archipelagos as possible removing the old one from the this.archipelagos
+     */
     protected void mergeArchipelagos(){
         if(this.isThereRightMerge()){
             Archipelago currentArchipelago = this.archipelagos.get(this.whereIsMotherNature());
@@ -536,16 +622,28 @@ public abstract class BoardAbstract extends Observable implements Board, Seriali
         }
     }
 
-    // Check if you can merge the current Island (on which there is MotherNature) with the previous one
+
+    /**
+     *
+     * @return true if you can merge the current Island (on which there is MotherNature) with the previous one, false otherwise
+     */
     private boolean isThereRightMerge(){
         return this.archipelagos.get(this.whereIsMotherNature()).getOwner() == this.archipelagos.get(this.getPreviousArchipelagoIndex(this.whereIsMotherNature())).getOwner();
     }
 
-    // Check if you can merge the current Island (on which there is MotherNature) with the next one
+    /**
+     *
+     * @return true if you can merge the current Island (on which there is MotherNature) with the next one, false otherwise
+     */
     private boolean isThereLeftMerge(){
         return this.archipelagos.get(this.whereIsMotherNature()).getOwner() == this.archipelagos.get((this.whereIsMotherNature() + 1) % archipelagos.size()).getOwner();
     }
 
+    /**
+     * method that returns the index of the previous archipelago, given the index of an archipelago
+     * @param index
+     * @return
+     */
     private int getPreviousArchipelagoIndex(int index) {
         if(index == 0) return this.archipelagos.size() - 1;
         if(index == 1) return 0;
@@ -565,6 +663,16 @@ public abstract class BoardAbstract extends Observable implements Board, Seriali
 
 
     //--------------------------------------------------ASSISTANT CARD
+
+    /**
+     * method that activate the choice of an assistant card
+     * @param usedCards list of assistant cards already used
+     * @param player player that wants to use the assistant card
+     * @param turnPriority number of turn priority that the player has chosen
+     * @throws AssistantCardAlreadyPlayedTurnException if a card with the same priority has been already chosen by one of the opponent during
+     * the same turn
+     * @throws NoAssistantCardException if doesn't exist any assistant card whith such turn priority
+     */
     public void useAssistantCard(List<Integer> usedCards, Player player, int turnPriority) throws
             AssistantCardAlreadyPlayedTurnException, NoAssistantCardException { //used in the controller
 
@@ -582,6 +690,9 @@ public abstract class BoardAbstract extends Observable implements Board, Seriali
             notifyPlayers();
     }
 
+    /**
+     * method that notifies every change of the board to all the players connected
+     */
     @Override
     public void notifyPlayers() {
         SerializedBoardAbstract serializedBoardAbstract =

@@ -10,6 +10,7 @@ import it.polimi.ingsw.Model.Cards.PlaceOneStudent;
 import it.polimi.ingsw.Model.Enumerations.CharacterCardEnumeration;
 import it.polimi.ingsw.Model.Enumerations.SPColour;
 import it.polimi.ingsw.Model.Pawns.Student;
+import it.polimi.ingsw.Model.Places.School.SchoolAdvanced;
 import it.polimi.ingsw.Model.Player;
 import it.polimi.ingsw.View.GUI.GUIViewFX;
 import javafx.fxml.FXML;
@@ -242,70 +243,75 @@ public class CharacterCardDialogController {
         this.choice3_right.getItems().addAll(hallStudents);
 
         this.use_yes.setOnAction(actionEvent -> {
-            StringBuilder outMessage = new StringBuilder("exchangeThreeStudents ");
-            List<String> cardStudentsSelected = new ArrayList<>();
-            List<String> hallStudentsSelected = new ArrayList<>();
-            for(ChoiceBox<String> c : choicesLeft){
-                System.out.println(c.getValue());
-                if(c.getValue() != null){
-                    //cardStudentsSelected.add(c.getSelectionModel().getSelectedItem());
-                    cardStudentsSelected.add(c.getValue());
-                }
-            }
-            for(ChoiceBox<String> c : choicesRight){
-                if(c.getValue() != null){
-                    hallStudentsSelected.add(c.getValue());
-                }
-            }
-            if(cardStudentsSelected.size() != hallStudentsSelected.size()){
-                guiViewFX.sceneAlert("Incorrect colours selected", Alert.AlertType.ERROR);
+            if(!this.canIBuyCard(((SchoolAdvanced)this.board.getSchools().get(this.playerIndex)).getNumCoins(), this.card.getCurrentPrice())){
+                guiViewFX.sceneAlert("You have not enough coins!", Alert.AlertType.ERROR);
             }
             else{
-                int initialCardSize = cardStudents.size();
-                for(String s : cardStudentsSelected){
-                    cardStudents.remove(s);
+                StringBuilder outMessage = new StringBuilder("exchangeThreeStudents ");
+                List<String> cardStudentsSelected = new ArrayList<>();
+                List<String> hallStudentsSelected = new ArrayList<>();
+                for(ChoiceBox<String> c : choicesLeft){
+                    System.out.println(c.getValue());
+                    if(c.getValue() != null){
+                        //cardStudentsSelected.add(c.getSelectionModel().getSelectedItem());
+                        cardStudentsSelected.add(c.getValue());
+                    }
                 }
-                if(cardStudents.size() != initialCardSize - cardStudentsSelected.size()){
-                    guiViewFX.sceneAlert("You've chosen more students than the card has!", Alert.AlertType.ERROR);
+                for(ChoiceBox<String> c : choicesRight){
+                    if(c.getValue() != null){
+                        hallStudentsSelected.add(c.getValue());
+                    }
+                }
+                if(cardStudentsSelected.size() != hallStudentsSelected.size()){
+                    guiViewFX.sceneAlert("Incorrect colours selected", Alert.AlertType.ERROR);
                 }
                 else{
-                    int initialHallSize = hallStudents.size();
-                    for(String s : hallStudentsSelected){
-                        hallStudents.remove(s);
+                    int initialCardSize = cardStudents.size();
+                    for(String s : cardStudentsSelected){
+                        cardStudents.remove(s);
                     }
                     if(cardStudents.size() != initialCardSize - cardStudentsSelected.size()){
-                        guiViewFX.sceneAlert("You've chosen more students than you have!", Alert.AlertType.ERROR);
+                        guiViewFX.sceneAlert("You've chosen more students than the card has!", Alert.AlertType.ERROR);
                     }
                     else{
-                        int i = cardStudentsSelected.size();
-                        for(String s : cardStudentsSelected){
-                            outMessage.append(s);
-                            outMessage.append(" ");
-                            i--;
-                        }
-                        while(i > 0){ //add "-" if no choice
-                            outMessage.append("- ");
-                            i--;
-                        }
-                        i = hallStudentsSelected.size();
+                        int initialHallSize = hallStudents.size();
                         for(String s : hallStudentsSelected){
-                            outMessage.append(s);
-                            outMessage.append(" ");
-                            i--;
+                            hallStudents.remove(s);
                         }
-                        while(i > 0){ //add "-" if no choice
-                            outMessage.append("- ");
-                            i--;
+                        if(cardStudents.size() != initialCardSize - cardStudentsSelected.size()){
+                            guiViewFX.sceneAlert("You've chosen more students than you have!", Alert.AlertType.ERROR);
                         }
-                        this.client.asyncWriteToSocket(String.valueOf(outMessage));
+                        else{
+                            int i = 3;//cardStudentsSelected.size();
+                            for(String s : cardStudentsSelected){
+                                outMessage.append(s);
+                                outMessage.append(" ");
+                                i--;
+                            }
+                            while(i > 0){ //add "-" if no choice
+                                outMessage.append("- ");
+                                i--;
+                            }
+                            i = 3;//hallStudentsSelected.size();
+                            for(String s : hallStudentsSelected){
+                                outMessage.append(s);
+                                outMessage.append(" ");
+                                i--;
+                            }
+                            while(i > 0){ //add "-" if no choice
+                                outMessage.append("- ");
+                                i--;
+                            }
+                            this.client.asyncWriteToSocket(String.valueOf(outMessage));
+                        }
                     }
                 }
             }
+
         });
     }
 
 
-    //TODO: error in this card "You've chosen more students than the card has!" when choosing correct students
     public void visualizeExchangeTwoHallDining(){
         this.choice_left_label.setText("Hall");
         this.choice_right_label.setText("Dining Room");
@@ -317,6 +323,11 @@ public class CharacterCardDialogController {
 
         List<String> diningStudents = new ArrayList();
         for(SPColour c : SPColourString.keySet()){
+            System.out.println(c);
+        }
+        System.out.println(this.playerIndex);
+
+        for(SPColour c : SPColourString.keySet()){
             if(this.board.getSchools().get(this.playerIndex).getNumStudentColour(c) > 1){ // add up to two strings of that name
                 diningStudents.add(SPColourString.get(c));
                 diningStudents.add(SPColourString.get(c));
@@ -324,6 +335,10 @@ public class CharacterCardDialogController {
             else if(this.board.getSchools().get(this.playerIndex).getNumStudentColour(c) > 0){
                 diningStudents.add(SPColourString.get(c));
             }
+        }
+
+        for(String a : diningStudents){
+            System.out.println(a);
         }
 
         this.choice1_left.getItems().addAll(hallStudents);
@@ -334,65 +349,70 @@ public class CharacterCardDialogController {
         this.choice3_right.setVisible(false);
 
         this.use_yes.setOnAction(actionEvent -> {
-            StringBuilder outMessage = new StringBuilder("exchangeTwoHallDining ");
-            List<String> hallStudentsSelected = new ArrayList<>();
-            List<String> diningStudentsSelected = new ArrayList<>();
-            for(ChoiceBox<String> c : choicesLeft){
-                if(c.getValue() != null){
-                    //cardStudentsSelected.add(c.getSelectionModel().getSelectedItem());
-                    hallStudentsSelected.add(c.getValue());
-                }
-            }
-            for(ChoiceBox<String> c : choicesRight){
-                if(c.getValue() != null){
-                    diningStudentsSelected.add(c.getValue());
-                }
-            }
-            if(hallStudentsSelected.size() != diningStudentsSelected.size()){
-                guiViewFX.sceneAlert("Incorrect colours selected", Alert.AlertType.ERROR);
+            if(!this.canIBuyCard(((SchoolAdvanced)this.board.getSchools().get(this.playerIndex)).getNumCoins(), this.card.getCurrentPrice())){
+                guiViewFX.sceneAlert("You have not enough coins!", Alert.AlertType.ERROR);
             }
             else{
-                int initialHallSize = hallStudents.size();
-                for(String s : hallStudentsSelected){
-                    hallStudents.remove(s);
-                    //if(Collections.frequency(animals, "bat");
+                StringBuilder outMessage = new StringBuilder("exchangeTwoHallDining ");
+                List<String> hallStudentsSelected = new ArrayList<>();
+                List<String> diningStudentsSelected = new ArrayList<>();
+                for(ChoiceBox<String> c : choicesLeft){
+                    if(c.getValue() != null){
+                        //cardStudentsSelected.add(c.getSelectionModel().getSelectedItem());
+                        hallStudentsSelected.add(c.getValue());
+                    }
                 }
-                if(hallStudents.size() != initialHallSize - hallStudentsSelected.size()){
-                    guiViewFX.sceneAlert("You've chosen more students than the card has!", Alert.AlertType.ERROR);
+                for(ChoiceBox<String> c : choicesRight){
+                    if(c.getValue() != null){
+                        diningStudentsSelected.add(c.getValue());
+                    }
+                }
+                if(hallStudentsSelected.size() != diningStudentsSelected.size()){
+                    guiViewFX.sceneAlert("Incorrect colours selected", Alert.AlertType.ERROR);
                 }
                 else{
-                    int initialDiningSize = diningStudents.size();
-                    for(String s : diningStudentsSelected){
-                        hallStudents.remove(s); //TODO: isn't this diningStudents ?
+                    int initialHallSize = hallStudents.size();
+                    for(String s : hallStudentsSelected){
+                        hallStudents.remove(s);
                     }
-                    if(diningStudents.size() != initialDiningSize - diningStudentsSelected.size()){
-                        guiViewFX.sceneAlert("You've chosen more students than you have!", Alert.AlertType.ERROR);
+                    if(hallStudents.size() != initialHallSize - hallStudentsSelected.size()){
+                        guiViewFX.sceneAlert("You've chosen more students than the card has!", Alert.AlertType.ERROR);
                     }
                     else{
-                        int i = hallStudentsSelected.size();
-                        for(String s : hallStudentsSelected){
-                            outMessage.append(s);
-                            outMessage.append(" ");
-                            i--;
-                        }
-                        while(i > 0){ //add "-" if no choice
-                            outMessage.append("- ");
-                            i--;
-                        }
-                        i = hallStudentsSelected.size();
+                        int initialDiningSize = diningStudents.size();
                         for(String s : diningStudentsSelected){
-                            outMessage.append(s);
-                            outMessage.append(" ");
-                            i--;
+                            diningStudents.remove(s);
                         }
-                        while(i > 0){ //add "-" if no choice
-                            outMessage.append("- ");
-                            i--;
+                        if(diningStudents.size() != initialDiningSize - diningStudentsSelected.size()){
+                            guiViewFX.sceneAlert("You've chosen more students than you have!", Alert.AlertType.ERROR);
                         }
-                        this.client.asyncWriteToSocket(String.valueOf(outMessage));
+                        else{
+                            int i = 2;//hallStudentsSelected.size();
+                            for(String s : hallStudentsSelected){
+                                outMessage.append(s);
+                                outMessage.append(" ");
+                                i--;
+                            }
+                            while(i > 0){ //add "-" if no choice
+                                outMessage.append("- ");
+                                i--;
+                            }
+                            i = 2;//hallStudentsSelected.size();
+                            for(String s : diningStudentsSelected){
+                                outMessage.append(s);
+                                outMessage.append(" ");
+                                i--;
+                            }
+                            while(i > 0){ //add "-" if no choice
+                                outMessage.append("- ");
+                                i--;
+                            }
+                            this.client.asyncWriteToSocket(String.valueOf(outMessage));
+                        }
                     }
                 }
             }
+
         });
     }
 
@@ -406,7 +426,12 @@ public class CharacterCardDialogController {
         oneChoiceVisualization();
 
         this.use_yes.setOnAction(actionEvent -> {
-            this.client.asyncWriteToSocket("excludeColourFromCounting " + choice1_left.getValue());
+            if(!this.canIBuyCard(((SchoolAdvanced)this.board.getSchools().get(this.playerIndex)).getNumCoins(), this.card.getCurrentPrice())){
+                guiViewFX.sceneAlert("You have not enough coins!", Alert.AlertType.ERROR);
+            }
+            else{
+                this.client.asyncWriteToSocket("excludeColourFromCounting " + choice1_left.getValue());
+            }
         });
     }
 
@@ -420,27 +445,39 @@ public class CharacterCardDialogController {
         oneChoiceVisualization();
 
         this.use_yes.setOnAction(actionEvent -> {
-            this.client.asyncWriteToSocket("extraStudentInDining " + choice1_left.getValue());
+            if(!this.canIBuyCard(((SchoolAdvanced)this.board.getSchools().get(this.playerIndex)).getNumCoins(), this.card.getCurrentPrice())){
+                guiViewFX.sceneAlert("You have not enough coins!", Alert.AlertType.ERROR);
+            }
+            else{
+                this.client.asyncWriteToSocket("extraStudentInDining " + choice1_left.getValue());
+            }
+
         });
     }
 
     public void visualizeFakeMNMovement(){
         this.choice_left_label.setText("Archipelago:");
 
-        for(int i = 0; i < 9; i++){
+        for(int i = 0; i < this.board.getArchipelagos().size(); i++){
             this.choice1_left.getItems().add(Integer.toString(i));
         }
         oneChoiceVisualization();
 
         this.use_yes.setOnAction(actionEvent -> {
-            this.client.asyncWriteToSocket("fakeMNMovement " + choice1_left.getValue());
+            if(!this.canIBuyCard(((SchoolAdvanced)this.board.getSchools().get(this.playerIndex)).getNumCoins(), this.card.getCurrentPrice())){
+                guiViewFX.sceneAlert("You have not enough coins!", Alert.AlertType.ERROR);
+            }
+            else{
+                this.client.asyncWriteToSocket("fakeMNMovement " + choice1_left.getValue());
+            }
+
         });
     }
 
     public void visualizeForbidIsland(){
         this.choice_left_label.setText("Archipelago to forbid:");
 
-        for(int i = 0; i < 9; i++){
+        for(int i = 0; i < this.board.getArchipelagos().size(); i++){
             this.choice1_left.getItems().add(Integer.toString(i));
         }
         oneChoiceVisualization();
@@ -450,24 +487,44 @@ public class CharacterCardDialogController {
         this.forbid_icon.setVisible(true);
 
         this.use_yes.setOnAction(actionEvent -> {
-            this.client.asyncWriteToSocket("forbidIsland " + choice1_left.getValue());
+            if(!this.canIBuyCard(((SchoolAdvanced)this.board.getSchools().get(this.playerIndex)).getNumCoins(), this.card.getCurrentPrice())){
+                guiViewFX.sceneAlert("You have not enough coins!", Alert.AlertType.ERROR);
+            }
+            else{
+                this.client.asyncWriteToSocket("forbidIsland " + choice1_left.getValue());
+            }
+
         });
     }
 
     public void visualizePlaceOneStudent(){
         this.choice_left_label.setText("Student to take:");
-        oneChoiceVisualization();
+        this.choice_right_label.setText("Destination:");
+
+        this.choice2_left.setVisible(false);
+        this.choice3_left.setVisible(false);
+        this.choice2_right.setVisible(false);
+        this.choice3_right.setVisible(false);
 
         List<String> cardStudents = new ArrayList();
         for(Student s : ((PlaceOneStudent)this.card).getStudentsOnCard()){
             cardStudents.add(SPColourString.get(s.getColour()));
         }
-        this.setStudentsVisualization(((ExchangeThreeStudents)this.card).getStudentsOnCard());
-
+        this.setStudentsVisualization(((PlaceOneStudent)this.card).getStudentsOnCard());
         this.choice1_left.getItems().addAll(cardStudents);
 
+        for(int i = 0; i < this.board.getArchipelagos().size(); i++){
+            this.choice1_right.getItems().add(Integer.toString(i));
+        }
+
         this.use_yes.setOnAction(actionEvent -> {
-            this.client.asyncWriteToSocket("placeOneStudent " + choice1_left.getValue());
+            if(!this.canIBuyCard(((SchoolAdvanced)this.board.getSchools().get(this.playerIndex)).getNumCoins(), this.card.getCurrentPrice())){
+                guiViewFX.sceneAlert("You have not enough coins!", Alert.AlertType.ERROR);
+            }
+            else{
+                this.client.asyncWriteToSocket("placeOneStudent " + choice1_left.getValue() + " " + choice1_right.getValue());
+            }
+
         });
     }
 
@@ -481,7 +538,12 @@ public class CharacterCardDialogController {
         oneChoiceVisualization();
 
         this.use_yes.setOnAction(actionEvent -> {
-            this.client.asyncWriteToSocket("reduceColourInDining " + choice1_left.getValue());
+            if(!this.canIBuyCard(((SchoolAdvanced)this.board.getSchools().get(this.playerIndex)).getNumCoins(), this.card.getCurrentPrice())){
+                guiViewFX.sceneAlert("You have not enough coins!", Alert.AlertType.ERROR);
+            }
+            else{
+                this.client.asyncWriteToSocket("reduceColourInDining " + choice1_left.getValue());
+            }
         });
     }
 
@@ -489,7 +551,12 @@ public class CharacterCardDialogController {
         noChoiceVisualization();
 
         this.use_yes.setOnAction(actionEvent -> {
-            this.client.asyncWriteToSocket("takeProfessorOnEquity ");
+            if(!this.canIBuyCard(((SchoolAdvanced)this.board.getSchools().get(this.playerIndex)).getNumCoins(), this.card.getCurrentPrice())){
+                guiViewFX.sceneAlert("You have not enough coins!", Alert.AlertType.ERROR);
+            }
+            else{
+                this.client.asyncWriteToSocket("takeProfessorOnEquity ");
+            }
         });
     }
 
@@ -497,7 +564,12 @@ public class CharacterCardDialogController {
         noChoiceVisualization();
 
         this.use_yes.setOnAction(actionEvent -> {
-            this.client.asyncWriteToSocket("towerNoValue ");
+            if(!this.canIBuyCard(((SchoolAdvanced)this.board.getSchools().get(this.playerIndex)).getNumCoins(), this.card.getCurrentPrice())){
+                guiViewFX.sceneAlert("You have not enough coins!", Alert.AlertType.ERROR);
+            }
+            else {
+                this.client.asyncWriteToSocket("towerNoValue ");
+            }
         });
     }
 
@@ -505,7 +577,12 @@ public class CharacterCardDialogController {
         noChoiceVisualization();
 
         this.use_yes.setOnAction(actionEvent -> {
-            this.client.asyncWriteToSocket("twoExtraIslands ");
+            if(!this.canIBuyCard(((SchoolAdvanced)this.board.getSchools().get(this.playerIndex)).getNumCoins(), this.card.getCurrentPrice())){
+                guiViewFX.sceneAlert("You have not enough coins!", Alert.AlertType.ERROR);
+            }
+            else {
+                this.client.asyncWriteToSocket("twoExtraIslands ");
+            }
         });
     }
 
@@ -513,7 +590,12 @@ public class CharacterCardDialogController {
         noChoiceVisualization();
 
         this.use_yes.setOnAction(actionEvent -> {
-            this.client.asyncWriteToSocket("twoExtraPoints ");
+            if(!this.canIBuyCard(((SchoolAdvanced)this.board.getSchools().get(this.playerIndex)).getNumCoins(), this.card.getCurrentPrice())){
+                guiViewFX.sceneAlert("You have not enough coins!", Alert.AlertType.ERROR);
+            }
+            else{
+                this.client.asyncWriteToSocket("twoExtraPoints ");
+            }
         });
     }
 
@@ -531,6 +613,15 @@ public class CharacterCardDialogController {
         this.choice1_right.setVisible(false);
         this.choice2_right.setVisible(false);
         this.choice3_right.setVisible(false);
+    }
+
+    private boolean canIBuyCard(int coinPlayer, int costCard){
+        if(coinPlayer < costCard){
+            return false;
+        }
+        else{
+            return true;
+        }
     }
 
     private int computeMyIndex(SerializedBoardAbstract boardAbstract) {
