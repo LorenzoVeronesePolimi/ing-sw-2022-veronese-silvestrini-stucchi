@@ -277,7 +277,7 @@ public class CharacterCardDialogController {
                         guiViewFX.sceneAlert("You've chosen more students than you have!", Alert.AlertType.ERROR);
                     }
                     else{
-                        int i = cardStudentsSelected.size();
+                        int i = 3;//cardStudentsSelected.size();
                         for(String s : cardStudentsSelected){
                             outMessage.append(s);
                             outMessage.append(" ");
@@ -287,7 +287,7 @@ public class CharacterCardDialogController {
                             outMessage.append("- ");
                             i--;
                         }
-                        i = hallStudentsSelected.size();
+                        i = 3;//hallStudentsSelected.size();
                         for(String s : hallStudentsSelected){
                             outMessage.append(s);
                             outMessage.append(" ");
@@ -305,7 +305,6 @@ public class CharacterCardDialogController {
     }
 
 
-    //TODO: error in this card "You've chosen more students than the card has!" when choosing correct students
     public void visualizeExchangeTwoHallDining(){
         this.choice_left_label.setText("Hall");
         this.choice_right_label.setText("Dining Room");
@@ -317,6 +316,11 @@ public class CharacterCardDialogController {
 
         List<String> diningStudents = new ArrayList();
         for(SPColour c : SPColourString.keySet()){
+            System.out.println(c);
+        }
+        System.out.println(this.playerIndex);
+
+        for(SPColour c : SPColourString.keySet()){
             if(this.board.getSchools().get(this.playerIndex).getNumStudentColour(c) > 1){ // add up to two strings of that name
                 diningStudents.add(SPColourString.get(c));
                 diningStudents.add(SPColourString.get(c));
@@ -324,6 +328,10 @@ public class CharacterCardDialogController {
             else if(this.board.getSchools().get(this.playerIndex).getNumStudentColour(c) > 0){
                 diningStudents.add(SPColourString.get(c));
             }
+        }
+
+        for(String a : diningStudents){
+            System.out.println(a);
         }
 
         this.choice1_left.getItems().addAll(hallStudents);
@@ -355,7 +363,6 @@ public class CharacterCardDialogController {
                 int initialHallSize = hallStudents.size();
                 for(String s : hallStudentsSelected){
                     hallStudents.remove(s);
-                    //if(Collections.frequency(animals, "bat");
                 }
                 if(hallStudents.size() != initialHallSize - hallStudentsSelected.size()){
                     guiViewFX.sceneAlert("You've chosen more students than the card has!", Alert.AlertType.ERROR);
@@ -363,13 +370,13 @@ public class CharacterCardDialogController {
                 else{
                     int initialDiningSize = diningStudents.size();
                     for(String s : diningStudentsSelected){
-                        hallStudents.remove(s); //TODO: isn't this diningStudents ?
+                        diningStudents.remove(s);
                     }
                     if(diningStudents.size() != initialDiningSize - diningStudentsSelected.size()){
                         guiViewFX.sceneAlert("You've chosen more students than you have!", Alert.AlertType.ERROR);
                     }
                     else{
-                        int i = hallStudentsSelected.size();
+                        int i = 2;//hallStudentsSelected.size();
                         for(String s : hallStudentsSelected){
                             outMessage.append(s);
                             outMessage.append(" ");
@@ -379,7 +386,7 @@ public class CharacterCardDialogController {
                             outMessage.append("- ");
                             i--;
                         }
-                        i = hallStudentsSelected.size();
+                        i = 2;//hallStudentsSelected.size();
                         for(String s : diningStudentsSelected){
                             outMessage.append(s);
                             outMessage.append(" ");
@@ -427,7 +434,7 @@ public class CharacterCardDialogController {
     public void visualizeFakeMNMovement(){
         this.choice_left_label.setText("Archipelago:");
 
-        for(int i = 0; i < 9; i++){
+        for(int i = 0; i < this.board.getArchipelagos().size(); i++){
             this.choice1_left.getItems().add(Integer.toString(i));
         }
         oneChoiceVisualization();
@@ -440,7 +447,7 @@ public class CharacterCardDialogController {
     public void visualizeForbidIsland(){
         this.choice_left_label.setText("Archipelago to forbid:");
 
-        for(int i = 0; i < 9; i++){
+        for(int i = 0; i < this.board.getArchipelagos().size(); i++){
             this.choice1_left.getItems().add(Integer.toString(i));
         }
         oneChoiceVisualization();
@@ -456,18 +463,26 @@ public class CharacterCardDialogController {
 
     public void visualizePlaceOneStudent(){
         this.choice_left_label.setText("Student to take:");
-        oneChoiceVisualization();
+        this.choice_right_label.setText("Destination:");
+
+        this.choice2_left.setVisible(false);
+        this.choice3_left.setVisible(false);
+        this.choice2_right.setVisible(false);
+        this.choice3_right.setVisible(false);
 
         List<String> cardStudents = new ArrayList();
         for(Student s : ((PlaceOneStudent)this.card).getStudentsOnCard()){
             cardStudents.add(SPColourString.get(s.getColour()));
         }
-        this.setStudentsVisualization(((ExchangeThreeStudents)this.card).getStudentsOnCard());
-
+        this.setStudentsVisualization(((PlaceOneStudent)this.card).getStudentsOnCard());
         this.choice1_left.getItems().addAll(cardStudents);
 
+        for(int i = 0; i < this.board.getArchipelagos().size(); i++){
+            this.choice1_right.getItems().add(Integer.toString(i));
+        }
+
         this.use_yes.setOnAction(actionEvent -> {
-            this.client.asyncWriteToSocket("placeOneStudent " + choice1_left.getValue());
+            this.client.asyncWriteToSocket("placeOneStudent " + choice1_left.getValue() + " " + choice1_right.getValue());
         });
     }
 
