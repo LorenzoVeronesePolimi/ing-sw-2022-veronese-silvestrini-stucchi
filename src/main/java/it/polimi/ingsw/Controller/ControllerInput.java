@@ -86,7 +86,13 @@ public class ControllerInput implements Serializable {
         for(String c : colours){
             if(!(this.checkStudentColour(c) || c.equals("-"))){return false;} //I accept "-" for Character Cards
         }
-        return true;
+        //at least one student should be not "-"
+        for(String c : colours){
+            if(this.checkStudentColour(c)){
+                return true;
+            }
+        }
+        return false;
     }
 
     /**
