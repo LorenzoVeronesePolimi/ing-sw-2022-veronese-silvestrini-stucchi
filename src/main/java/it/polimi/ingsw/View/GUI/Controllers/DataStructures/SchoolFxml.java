@@ -8,6 +8,7 @@ import it.polimi.ingsw.Model.Pawns.Professor;
 import it.polimi.ingsw.Model.Pawns.Student;
 import it.polimi.ingsw.Model.Pawns.Tower;
 import it.polimi.ingsw.Model.Places.School.School;
+import it.polimi.ingsw.Model.Player;
 import it.polimi.ingsw.View.GUI.Controllers.BoardFourAdvancedController;
 import javafx.animation.Animation;
 import javafx.animation.FadeTransition;
@@ -171,8 +172,16 @@ public class SchoolFxml {
     }
 
     public void setNickVisualization(String nick) {
+        // search for the player with this nickname in board
+        PlayerColour c = null;
+        for(Player p : this.board.getSitPlayers()){
+            if(p.getNickname() == nick){
+                c = p.getColour();
+            }
+        }
+
         if(this.nick != null){
-            this.nick.setText(nick);
+            this.nick.setText(nick + " - Team: " + c.toString());
         }
     }
 
