@@ -25,8 +25,12 @@ public class DisconnectController implements GUIController {
         if(msg != null) {
             if (msg.length() > 15) {
                 String[] split = msg.split("\\.");
-                titleLabel.setText(split[0]);
-                subtitleLabel.setText(split[1]);
+                if(split[0] != null && split[1] != null) {
+                    titleLabel.setText(split[0]);
+                    subtitleLabel.setText(split[1]);
+                } else {
+                    titleLabel.setText(msg);
+                }
             } else {
                 titleLabel.setText(msg);
             }
