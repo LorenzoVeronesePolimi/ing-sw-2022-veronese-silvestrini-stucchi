@@ -28,6 +28,15 @@ public class BoardAdvanced extends Observable implements Board, Serializable{
     private final Bank bank;
 
 
+    /**
+     * constructor of the board: takes an instance of BoardTwo/Three/Four and adds all the advanced features of the game, such as the bank,
+     * the coins caveau in every school, and the available character cards.
+     * @param boardToExtend instance of the board that is wanted to be extended
+     * @throws ExceededMaxStudentsHallException
+     * @throws StudentNotFoundException
+     * @throws TowerNotFoundException
+     * @throws EmptyCaveauException
+     */
     public BoardAdvanced(BoardAbstract boardToExtend) throws
             ExceededMaxStudentsHallException, StudentNotFoundException, TowerNotFoundException, EmptyCaveauException {
 
@@ -91,6 +100,11 @@ public class BoardAdvanced extends Observable implements Board, Serializable{
         notifyPlayers();
     }
 
+    /**
+     * constructor of the board: builds a copy of a given board abstract
+     * @param boardToCopy BoardTwo/Three/Four that has to be copied (with which toCopy has been built)
+     * @param toCopy boardAdvanced that has to be copied
+     */
     public BoardAdvanced(BoardAbstract boardToCopy, BoardAdvanced toCopy){
         this.board = boardToCopy;
         this.twoExtraPointsFlag = toCopy.twoExtraPointsFlag;
@@ -99,59 +113,124 @@ public class BoardAdvanced extends Observable implements Board, Serializable{
         this.bank = new Bank(toCopy.bank);
     }
 
-    //TODO: remove this method ad set final the extractedCard list...added just for testing
+    //TODO: remove this method and set final the extractedCard list...added just for testing
+
+    /**
+     * method added for testing: sets a given character card as the extracted one
+     * @param c card that is tested
+     */
     public void setExtractedCards(AbstractCharacterCard c){
         extractedCards.clear();
         extractedCards.add(c);
     }
 
-    // For testing
+    /**
+     * method added for testing: sets two given character cards as extracted
+     * @param c1 first card that is tested
+     * @param c2 second card that is tested
+     */
     public void setExtractedCardsTwo(AbstractCharacterCard c1, AbstractCharacterCard c2){
         extractedCards.clear();
         extractedCards.add(c1);
         extractedCards.add(c2);
     }
 
+    /**
+     * getter of the bag
+     * @return the bag
+     */
     public Bag getBag(){return this.board.bag;}
 
+    /**
+     * getter of the bank
+     * @return the bank
+     */
     public Bank getBank() {
         return bank;
     }
 
+    /**
+     * getter of the color to exclude from counting for the computation of the dominance on an archipelago
+     * @return the colour to exclude
+     */
     public SPColour getColourToExclude() {
         return colourToExclude;
     }
 
+    /**
+     * getter of the list of archipelagos
+     * @return the list of archipelagos
+     */
     public List<Archipelago> getArchiList(){
         return new ArrayList<>(this.board.archipelagos);
     }
 
+    /**
+     * getter of the list of schools
+     * @return the list of schools
+     */
     public List<School> getSchools(){return new ArrayList<>(this.board.schools);}
 
+    /**
+     * getter of the list of clouds
+     * @return the list of clouds
+     */
     public List<Cloud> getClouds(){return new ArrayList<>(this.board.clouds);}
 
+    /**
+     * getter of a given archipelago
+     * @param archipelagoIndex index of the archipelago that is wanted to be returned
+     * @return the archipelago of the given index
+     */
     public Archipelago getArchipelago(int archipelagoIndex) {
         return this.board.getArchipelago(archipelagoIndex);
     }
 
+    /**
+     * getter of the number of students for each colour that are placed on a given archipelago
+     * @param archipelagoIndex index of the archipelago of which information is required
+     * @return the map of the number of students for each colour that are placed on a given archipelago
+     */
     public Map<SPColour, Integer> getNumStudentsInArchipelago(int archipelagoIndex) {
         return this.board.getNumStudentsInArchipelago(archipelagoIndex);
     }
 
+    /**
+     * getter of the extracted cards
+     * @return the list of extracted cards
+     */
     public List<AbstractCharacterCard> getExtractedCards(){
         return new ArrayList<>(this.extractedCards);
     }
 
+    /**
+     * method that says if in a given player's hall there is a student of a given colour
+     * @param player is the owner of the school where the student of c colour is supposed to be
+     * @param c colour of student that is being looked for
+     * @return true if in a given player's hall there is a student of a given colour, false otherwise
+     */
     public boolean isStudentInSchoolHall(Player player, SPColour c){
         return this.board.isStudentInSchoolHall(player, c);
     }
 
+    /**
+     * method that moves a student from the bag to a cloud
+     * @throws StudentNotFoundException if the bag has no students anymore
+     * @throws ExceededMaxStudentsCloudException if the cloud is already full
+     */
     @Override
     public void moveStudentBagToCloud() throws StudentNotFoundException, ExceededMaxStudentsCloudException {
         this.board.moveStudentBagToCloud();
         this.notifyPlayers();
     }
 
+    /**
+     * method that moves a student from a player' s hall to a given archipelago
+     * @param player owner of the school from which I want to move the student
+     * @param colour of the student that I want to move
+     * @param archipelagoIndex index of the archipelago where I want to move the student to
+     * @throws StudentNotFoundException if in the hall there is no such student
+     */
     public void moveStudentSchoolToArchipelagos(Player player, SPColour colour, int archipelagoIndex) throws StudentNotFoundException {
         System.out.println("[BoardAdvanced, moveStudentSchoolToArchipelagos]: arriva in adv");
         this.board.moveStudentSchoolToArchipelagos(player, colour, archipelagoIndex);
@@ -159,11 +238,28 @@ public class BoardAdvanced extends Observable implements Board, Serializable{
         this.notifyPlayers();
     }
 
+    /**
+     * method that moves a student from a cloud to a player's hall
+     * @param player
+     * @param cloudIndex
+     * @throws ExceededMaxStudentsHallException
+     */
     public void moveStudentCloudToSchool(Player player, int cloudIndex) throws ExceededMaxStudentsHallException {
         this.board.moveStudentCloudToSchool(player, cloudIndex);
         this.notifyPlayers();
     }
 
+    /**
+     * method that moves a student from the player's hall to his dining room, and moves a coin from the bank to the school caveau if
+     * the student is placed in a spot that is a multiple of 3
+     * @param player owner of the school from which I want to move the student
+     * @param colour of the student that I want to move to the dining room
+     * @throws StudentNotFoundException
+     * @throws ExceededMaxStudentsDiningRoomException
+     * @throws EmptyCaveauException
+     * @throws ProfessorNotFoundException
+     * @throws NoProfessorBagException
+     */
     public void moveStudentHallToDiningRoom(Player player, SPColour colour) throws
             StudentNotFoundException, ExceededMaxStudentsDiningRoomException, EmptyCaveauException, ProfessorNotFoundException,
             NoProfessorBagException {
@@ -186,23 +282,47 @@ public class BoardAdvanced extends Observable implements Board, Serializable{
         notifyPlayers();
     }
 
+    /**
+     * method that moves a given number of students from the bag to a school
+     * @param numStudents number of student that I want to move
+     * @throws ExceededMaxStudentsHallException
+     * @throws StudentNotFoundException
+     */
     public void moveStudentBagToSchool(int numStudents) throws ExceededMaxStudentsHallException, StudentNotFoundException {
         this.board.moveStudentBagToSchool(numStudents);
     }
 
+    /**
+     * method that place mother nature into archipelago 0 during the construction of the board
+     */
     @Override
     public void placeMotherNatureInitialBoard() {
         this.board.placeMotherNatureInitialBoard();
     }
 
+    /**
+     * method that moves mother nature of a given number of positions
+     * @param mnMoves number of archipelagos that I want mother nature to move through
+     */
     public void moveMotherNature(int mnMoves) {
         this.board.moveMotherNature(mnMoves);
     }
 
+    /**
+     * method that moves mother nature on a given archipelago
+     * @param index of the archipelago on which mother nature has to moved
+     */
     public void moveMotherNatureInArchipelagoIndex(int index){
         this.board.moveMotherNatureInArchipelagoIndex(index);
     }
 
+    /**
+     * method that moves the professor of a given colour from its current position to the given destination
+     * @param destinationPlayer owner of the school that I want to move mother the professor to
+     * @param colour of the professor I want to move
+     * @throws ProfessorNotFoundException
+     * @throws NoProfessorBagException
+     */
     public void moveProfessor(Player destinationPlayer, SPColour colour) throws ProfessorNotFoundException, NoProfessorBagException {
         this.board.moveProfessor(destinationPlayer, colour);
         this.notifyPlayers();

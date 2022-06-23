@@ -20,6 +20,14 @@ public class BoardFour extends BoardAbstract implements Serializable {
     private static final long serialVersionUID = 1L;
     protected final Map<Player, Player> teammates;
 
+    /**
+     * constructor of the BoardFour, adds the concept of teammate (managed as a map)
+     * @param players list of players
+     * @throws ExceedingAssistantCardNumberException
+     * @throws StudentNotFoundException
+     * @throws ExceededMaxStudentsCloudException
+     * @throws ExceededMaxStudentsHallException
+     */
     public BoardFour(List<Player> players) throws
             ExceedingAssistantCardNumberException, StudentNotFoundException, ExceededMaxStudentsCloudException, ExceededMaxStudentsHallException {
         super(players);
@@ -57,6 +65,21 @@ public class BoardFour extends BoardAbstract implements Serializable {
         this.teammates = ((BoardFour)toCopy).getTeammates();
     }
 
+    /**
+     * constructor of the BoardFour: builds a copy of a given BoardFour
+     * @param toCopy
+     */
+    public BoardFour(BoardFour toCopy){
+        super(toCopy);
+
+        this.teammates = toCopy.getTeammates();
+    }
+
+    /**
+     * modifies the abstract method, taking into account the teammate aspect
+     * @param currentPlayer player that should conquer the archipelago
+     * @return true if the archipelago can be conquered, false otherwise
+     */
     @Override
     public boolean checkIfConquerable(Player currentPlayer) {
         Archipelago currentArchipelago = this.archipelagos.get(whereIsMotherNature());
@@ -85,6 +108,13 @@ public class BoardFour extends BoardAbstract implements Serializable {
         }
     }
 
+    /**
+     * modifies the abstract method, taking into account the teammate aspect
+     * @param owner player that owned the archipelago
+     * @param challenger player that wants to conquer the archipelago
+     * @param archipelago archipelago on which I want to compute the winner
+     * @return challenger if his team has more influence that the current owner, the current owner otherwise
+     */
     @Override
     public Player computeWinner(Player owner, Player challenger, Archipelago archipelago) {
         int ownerTeamInfluence = this.computeInfluenceOfPlayer(owner, archipelago) + this.computeInfluenceOfPlayer(teammates.get(owner), archipelago);
@@ -98,6 +128,16 @@ public class BoardFour extends BoardAbstract implements Serializable {
     }
 
     // the Player conquers the Archipelago putting his own Towers and removing the previous ones (if present)
+
+    /**
+     * modifies the abstract method, taking into account that the towers of the team are stored just in one of the schools of the team
+     * @param conqueror new owner of the archipelago
+     * @param toConquer old owner of the archipelago
+     * @throws InvalidTowerNumberException
+     * @throws AnotherTowerException
+     * @throws ExceededMaxTowersException
+     * @throws TowerNotFoundException
+     */
     @Override
     protected void conquerArchipelago(Player conqueror, Archipelago toConquer) throws InvalidTowerNumberException, AnotherTowerException, ExceededMaxTowersException, TowerNotFoundException {
         // conqueror's Towers to put on the Archipelago
@@ -110,13 +150,11 @@ public class BoardFour extends BoardAbstract implements Serializable {
         moveTower(conquerorTowers, toConquer);
     }
 
+    /**
+     * getter of the teammates
+     * @return the map of teammates
+     */
     public Map<Player, Player> getTeammates() {
         return teammates;
-    }
-
-    public BoardFour(BoardFour toCopy){
-        super(toCopy);
-
-        this.teammates = toCopy.getTeammates();
     }
 }
