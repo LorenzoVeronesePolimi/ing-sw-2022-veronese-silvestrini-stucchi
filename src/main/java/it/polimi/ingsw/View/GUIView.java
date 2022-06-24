@@ -66,7 +66,7 @@ public class GUIView extends ClientView {
 
     @Override
     public void askReconnect() {
-
+        // we will not implement this
     }
 
     @Override

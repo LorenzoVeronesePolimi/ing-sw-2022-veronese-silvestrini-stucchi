@@ -6,5 +6,5 @@ public enum OUTMessageType {
     ASK_FIRST_PLAYER,
     CONTROLLER_ERROR,
     CLIENT_DISCONNECTION,
-    PING
+    PONG
 }

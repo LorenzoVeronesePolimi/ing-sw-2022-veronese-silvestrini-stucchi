@@ -44,6 +44,9 @@ public abstract class ClientView {
     public void setClientError(boolean err) {
         this.client.setClientError(err);
     }
+    public void enablePinger(boolean en) {
+        this.client.enablePinger(en);
+    }
 
     //TODO: just for test
     public abstract void printCustom(String err);

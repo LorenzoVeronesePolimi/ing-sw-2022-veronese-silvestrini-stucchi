@@ -2,6 +2,7 @@ package it.polimi.ingsw.Server;
 
 import it.polimi.ingsw.Controller.Controller;
 import it.polimi.ingsw.Messages.OUTMessages.OUTMessage;
+import it.polimi.ingsw.Messages.OUTMessages.PongMessage;
 import it.polimi.ingsw.Model.Board.SerializedBoardAbstract;
 
 import java.io.IOException;
@@ -11,6 +12,9 @@ import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 /*
     --- FROM Client TO Controller
@@ -54,6 +58,8 @@ public class SocketClientConnection extends ClientConnection implements Runnable
     private List<OUTMessage> pendingMessage;
     private final ServerView serverView;
 
+    private final ScheduledExecutorService pinger;
+
 
     /**
      * Constructor that initializes some parameters mandatory for the correct communication between Client and Server.
@@ -76,6 +82,7 @@ public class SocketClientConnection extends ClientConnection implements Runnable
             //throw new RuntimeException(e);
             System.out.println("[SocketClientConnection, SocketClientConnection]: error in player connecting");
         }
+        this.pinger = Executors.newSingleThreadScheduledExecutor();
     }
 
     /**
@@ -87,6 +94,7 @@ public class SocketClientConnection extends ClientConnection implements Runnable
     public SocketClientConnection(Server server, Controller controller) {
         this.server = server;
         this.serverView = new ServerView(this, controller);
+        pinger = null;
     }
 
     /**
@@ -102,6 +110,7 @@ public class SocketClientConnection extends ClientConnection implements Runnable
     @Override
     public void run() {
         String read;
+        this.enablePinger(true);
         try {
             // TODO: consider the case of wrong input
             // CLI o GUI
@@ -122,11 +131,15 @@ public class SocketClientConnection extends ClientConnection implements Runnable
 
         } catch (NoSuchElementException e) {
             System.err.println("Error! " + e.getMessage());
+            enablePinger(false);
         } catch (IOException e) {
+            System.out.println("[SocketClientConnection, run]: IOException");
+            enablePinger(false);
             if(server.isActiveConnection(this))
                 server.deregisterConnection(this);
         }catch (ClassNotFoundException e) {
             e.printStackTrace();
+            enablePinger(false);
         }
     }
 
@@ -154,8 +167,11 @@ public class SocketClientConnection extends ClientConnection implements Runnable
             out.writeObject(message);
             out.flush();
         } catch(IOException | NullPointerException e){
-            System.err.println(e.getMessage());
-            System.out.println("errore");
+            System.err.println("[SocketClientConnection, run]: " + e.getMessage());
+            System.out.println("[SocketClientConnection, run]: send exception");
+            this.enablePinger(false);
+            if(server.isActiveConnection(this))
+                server.deregisterConnection(this);
         }
     }
 
@@ -191,7 +207,7 @@ public class SocketClientConnection extends ClientConnection implements Runnable
         try {
             socket.close();
         } catch (IOException e) {
-            System.err.println("Error when closing socket!");
+            System.err.println("[SocketClientConnection, closeConnection]: Error when closing socket!");
         }
         activeConnection = false;
     }
@@ -201,8 +217,8 @@ public class SocketClientConnection extends ClientConnection implements Runnable
      */
     public void close() {
         closeConnection();
-        System.out.println("De-registering client " + this.hashCode());
-        System.out.println("Done!");
+        System.out.println("[SocketClientConnection, close]: De-registering client " + this.hashCode());
+        System.out.println("[SocketClientConnection, close]: Done!");
     }
 
     /**
@@ -219,5 +235,16 @@ public class SocketClientConnection extends ClientConnection implements Runnable
      */
     public void asyncSendModel(SerializedBoardAbstract message){
         new Thread(() -> sendModel(message)).start();
+    }
+
+    public void enablePinger(boolean enabled) {
+        if(pinger != null) {
+            if (enabled) {
+                // ping the client in order to detect socket closed
+                pinger.scheduleAtFixedRate(() -> this.send(new PongMessage()), 0, 500, TimeUnit.MILLISECONDS);
+            } else {
+                pinger.shutdownNow();
+            }
+        }
     }
 }

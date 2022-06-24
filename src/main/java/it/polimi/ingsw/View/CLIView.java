@@ -63,6 +63,7 @@ public class CLIView extends ClientView {
         System.out.println();
         AnsiConsole.systemUninstall();
         System.out.flush();
+        System.exit(0);
     }
 
     @Override

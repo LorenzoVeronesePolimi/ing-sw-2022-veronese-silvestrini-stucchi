@@ -94,7 +94,7 @@ public class ServerView implements Observer<SerializedBoardAbstract> {
                 case "twoExtraPoints":
                     return new MessageCCTwoExtraPoints(serverView.getPlayerNickname());
                 case "Ping":
-                    return new Ping(serverView.getPlayerNickname());
+                    return new PingMessage(serverView.getPlayerNickname());
             }
             throw new NoCharacterCardException();
         }

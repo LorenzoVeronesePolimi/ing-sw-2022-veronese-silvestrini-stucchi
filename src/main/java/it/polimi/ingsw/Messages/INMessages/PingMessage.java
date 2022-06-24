@@ -1,14 +1,11 @@
-package it.polimi.ingsw.Messages.OUTMessages;
+package it.polimi.ingsw.Messages.INMessages;
 
 import it.polimi.ingsw.Controller.Controller;
 import it.polimi.ingsw.Controller.ControllerInput;
 import it.polimi.ingsw.Messages.Enumerations.INMessageType;
-import it.polimi.ingsw.Messages.INMessages.Message;
-import it.polimi.ingsw.View.ClientView;
 
-public class Ping extends Message {
-
-    public Ping(String nick) {
+public class PingMessage extends Message {
+    public PingMessage(String nick) {
         super(INMessageType.PING, nick);
     }
 

@@ -58,7 +58,7 @@ public class Server {
      * Main method executed by the server. It accepts connections and manages first phase messages.
      */
     public void run(){
-        System.out.println("Server is running");
+        System.out.println("[Server, run]: Server is running");
 
         while(true){
             try {
@@ -67,12 +67,12 @@ public class Server {
                 controller = this.createController();
 
                 connections++;
-                System.out.println("Player connecting - " + connections);
+                System.out.println("[Server, run]: Player connecting - " + connections);
                 SocketClientConnection socketConnection = new SocketClientConnection(newSocket, this, controller);
                 socketConnections.add(socketConnection);
 
-                System.out.println("Connection: " + socketConnection.hashCode());
-                System.out.println("List: " + socketConnections.stream().map(x -> x.hashCode()).collect(Collectors.toList()));
+                System.out.println("[Server, run]: Connection: " + socketConnection.hashCode());
+                System.out.println("[Server, run]: List: " + socketConnections.stream().map(x -> x.hashCode()).collect(Collectors.toList()));
 
 
                 if(connections == 1) {
@@ -87,7 +87,7 @@ public class Server {
                     alreadyin++;
                 }
             } catch (IOException e) {
-                System.out.println("Connection Error!");
+                System.out.println("[Server, run]: Connection Error!");
             }
         }
     }
@@ -145,6 +145,7 @@ public class Server {
      * @param c SocketClientConnection of the client that has generated an error.
      */
     public synchronized void deregisterConnection(SocketClientConnection c) {
+        // if a player connected but not in a match (because the match has already begun with other players) tryes to close the connection, we don't affect other players
         if((socketConnections.indexOf(c) >= this.controller.getPlayers().size()) && this.controller.getPlayers().size() > 0) {
             c.close();
             connections--;
@@ -156,14 +157,16 @@ public class Server {
             if(sc != c)
                 sc.send(new MessageClientDisconnection());
 
-            System.out.println("Chiudendo " + sc.hashCode());
+            System.out.println("[Server, deregisterConnection]: Chiudendo " + sc.hashCode());
             sc.close();
         }
 
-
+        // because this method is synchronized, if multiple players loose connection at the same time, the first that enters will block all other connections
+        // by emptying the socketConnections list
         resetServer();
         socketConnections.clear();
         connections = 0;
+        System.out.println("[Server, deregisterConnection]: Server is running");
     }
 
     /**

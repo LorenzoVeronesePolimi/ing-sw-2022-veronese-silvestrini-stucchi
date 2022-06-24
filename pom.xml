@@ -6,7 +6,7 @@
 
   <groupId>it.polimi.ingsw</groupId>
   <artifactId>softeng-GC49</artifactId>
-  <version>ServerApp</version>
+  <version>ClientApp</version>
 
   <name>softeng-GC49</name>
   <!-- FIXME change it to the project's website -->
@@ -189,7 +189,7 @@
               <configuration>
                 <transformers>
                   <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-                    <mainClass>it.polimi.ingsw.ServerApp</mainClass>
+                    <mainClass>it.polimi.ingsw.ClientApp</mainClass>
                   </transformer>
                 </transformers>
               </configuration>
