@@ -248,7 +248,6 @@ public class CharacterCardDialogController {
                 List<String> cardStudentsSelected = new ArrayList<>();
                 List<String> hallStudentsSelected = new ArrayList<>();
                 for(ChoiceBox<String> c : choicesLeft){
-                    System.out.println(c.getValue());
                     if(c.getValue() != null){
                         //cardStudentsSelected.add(c.getSelectionModel().getSelectedItem());
                         cardStudentsSelected.add(c.getValue());
@@ -319,10 +318,6 @@ public class CharacterCardDialogController {
         }
 
         List<String> diningStudents = new ArrayList();
-        for(SPColour c : SPColourString.keySet()){
-            System.out.println(c);
-        }
-        System.out.println(this.playerIndex);
 
         for(SPColour c : SPColourString.keySet()){
             if(this.board.getSchools().get(this.playerIndex).getNumStudentColour(c) > 1){ // add up to two strings of that name
@@ -332,10 +327,6 @@ public class CharacterCardDialogController {
             else if(this.board.getSchools().get(this.playerIndex).getNumStudentColour(c) > 0){
                 diningStudents.add(SPColourString.get(c));
             }
-        }
-
-        for(String a : diningStudents){
-            System.out.println(a);
         }
 
         this.choice1_left.getItems().addAll(hallStudents);

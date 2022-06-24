@@ -1063,7 +1063,7 @@ public class CLIView extends ClientView {
         AnsiConsole.systemUninstall();
     }
 
-    private void showWinner(SerializedBoardAbstract serializedBoardAbstract) {
+    public void showWinner(SerializedBoardAbstract serializedBoardAbstract) {
         AnsiConsole.systemInstall();
         if(serializedBoardAbstract.getNicknameWinner().equals(this.playerNick)) {
             colourWinner();

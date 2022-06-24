@@ -1,0 +1,12 @@
+.parent {
+    -fx-background-color: #4fd780;
+}
+.label {
+    -fx-alignment: center;
+}
+.text-field {
+    -fx-background-color: transparent;
+}
+.txt-color{
+    -fx-text-fill: #999999;
+}

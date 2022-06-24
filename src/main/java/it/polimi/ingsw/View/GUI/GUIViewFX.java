@@ -36,11 +36,13 @@ public class GUIViewFX extends Application {
     private static final String ASSISTANT_CARD = "AssistantCardChoice.fxml";
     private static final String BOARD_FOUR_ADVANCED = "BoardGrid.fxml"; //TODO: to be changed
     private static final String CHARACTER_CARD_DIALOG = "CharacterCardDialog.fxml";
+    private static final String SHOW_WINNER = "ShowWinner.fxml";
     private static final String INTRO_CSS = "Intro.css";
     private static final String LOGIN_CSS = "Login.css";
     private static final String LOADING_CSS = "LoadingCSS.css";
     private static final String BOARD_FOUR_ADVANCED_CSS = "BoardGrid.css"; //TODO: to be changed
     private static final String CHARACTER_CARD_DIALOG_CSS = "CharacterCardDialog.css";
+    private static final String SHOW_WINNER_CSS = "ShowWinner.css";
     private final HashMap<String, Scene> sceneMap = new HashMap<>();
     private final HashMap<String, GUIController> controllerMap = new HashMap<>();
 
@@ -66,7 +68,7 @@ public class GUIViewFX extends Application {
 
     private void setupControllers() {
         // creating an array of scenes (All the scenes of the application)
-        List<String> sceneList = new ArrayList<>(Arrays.asList(INTRO, LOADING, LOGIN, DISCONNECT, ASSISTANT_CARD, BOARD_FOUR_ADVANCED));
+        List<String> sceneList = new ArrayList<>(Arrays.asList(INTRO, LOADING, LOGIN, DISCONNECT, ASSISTANT_CARD, BOARD_FOUR_ADVANCED, SHOW_WINNER));
         try {
             for(String path : sceneList) {
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/" + path)); // prepare the scene
@@ -98,6 +100,10 @@ public class GUIViewFX extends Application {
                     case "BoardGrid.fxml":
                         css = getClass().getResource("/css/" + BOARD_FOUR_ADVANCED_CSS).toExternalForm();
                         sceneMap.get(BOARD_FOUR_ADVANCED).getStylesheets().add(css);
+                        break;
+                    case "ShowWinner.fxml":
+                        css = getClass().getResource("/css/" + SHOW_WINNER_CSS).toExternalForm();
+                        sceneMap.get(SHOW_WINNER).getStylesheets().add(css);
                         break;
                 }
 
@@ -237,6 +243,7 @@ public class GUIViewFX extends Application {
                 break;
 
             case END:
+                this.sceneShowWinner("ShowWinner.fxml", board);
                 break;
 
         }
@@ -273,6 +280,25 @@ public class GUIViewFX extends Application {
             currentController.setCharacterCardsVisualization();
         }
         currentController.setInstructionLabels();
+
+        this.currentScene = sceneMap.get(scene);
+        this.stage.setScene(this.currentScene);
+        this.stage.show();
+    }
+
+    public void sceneShowWinner(String scene, SerializedBoardAbstract board){
+        ShowWinnerController currentController = (ShowWinnerController) controllerMap.get(scene);
+
+        boolean amIWinner = false;
+        String[] winners = board.getNicknameWinner().split("\\*");
+        for(String winner : winners){
+            if(winner.equals(this.client.getNickname())){
+                amIWinner = true;
+                break;
+            }
+        }
+
+        currentController.setVisualization(board.getSitPlayers().size(), board.getNicknameWinner(), amIWinner);
 
         this.currentScene = sceneMap.get(scene);
         this.stage.setScene(this.currentScene);

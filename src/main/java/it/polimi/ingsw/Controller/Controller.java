@@ -209,6 +209,7 @@ public class Controller implements ObserverController<Message>, Serializable {
                     return; //case of first turn, in which clouds are filled immediately
                 } catch (StudentNotFoundException e){ //CASE 2.1 of end of the game
                     gameEndedBag(this.board.getNumStudentsInBag());
+                    this.board.notifyPlayers();
                 }
             }
         }

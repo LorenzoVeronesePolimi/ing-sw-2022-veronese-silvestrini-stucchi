@@ -37,6 +37,7 @@ public abstract class ClientView {
     public abstract void askNickName(List<PlayerColour> list, int numPlayer);
     public abstract void askFirstPlayerInfo();
     public abstract void showBoard(SerializedBoardAbstract serializedBoardAbstract);
+    public abstract void showWinner(SerializedBoardAbstract serializedBoardAbstract);
     public void setClientActive(boolean active) {
         this.client.setActive(active);
     }

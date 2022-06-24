@@ -15,9 +15,10 @@ public class PersistenceHandler {
             FileOutputStream fileOutput = new FileOutputStream(GAME_SAVED_PATH);
             ObjectOutputStream objectOutput = new ObjectOutputStream(fileOutput);
             objectOutput.writeObject(serializedController);
+            objectOutput.close();
         }
         catch (IOException e) {
-            e.printStackTrace();
+            System.out.println("Impossible to save the match");
         }
     }
 

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="700.0" prefWidth="1280.0" styleClass="parent" stylesheets="@../css/LoadingCSS.css" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.View.GUI.Controllers.ShowWinnerController">
+    <children>
+        <Label fx:id="label_winner" alignment="CENTER" contentDisplay="CENTER" layoutX="5.0" layoutY="281.0" prefHeight="50.0" prefWidth="1280.0" text="WinnerName" textAlignment="CENTER" textFill="WHITE">
+            <font>
+                <Font name="Segoe UI Black" size="48.0" />
+            </font>
+        </Label>
+        <Label fx:id="label_intro" layoutX="10.0" layoutY="258.0" prefHeight="22.0" prefWidth="1280.0" text="The Winner is:" textAlignment="CENTER" textFill="WHITE">
+            <font>
+                <Font name="Consolas" size="18.0" />
+            </font>
+        </Label>
+      <Label fx:id="label_phrase" layoutX="10.0" layoutY="370.0" prefHeight="22.0" prefWidth="1280.0" text="Phrase" textAlignment="CENTER" textFill="WHITE">
+         <font>
+            <Font name="Consolas" size="18.0" />
+         </font>
+      </Label>
+    </children>
+</AnchorPane>

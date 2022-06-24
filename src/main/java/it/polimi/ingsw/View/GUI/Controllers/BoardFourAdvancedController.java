@@ -599,9 +599,6 @@ public class BoardFourAdvancedController implements GUIController, Initializable
     }
 
     private int computeMyIndex(SerializedBoardAbstract boardAbstract) {
-        for(Player p : boardAbstract.getSitPlayers()){
-            System.out.println(p.getNickname());
-        }
         int i = 0;
         for(Player p: boardAbstract.getSitPlayers()) {
             if(p.getNickname().equals(this.client.getNickname())) {

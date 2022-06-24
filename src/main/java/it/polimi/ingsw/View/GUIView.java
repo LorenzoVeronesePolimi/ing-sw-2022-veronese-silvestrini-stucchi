@@ -102,30 +102,18 @@ public class GUIView extends ClientView {
         });
     }
 
+    public void showWinner(SerializedBoardAbstract serializedBoardAbstract){
+        Platform.runLater(() -> {
+            //System.out.println("show board (inside)");
+            this.guiViewFX.manageScene(serializedBoardAbstract);
+        });
+    }
+
     //TODO: just for test
     @Override
     public void printCustom(String err) {
 
     }
 
-    public void up(ActionEvent e) {
-        //System.out.println("UP");
-        this.myCircle.setCenterY(this.y -= 10);
-    }
-
-    public void down(ActionEvent e) {
-        //System.out.println("DOWN");
-        this.myCircle.setCenterY(this.y += 10);
-    }
-
-    public void right(ActionEvent e) {
-        //System.out.println("RIGHT");
-        this.myCircle.setCenterX(this.x += 10);
-    }
-
-    public void left(ActionEvent e) {
-        //System.out.println("LEFT");
-        this.myCircle.setCenterX(this.x -= 10);
-    }
 
 }
