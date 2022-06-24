@@ -22,5 +22,6 @@ public enum INMessageType {
     CC_TOWER_NO_VALUE,
     CC_TWO_EXTRA_ISLANDS,
     CC_TWO_EXTRA_POINTS,
-    PING
+    PING,
+    TEST //used for tests
 }
