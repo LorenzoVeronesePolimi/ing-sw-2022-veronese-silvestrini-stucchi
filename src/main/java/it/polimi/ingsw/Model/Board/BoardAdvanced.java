@@ -328,26 +328,60 @@ public class BoardAdvanced extends Observable implements Board, Serializable{
         this.notifyPlayers();
     }
 
+    /**
+     * method that says if the professor of a given colour is placed in any school
+     * @param colour of the professor
+     * @return true if the professor is placed in a school, false otherwise
+     */
     public boolean isProfessorInSchool(SPColour colour) {
         return this.board.isProfessorInSchool(colour);
     }
 
+    /**
+     * method that returns the position of the professor of a given colour
+     * @param colour of the professor
+     * @return the school where the professor is
+     */
     public School whereIsProfessor(SPColour colour) {
         return this.board.whereIsProfessor(colour);
     }
 
+    /**
+     * method that moves the professor of a given color from its current position into the school of the current player
+     * @param currentPlayer is the current player
+     * @param colour of the professor to conquer
+     * @throws ProfessorNotFoundException
+     * @throws NoProfessorBagException
+     */
     public void conquerProfessor(Player currentPlayer, SPColour colour) throws ProfessorNotFoundException, NoProfessorBagException {
         this.board.conquerProfessor(currentPlayer, colour);
     }
 
+    /**
+     * method that gives the current position of mother nature (its archipelago index)
+     * @return the current position of mother nature
+     */
     public int whereIsMotherNature() {
         return this.board.whereIsMotherNature();
     }
 
+    /**
+     * getter of the school of a given player
+     * @param player owner of the school that I want to get
+     * @return the school of a given player
+     */
     public School getPlayerSchool(Player player) {
         return this.board.getPlayerSchool(player);
     }
 
+    /**
+     * method that tries to conquer the archipelago for a given player
+     * @param currentPlayer player that is trying to conquer the archipelago
+     * @throws InvalidTowerNumberException
+     * @throws AnotherTowerException
+     * @throws ExceededMaxTowersException
+     * @throws TowerNotFoundException
+     */
     public void tryToConquer(Player currentPlayer) throws
             InvalidTowerNumberException, AnotherTowerException, ExceededMaxTowersException, TowerNotFoundException {
         int currPosMotherNature = this.board.whereIsMotherNature();
@@ -362,7 +396,12 @@ public class BoardAdvanced extends Observable implements Board, Serializable{
         notifyPlayers();
     }
 
-
+    /**
+     * method that verifies if a player can conquer the archipelago on which is placed mother nature, takes into account also if one of the
+     * cards that modify the influence criteria has been used
+     * @param currentPlayer player that should conquer the archipelago
+     * @return true if the current Player (who moved MotherNature) will conquer the Archipelago, false otherwise
+     */
     public boolean checkIfConquerable(Player currentPlayer){
         Archipelago currentArchipelago = this.board.archipelagos.get(this.board.whereIsMotherNature());
         if(this.board instanceof BoardTwo || this.board instanceof BoardThree) {
@@ -422,6 +461,12 @@ public class BoardAdvanced extends Observable implements Board, Serializable{
         return false;
     }
 
+    /**
+     * method that says if a given archipelago is conquerable, given a list o professors. takes into account the colourToExclude character card
+     * @param currentArchipelago
+     * @param conquerorProfessors
+     * @return true if it's conquerable, false otherwise
+     */
     private boolean setConquerable(Archipelago currentArchipelago, List<Professor> conquerorProfessors) {
         boolean conquerable = false;
         for(Professor p : conquerorProfessors){
@@ -433,20 +478,52 @@ public class BoardAdvanced extends Observable implements Board, Serializable{
         return conquerable;
     }
 
+    /**
+     * method that must be here to correctly implement the interface, the one with the correct parameters is below
+     * @param owner player that owned the archipelago
+     * @param challenger player that wants to conquer the archipelago
+     * @param archipelago archipelago on which I want to compute the winner
+     * @return null
+     */
     public Player computeWinner(Player owner, Player challenger, Archipelago archipelago) {
         return null;
     }
 
+    /**
+     * method that must be here to correctly implement the interface, the one with the correct parameters is below
+     * @param player of whom I want to compute the influence on an archipelago
+     * @param archipelago on which I want to compute the influence of the player
+     * @return 0
+     */
     public int computeInfluenceOfPlayer(Player player, Archipelago archipelago) {
         return 0;
     }
 
+    /**
+     * method that activate the choice of an assistant card
+     * @param usedCards list of assistant cards already used
+     * @param player player that wants to use the assistant card
+     * @param turnPriority number of turn priority that the player has chosen
+     * @throws AssistantCardAlreadyPlayedTurnException if a card with the same priority has been already chosen by one of the opponent during
+     * the same turn
+     * @throws NoAssistantCardException if doesn't exist any assistant card whith such turn priority
+     */
     public void useAssistantCard(List<Integer> usedCards, Player player, int turnPriority) throws AssistantCardAlreadyPlayedTurnException,
             NoAssistantCardException {
         this.board.useAssistantCard(usedCards, player, turnPriority);
         notifyPlayers();
     }
 
+    /**
+     * method that computes which of two players has most influence on an Archipelago
+     * @param owner player that owned the archipelago
+     * @param challenger player that wants to conquer the archipelago
+     * @param archipelago archipelago on which I want to compute the winner
+     * @param twoExtraPointsFlag boolean that signals that the twoExtraPoints character card has been used
+     * @param colourToExclude colour that will not be counted in the computation of the winner, chosen during the usage of the colourToExclude
+     *                        character card
+     * @return the player who has most influence
+     */
     protected Player computeWinner(Player owner, Player challenger, Archipelago archipelago, boolean twoExtraPointsFlag, SPColour colourToExclude){
         if(this.board instanceof BoardTwo || this.board instanceof BoardThree) {
             int ownerInfluence = this.computeInfluenceOfPlayer(owner, archipelago, colourToExclude);
@@ -480,7 +557,14 @@ public class BoardAdvanced extends Observable implements Board, Serializable{
     }
 
 
-    // Returns the influence of a Player on an Archipelago
+    /**
+     * method that computes the influence of a given player on a given archipelago (takes into account if the colourToExclude character card
+     * has been used).
+     * @param player of which is wanted to compute the influence
+     * @param archipelago on which the influence is wanted to be calculated on
+     * @param colourToExclude colour that will be excluded from the computation (can be null)
+     * @return influence of a Player on an Archipelago
+     */
     private int computeInfluenceOfPlayer(Player player, Archipelago archipelago, SPColour colourToExclude){
         int influence = 0;
 
@@ -513,6 +597,16 @@ public class BoardAdvanced extends Observable implements Board, Serializable{
         return influence;
     }
 
+    /**
+     * method that manages the gain of coins when a student is added to a dining room
+     * @param currentSchool school that has placed a student in the dining room
+     * @param numRed number of red students in the dining room
+     * @param numBlue number of blue students in the dining room
+     * @param numGreen number of green students in the dining room
+     * @param numPink number of pink students in the dining room
+     * @param numYellow number of yellow students in the dining room
+     * @throws EmptyCaveauException is there are no more money in the bank
+     */
     private void checkCoinNeed(School currentSchool, int numRed, int numBlue, int numGreen, int numPink,int numYellow) throws
             EmptyCaveauException {
 
@@ -543,14 +637,33 @@ public class BoardAdvanced extends Observable implements Board, Serializable{
         }
     }
 
+    /**
+     * setter of the colour to exclude
+     * @param colourToExclude colour that is wanted to be excluded
+     */
     public void setColourToExclude(SPColour colourToExclude){
         this.colourToExclude = colourToExclude;
     }
 
+    /**
+     * setter of the twoExtraPoints flag (usage of the twoExtraPoints character card)
+     * @param twoExtraPointsFlag true or false
+     */
     public void setTwoExtraPointsFlag(boolean twoExtraPointsFlag) {
         this.twoExtraPointsFlag = twoExtraPointsFlag;
     }
 
+    /**
+     * method that activates the effect of the placeOneStudent character card
+     * @param player player who uses the card
+     * @param chosen student tha has been chosen to be placed in an archipelago
+     * @param archipelago archipelago where the chosen student will be placed
+     * @param indexCard index of the card
+     * @throws StudentNotFoundException
+     * @throws EmptyCaveauException
+     * @throws ExceededMaxNumCoinException
+     * @throws CoinNotFoundException
+     */
     public void usePlaceOneStudent(Player player, SPColour chosen, int archipelago, int indexCard) throws
             StudentNotFoundException , EmptyCaveauException, ExceededMaxNumCoinException, CoinNotFoundException {
 
@@ -566,6 +679,20 @@ public class BoardAdvanced extends Observable implements Board, Serializable{
         notifyPlayers();
     }
 
+    /**
+     * method that activates the effect of the takeProfessorOnEquity character card
+     * @param player player who uses the card
+     * @param indexCard index of the card
+     * @throws EmptyCaveauException
+     * @throws ExceededMaxNumCoinException
+     * @throws CoinNotFoundException
+     * @throws InvalidTowerNumberException
+     * @throws AnotherTowerException
+     * @throws ProfessorNotFoundException
+     * @throws NoProfessorBagException
+     * @throws ExceededMaxTowersException
+     * @throws TowerNotFoundException
+     */
     public void useTakeProfessorOnEquity(Player player, int indexCard) throws
             EmptyCaveauException, ExceededMaxNumCoinException, CoinNotFoundException, InvalidTowerNumberException,
             AnotherTowerException, ProfessorNotFoundException, NoProfessorBagException, ExceededMaxTowersException, TowerNotFoundException {
@@ -581,6 +708,19 @@ public class BoardAdvanced extends Observable implements Board, Serializable{
         notifyPlayers();
     }
 
+    /**
+     * method that activates the effect of the fakeMNMovement character card
+     * @param player player who uses the card
+     * @param fakeMNPosition index of the archipelago on which mother nature has to do the fake movement
+     * @param indexCard index of the card
+     * @throws EmptyCaveauException
+     * @throws ExceededMaxNumCoinException
+     * @throws CoinNotFoundException
+     * @throws InvalidTowerNumberException
+     * @throws AnotherTowerException
+     * @throws ExceededMaxTowersException
+     * @throws TowerNotFoundException
+     */
     public void useFakeMNMovement(Player player, int fakeMNPosition, int indexCard) throws
             EmptyCaveauException, ExceededMaxNumCoinException, CoinNotFoundException, InvalidTowerNumberException,
             AnotherTowerException, ExceededMaxTowersException, TowerNotFoundException {
@@ -596,6 +736,14 @@ public class BoardAdvanced extends Observable implements Board, Serializable{
         notifyPlayers();
     }
 
+    /**
+     * method that activates the effect of the twoExtraIslands character card
+     * @param player player who uses the card
+     * @param indexCard index of the card
+     * @throws EmptyCaveauException
+     * @throws ExceededMaxNumCoinException
+     * @throws CoinNotFoundException
+     */
     public void useTwoExtraIslands(Player player, int indexCard) throws
             EmptyCaveauException, ExceededMaxNumCoinException, CoinNotFoundException{
         System.out.println("[BoardAdvanced, useTwoExtraIslands]: 2extrai" + this.extractedCards.get(indexCard).getCurrentPrice());
@@ -610,6 +758,16 @@ public class BoardAdvanced extends Observable implements Board, Serializable{
         notifyPlayers();
     }
 
+    /**
+     * method that activates the effect of the forbidIsland character card
+     * @param player player that uses the card
+     * @param archipelago archipelago on which a forbid tile will be placed
+     * @param indexCard index of the card
+     * @throws EmptyCaveauException
+     * @throws ExceededMaxNumCoinException
+     * @throws CoinNotFoundException
+     * @throws ExceededNumberForbidFlagException
+     */
     public void useForbidIsland(Player player, int archipelago, int indexCard) throws
             EmptyCaveauException, ExceededMaxNumCoinException, CoinNotFoundException, ExceededNumberForbidFlagException {
         System.out.println("[BoardAdvanced, useForbidIsland]: forbid" + this.extractedCards.get(indexCard).getCurrentPrice());
@@ -624,6 +782,14 @@ public class BoardAdvanced extends Observable implements Board, Serializable{
         notifyPlayers();
     }
 
+    /**
+     * method that activates the effect of the towerNoValue character card
+     * @param player player that uses the card
+     * @param indexCard index of the card
+     * @throws EmptyCaveauException
+     * @throws ExceededMaxNumCoinException
+     * @throws CoinNotFoundException
+     */
     public void useTowerNoValue(Player player, int indexCard) throws
             EmptyCaveauException, ExceededMaxNumCoinException, CoinNotFoundException {
         System.out.println("[BoardAdvanced, useTowerNoValue]: tnov" + this.extractedCards.get(indexCard).getCurrentPrice());
@@ -638,6 +804,19 @@ public class BoardAdvanced extends Observable implements Board, Serializable{
         notifyPlayers();
     }
 
+    /**
+     * method that activates the effect of the ExchangeThreeStudents character card
+     * @param player player that uses the card
+     * @param hallStudents list of students of the hall that will be exchanged
+     * @param exchangeStudents list of students of the card that will be exchanged
+     * @param indexCard index of tha card
+     * @throws EmptyCaveauException
+     * @throws ExceededMaxNumCoinException
+     * @throws CoinNotFoundException
+     * @throws WrongNumberOfStudentsTransferException
+     * @throws StudentNotFoundException
+     * @throws ExceededMaxStudentsHallException
+     */
     public void useExchangeThreeStudents(Player player, List<SPColour> hallStudents, List<SPColour> exchangeStudents, int indexCard) throws
             EmptyCaveauException, ExceededMaxNumCoinException, CoinNotFoundException, WrongNumberOfStudentsTransferException,
             StudentNotFoundException, ExceededMaxStudentsHallException {
@@ -653,6 +832,14 @@ public class BoardAdvanced extends Observable implements Board, Serializable{
         notifyPlayers();
     }
 
+    /**
+     * method that activates the effect of the twoExtraPoints character card
+     * @param player player that uses the card
+     * @param indexCard index of the card
+     * @throws EmptyCaveauException
+     * @throws ExceededMaxNumCoinException
+     * @throws CoinNotFoundException
+     */
     public void useTwoExtraPoints(Player player, int indexCard) throws
             EmptyCaveauException, ExceededMaxNumCoinException, CoinNotFoundException {
         System.out.println("[BoardAdvanced, useTwoExtraPoints]: 2exp" + this.extractedCards.get(indexCard).getCurrentPrice());
@@ -667,6 +854,19 @@ public class BoardAdvanced extends Observable implements Board, Serializable{
         notifyPlayers();
     }
 
+    /**
+     * method that activates the effect of the excludeColourFromCounting character card
+     * @param player player that uses the card
+     * @param colourToExclude colour that will be excluded from counting
+     * @param indexCard index of the card
+     * @throws EmptyCaveauException
+     * @throws ExceededMaxNumCoinException
+     * @throws CoinNotFoundException
+     * @throws InvalidTowerNumberException
+     * @throws AnotherTowerException
+     * @throws ExceededMaxTowersException
+     * @throws TowerNotFoundException
+     */
     public void useExcludeColourFromCounting(Player player, SPColour colourToExclude, int indexCard) throws
             EmptyCaveauException, ExceededMaxNumCoinException, CoinNotFoundException, InvalidTowerNumberException,
             AnotherTowerException, ExceededMaxTowersException, TowerNotFoundException {
@@ -682,6 +882,22 @@ public class BoardAdvanced extends Observable implements Board, Serializable{
         notifyPlayers();
     }
 
+    /**
+     * method that activates the effect of the ExchangeTwoHallDining character card
+     * @param player player that uses the card
+     * @param hallStudents list of students in the hall that will be exchanged
+     * @param diningStudents list of students in dining room that will be excluded
+     * @param indexCard index of the card
+     * @throws EmptyCaveauException
+     * @throws ExceededMaxNumCoinException
+     * @throws CoinNotFoundException
+     * @throws WrongNumberOfStudentsTransferException
+     * @throws ExceededMaxStudentsDiningRoomException
+     * @throws ExceededMaxStudentsHallException
+     * @throws StudentNotFoundException
+     * @throws ProfessorNotFoundException
+     * @throws NoProfessorBagException
+     */
     public void useExchangeTwoHallDining(Player player, List<SPColour> hallStudents, List<SPColour> diningStudents, int indexCard) throws
             EmptyCaveauException, ExceededMaxNumCoinException, CoinNotFoundException, WrongNumberOfStudentsTransferException,
             ExceededMaxStudentsDiningRoomException, ExceededMaxStudentsHallException, StudentNotFoundException, ProfessorNotFoundException, NoProfessorBagException {
@@ -697,6 +913,17 @@ public class BoardAdvanced extends Observable implements Board, Serializable{
         notifyPlayers();
     }
 
+    /**
+     * method that activates the effect of the extraStudentInDining character card
+     * @param player player that uses the card
+     * @param cardToDining colour of the student to place in the dining room
+     * @param indexCard index of the card
+     * @throws EmptyCaveauException
+     * @throws ExceededMaxNumCoinException
+     * @throws CoinNotFoundException
+     * @throws StudentNotFoundException
+     * @throws ExceededMaxStudentsDiningRoomException
+     */
     public void useExtraStudentInDining(Player player, SPColour cardToDining, int indexCard) throws
             EmptyCaveauException, ExceededMaxNumCoinException, CoinNotFoundException, StudentNotFoundException,
             ExceededMaxStudentsDiningRoomException {
@@ -712,6 +939,16 @@ public class BoardAdvanced extends Observable implements Board, Serializable{
         notifyPlayers();
     }
 
+    /**
+     * method that activates the effect of the reduceColourInDining character card
+     * @param player player that uses the card
+     * @param colour colour that will be reduced
+     * @param indexCard index of the card
+     * @throws EmptyCaveauException
+     * @throws ExceededMaxNumCoinException
+     * @throws CoinNotFoundException
+     * @throws StudentNotFoundException
+     */
     public void useReduceColourInDining(Player player, SPColour colour, int indexCard) throws
             EmptyCaveauException, ExceededMaxNumCoinException, CoinNotFoundException, StudentNotFoundException {
         System.out.println("[BoardAdvanced, useReduceColourInDining]: reduce" + this.extractedCards.get(indexCard).getCurrentPrice());
@@ -726,6 +963,14 @@ public class BoardAdvanced extends Observable implements Board, Serializable{
         notifyPlayers();
     }
 
+    /**
+     * method that verifies if a student has enough money to buy the usage of a given card, and if possible makes the payment
+     * @param player player that uses the card
+     * @param card chosen card
+     * @return true if the payment has been done successfully, false otherwise
+     * @throws ExceededMaxNumCoinException
+     * @throws EmptyCaveauException
+     */
     private boolean makePayment(Player player, AbstractCharacterCard card) throws ExceededMaxNumCoinException, EmptyCaveauException {
         School currentSchool = this.board.getPlayerSchool(player);
         System.out.println("[BoardAdvanced, makePayment]: make payment " + card.getCurrentPrice());
@@ -745,6 +990,9 @@ public class BoardAdvanced extends Observable implements Board, Serializable{
         return true;
     }
 
+    /**
+     * method that notifies every change of the board to all the players connected
+     */
     @Override
     public void notifyPlayers() {
         System.out.println("[BoardAdvanced, notifyPlayers]: advanced");

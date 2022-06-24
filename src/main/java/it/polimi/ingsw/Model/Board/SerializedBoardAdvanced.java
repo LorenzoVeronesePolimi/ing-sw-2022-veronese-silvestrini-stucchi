@@ -13,11 +13,23 @@ import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * class for the serialization of the board advanced
+ */
 public class SerializedBoardAdvanced extends SerializedBoardAbstract implements Serializable {
     private static final long serialVersionUID = 1L;
     private SPColour colourToExclude;
     private List<AbstractCharacterCard> extractedCards;
 
+    /**
+     * constructor of the serialized board abstract with complete information
+     * @param archipelagos list of archipelagos with all the information
+     * @param clouds list of clouds with all the information
+     * @param mn mother nature
+     * @param schoolList list of opponent schools
+     * @param colourToExclude colour that has ben excluded form counting
+     * @param extractedCards list of extracted cards
+     */
     public SerializedBoardAdvanced(List<Archipelago> archipelagos, List<Cloud> clouds, MotherNature mn,
                                    List<School> schoolList, SPColour colourToExclude, List<AbstractCharacterCard> extractedCards) {
         super(archipelagos, clouds, mn, schoolList);
@@ -26,6 +38,17 @@ public class SerializedBoardAdvanced extends SerializedBoardAbstract implements 
         this.extractedCards = extractedCards;
     }
 
+
+    /**
+     * constructor of the serialized board abstract with hidden information about the opponent hand of usable assistant cards
+     * @param archipelagos list of archipelagos with all the information
+     * @param clouds list of clouds with all the information
+     * @param mn mother nature
+     * @param schoolList list of opponent schools
+     * @param colourToExclude colour that has ben excluded form counting
+     * @param extractedCards list of extracted cards
+     * @param nickname nick of the player to which the serialized board will arrive
+     */
     public SerializedBoardAdvanced(List<Archipelago> archipelagos, List<Cloud> clouds, MotherNature mn,
                                    List<School> schoolList, SPColour colourToExclude,
                                    List<AbstractCharacterCard> extractedCards, String nickname) {
@@ -35,10 +58,18 @@ public class SerializedBoardAdvanced extends SerializedBoardAbstract implements 
         this.extractedCards = extractedCards;
     }
 
+    /**
+     * getter of the colour that has been excluded from counting
+     * @return colour that has been excluded from counting
+     */
     public SPColour getColourToExclude() {
         return colourToExclude;
     }
 
+    /**
+     * getter of the list of extracted cards
+     * @return list of extracted cards
+     */
     public List<AbstractCharacterCard> getExtractedCards() {
         return extractedCards;
     }
