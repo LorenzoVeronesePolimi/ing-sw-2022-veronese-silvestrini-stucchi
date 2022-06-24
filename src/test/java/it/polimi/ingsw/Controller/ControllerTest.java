@@ -19,7 +19,9 @@ import it.polimi.ingsw.Server.SocketClientConnection;
 import it.polimi.ingsw.Server.ServerView;
 import org.junit.jupiter.api.Test;
 
+import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
 import java.util.*;
 
 import org.junit.jupiter.api.Assertions;
@@ -173,10 +175,13 @@ public class ControllerTest {
         // Second: 1 => 1 to play
         //-----MessageAssistantCard 1-----
         //ERRORS IN FORMAT
-        //Error because of wrong name ("")
-
+        //Error because of wrong name (impossible in format: void)
         MessageAssistantCard m3Err1 = new MessageAssistantCard("", 5, 10);
         Assertions.assertThrows(ControllerException.class, () -> controller.update(m3Err1));
+
+        //Error because of not existing name (even if possible one)
+        MessageAssistantCard m3Err5 = new MessageAssistantCard("IDontExist", 5, 10);
+        Assertions.assertThrows(ControllerException.class, () -> controller.update(m3Err5));
 
         //Error because of wrong motherNatureMovement
         MessageAssistantCard m3Err2 = new MessageAssistantCard("First", 9, 10);
@@ -720,7 +725,6 @@ public class ControllerTest {
         }
 
         //give to p1 all professors to be sure he will win
-
         for(Professor p : controller.getBoard().getPlayerSchool(p2).getProfessors()){
             controller.getBoard().getPlayerSchool(p2).removeProfessor(p.getColour());
         }
@@ -743,118 +747,6 @@ public class ControllerTest {
         System.out.println(controller.getBoard().getPlayerSchool(p1).getProfessors());
         System.out.println(controller.getBoard().getPlayerSchool(p2).getProfessors());
         Assertions.assertEquals(p1.getNickname(), controller.getNicknameWinner());
-
-
-        //**********CASE BOARD NOT ADVANCED (2 players): test ending due to 3 archipelagos**********
-        server.resetServer();
-        ControllerTest.controller = new Controller(server);
-        controller.setUsePersistence(false);
-        //CREATE MATCH
-        MessageCreateMatch mna1 = new MessageCreateMatch("First", "white", 2, false, view1);
-        try {
-            controller.update(mna1);
-        } catch (ControllerException e) {
-            e.printStackTrace();
-        }
-        //ADD PLAYER 2
-        MessageAddPlayer mna2 = new MessageAddPlayer("Second", "black", view2);
-        try {
-            controller.update(mna2);
-        } catch (ControllerException e) {
-            e.printStackTrace();
-        }
-        Assertions.assertEquals(State.PLANNING2, controller.getControllerState().getState());
-
-        //ROUND 1: AC: First -> 1, Second -> 10
-        //-----MessageAssistantCard 1-----
-        MessageAssistantCard mna3 = new MessageAssistantCard("First", 1, 1);
-        try {
-            controller.update(mna3);
-        } catch (ControllerException e) {
-            e.printStackTrace();
-        }
-        Assertions.assertEquals(State.PLANNING2, controller.getControllerState().getState());
-        Assertions.assertEquals("Second", controller.getCurrentSitPlayer().getNickname());
-
-        //-----MessageAssistantCard 2-----
-        //ERRORS IN CONTROLLER
-        MessageAssistantCard mna4 = new MessageAssistantCard("Second", 5, 10);
-        try {
-            controller.update(mna4);
-        } catch (ControllerException e) {
-            e.printStackTrace();
-        }
-        Assertions.assertEquals(State.ACTION1, controller.getControllerState().getState());
-        Assertions.assertEquals("First", controller.getCurrentPlayer().getNickname());
-
-        //ROUND 1: TURN 1: First
-        // Force conquering of ten archipelago, so that 3 will be remained
-        // So I put a student of the colour First will have the professor of
-        SPColourToMove = controller.getBoard().getPlayerSchool(controller.getCurrentPlayer()).getStudentsHall().get(0).getColour();
-        //SPColourToMove is the same as colourToMove but is not a String
-        toAdd = new ArrayList<>();
-        toAdd.add(new Tower(controller.getCurrentPlayer()));
-        controller.getBoard().getArchipelago(0).addStudent(new Student(SPColourToMove));
-        for(int i = 1; i < 11; i++){
-            controller.getBoard().getArchipelago(i).addStudent(new Student(SPColourToMove));
-            toAdd.clear();
-            toAdd.add(new Tower(controller.getCurrentPlayer()));
-            try {
-                controller.getBoard().getArchipelago(i).conquerArchipelago(toAdd);//First is white
-            } catch (InvalidTowerNumberException | AnotherTowerException e) {
-                e.printStackTrace();
-            }
-        }
-
-        //-----MessageStudentHallToDiningRoom 1-----
-        // choose a Student which exists
-        colourToMove = mapSPColourToString(controller.getBoard().getPlayerSchool(controller.getCurrentPlayer()).getStudentsHall().get(0).getColour());
-        MessageStudentHallToDiningRoom mna5 = new MessageStudentHallToDiningRoom(controller.getCurrentPlayer().getNickname(), colourToMove);
-        Assertions.assertEquals(controller.getNumStudentsToMoveCurrent(), 3);
-        try {
-            controller.update(mna5);
-        } catch (ControllerException e) {
-            e.printStackTrace();
-        }
-        Assertions.assertEquals(controller.getNumStudentsToMoveCurrent(), 2);
-        Assertions.assertEquals(State.ACTION1, controller.getControllerState().getState());
-
-        //-----MessageStudentHallToDiningRoom 2-----
-        // choose a Student which exists
-        colourToMove = mapSPColourToString(controller.getBoard().getPlayerSchool(controller.getCurrentPlayer()).getStudentsHall().get(0).getColour());
-
-        MessageStudentHallToDiningRoom mna6 = new MessageStudentHallToDiningRoom(controller.getCurrentPlayer().getNickname(), colourToMove);
-        Assertions.assertEquals(controller.getNumStudentsToMoveCurrent(), 2);
-        try {
-            controller.update(mna6);
-        } catch (ControllerException e) {
-            e.printStackTrace();
-        }
-        Assertions.assertEquals(controller.getNumStudentsToMoveCurrent(), 1);
-        Assertions.assertEquals(State.ACTION1, controller.getControllerState().getState());
-
-        //-----MessageStudentToArchipelago-----
-        // choose a Student which exists
-        colourToMove = mapSPColourToString(controller.getBoard().getPlayerSchool(controller.getCurrentPlayer()).getStudentsHall().get(0).getColour());
-
-        MessageStudentToArchipelago mna7 = new MessageStudentToArchipelago(controller.getCurrentPlayer().getNickname(), colourToMove, 10);
-        Assertions.assertEquals(controller.getNumStudentsToMoveCurrent(), 1);
-        try {
-            controller.update(mna7);
-        } catch (ControllerException e) {
-            e.printStackTrace();
-        }
-        Assertions.assertEquals(controller.getNumStudentsToMoveCurrent(), 3);
-        Assertions.assertEquals(State.ACTION2, controller.getControllerState().getState());
-
-        //-----MessageMoveMotherNature-----
-        MessageMoveMotherNature mna8 = new MessageMoveMotherNature(controller.getCurrentPlayer().getNickname(), 0);
-        try {
-            controller.update(mna8);
-        } catch (ControllerException e) {
-            e.printStackTrace();
-        }
-        Assertions.assertEquals(State.END, controller.getControllerState().getState());
 
 
 
@@ -1275,13 +1167,48 @@ public class ControllerTest {
 
 
 
-        //**********TEST PERSISTENCE (4 players)**********
+        //**********TEST PERSISTENCE: not existing match (4 players)**********
+        File file = new File("game_saved.bless");
+        try {
+            Files.deleteIfExists(file.toPath());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         List<String> playersPersistence = new ArrayList<>();
         playersPersistence.add("First");
         playersPersistence.add("Second");
-        playersPersistence.add("Third");
-        playersPersistence.add("Fourth");
         setMatch(playersPersistence, false, true);
+        makeParametricRound(false, new int[]{1, 2}, new String[]{"First", "Second"});
+
+        //**********TEST PERSISTENCE: existing match, can restore since same nicknames (2 players)**********
+        setMatch(playersPersistence, false, true);
+
+        //**********TEST PERSISTENCE: existing match, can't restore since different nicknames (2 players)**********
+        playersPersistence.clear();
+        playersPersistence.add("First1");
+        playersPersistence.add("Second2");
+        setMatch(playersPersistence, false, true);
+
+        //**********TEST PERSISTENCE(ADVANCED): not existing match (4 players)**********
+        file = new File("game_saved.bless");
+        try {
+            Files.deleteIfExists(file.toPath());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        playersPersistence.clear();
+        playersPersistence.add("First");
+        playersPersistence.add("Second");
+        setMatch(playersPersistence, true, true);
+        makeParametricRound(false, new int[]{1, 2}, new String[]{"First", "Second"});
+
+        //**********TEST PERSISTENCE: existing match, can restore since same nicknames (2 players)**********
+        setMatch(playersPersistence, true, true);
+
+        //**********TEST PERSISTENCE: existing match, can't restore since different difficulty (2 players)**********
+        setMatch(playersPersistence, false, true);
+
+
 
         //**********TEST BOARD TWO NOT ADVANCED**********
         for(int i = 0; i < 2; i++) {

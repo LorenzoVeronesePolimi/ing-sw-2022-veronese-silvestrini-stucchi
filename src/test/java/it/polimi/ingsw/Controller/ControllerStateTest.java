@@ -43,6 +43,7 @@ class ControllerStateTest {
         assertTrue(controllerState.checkState(INMessageType.CC_TWO_EXTRA_POINTS));
         assertTrue(controllerState.checkState(INMessageType.CC_TWO_EXTRA_ISLANDS));
         assertTrue(controllerState.checkState(INMessageType.PING));
+        assertFalse(controllerState.checkState(INMessageType.TEST));
 
         assertFalse(controllerState.checkState(INMessageType.CREATE_MATCH));
 

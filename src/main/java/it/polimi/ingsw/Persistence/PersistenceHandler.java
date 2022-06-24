@@ -27,13 +27,11 @@ public class PersistenceHandler {
 
         try {
             FileInputStream fileInput = new FileInputStream(GAME_SAVED_PATH);
-
             ObjectInputStream objectInput = new ObjectInputStream(fileInput);
-
             serializedController = (SerializedController) objectInput.readObject();
+            objectInput.close();
 
             return serializedController.getController();
-
         } catch (IOException | ClassNotFoundException ex) {
             System.out.println("Save file doesn't exists, or error during it's opening: no match to recover");
             return null;

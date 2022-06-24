@@ -199,7 +199,6 @@ public class Controller implements ObserverController<Message>, Serializable {
                 try {
                     if(isAdvanced())
                         this.boardAdvanced.moveStudentBagToCloud();
-
                     else
                         this.board.moveStudentBagToCloud();
                     if(this.board.getBag().getNumStudents() == 0){ // last student extracted: game will end at the end of the round
@@ -268,7 +267,7 @@ public class Controller implements ObserverController<Message>, Serializable {
             case "black":
                 return PlayerColour.BLACK;
             case "gray":
-                return PlayerColour.GRAY; //TODO: test
+                return PlayerColour.GRAY;
         }
         return null; //impossible
     }
@@ -311,7 +310,7 @@ public class Controller implements ObserverController<Message>, Serializable {
             if(getCurrentSitPlayer() == player){
                 return true;
             }
-        } catch(NoPlayerException ex){ //TODO: test
+        } catch(NoPlayerException ex){
             return false;
         }
         return false;
@@ -323,35 +322,15 @@ public class Controller implements ObserverController<Message>, Serializable {
     private void initMatch(){
         this.sitPlayers.addAll(this.players);
         this.precomputedPlayer = this.sitPlayers.get(0);
-        
-        /*if(numPlayers==4){
-            if(!players.get(0).getColour().equals(players.get(1).getColour())){
-                Player park;
-                if(!players.get(0).getColour().equals(players.get(2).getColour())){//TODO: test
-                    park = players.remove(3);
-                    players.add(players.size()-1,players.remove(1));
-                }
-                else{//TODO: test
-                    park = players.remove(2);
-                    players.add(players.size()-2,players.remove(1));
-                }
-                players.add(1, park);
-            }
-            /*
-            this.sitPlayers.addAll(this.players);
-            this.precomputedPlayer = this.sitPlayers.get(0);
-             */
-        /*}*/
 
         BoardFactory factory = new BoardFactory(this.players);
         this.board = factory.createBoard();
 
         if(this.advanced){
-            //TODO: surrounded with try catch just to remove errors. It needs to be checked before leaving it like that
             try {
                 this.boardAdvanced = new BoardAdvanced(this.board);
             } catch (ExceededMaxStudentsHallException | StudentNotFoundException | TowerNotFoundException | EmptyCaveauException e) {
-                e.printStackTrace();//TODO: test
+                e.printStackTrace(); //impossible since it would be an error of Model
             }
         }
 
@@ -466,6 +445,12 @@ public class Controller implements ObserverController<Message>, Serializable {
             return false;
         }
 
+        if(this.numPlayers == 4){
+            if(colourFirstPlayer == PlayerColour.GRAY){
+                return false; //TODO: test (put in integrity)
+            }
+        }
+
         Player player = new Player(message.getNickname(), colourFirstPlayer);
         this.players.add(player);
         serverView.setPlayerNickname(message.getNickname());
@@ -496,6 +481,10 @@ public class Controller implements ObserverController<Message>, Serializable {
 
         // Check colour not already chosen (or chosen only one time for GameFour)
         if(this.numPlayers == 4){
+            if(colour == PlayerColour.GRAY){
+                return false; //TODO: test (put in integrity)
+            }
+            /*
             long numSameColour = 0;
             // check for how many player already have the chosen colour
             numSameColour = this.players.stream().filter(x -> x.getColour().equals(colour)).count();
@@ -520,7 +509,7 @@ public class Controller implements ObserverController<Message>, Serializable {
             // check is the chosen colour has already been chosen by two players
             if(numSameColour >= 2){
                 return false;//TODO: test
-            }
+            }*/
         }
         else{
             if(this.players.stream().anyMatch(x -> x.getColour().equals(colour)))
@@ -546,7 +535,8 @@ public class Controller implements ObserverController<Message>, Serializable {
                 for (Player p : recoveredController.getPlayers()) {
                     recoveredNicknames.add(p.getNickname());
                 }
-                if (currentNicknames.containsAll(recoveredNicknames)) {
+                boolean recoveredIsAdvanced = recoveredController.isAdvanced();
+                if (currentNicknames.containsAll(recoveredNicknames) && recoveredNicknames.containsAll(currentNicknames) && (recoveredIsAdvanced == this.advanced)) {
                     restoreController(recoveredController);
                     System.out.println("[Controller, manageAddPlayer: restoring match]: init match");
                     this.addBoardObserver();
@@ -555,11 +545,11 @@ public class Controller implements ObserverController<Message>, Serializable {
                         this.boardAdvanced.notifyPlayers();
                     }
                     else{
-                        this.board.notifyPlayers();//TODO: test
+                        this.board.notifyPlayers();
                     }
                 }
                 else{ // start from zero: no need to restore (different players' nicknames)
-                    this.initMatch();//TODO: test
+                    this.initMatch();
                     this.precomputedState = State.PLANNING1;
                     controllerState.setState(State.PLANNING1);
                 }
@@ -611,12 +601,12 @@ public class Controller implements ObserverController<Message>, Serializable {
             else{
                 board.useAssistantCard(this.usedCards, getCurrentSitPlayer(), turnPriority);
             }
-        } catch(AssistantCardAlreadyPlayedTurnException | NoAssistantCardException ex){//TODO: test
+        } catch(AssistantCardAlreadyPlayedTurnException | NoAssistantCardException ex){ // impossible: controllerIntegrity blocks this //TODO: test
             this.iteratorAC --;
             this.precomputedPlayer = revertErrorPlayer; // reverting the error in precompute
             System.out.println("[Controller, manageAssistantCard]: catch");
             return false;
-        } // card already used or no AssistantCard present
+        }
 
         this.gameEndedAssistantCards(this.getCurrentSitPlayer().getHandLength());
 
@@ -668,7 +658,7 @@ public class Controller implements ObserverController<Message>, Serializable {
 
         if(this.numStudentsToMoveCurrent == 1 || // all possible Students are going to be moved
                 this.board.getPlayerSchool(getCurrentPlayer()).getStudentsHall().size() == 1){
-            this.precomputedState = State.ACTION2;//TODO: test
+            this.precomputedState = State.ACTION2;
         }
 
         if(controllerIntegrity.checkStudentHallToDiningRoom(getCurrentPlayer(), studentColour)){
@@ -805,7 +795,6 @@ public class Controller implements ObserverController<Message>, Serializable {
             this.precomputedState = State.ACTION2;
             return false;
         } catch (TowerNotFoundException e){ //TODO: ok? No towers left, so I Win
-            System.out.println("partita finitaaaaaaaaaaaaaaaf");
             this.precomputedState = State.END;
             controllerState.setState(State.END);
             if(this.numPlayers < 4){
@@ -917,12 +906,13 @@ public class Controller implements ObserverController<Message>, Serializable {
                 controllerState.setState(State.ACTION1);
             }
 
-            PersistenceHandler persistenceHandler = new PersistenceHandler();
-            if(controllerState.getState() == State.END){ //if match has ended no need to save
-                persistenceHandler.deleteMatch();
-            }
-            else{
-                persistenceHandler.saveMatch(this); //save match
+            if(this.usePersistence) {
+                PersistenceHandler persistenceHandler = new PersistenceHandler();
+                if (controllerState.getState() == State.END) { //if match has ended no need to save
+                    persistenceHandler.deleteMatch();
+                } else {
+                    persistenceHandler.saveMatch(this); //save match
+                }
             }
 
             //TODO: remove some card effects (colourtoexclude, towernovalue...)
