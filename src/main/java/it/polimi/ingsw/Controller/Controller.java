@@ -323,7 +323,7 @@ public class Controller implements ObserverController<Message>, Serializable {
         this.sitPlayers.addAll(this.players);
         this.precomputedPlayer = this.sitPlayers.get(0);
         
-        if(numPlayers==4){
+        /*if(numPlayers==4){
             if(!players.get(0).getColour().equals(players.get(1).getColour())){
                 Player park;
                 if(!players.get(0).getColour().equals(players.get(2).getColour())){//TODO: test
@@ -340,7 +340,7 @@ public class Controller implements ObserverController<Message>, Serializable {
             this.sitPlayers.addAll(this.players);
             this.precomputedPlayer = this.sitPlayers.get(0);
              */
-        }
+        /*}*/
 
         BoardFactory factory = new BoardFactory(this.players);
         this.board = factory.createBoard();
@@ -359,7 +359,7 @@ public class Controller implements ObserverController<Message>, Serializable {
         controllerIntegrity.setAdvanced(this.advanced);
 
         //set number of Students to move at each ACTION1
-        if(this.players.size() == 3){//TODO: test
+        if(this.players.size() == 3){
             this.numStudentsToMove = NUM_STUDENTS_TO_MOVE_THREE_PLAYERS;
             this.numStudentsToMoveCurrent = NUM_STUDENTS_TO_MOVE_THREE_PLAYERS;
         } else{
@@ -647,7 +647,7 @@ public class Controller implements ObserverController<Message>, Serializable {
             this.precomputedPlayer = this.sitPlayers.get(this.computeNextACIndex());
         }
         else{
-            List<Player> precomputedNextPlayersList = precomputeTurnOrder(this.players, turnPriority); //TODO: there was thi.players before
+            List<Player> precomputedNextPlayersList = precomputeTurnOrder(this.sitPlayers, turnPriority); //TODO: there was thi.players before
             this.precomputedPlayer = precomputedNextPlayersList.get(0);
             this.precomputedState = State.ACTION1;
         }
