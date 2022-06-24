@@ -171,17 +171,9 @@ public class SchoolFxml {
         }
     }
 
-    public void setNickVisualization(String nick) {
-        // search for the player with this nickname in board
-        PlayerColour c = null;
-        for(Player p : this.board.getSitPlayers()){
-            if(p.getNickname() == nick){
-                c = p.getColour();
-            }
-        }
-
+    public void setNickVisualization(String nick, PlayerColour colour) {
         if(this.nick != null){
-            this.nick.setText(nick + " - Team: " + c.toString());
+            this.nick.setText(nick + " - Team: " + colour.toString());
         }
     }
 

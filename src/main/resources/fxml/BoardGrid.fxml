@@ -472,7 +472,10 @@
                </image>
             </ImageView>
             <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="30.0" layoutX="379.0" layoutY="159.0" stroke="BLACK" strokeType="INSIDE" width="92.0" />
-            <Label fx:id="opponent3_coins" layoutX="412.0" layoutY="159.0" prefHeight="29.0" prefWidth="58.0" />
+            <Label fx:id="opponent3_coins" layoutX="412.0" layoutY="159.0" prefHeight="29.0" prefWidth="58.0">
+               <font>
+                  <Font name="Segoe UI Black" size="12.0" />
+               </font></Label>
             <ImageView fitHeight="29.0" fitWidth="30.0" layoutX="379.0" layoutY="159.0" preserveRatio="true">
                <image>
                   <Image url="@../images/Coin.png" />
