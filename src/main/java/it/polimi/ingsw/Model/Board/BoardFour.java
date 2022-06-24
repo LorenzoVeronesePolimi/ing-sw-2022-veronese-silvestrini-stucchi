@@ -36,11 +36,68 @@ public class BoardFour extends BoardAbstract implements Serializable {
         this.clouds = new ArrayList<>();
 
         teammates = new HashMap<>();
+        List<Player> team1 = new ArrayList<>();
+        List<Player> team2 = new ArrayList<>();
+        for(Player p : players){
+            School s;
+            if(team1.size() == 0){
+                team1.add(p);
+                s = new School(team1.get(0), 7, 8);
+                this.schools.add(s);
+                this.playerSchool.put(p, s);
+            }
+            else{
+                if(p.getColour() == team1.get(0).getColour()){
+                    team1.add(p);
+                    s = new School(team1.get(1), 7, 0);
+                    this.schools.add(s);
+                    this.playerSchool.put(p, s);
+                }
+                else{
+                    team2.add(p);
+                    if(team2.size() == 1){
+                        s = new School(team2.get(0), 7, 8);
+                        this.schools.add(s);
+                        this.playerSchool.put(p, s);
+                    }
+                    else{
+                        s = new School(team2.get(1), 7, 0);
+                        this.schools.add(s);
+                        this.playerSchool.put(p, s);
+                    }
+
+
+                }
+            }
+        }
+        teammates.put(team1.get(0), team1.get(1));
+        teammates.put(team1.get(1), team1.get(0));
+        teammates.put(team2.get(0), team2.get(1));
+        teammates.put(team2.get(1), team2.get(0));
+        /*
         teammates.put(players.get(0), players.get(1));
         teammates.put(players.get(1), players.get(0));
         teammates.put(players.get(2), players.get(3));
-        teammates.put(players.get(3), players.get(2));
+        teammates.put(players.get(3), players.get(2));*/
 
+        /*
+        for(int i = 0; i < 2; i++){
+            School s1;
+            School s2;
+
+            if(i == 0){
+                s1 = new School(team1.get(0), 7, 8);
+                s2 = new School(team2.get(0), 7, 8);
+                this.schools.add(s1);
+                this.schools.add()
+            }
+            else{
+                s1 = new School(team1.get(1), 7, 0);
+                s2 = new School(team2.get(2), 7, 0);
+            }
+
+
+        }
         //creation of a map player -> school
         for (int i = 0; i < players.size(); i++) {
             School s;
@@ -55,6 +112,9 @@ public class BoardFour extends BoardAbstract implements Serializable {
             this.schools.add(s);
             this.playerSchool.put(players.get(i), s);
             this.clouds.add(cloud);
+        }*/
+        for(int i = 0; i < 4; i++){
+            this.clouds.add(new Cloud(3));
         }
         super.moveStudentBagToCloud();
         super.moveStudentBagToSchool(7);
