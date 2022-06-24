@@ -79,24 +79,7 @@ public class BoardFour extends BoardAbstract implements Serializable {
         teammates.put(players.get(1), players.get(0));
         teammates.put(players.get(2), players.get(3));
         teammates.put(players.get(3), players.get(2));*/
-
         /*
-        for(int i = 0; i < 2; i++){
-            School s1;
-            School s2;
-
-            if(i == 0){
-                s1 = new School(team1.get(0), 7, 8);
-                s2 = new School(team2.get(0), 7, 8);
-                this.schools.add(s1);
-                this.schools.add()
-            }
-            else{
-                s1 = new School(team1.get(1), 7, 0);
-                s2 = new School(team2.get(2), 7, 0);
-            }
-
-
         }
         //creation of a map player -> school
         for (int i = 0; i < players.size(); i++) {

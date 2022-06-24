@@ -34,10 +34,9 @@ public class PersistenceHandler {
             return serializedController.getController();
 
         } catch (IOException | ClassNotFoundException ex) {
-            ex.printStackTrace();
+            System.out.println("Save file doesn't exists, or error during it's opening: no match to recover");
+            return null;
         }
-
-        return null;
     }
 
     public void deleteMatch() {
