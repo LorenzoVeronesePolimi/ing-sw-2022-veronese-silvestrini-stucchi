@@ -7,6 +7,7 @@ import it.polimi.ingsw.View.GUI.GUIViewFX;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
 import javafx.scene.shape.Circle;
 import javafx.stage.Stage;
 
@@ -39,9 +40,16 @@ public class GUIView extends ClientView {
 
     @Override
     public void printErrorMessage(String err) {
-        Platform.runLater(() -> {
-            this.guiViewFX.sceneClientDisconnect(err);
-        });
+        if(err.equals("Controller error")) {
+            err = "You made an error, retry!";
+            String finalErr = err;
+            Platform.runLater(() -> {
+                this.guiViewFX.sceneAlert(finalErr, Alert.AlertType.ERROR);
+            });
+        } else {
+            this.clientDisconnectionEnd();
+        }
+
     }
 
     @Override

@@ -38,7 +38,7 @@ public abstract class AbstractCharacterCard implements Serializable {
      */
     public void updatePrice(Coin coin){
         addedPrice.add(coin);
-    }
+    }   // TODO: update only one time the price?
 
     /**
      *
