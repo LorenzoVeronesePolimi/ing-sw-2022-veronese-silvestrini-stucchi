@@ -23,10 +23,18 @@ public class CLIView extends ClientView {
     private String playerNick;
     private String TAB = "    ";
 
+    /**
+     * constructor of the class
+     * @param client owner of this CLI view
+     */
     public CLIView(Client client) {
         super(client);
     }
 
+    /**
+     * method that prints an error
+     * @param err error to be printed
+     */
     @Override
     public void printErrorMessage(String err) {
         AnsiConsole.systemInstall();
@@ -37,6 +45,10 @@ public class CLIView extends ClientView {
         System.out.flush();
     }
 
+    /**
+     * method that prints a message
+     * @param msg message to be printed
+     */
     public void printCustom(String msg) {
         AnsiConsole.systemInstall();
         printLines(msg);
@@ -44,6 +56,10 @@ public class CLIView extends ClientView {
         System.out.flush();
     }
 
+    /**
+     * message that prints a line of "-" of the same size of a message
+     * @param msg
+     */
     private void printLines(String msg) {
         for(int i = 0; i < msg.length(); i++)
             System.out.print("-");
@@ -56,6 +72,9 @@ public class CLIView extends ClientView {
         System.out.println();
     }
 
+    /**
+     * method that ends a client view
+     */
     public void endView() {
         AnsiConsole.systemInstall();
         System.out.println();
@@ -66,6 +85,9 @@ public class CLIView extends ClientView {
         System.exit(0);
     }
 
+    /**
+     * method that disconnect a client
+     */
     @Override
     public void clientDisconnectionEnd() {
         AnsiConsole.systemInstall();
@@ -75,6 +97,9 @@ public class CLIView extends ClientView {
         AnsiConsole.systemUninstall();
     }
 
+    /**
+     * method that asks a client if he wants to reconnect to the server, after the disconnection of another client from the game
+     */
     public void askReconnect() {
         String response;
 
@@ -94,6 +119,9 @@ public class CLIView extends ClientView {
         AnsiConsole.systemUninstall();
     }
 
+    /**
+     * method that asks a client if he wants to play through a CLI or GUI view
+     */
     @Override
     public void askCLIorGUI() {
         String response;
@@ -113,6 +141,11 @@ public class CLIView extends ClientView {
         }
     }
 
+    /**
+     * method that asks a client which nickname and colour (among the available one) he wants to use
+     * @param chosenColourList list of available colours
+     * @param numPlayer number of players of the game
+     */
     @Override
     public void askNickName(List<PlayerColour> chosenColourList, int numPlayer) {
         String nickname;
@@ -211,6 +244,10 @@ public class CLIView extends ClientView {
         this.client.setNickname(nickname);
     }
 
+    /**
+     * method that asks the first player who connects to the server his nickname and colour, how many players we want the game to contain,
+     * and the game mode (advanced or standard)
+     */
     @Override
     public void askFirstPlayerInfo() {
         String nickname;
@@ -270,6 +307,10 @@ public class CLIView extends ClientView {
         this.client.setNickname(nickname);
     }
 
+    /**
+     * method that prints the board information every time something is updated in the model board
+     * @param serializedBoardAbstract serialized board that is notified by the model
+     */
     @Override
     public void showBoard(SerializedBoardAbstract serializedBoardAbstract) {
         AnsiConsole.systemInstall();
@@ -327,6 +368,10 @@ public class CLIView extends ClientView {
         System.out.flush();
     }
 
+    /**
+     * method that prints whose turn is it at the moment
+     * @param serializedBoardAbstract
+     */
     private void printWaitTurn(SerializedBoardAbstract serializedBoardAbstract) {
         AnsiConsole.systemInstall();
         System.out.print(ANSI_GREEN);
@@ -344,6 +389,10 @@ public class CLIView extends ClientView {
         System.out.flush();
     }
 
+    /**
+     * method that changes the phase of the round
+     * @param serializedBoardAbstract serialized board notified by the model
+     */
     private void manageNextMove(SerializedBoardAbstract serializedBoardAbstract) {
         //System.out.println("State: " + serializedBoardAbstract.getCurrentState());
         switch(serializedBoardAbstract.getCurrentState()){
@@ -366,7 +415,9 @@ public class CLIView extends ClientView {
         }
     }
 
-    // This asks the player what AssistantCard does he want to use
+    /**
+     * method that asks the player what AssistantCard does he want to use
+     */
     private void askAssistantCard(){
         int[] cardsMotherNatureMoves= {1, 1, 2, 2, 3, 3, 4, 4, 5, 5};
         String response;
@@ -389,7 +440,10 @@ public class CLIView extends ClientView {
         client.asyncWriteToSocket("assistantCard " + cardsMotherNatureMoves[turnPriority - 1] + " " + turnPriority);
     }
 
-    // This asks the player to move a student during the ACTION1 state
+    /**
+     * method that asks the player to move a student during the ACTION1 state
+     * @param serializedBoardAbstract serialized board notified by the model
+     */
     private void askMoveStudents(SerializedBoardAbstract serializedBoardAbstract){
         Set<String> possibleColours = new HashSet<String>();
         possibleColours.add("pink"); possibleColours.add("red"); possibleColours.add("yellow"); possibleColours.add("blue"); possibleColours.add("green");
@@ -452,6 +506,12 @@ public class CLIView extends ClientView {
         AnsiConsole.systemUninstall();
     }
 
+    /**
+     * method that checks that the input given by the user is admissible
+     * @param serializedBoardAbstract serialized board notified by the model
+     * @param command input given by the user
+     * @return true if the command is admissible, false otherwise
+     */
     private boolean checkStudentInput(SerializedBoardAbstract serializedBoardAbstract, String command) {
         if(serializedBoardAbstract.getType().equals("advanced")) {
             return !command.equalsIgnoreCase("DiningRoom") && !command.equalsIgnoreCase("Archipelago")
@@ -461,6 +521,11 @@ public class CLIView extends ClientView {
         }
     }
 
+    /**
+     * method that asks the player which character card he wants to use, or if he doesn't want to use any of them anymore
+     * @param serializedBoardAdvanced serialized board notified by the model
+     * @return the name of the chosen card, "ok" is none of the cards is chosen
+     */
     private String askCharacterCard(SerializedBoardAdvanced serializedBoardAdvanced) {
         String card;
 
@@ -482,6 +547,13 @@ public class CLIView extends ClientView {
         }
     }
 
+    /**
+     * method that checks if the chosen card in input is one of the extracted one (are ok also a great number of shortcuts, at least
+     * the most intuitive one)
+     * @param serializedBoardAdvanced serialized board notified by the model
+     * @param card user choice of card given in input
+     * @return true if the input is admissible, false otherwise
+     */
     private boolean checkCharacterChoice(SerializedBoardAdvanced serializedBoardAdvanced, String card) {
         List<AbstractCharacterCard> extracted = serializedBoardAdvanced.getExtractedCards();
 
@@ -596,6 +668,11 @@ public class CLIView extends ClientView {
         return false;
     }
 
+    /**
+     * method that manages the usage of the chosen card
+     * @param serializedBoardAdvanced serialized board notified by the model
+     * @param card user choice of card given in input
+     */
     private void manageCard(SerializedBoardAdvanced serializedBoardAdvanced, String card) {
         List<AbstractCharacterCard> extracted = serializedBoardAdvanced.getExtractedCards();
 
@@ -698,6 +775,12 @@ public class CLIView extends ClientView {
     }
 
     //TODO: for some cards add the colour check
+
+    /**
+     * method that asks information for the exchangeThreeStudents card
+     * @param ex3s exchangeThreeStudents card
+     * @param school list of students in the hall
+     */
     private void askExchangeThreeStudents(ExchangeThreeStudents ex3s, School school) {
         List<String> cardStudents = new ArrayList<>();
         List<String> hallStudents = new ArrayList<>();
@@ -727,6 +810,10 @@ public class CLIView extends ClientView {
                 hallStudents.get(0) + " " + hallStudents.get(1) + " " + hallStudents.get(2));
     }
 
+    /**
+     * method that asks information for the exchangeTwoHallDining card
+     * @param school school in which the exchange takes place
+     */
     private void askExchangeTwoHallDining(School school) {
         List<String> diningStudents = new ArrayList<>();
         List<String> hallStudents = new ArrayList<>();
@@ -772,6 +859,9 @@ public class CLIView extends ClientView {
                 diningStudents.get(0) + " " + diningStudents.get(1));
     }
 
+    /**
+     * method that asks information for the excludeColourFromCounting card
+     */
     private void askExcludeColourFromCounting() {
         Set<String> possibleColours = new HashSet<>();
         possibleColours.add("pink"); possibleColours.add("red"); possibleColours.add("yellow"); possibleColours.add("blue"); possibleColours.add("green");
@@ -789,6 +879,11 @@ public class CLIView extends ClientView {
         this.client.asyncWriteToSocket("excludeColourFromCounting " +  colour);
     }
 
+    /**
+     * method that asks information for the extraStudentInDining card
+     * @param exst extraStudentInDining card
+     * @param school school in which the exchange takes place
+     */
     private void askExtraStudentInDining(ExtraStudentInDining exst, School school) {
         Set<String> possibleColours = new HashSet<>();
         possibleColours.add("pink"); possibleColours.add("red"); possibleColours.add("yellow"); possibleColours.add("blue"); possibleColours.add("green");
@@ -809,6 +904,10 @@ public class CLIView extends ClientView {
         this.client.asyncWriteToSocket("extraStudentInDining " + cardStudent);
     }
 
+    /**
+     * method that asks information for the fakeMNMovement card
+     * @param serializedBoardAdvanced serialized board notified by the model
+     */
     private void askFakeMNMovement(SerializedBoardAdvanced serializedBoardAdvanced) {
         String response;
         int move = 0;
@@ -829,6 +928,10 @@ public class CLIView extends ClientView {
         this.client.asyncWriteToSocket("fakeMNMovement " + move);
     }
 
+    /**
+     * method that asks information for the forbidIsland card
+     * @param serializedBoardAdvanced serialized board notified by the model
+     */
     private void askForbidIsland(SerializedBoardAdvanced serializedBoardAdvanced) {
         String response;
         int index = 0;
@@ -849,6 +952,11 @@ public class CLIView extends ClientView {
         this.client.asyncWriteToSocket("forbidIsland " + index);
     }
 
+    /**
+     * method that asks information for the forbidIsland card
+     * @param serializedBoardAdvanced serialized board notified by model
+     * @param place placeOneStudent card
+     */
     private void askPlaceOneStudent(SerializedBoardAdvanced serializedBoardAdvanced, PlaceOneStudent place) {
         Set<String> possibleColours = new HashSet<String>();
         possibleColours.add("pink"); possibleColours.add("red"); possibleColours.add("yellow"); possibleColours.add("blue"); possibleColours.add("green");
@@ -880,6 +988,10 @@ public class CLIView extends ClientView {
 
         this.client.asyncWriteToSocket("placeOneStudent " + cardStudent + " " + move);
     }
+
+    /**
+     * method that asks information for the reduceColourInDining card
+     */
     private void askReduceColourInDining(){
         Set<String> possibleColours = new HashSet<String>();
         possibleColours.add("pink"); possibleColours.add("red"); possibleColours.add("yellow"); possibleColours.add("blue"); possibleColours.add("green");
@@ -898,7 +1010,10 @@ public class CLIView extends ClientView {
 
     }
 
-    // This asks the player how much does he want to move Mother Nature
+    /**
+     * method that asks information for the mother nature movement
+     * @param serializedBoardAbstract serialized board notified by model
+     */
     private void askMoveMotherNature(SerializedBoardAbstract serializedBoardAbstract){
         String response;
         int moves = 0;
@@ -940,6 +1055,10 @@ public class CLIView extends ClientView {
         AnsiConsole.systemUninstall();
     }
 
+    /**
+     * method that asks information about the cloud choice
+     * @param serializedBoardAbstract serialized board notified by model
+     */
     private void askCloudChoice(SerializedBoardAbstract serializedBoardAbstract) {
         String response;
         int cloudIndex = 0;
@@ -988,7 +1107,10 @@ public class CLIView extends ClientView {
         AnsiConsole.systemUninstall();
     }
 
-
+    /**
+     * method that prints all the schools' information
+     * @param serializedBoardAbstract serialized board notified by model
+     */
     private void printSchool(SerializedBoardAbstract serializedBoardAbstract) {
         AnsiConsole.systemInstall();
         System.out.println("Schools: ");
@@ -1004,6 +1126,12 @@ public class CLIView extends ClientView {
         System.out.flush();
     }
 
+    /**
+     * method that prints all the available assistant cards for the clients school, and just the last used assistant cards for all
+     * the opponents
+     * @param serializedBoardAbstract serialized board notified by model
+     * @param i index of the client
+     */
     private void printCards(SerializedBoardAbstract serializedBoardAbstract, int i) {
         AnsiConsole.systemInstall();
         if(this.playerNick.equals(serializedBoardAbstract.getSchools().get(i).getPlayer().getNickname())) {
@@ -1046,6 +1174,10 @@ public class CLIView extends ClientView {
         AnsiConsole.systemUninstall();
     }
 
+    /**
+     * method that prints the extracted character cards
+     * @param serializedBoardAdvanced serialized board notified by model
+     */
     private void printExtractedCC(SerializedBoardAdvanced serializedBoardAdvanced) {
         int size = serializedBoardAdvanced.getExtractedCards().size();
 
@@ -1064,6 +1196,10 @@ public class CLIView extends ClientView {
         AnsiConsole.systemUninstall();
     }
 
+    /**
+     * method that prints the winner
+     * @param serializedBoardAbstract serialized board that is notified by the model
+     */
     public void showWinner(SerializedBoardAbstract serializedBoardAbstract) {
         AnsiConsole.systemInstall();
         if(serializedBoardAbstract.getNicknameWinner().equals(this.playerNick)) {
@@ -1074,6 +1210,11 @@ public class CLIView extends ClientView {
         AnsiConsole.systemUninstall();
     }
 
+    /**
+     * method that checks if a string contains an int
+     * @param response string to check
+     * @return true if is an int, false otherwise
+     */
     private boolean checkInt(String response) {
         try {
             int conversion = Integer.parseInt(response);
@@ -1084,6 +1225,9 @@ public class CLIView extends ClientView {
         return true;
     }
 
+    /**
+     * method that prints in green if you are the winner
+     */
     private void colourWinner() {
         System.out.println(ANSI_GREEN);
         System.out.println("\n----------------------------------------");
@@ -1093,6 +1237,10 @@ public class CLIView extends ClientView {
         System.out.flush();
     }
 
+    /**
+     *  method that prints in red if you are the looser
+     * @param se serialized board notified by the model
+     */
     private void colourLooser(SerializedBoardAbstract se) {
         System.out.println(ANSI_RED);
         System.out.println("\n----------------------------------------");
@@ -1102,6 +1250,13 @@ public class CLIView extends ClientView {
         System.out.flush();
     }
 
+    /**
+     * method that prints in green the archipelago information if mother nature is placed on it, in yellow if it has been conquered
+     * @param serializedBoardAbstract serialized board notified by the model
+     * @param i index of the archipelago
+     * @param archipelagos list of archipelagos
+     * @param serializedBoardAdvanced serialized board advanced notified by the model
+     */
     private void colourArchipelago(SerializedBoardAbstract serializedBoardAbstract, int i, List<Archipelago> archipelagos, SerializedBoardAbstract serializedBoardAdvanced) {
         if(serializedBoardAbstract.getMn().getCurrentPosition().equals(serializedBoardAbstract.getArchipelagos().get(i))) {
             System.out.print(ANSI_GREEN);
@@ -1115,6 +1270,11 @@ public class CLIView extends ClientView {
         System.out.flush();
     }
 
+    /**
+     * method that prints blue the school if it is owned by this client
+     * @param serializedBoardAbstract
+     * @param i
+     */
     private void colourSchool(SerializedBoardAbstract serializedBoardAbstract, int i) {
         if(this.playerNick.equals(serializedBoardAbstract.getSchools().get(i).getPlayer().getNickname())) {
             System.out.print(ANSI_CYAN);
@@ -1122,6 +1282,9 @@ public class CLIView extends ClientView {
         System.out.flush();
     }
 
+    /**
+     * method that resets the printing colour
+     */
     private void removeColour() {
         System.out.print(ANSI_RESET);
         System.out.flush();

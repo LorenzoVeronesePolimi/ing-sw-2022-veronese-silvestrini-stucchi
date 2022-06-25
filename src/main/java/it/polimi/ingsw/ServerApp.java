@@ -4,6 +4,9 @@ import it.polimi.ingsw.Server.Server;
 
 import java.io.IOException;
 
+/**
+ * class that starts the server
+ */
 public class ServerApp {
     public static void main( String[] args ) {
         Server server;

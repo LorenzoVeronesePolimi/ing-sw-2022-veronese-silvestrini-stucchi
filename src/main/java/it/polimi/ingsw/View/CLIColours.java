@@ -1,5 +1,8 @@
 package it.polimi.ingsw.View;
 
+/**
+ * class that defines the colours for CLI
+ */
 public class CLIColours {
     public static final String ANSI_RESET = "\u001B[0m";
     public static final String ANSI_BLACK = "\u001B[30m";

@@ -4,6 +4,9 @@ import it.polimi.ingsw.Client.Client;
 
 import java.io.IOException;
 
+/**
+ * class that starts a client
+ */
 public class ClientApp {
 
     public static void main( String[] args ) {

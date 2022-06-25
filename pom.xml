@@ -173,7 +173,6 @@
           <version>0.0.8</version>
           <configuration>
             <!--<mainClass>it.polimi.ingsw.View.GUI.GUIViewFX</mainClass>-->
-            <mainClass>it.polimi.ingsw.HelloFX</mainClass>
           </configuration>
         </plugin>
         <plugin>
