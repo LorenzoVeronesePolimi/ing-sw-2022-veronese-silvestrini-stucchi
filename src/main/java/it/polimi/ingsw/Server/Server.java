@@ -19,23 +19,25 @@ import java.util.stream.Collectors;
  */
 public class Server {
 
-    private static final int PORT = 54321;
+    private Scanner scanner;
+    private int PORT = 54321;
     private ServerSocket serverSocket;
-    private ExecutorService executor = Executors.newFixedThreadPool(128);
-    private Map<String, ClientConnection> waitingConnection = new HashMap<>();
-    private Map<ClientConnection, ClientConnection> playingConnection = new HashMap<>();
-    private int connections = 0;
+    private ExecutorService executor = Executors.newFixedThreadPool(128);   // thread that execurte the SocketClientConnections
+    private int connections = 0;    // number of clients connected to the server
     private int alreadyin =0; //number of players that have already given information about nick & colour
     private List<SocketClientConnection> socketConnections = new ArrayList<>();
-    private List<OUTMessage> pendingMessage;
+    private List<OUTMessage> pendingMessage;    // if a message needs to be sent to a client but it was not ready we store it here.
 
-    private Controller controller;
+    private Controller controller;  // controller of the game
 
     /**
      * Create a Server and opens the port for connections.
      * @throws IOException
      */
     public Server() throws IOException {
+        this.scanner = new Scanner(System.in);
+        this.PORT = this.askPort();
+
         try {
             this.serverSocket = new ServerSocket(PORT);
             System.out.println("Server started in port: " + PORT);
@@ -45,6 +47,47 @@ public class Server {
         }
 
         this.pendingMessage = new ArrayList<>();
+    }
+
+    /**
+     * This method is used just for testing, because it doesn't need the user to input the server port.
+     * @throws IOException
+     */
+    public Server(String test) throws IOException {
+        try {
+            this.serverSocket = new ServerSocket(PORT);
+            System.out.println("Server started in port: " + PORT);
+        } catch(IOException e) {
+            System.err.println("Server could not start.");
+            return;
+        }
+
+        this.pendingMessage = new ArrayList<>();
+    }
+
+    /**
+     * Asks the Server Port to the user.
+     * @return the Server Port.
+     */
+    private Integer askPort() {
+        String response;
+        do {
+            System.out.println("> Insert the server port: ");
+            System.out.print("> ");
+            response = scanner.nextLine();
+        }while(invalidPort(response));
+
+        return Integer.parseInt(response);
+    }
+
+    /**
+     * Checks if the response is a valid Port.
+     * @param response server Port from the user.
+     * @return true if the response is a valid Port.
+     */
+    private boolean invalidPort(String response) {
+        //TODO: check Port (also check that it is an int)
+        return false;
     }
 
     /**
@@ -62,8 +105,11 @@ public class Server {
 
         while(true){
             try {
+                // server ready to accept connecitons
                 Socket newSocket = serverSocket.accept();
 
+                // controller of the game
+                // if the controller already exists, the method will not create a new one. Instead, it will pass the existing one.
                 controller = this.createController();
 
                 connections++;
@@ -71,16 +117,20 @@ public class Server {
                 SocketClientConnection socketConnection = new SocketClientConnection(newSocket, this, controller);
                 socketConnections.add(socketConnection);
 
+                // log
                 System.out.println("[Server, run]: Connection: " + socketConnection.hashCode());
                 System.out.println("[Server, run]: List: " + socketConnections.stream().map(x -> x.hashCode()).collect(Collectors.toList()));
 
 
                 if(connections == 1) {
+                    // if first player connecting
                     socketConnection.setFirstPlayerAction();
                 }
 
+                // execute the SocketClientConnection
                 executor.submit(socketConnection);
 
+                // if there were pending messages one is passed to the new player
                 if(pendingMessage.size() > 0) {
                     socketConnection.setPendingMessage(pendingMessage.get(0));
                     pendingMessage.clear();
@@ -115,7 +165,6 @@ public class Server {
     public Controller createController() {
         if(this.connections == 0) {
             this.controller = new Controller(this);
-            return this.controller;
         }
 
         return this.controller;

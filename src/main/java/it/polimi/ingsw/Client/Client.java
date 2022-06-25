@@ -28,7 +28,7 @@ public class Client {
 
     private Scanner scanner;    // to handle player input
     private String ip;          // server ip
-    private final int port;     // server port
+    private int port;     // server port
     private Socket socket;      // connection socket
     private String nickname;    // player nickname
     private ClientView view;    // player view (cli or gui)
@@ -46,15 +46,7 @@ public class Client {
     private GUIViewFX guiViewFX;                // for activating GUIView
     private ScheduledExecutorService pinger;  // for check of connections
     private boolean exception = false; // to check wheather the client experienced an exception
-
-    /**
-     * Constructor that initializes the Server port.
-     * @param port server PORT.
-     */
-    public Client(int port) {
-        this.port = port;
-        this.pinger = Executors.newSingleThreadScheduledExecutor();
-    }
+    private Thread readThread;
 
     /**
      * @return whether the Client is active (true) of not (false).
@@ -81,12 +73,24 @@ public class Client {
     public synchronized void setClientError(boolean clientError) {
         this.clientError = clientError;
     }
+
+    /**
+     * @return the value of clientError.
+     */
     public synchronized boolean getClientError() {
         return this.clientError;
     }
+
+    /**
+     * @param serverError the next value of serverError.
+     */
     public synchronized void setServerError(boolean serverError) {
         this.serverError = serverError;
     }
+
+    /**
+     * @return the value of serverError.
+     */
     public synchronized boolean getServerError() {
         return this.serverError;
     }
@@ -97,12 +101,24 @@ public class Client {
     public synchronized void setEndGame(boolean endGame) {
         this.endGame = endGame;
     }
+
+    /**
+     * @return the value of endGame.
+     */
     public synchronized boolean getEndGame() {
         return this.endGame;
     }
+
+    /**
+     * @param ex whether an exception occurred or not.
+     */
     public synchronized void setExceptionStatus(boolean ex) {
         this.exception = ex;
     }
+
+    /**
+     * @return the value of exception.
+     */
     public synchronized boolean getExceptionStatus() {
         return this.exception;
     }
@@ -113,13 +129,24 @@ public class Client {
     public synchronized void setPlatformReady(boolean platformReady) {
         this.platformReady = platformReady;
     }
+
+    /**
+     * @return the value of platformReady.
+     */
     public synchronized boolean getPlatformReady() {
         return this.platformReady;
     }
 
+    /**
+     * @param socketnull the next value of socketNull.
+     */
     public synchronized void setSocketNull(boolean socketnull) {
         this.socketNull = socketnull;
     }
+
+    /**
+     * @return the value of socketNull.
+     */
     public synchronized boolean getSocketNull() {
         return this.socketNull;
     }
@@ -139,11 +166,18 @@ public class Client {
     }
 
     /**
+     * Default constructor that initialize the class scanner.
+     */
+    public Client() {
+        this.scanner = new Scanner(System.in);
+    }
+
+    /**
      * Used to receive messages from the Server. It initializes a new Thread in order to not stop the application.
      * @return the inner thread that executes the function.
      */
-    public Thread asyncReadFromSocket(){
-        Thread t = new Thread(() -> {
+    public void asyncReadFromSocket(){
+        this.readThread = new Thread(() -> {
             this.setActive(true);
             try {
                 Object inputMessage = this.socketIn.readObject();
@@ -183,7 +217,7 @@ public class Client {
 
                     new Thread(() -> {
                         // Thread that runs JavaFX application
-                        Platform.startup(() ->{
+                        Platform.startup(() -> {
                             Stage stage = new Stage();
                             try {
                                 this.guiViewFX.start(stage);
@@ -215,20 +249,20 @@ public class Client {
                         This is not true for the first message, which is received immediately.
 
                      */
-                    if(this.getPlatformReady()) {
+                    if (this.getPlatformReady()) {
                         inputMessage = this.socketIn.readObject();
 
                         if (inputMessage instanceof ActiveMessageView) {
                             ((ActiveMessageView) inputMessage).manageMessage(this.view);
 
                             if (this.view.isErrorStatus()) {
-                                // let the player repeate the move that generated an error
+                                // let the player repeat the move that generated an error
                                 if (prevMessage != null)
                                     prevMessage.manageMessage(this.view);
 
                                 this.view.setErrorStatus(false);
                             } else {
-                                // save the message in order to manage errors and let the player repeate the move
+                                // save the message in order to manage errors and let the player repeat the move
                                 prevMessage = (ActiveMessageView) inputMessage;
                             }
                         }
@@ -242,24 +276,25 @@ public class Client {
                 this.setExceptionStatus(true);
                 checkErrorSource();
 
-                //Platform.exit();
-
                 //e.printStackTrace();
-            } catch (Exception e){
+            } catch (IOException e) {
+                enablePinger(false);
+                System.out.println("[Client, asyncReadFromSocket]: IOException");
+                this.setExceptionStatus(true);
+                checkErrorSource();
+            }catch (Exception e) {
                 //System.out.println("[Client, asyncReadFromSocket]: exception");
-                e.printStackTrace();
+                //e.printStackTrace();
             } finally {
-                if(!this.getExceptionStatus() && !this.getEndGame())
+                if (!this.getExceptionStatus() && !this.getEndGame())
                     this.setSocketNull(true);
                 System.out.println("[Client, asyncReadFromSocket]: finally");
-                //Platform.exit();
-                //this.enablePinger(false);
+
                 this.setActive(false);
                 //checkPossibleReconnect(); // TODO: maybe this here and not in asyncWrite
             }
         });
-        t.start();
-        return t;
+        this.readThread.start();
     }
 
     /**
@@ -267,7 +302,6 @@ public class Client {
      * @param messageToController message that needs to be sent to the Controller in the Server.
      * @return the inner thread that executes the function.
      */
-    /*
     public void asyncWriteToSocket(String messageToController){
         try {
             this.socketOut.reset();
@@ -275,34 +309,28 @@ public class Client {
             this.socketOut.flush();
         } catch(IOException | NullPointerException e){
             //e.printStackTrace();
-            System.out.println("[Client, asyncReadFromSocket]: asyncWriteException");
+            System.out.println("[Client, asyncWriteFromSocket]: asyncWriteException");
+
+            try {
+                this.socketIn.close();  // this will generate an IOException in readThread executing asyncReadFromSocket
+            } catch (IOException ex) {
+                System.out.println("[Client, asyncWriteFromSocket]: socket already closed");
+            }
+
             this.enablePinger(false);
             this.setExceptionStatus(true);
-            checkErrorSource(); // if it is a client error or a server error
+
+            // if it is a client error or a server error
+            checkErrorSource(); // TODO: check if needed, i think not
+
             this.setActive(false);
+            //checkPossibleReconnect();   // TODO: maybe this is in finally of asyncRead or only in connecting
         }
     }
-    */
-    public Thread asyncWriteToSocket(String messageToController){
-        Thread t = new Thread(() -> {
-            try {
-                this.socketOut.reset();
-                this.socketOut.writeObject(messageToController);
-                this.socketOut.flush();
-            } catch(IOException | NullPointerException e){
-                //e.printStackTrace();
-                System.out.println("[Client, asyncWriteFromSocket]: asyncWriteException");
-                this.enablePinger(false);
-                this.setExceptionStatus(true);
-                checkErrorSource(); // if it is a client error or a server error
-                this.setActive(false);
-                checkPossibleReconnect();   // TODO: maybe this is in finally of asyncRead or only in connecting
-            }
-        });
-        t.start();
-        return t;
-    }
 
+    /**
+     * This method is used to check whether the connection error is client side or server side, thus impeding the reconnection.
+     */
     private void checkErrorSource() {
         this.view.printErrorMessage("Error. You have been disconnected!");
         this.setClientError(true);
@@ -329,6 +357,7 @@ public class Client {
      */
     public void run() throws IOException {
         this.ip = askIP();
+        this.port = askPort();
 
         // Connecting to the server
         connecting();
@@ -345,12 +374,12 @@ public class Client {
         this.setEndGame(false);
 
         // connection to the server
-        if(this.socketNull)
+        if(this.getSocketNull())
             this.socket = new Socket(this.ip, this.port);
 
         System.out.println("Connection established");
         this.setActive(true);
-        this.socketNull = false;
+        this.setSocketNull(false);
 
         //Socket for communication
         this.socketOut = new ObjectOutputStream(socket.getOutputStream());
@@ -362,17 +391,21 @@ public class Client {
 
         try{
             // ready to listen to the server
-            Thread t0 = asyncReadFromSocket();
+            //Thread t0 = asyncReadFromSocket();
             this.pinger = Executors.newSingleThreadScheduledExecutor();
             this.enablePinger(true);
-            t0.join();
+            asyncReadFromSocket();
+            this.readThread.join();
+            //t0.join();
 
             // when the match is somehow ended (error or normale game end)
             checkPossibleReconnect();
 
-        } catch (InterruptedException | NoSuchElementException e){
-            System.out.println("Connection closed from the client side");
+        } catch (/*InterruptedException |*/ NoSuchElementException e){
+            System.out.println("[Client, connecting]: Connection closed from the client side");
             e.printStackTrace();
+        } catch (InterruptedException e) {
+            System.out.println("[Client, connecting]: interruptException");
         } finally {
             if(!this.getClientError() && !this.getServerError()) {
                 this.socketIn.close();
@@ -387,7 +420,6 @@ public class Client {
      * @return the Server IP.
      */
     private String askIP() {
-        scanner = new Scanner(System.in);
         String response;
         do {
             System.out.println("> Insert the server ip: ");
@@ -396,6 +428,21 @@ public class Client {
         }while(invalidIP(response));
 
         return response;
+    }
+
+    /**
+     * Asks the Server Port to the user.
+     * @return the Server Port.
+     */
+    private Integer askPort() {
+        String response;
+        do {
+            System.out.println("> Insert the server port: ");
+            System.out.print("> ");
+            response = scanner.nextLine();
+        }while(invalidPort(response));
+
+        return Integer.parseInt(response);
     }
 
     /**
@@ -408,6 +455,20 @@ public class Client {
         return false;
     }
 
+    /**
+     * Checks if the response is a valid Port.
+     * @param response server Port from the user.
+     * @return true if the response is a valid Port.
+     */
+    private boolean invalidPort(String response) {
+        //TODO: check Port (also check that it is an int)
+        return false;
+    }
+
+    /**
+     * This method is used to check if the client can reconnect and start playing again by testing the server response.
+     * If the client is able to reconnect it will the player.
+     */
     private void checkPossibleReconnect() {
         if((this.getClientError() || this.getEndGame()) && !this.getServerError()) {
             try {
@@ -442,6 +503,10 @@ public class Client {
         this.CLIorGUI = CLIorGUI;
     }
 
+    /**
+     * Enabling the pinger allows to check if the connection with the server is lost from one of the clients.
+     * @param enabled true if we want to start ping the server; false to shut down the pinger.
+     */
     public void enablePinger(boolean enabled) {
         if (enabled) {
             // ping the server in order to detect socket closed

@@ -55,7 +55,7 @@ public class SocketClientConnection extends ClientConnection implements Runnable
     private final Server server;
 
     private boolean firstPlayer = false;
-    private List<OUTMessage> pendingMessage;
+    private List<OUTMessage> pendingMessage;    // if a message needs to be sent to a player but it was busy before, we store it here.
     private final ServerView serverView;
 
     private final ScheduledExecutorService pinger;
@@ -98,13 +98,6 @@ public class SocketClientConnection extends ClientConnection implements Runnable
     }
 
     /**
-     * @return ServerView associated with the Client.
-     */
-    public ServerView getServerView() {
-        return serverView;
-    }
-
-    /**
      * Main method executed by the SocketClientConnection. It manages messages received by the client passing them to its observer.
      */
     @Override
@@ -141,6 +134,13 @@ public class SocketClientConnection extends ClientConnection implements Runnable
             e.printStackTrace();
             enablePinger(false);
         }
+    }
+
+    /**
+     * @return ServerView associated with the Client.
+     */
+    public ServerView getServerView() {
+        return serverView;
     }
 
     /**
@@ -182,12 +182,13 @@ public class SocketClientConnection extends ClientConnection implements Runnable
     public synchronized void sendModel(SerializedBoardAbstract message) {
         try {
             if (message != null) {
+                //TODO: maybe delete this if-else and throw NullPointerException when not sending a model
                 if(message.getType().equalsIgnoreCase("advanced")) {
                     //System.out.println("sendModel advanced");
                 } else if(message.getType().equalsIgnoreCase("standard")) {
                     //System.out.println("sendModel abstract");
                 } else {
-                    //System.out.println("Errore sendModel");
+                    //System.out.println("Errore sendModel");   //TODO: thorw a NullPointer here
                 }
             }
             out.reset();
@@ -237,6 +238,10 @@ public class SocketClientConnection extends ClientConnection implements Runnable
         new Thread(() -> sendModel(message)).start();
     }
 
+    /**
+     * Enabling the pinger allows to check if the connection with the client is lost.
+     * @param enabled true if we want to start ping the client; false to shut down the pinger.
+     */
     public void enablePinger(boolean enabled) {
         if(pinger != null) {
             if (enabled) {

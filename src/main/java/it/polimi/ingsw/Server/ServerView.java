@@ -10,22 +10,45 @@ import it.polimi.ingsw.Observer.ObservableController;
 import it.polimi.ingsw.Observer.Observer;
 import it.polimi.ingsw.View.Exceptions.NoCharacterCardException;
 
-/*
- This class observe the Model. (Observer<JSON> or Observer<CustomObject> ... )
+/**
+ * This class represents the communication channel between server and player. When a message needs to be sent to a player it passes here.
+ * This class observer the model (Board classes).
  */
 public class ServerView implements Observer<SerializedBoardAbstract> {
 
     private final SocketClientConnection socketClientConnection;
     private String playerNickname;
     private final Controller controller;
+
+    /**
+     * @param connection SocketClientConnection of the client.
+     * @param controller Controller of the game.
+     */
+    public ServerView(SocketClientConnection connection, Controller controller) {
+        ConnectionListener connectionListener = new ConnectionListener(this);
+        connection.addObserver(connectionListener);
+        this.controller = controller;
+        connectionListener.addObserver(controller);
+        this.socketClientConnection = connection;
+    }
+
     /*
         Inner class created to divide the flow in two:
             - client -> model modification (managed byt this inner class)
             - model modified -> client (managed by ServerView)
      */
+    /**
+     * This class represents the communication channel between player and Server. When a message needs to be sent to the server it passes here,
+     * coming from SocketClientConnection.
+     * This class observes the SocketClientConnection and it's observed by the Controller.
+     */
     private static class ConnectionListener extends ObservableController<Message> implements Observer<String> {
         private final ServerView serverView;
 
+        /**
+         * Constructor that initializ the serverView attribute.
+         * @param serverView corresponding player-server Server view.
+         */
         private ConnectionListener(ServerView serverView) {
             this.serverView = serverView;
         }
@@ -35,21 +58,39 @@ public class ServerView implements Observer<SerializedBoardAbstract> {
 
             (Maybe here we can do some message checking or something IDK)
          */
+
+        /**
+         * Method called from SocketClientConnection when a message is received from the client.
+         * @param messageInput String message received from the client.
+         */
         @Override
         public void update(String messageInput) {
             //Parsing of messages (from String to Message)
             try{
+                // log
                 System.out.println("[ServerView, update]: The message contains: " + this.serverView.playerNickname + " " + messageInput);
+
+                // correct message adding player nickname
                 Message messageToController = this.parseStringToMessage(messageInput);
+
+                // notify the controller
                 notify(messageToController);
             } catch(NoCharacterCardException ex){
-                //TODO: send error message to the client
+                //TODO: send error message to the client (edit: still needed?)
                 ex.printStackTrace();
             } catch (ControllerException e) {
                 this.serverView.manageControllerError();
             }
         }
 
+        /**
+         * This method parses the String message received from the client in order to create Message object that will
+         * be handled by the Controller.
+         * @param input String message from the Client.
+         * @return  Correct Message class for the type of received message.
+         * @throws NoCharacterCardException
+         */
+        // TODO: NoCharacterCardException needed?
         public Message parseStringToMessage(String input) throws NoCharacterCardException {
             String[] split = input.split(" ");
             switch (split[0]){
@@ -100,18 +141,14 @@ public class ServerView implements Observer<SerializedBoardAbstract> {
         }
     }
 
-    public ServerView(SocketClientConnection connection, Controller controller) {
-        ConnectionListener connectionListener = new ConnectionListener(this);
-        connection.addObserver(connectionListener);
-        this.controller = controller;
-        connectionListener.addObserver(controller);
-        this.socketClientConnection = connection;
-    }
-
-    //TODO: this should not be a Object message but instead a JSON or something, because it's received from the model itself
+    /**
+     * Method called by the model when performing the update of the changed status to the players.
+     * @param message Serializable object that needs to be sent to the client.
+     */
     @Override
     public void update(SerializedBoardAbstract message) {
         SerializedBoardAbstract finalMessage;
+        // add the player nickname to the message
         if(message instanceof SerializedBoardAdvanced) {
             finalMessage = new SerializedBoardAdvanced(message.getArchipelagos(),
                     message.getClouds(), message.getMn(), message.getSchools(), ((SerializedBoardAdvanced) message).getColourToExclude(),
@@ -121,30 +158,50 @@ public class ServerView implements Observer<SerializedBoardAbstract> {
                     message.getClouds(), message.getMn(), message.getSchools(), this.playerNickname);
         }
 
+        // add the precomputed parameters in order to let the client side decide who needs to make the next move
         finalMessage.setCurrentState(this.controller.getPrecomputedState());
         finalMessage.setCurrentPlayer(this.controller.getPrecomputedPlayer());
         finalMessage.setNicknameWinner(this.controller.getNicknameWinner());
         finalMessage.setSitPlayers(this.controller.getSitPlayers());
+
+        // send the Model to the client
         this.socketClientConnection.asyncSendModel(finalMessage);
     }
 
+    /**
+     * @return current value of player nickname.
+     */
     protected String getPlayerNickname(){
         return this.playerNickname;
     }
 
+    /**
+     * @param nickname next value of player nickname.
+     */
     public void setPlayerNickname(String nickname) {
         this.playerNickname = nickname;
     }
 
+    /**
+     * Called when we want to send to the player this specific message asking what view version does he want.
+     * @return the correct type of message that needs to be sent.
+     */
     // Messages generated from the ServerView and not the controller
     public OUTMessage askCLIorGUI() {
         return new MessageCLIorGUI();
     }
 
+    /**
+     * Called when we want to send to the player this specific message asking match info.
+     * @return the correct type of message that needs to be sent.
+     */
     public OUTMessage askFirstPlayer( ) {
         return new MessageFirstPlayer();
     }
 
+    /**
+     * When an error occurred we generate the correct type of error message and send it.
+     */
     public void manageControllerError() {
         this.socketClientConnection.asyncSend(new MessageControllerError());
     }

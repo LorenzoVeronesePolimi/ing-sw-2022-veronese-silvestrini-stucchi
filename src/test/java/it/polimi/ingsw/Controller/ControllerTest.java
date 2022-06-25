@@ -55,7 +55,7 @@ public class ControllerTest {
 
     static {
         try {
-            server = new Server();
+            server = new Server("test");
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
