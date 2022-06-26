@@ -29,6 +29,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * data structure for schools
+ */
 public class SchoolFxml {
     @FXML private final Label nick;
     @FXML private final GridPane hall;
@@ -83,6 +86,15 @@ public class SchoolFxml {
     );
 
 
+    /**
+     * constructor of the school data structure
+     * @param nick label for nickname
+     * @param hall grid pane for hall
+     * @param dining grid pane for dining room
+     * @param professors grid pane for professors
+     * @param towers grid pane for towers
+     * @param coins label for coins
+     */
     public SchoolFxml(Label nick, GridPane hall, GridPane dining, GridPane professors, GridPane towers, Label coins) {
         this.nick = nick;
         this.hall = hall;
@@ -108,47 +120,91 @@ public class SchoolFxml {
         this.towers.getRowConstraints().add(row);
     }
 
+    /**
+     * setter of serialized board notified by model
+     * @param board serialized board notified by model
+     */
     public void setBoard(SerializedBoardAbstract board) {
         this.board = board;
     }
 
+    /**
+     * setter of client
+     * @param client client
+     */
     public void setClient(Client client) {
         this.client = client;
     }
 
+    /**
+     * setter of BoardFourAdvancedController
+     * @param controller BoardFourAdvancedController controller
+     */
     public void setController(BoardFourAdvancedController controller) {
         this.controller = controller;
     }
 
     // called by the controller when a student is placed on an archipelago
+
+    /**
+     * setter of the student that has been moved
+     * @param student student that has been moved
+     */
     public void setMovedStudent(ImageView student) {
         this.movedStudent = student;
     }
 
+    /**
+     *getter of nickname
+     * @return nick
+     */
     public Label getNick() {
         return nick;
     }
 
+    /**
+     * getter of hall grid pane
+     * @return  hall grid pane
+     */
     public GridPane getHall() {
         return hall;
     }
 
+    /**
+     * getter of dining grid pane
+     * @return  dining grid pane
+     */
     public GridPane getDining() {
         return dining;
     }
 
+    /**
+     * getter of professors grid pane
+     * @return  professors grid pane
+     */
     public GridPane getProfessors() {
         return professors;
     }
 
+    /**
+     * getter of towers grid pane
+     * @return  towers grid pane
+     */
     public GridPane getTowers() {
         return towers;
     }
 
+    /**
+     * getter of coins label
+     * @return  coins label
+     */
     public Label getCoins() {
         return coins;
     }
 
+    /**
+     * method that reset the visualization
+     */
     public void resetVisualization(){
         GridPane[] gridsToReset = {
                 this.hall,
@@ -164,6 +220,10 @@ public class SchoolFxml {
         this.imageColour.clear();
     }
 
+    /**
+     * method that removes everything from a grid pane
+     * @param grid grid to clear
+     */
     private void removeAllNodesFromGrid(GridPane grid){
         List<Node> children = new ArrayList<>(grid.getChildren()); //clone to avoid ConcurrentModificationException
         for(Node n : children){
@@ -171,12 +231,22 @@ public class SchoolFxml {
         }
     }
 
+    /**
+     * setter of nick visualization
+     * @param nick nickname
+     * @param colour colour of the player
+     */
     public void setNickVisualization(String nick, PlayerColour colour) {
         if(this.nick != null){
             this.nick.setText(nick + " - Team: " + colour.toString());
         }
     }
 
+    /**
+     * setter of hall visualization
+     * @param students list of hall students
+     * @param scale scale of image
+     */
     public void setHallVisualization(List<Student> students, double scale) {
         int i = 0; // always 0 or 1
         int j = 0;
@@ -212,6 +282,11 @@ public class SchoolFxml {
         }
     }
 
+    /**
+     * setter of dining room visualization
+     * @param school school
+     * @param scale image scale
+     */
     public void setDiningVisualization(School school, double scale){
         for(int i = 0; i < 5; i++){
             for(int j = 0; j < school.getNumStudentColour(rowSPColour.get(i)); j++){
@@ -223,6 +298,11 @@ public class SchoolFxml {
         }
     }
 
+    /**
+     * setter of professor visualization
+     * @param professors list of professors
+     * @param scale image scale
+     */
     public void setProfessorsVisualization(List<Professor> professors, double scale){
         for(Professor p : professors){
             ImageView image = new ImageView(getClass().getResource(professorColourPath.get(p.getColour())).toExternalForm());
@@ -233,6 +313,11 @@ public class SchoolFxml {
 
     }
 
+    /**
+     * setter of towers visualization
+     * @param towers list of towers
+     * @param scale image scale
+     */
     public void setTowersVisualization(List<Tower> towers, double scale){
         int i = 0; // always 0 or 1
         int j = 0;
@@ -249,6 +334,10 @@ public class SchoolFxml {
         }
     }
 
+    /**
+     * setter of coin visualization
+     * @param numCoins
+     */
     public void setCoinsVisualization(int numCoins){
         this.coins.setText(Integer.toString(numCoins));
     }
@@ -275,6 +364,11 @@ public class SchoolFxml {
 
     }
 
+    /**
+     * manager of student click event
+     * @param e event
+     * @param image student image
+     */
     private void hallStudentClicked(MouseEvent e, ImageView image) {
         if(this.movedStudent != null) {
             this.movedStudent.setOpacity(1);
@@ -300,7 +394,10 @@ public class SchoolFxml {
         }
     }
 
-    // in case of studentHallToDiningRoom
+    /**
+     * manager of dining room clicked (in case of studentHallToDiningRoom)
+     * @param event event
+     */
     private void diningClicked(MouseEvent event) {
         if(this.movedStudent != null) {
             this.client.asyncWriteToSocket("studentHallToDiningRoom " + this.imageColour.get(movedStudent));

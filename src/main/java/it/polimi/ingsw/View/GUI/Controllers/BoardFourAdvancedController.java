@@ -28,6 +28,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
+/**
+ * controller of the board four advance scene (main scene)
+ */
 public class BoardFourAdvancedController implements GUIController, Initializable {
     private GUIViewFX guiViewFX;
     private Client client;
@@ -301,6 +304,12 @@ public class BoardFourAdvancedController implements GUIController, Initializable
     private List<CloudFxml> cloudsFxml;
     private CharacterCardFxml characterCardsFxml;
 
+    /**
+     * mandatory method to show personalized information in the scene. the initialization of the scene must be done here, than can be
+     * modified where we want
+     * @param url url
+     * @param resourceBundle resource bundle
+     */
     public void initialize(URL url, ResourceBundle resourceBundle) {
         // Create Archipelagos data structure
         archipelagosFxml = new ArrayList<>();
@@ -348,22 +357,41 @@ public class BoardFourAdvancedController implements GUIController, Initializable
         characterCardsFxml = new CharacterCardFxml(character_card_grid, card_1_cost_label, card_2_cost_label, card_3_cost_label);
     }
 
+    /**
+     * getter of the colour of the student that has been moved
+     * @return colour of the student that has been moved
+     */
     public SPColour getMovedStudent() {
         return movedStudent;
     }
 
+    /**
+     * getter of all the schools fxml
+     * @return list of school fxml
+     */
     public List<SchoolFxml> getSchoolsFxml() {
         return schoolsFxml;
     }
 
+    /**
+     * setter of the board
+     * @param board serialized board notified by model
+     */
     public void setBoard(SerializedBoardAbstract board) {
         this.board = board;
     }
 
+    /**
+     * setter of the moved student
+     * @param colour colour of the student that has been moved
+     */
     public void setMovedStudent(SPColour colour) {
         this.movedStudent = colour;
     }
 
+    /**
+     * setter of the standard setup
+     */
     public void setStandardSetup(){
         for(SchoolFxml s : this.schoolsFxml){
             s.getCoins().setVisible(false);
@@ -373,6 +401,9 @@ public class BoardFourAdvancedController implements GUIController, Initializable
         card_3_cost.setVisible(false);
     }
 
+    /**
+     * setter of the archipelago fxml visualization
+     */
     public void setArchipelagosFxmlVisualization(){
         for(ArchipelagoFxml a : this.archipelagosFxml) {
             a.setBoard(board);
@@ -414,6 +445,9 @@ public class BoardFourAdvancedController implements GUIController, Initializable
         }
     }
 
+    /**
+     * setter of the schools fxml visualization
+     */
     public void setSchoolsFxmlVisualization(){
         for(SchoolFxml s : schoolsFxml) {
             s.setBoard(board);
@@ -467,6 +501,10 @@ public class BoardFourAdvancedController implements GUIController, Initializable
         hydeSchools(board);
     }
 
+    /**
+     * method that hyde the schools that are not used
+     * @param board serialized board notified by model
+     */
     private void hydeSchools(SerializedBoardAbstract board) {
         if(board.getSchools().size() == 2) {
             op1_anchor.setTranslateY(+200);
@@ -480,6 +518,9 @@ public class BoardFourAdvancedController implements GUIController, Initializable
         }
     }
 
+    /**
+     * setter of the last used assistant card visualization
+     */
     public void setAssistantCardsVisualization(){
         int onWorkingPlayerIndex = computeMyIndex(board);
 
@@ -492,6 +533,9 @@ public class BoardFourAdvancedController implements GUIController, Initializable
         }
     }
 
+    /**
+     * setter of the cloud visualization
+     */
     public void setCloudsVisualization(){
         for(CloudFxml c : cloudsFxml) {
             c.setBoard(board);
@@ -521,6 +565,9 @@ public class BoardFourAdvancedController implements GUIController, Initializable
         }
     }
 
+    /**
+     * setter of the character card visualization
+     */
     public void setCharacterCardsVisualization(){ //assumes that the baord is advanced
         this.characterCardsFxml.setBoard((SerializedBoardAdvanced) this.board);
         this.characterCardsFxml.setClient(this.client);
@@ -534,6 +581,9 @@ public class BoardFourAdvancedController implements GUIController, Initializable
         }
     }
 
+    /**
+     * setter of the instruction label
+     */
     public void setInstructionLabels() {
         if(board.getCurrentPlayer().getNickname().equals(this.client.getNickname())) {
             this.turnLabel.setText("It's your turn!");
@@ -594,10 +644,19 @@ public class BoardFourAdvancedController implements GUIController, Initializable
         }
     }
 
+    /**
+     * setter of the action label
+     * @param txt text to be printed
+     */
     public void setActionLabel(String txt) {
         this.actionLabel.setText(txt);
     }
 
+    /**
+     * method that compute the index of the client
+     * @param boardAbstract serialized board notified by model
+     * @return index of the client
+     */
     private int computeMyIndex(SerializedBoardAbstract boardAbstract) {
         int i = 0;
         for(Player p: boardAbstract.getSitPlayers()) {
@@ -609,6 +668,10 @@ public class BoardFourAdvancedController implements GUIController, Initializable
         return -1;
     }
 
+    /**
+     * method that resets a grid pane
+     * @param grid an empty grid
+     */
     private void removeAllNodesFromGrid(GridPane grid){
         List<Node> children = new ArrayList<>(grid.getChildren()); //clone to avoid ConcurrentModificationException
         for(Node n : children){
@@ -616,10 +679,21 @@ public class BoardFourAdvancedController implements GUIController, Initializable
         }
     }
 
+    /**
+     * method that says if a client is the current player
+     * @param name nickname
+     * @return true if client with name nickname is the current player
+     */
     public boolean isCurrentPlayer(String name) {
         return name.equals(board.getCurrentPlayer().getNickname());
     }
 
+    /**
+     * method that compute the number of moves that mother nature does if it goes on a certain archipelago
+     * @param mnArchi current archipelago of mother nature
+     * @param clickedArchi archipelago where I want to move mother nature
+     * @return the number of moves from current to wanted archipelago
+     */
     private int computeMNMoves(int mnArchi, int clickedArchi) {
         int moves = 0;
 
@@ -720,21 +794,36 @@ public class BoardFourAdvancedController implements GUIController, Initializable
     }*/
 
 
+    /**
+     * setter of the cursor as certain image
+     * @param path path of the image
+     */
     public void setCursor(String path){
         this.general_anchor.setCursor(new ImageCursor(new Image(path),
                 40,
                 40));
     }
 
+    /**
+     * setter of the cursor to default
+     */
     public void setCursorToDefault(){
         this.general_anchor.setCursor(Cursor.DEFAULT);
     }
 
+    /**
+     * setter of gui fx
+     * @param gui gui fx to be set
+     */
     @Override
     public void setGUIFX(GUIViewFX gui) {
         this.guiViewFX = gui;
     }
 
+    /**
+     * setter of client
+     * @param client client to be set
+     */
     @Override
     public void setClient(Client client) {
         this.client = client;

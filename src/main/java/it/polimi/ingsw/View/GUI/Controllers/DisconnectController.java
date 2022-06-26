@@ -8,6 +8,9 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 
+/**
+ * controller of the disconnection scene
+ */
 public class DisconnectController implements GUIController {
     private GUIViewFX guiViewFX;
     private Client client;
@@ -16,11 +19,19 @@ public class DisconnectController implements GUIController {
     @FXML private Label subtitleLabel;
     @FXML private Button endGame;
 
+    /**
+     * method that manages the button clicked event
+     * @param e event
+     */
     public void onButtonClicked(ActionEvent e) {
         Platform.exit();
         //System.exit(0);
     }
 
+    /**
+     * setter of the message
+     * @param msg message
+     */
     public void setMessage(String msg) {
         if(msg != null) {
             if (msg.length() > 15) {
@@ -37,11 +48,19 @@ public class DisconnectController implements GUIController {
         }
     }
 
+    /**
+     * setter of the gui fx
+     * @param gui gui fx to be set
+     */
     @Override
     public void setGUIFX(GUIViewFX gui) {
         this.guiViewFX = gui;
     }
 
+    /**
+     * setter of the client
+     * @param client client to be set
+     */
     @Override
     public void setClient(Client client) {
         this.client = client;

@@ -16,6 +16,9 @@ import javafx.scene.layout.AnchorPane;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * data structures for archipelagos
+ */
 public class ArchipelagoFxml {
     private static final SPColour[] availableSPColours = {SPColour.BLUE,SPColour.PINK, SPColour.RED, SPColour.YELLOW, SPColour.GREEN};
     private static final PlayerColour[] availablePlayerColours = {PlayerColour.WHITE, PlayerColour.BLACK, PlayerColour.GRAY};
@@ -38,6 +41,22 @@ public class ArchipelagoFxml {
     private SerializedBoardAbstract board;  // Board
     private BoardFourAdvancedController controller; // BoardFourAdvancedController (passed in the setArchipelagosFxmlVisualization method)
 
+    /**
+     * constructor of archipelago data structure
+     * @param index index of archipelago
+     * @param archi anchor pane of archipelago
+     * @param archi_mother_nature image of mother nature
+     * @param archi_white_tower image white tower
+     * @param archi_black_tower image black tower
+     * @param archi_gray_tower image gray tower
+     * @param archi_num_towers label number of towers
+     * @param archi_num_blue label number of blue students
+     * @param archi_num_pink label number of pink students
+     * @param archi_num_red label number of red students
+     * @param archi_num_yellow label number of yellow students
+     * @param archi_num_green label number of green students
+     * @param forbid_icon image of forbid island tile
+     */
     public ArchipelagoFxml(int index, AnchorPane archi, ImageView archi_mother_nature, ImageView archi_white_tower, ImageView archi_black_tower, ImageView archi_gray_tower, Label archi_num_towers, Label archi_num_blue, Label archi_num_pink, Label archi_num_red, Label archi_num_yellow, Label archi_num_green, ImageView forbid_icon){
         this.index = index;
         this.archiAnchor = archi;
@@ -67,43 +86,84 @@ public class ArchipelagoFxml {
         archi.setOnMouseClicked(this::onMouseClicked);
     }
 
+    /**
+     * getter of archipelago anchor pane
+     * @return archipelago anchor pane
+     */
     public AnchorPane getArchiAnchor(){
         return archiAnchor;
     }
 
+    /**
+     * getter of archipelago's image of mother nature
+     * @return archipelago's image of mother nature
+     */
     public ImageView getArchi_mother_nature() {
         return archi_mother_nature;
     }
 
+    /**
+     * getter of archipelago's image of white tower
+     * @return archipelago's image of white tower
+     */
     public ImageView getArchi_white_tower() {
         return archi_white_tower;
     }
 
+    /**
+     * getter of archipelago's image of black tower
+     * @return archipelago's image of black tower
+     */
     public ImageView getArchi_black_tower() {
         return archi_black_tower;
     }
 
+    /**
+     * getter of archipelago's image of gray tower
+     * @return archipelago's image of gray tower
+     */
     public ImageView getArchi_gray_tower() {
         return archi_gray_tower;
     }
 
+    /**
+     * getter of archipelago's label of number of towers
+     * @return archipelago's label of number of towers
+     */
     public Label getArchi_num_towers() {
         return archi_num_towers;
     }
 
+    /**
+     * setter of client
+     * @param client client
+     */
     public void setClient(Client client) {
         this.client = client;
     }
 
+    /**
+     * setter of serialized board
+     * @param board serialized board notified by model
+     */
     public void setBoard(SerializedBoardAbstract board) {
         this.board = board;
     }
 
+    /**
+     * setter of board four advanced controller
+     * @param controller controller to be set
+     */
     public void setController(BoardFourAdvancedController controller) {
         this.controller = controller;
     }
 
     //set only one (or zero) of three towers visible
+
+    /**
+     * setter of visibility of towers
+     * @param colourToShow colour of the tower to set visible
+     */
     public void setVisibleTower(PlayerColour colourToShow){
         if(colourToShow == null){
             for(PlayerColour c : availablePlayerColours){
@@ -122,12 +182,20 @@ public class ArchipelagoFxml {
         }
     }
 
+    /**
+     * setter of text of labels of the number of students for each colour
+     * @param studentsData data about students on archipelago
+     */
     public void setTextNumStudents(Map<SPColour, Integer> studentsData){
         for(SPColour c : availableSPColours){
             this.studentColourNumber.get(c).setText(Integer.toString(studentsData.get(c)));
         }
     }
 
+    /**
+     * setter of visibility of forbid island tile
+     * @param numForbid
+     */
     public void setVisibleForbidIcon(int numForbid){
         if(numForbid > 0){
             this.forbid_icon.setVisible(true);
@@ -138,10 +206,18 @@ public class ArchipelagoFxml {
 
     }
 
+    /**
+     * setter of visibility of the entire archipelago anchor pane
+     * @param isVisible value of visibility
+     */
     public void setVisible(boolean isVisible){
         this.archiAnchor.setVisible(isVisible);
     }
 
+    /**
+     * manager of mouse event
+     * @param event mouse event
+     */
     private void onMouseClicked(MouseEvent event){
         //TODO: modify this method in order to consider merged archipelagos (both for student move and for mother nature move)
 
@@ -162,6 +238,12 @@ public class ArchipelagoFxml {
         this.controller.setCursorToDefault();
     }
 
+    /**
+     * method that computes how many moves mother nature does if it moves from its current position to the clicked archipelago
+     * @param mnArchi index of mother nature current position
+     * @param clickedArchi index of clicked archipelago
+     * @return number of moves required
+     */
     private int computeMNMoves(int mnArchi, int clickedArchi) {
         int moves = 0;
 

@@ -8,9 +8,25 @@ import javafx.scene.input.TransferMode;
 
 import java.util.Map;
 
+/**
+ * data structure for assistant cards
+ */
 public class AssistantCardFxml {
     private final Map<Integer, ImageView> priorityImage;
 
+    /**
+     * constructor of character card data structure
+     * @param op_a1 assistant 1 image
+     * @param op_a2 assistant 2 image
+     * @param op_a3 assistant 3 image
+     * @param op_a4 assistant 4 image
+     * @param op_a5 assistant 5 image
+     * @param op_a6 assistant 6 image
+     * @param op_a7 assistant 7 image
+     * @param op_a8 assistant 8 image
+     * @param op_a9 assistant 9 image
+     * @param op_a10 assistant 10 image
+     */
     public AssistantCardFxml(ImageView op_a1, ImageView op_a2, ImageView op_a3, ImageView op_a4, ImageView op_a5, ImageView op_a6, ImageView op_a7, ImageView op_a8, ImageView op_a9, ImageView op_a10) {
         this.priorityImage = Map.of(
                 1, op_a1,
@@ -26,6 +42,10 @@ public class AssistantCardFxml {
         );
     }
 
+    /**
+     * setter of assistant card visualization
+     * @param turnPriority turn priority of the chosen card
+     */
     public void setAssistantCardVisualization(int turnPriority){
         for(int i = 1; i <= 10; i++){
             if(i == turnPriority){

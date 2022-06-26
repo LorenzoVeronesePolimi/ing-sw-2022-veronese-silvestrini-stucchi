@@ -9,6 +9,9 @@ import javafx.scene.control.Label;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+/**
+ * controller of the ShowWinner scene
+ */
 public class ShowWinnerController implements GUIController, Initializable {
     @FXML Label label_intro;
     @FXML Label label_winner;
@@ -18,11 +21,23 @@ public class ShowWinnerController implements GUIController, Initializable {
     private Client client;
 
 
+    /**
+     * mandatory method to show personalized information in the scene. the initialization of the scene must be done here, than can be
+     * modified where we want
+     * @param url
+     * @param resourceBundle
+     */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
     }
 
+    /**
+     * setter of parameters of the scene
+     * @param numPlayers number of players of the game
+     * @param winner nickname of the winner
+     * @param isWinner parameter that says if the client who uses this view won or not
+     */
     public void setVisualization(int numPlayers, String winner, boolean isWinner){
         if(numPlayers == 4){
             label_intro.setText("Winners are:");
@@ -43,11 +58,19 @@ public class ShowWinnerController implements GUIController, Initializable {
         }
     }
 
+    /**
+     * setter of the GUI view fx
+     * @param gui GUI view fx to be setted
+     */
     @Override
     public void setGUIFX(GUIViewFX gui) {
         this.guiViewFX = gui;
     }
 
+    /**
+     * setter of the client
+     * @param client client to be set
+     */
     @Override
     public void setClient(Client client) {
         this.client = client;

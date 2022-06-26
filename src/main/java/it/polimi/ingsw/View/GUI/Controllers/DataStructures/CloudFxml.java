@@ -14,6 +14,9 @@ import javafx.scene.layout.GridPane;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * data structure for clouds
+ */
 public class CloudFxml {
     private final int index;
     private final ImageView cloudImage;
@@ -31,6 +34,12 @@ public class CloudFxml {
             SPColour.GREEN, "/images/pawns/stud_green.png"
     ); // relates the SPColour to the image of the student of that colour
 
+    /**
+     * constructor of cloud data structure
+     * @param index cloud index
+     * @param cloud cloud grid pane
+     * @param cloudImage cloud image
+     */
     public CloudFxml(int index, GridPane cloud, ImageView cloudImage) {
         this.index = index;
         this.cloudImage = cloudImage;
@@ -39,24 +48,44 @@ public class CloudFxml {
         this.cloudGrid.setOnMouseClicked(this::onMouseClicked);
     }
 
-
+    /**
+     * setter of serialized board notified by model
+     * @param board serialized board notified by model
+     */
     public void setBoard(SerializedBoardAbstract board) {
         this.board = board;
     }
 
+    /**
+     * setter of client
+     * @param client client
+     */
     public void setClient(Client client) {
         this.client = client;
     }
 
+    /**
+     * setter of board controller
+     * @param controller BoardFourAdvancedController controller
+     */
     public void setController(BoardFourAdvancedController controller) {
         this.controller = controller;
     }
 
+    /**
+     * method that sets the cloud visible or not
+     * @param isVisible value to set
+     */
     public void setVisible(boolean isVisible){
         this.cloudImage.setVisible(isVisible);
         this.cloudGrid.setVisible(isVisible);
     }
 
+    /**
+     * setter of students visualization on the cloud
+     * @param students list of students
+     * @param scale image scale
+     */
     public void setStudentsVisualization(List<Student> students, double scale){
         int i = 0;
         int j = 0;
@@ -74,6 +103,10 @@ public class CloudFxml {
         }
     }
 
+    /**
+     * manager of mouse click event
+     * @param event event
+     */
     private void onMouseClicked(MouseEvent event) {
         if(this.controller.isCurrentPlayer(this.client.getNickname())) {
             if(this.board.getCurrentState().equals(State.ACTION3)) {

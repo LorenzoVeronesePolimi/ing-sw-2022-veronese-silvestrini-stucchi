@@ -46,10 +46,18 @@ public class GUIViewFX extends Application {
     private final HashMap<String, Scene> sceneMap = new HashMap<>();
     private final HashMap<String, GUIController> controllerMap = new HashMap<>();
 
+    /**
+     * default constructor
+     */
     public GUIViewFX() {
 
     }
 
+    /**
+     * constructor of GUI view fx, given a client and a GUI view
+     * @param client owner of GUI view fx
+     * @param view GUI view
+     */
     public GUIViewFX(Client client, GUIView view) {
         this.client = client;
         this.clientView = view;
@@ -59,6 +67,14 @@ public class GUIViewFX extends Application {
         launch(args);
     }
 
+    /**
+     * method that starts the application with the primary stage, which is given as parameter
+     * @param stage the primary stage for this application, onto which
+     * the application scene can be set.
+     * Applications may create other stages, if needed, but they will not be
+     * primary stages.
+     * @throws IOException
+     */
     @Override
     public void start(Stage stage) throws IOException {
         this.setupControllers();    // This method is called to setup all scene prior to the display
@@ -66,6 +82,9 @@ public class GUIViewFX extends Application {
         this.run(); // running the real stage
     }
 
+    /**
+     * method that prepares all the stages, and sets the Intro one as the current scene
+     */
     private void setupControllers() {
         // creating an array of scenes (All the scenes of the application)
         List<String> sceneList = new ArrayList<>(Arrays.asList(INTRO, LOADING, LOGIN, DISCONNECT, ASSISTANT_CARD, BOARD_FOUR_ADVANCED, SHOW_WINNER));
@@ -122,6 +141,9 @@ public class GUIViewFX extends Application {
          */
     }
 
+    /**
+     * method that runs the GUI application
+     */
     public void run() {
         //System.out.println("GUI running");
         Locale.setDefault(new Locale("en", "english"));
@@ -146,14 +168,26 @@ public class GUIViewFX extends Application {
         stage.show();
     }
 
+    /**
+     * setter of the stage title
+     * @param title stage title to be set
+     */
     public void setStageTitle(String title) {
         stage.setTitle(title);
     }
 
+    /**
+     * setter of the client
+     * @param client client to be set for the application
+     */
     public void setClient(Client client) {
         this.client = client;
     }
 
+    /**
+     * method that changes the scene into the Loading one
+     * @param message message that has to be shown in the loading stage
+     */
     public void sceneLoading(String message) {
         LoaderController currentController = (LoaderController) controllerMap.get(LOADING);
         currentController.setMessage(message);
@@ -163,6 +197,9 @@ public class GUIViewFX extends Application {
         this.stage.show();
     }
 
+    /**
+     * method that changes the scene into the askPlayerInfo one
+     */
     public void sceneAskFirstPlayerInfo(){
         LoginController currentController = (LoginController) controllerMap.get(LOGIN);
         currentController.setFirstPlayer(true);
@@ -172,6 +209,9 @@ public class GUIViewFX extends Application {
         this.stage.show();
     }
 
+    /**
+     * method that changes the scene into the askNickname one
+     */
     public void sceneAskNickname(List<PlayerColour> colourList, int numPlayers){
         /*  Example of what should be done for every scene:
              - receiving the parameters from Message->GUIView
@@ -189,6 +229,11 @@ public class GUIViewFX extends Application {
         this.stage.show();
     }
 
+    /**
+     * method that generates an alert for the scene
+     * @param msg message that describes the alert
+     * @param type type of alert
+     */
     public void sceneAlert(String msg, Alert.AlertType type) {
         Alert alert = new Alert(type, msg);
         alert.showAndWait();
@@ -200,6 +245,11 @@ public class GUIViewFX extends Application {
         alert.showAndWait();
     }*/
 
+    /**
+     *
+     * @param type
+     * @param board
+     */
     public void characterCardAlert(CharacterCardEnumeration type, SerializedBoardAdvanced board) {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/CharacterCardDialog.fxml"));
         Parent parent = null;
@@ -230,6 +280,10 @@ public class GUIViewFX extends Application {
         alertStage.showAndWait();
     }
 
+    /**
+     * method that sets the correct scene according to the game phase
+     * @param board serialized board notified by the model
+     */
     public void manageScene(SerializedBoardAbstract board){
         switch (board.getCurrentState()) {
             case PLANNING2:
@@ -249,6 +303,11 @@ public class GUIViewFX extends Application {
         }
     }
 
+    /**
+     * method that manages the stage for the choice of the assistant card
+     * @param scene name of the scene that has to be loaded (assistant card choice)
+     * @param board serialized board notified by the model
+     */
     private void sceneAssistantCard(String scene, SerializedBoardAbstract board) {
         if(!board.getCurrentPlayer().getNickname().equals(this.client.getNickname())) {
             Platform.runLater(() -> {
@@ -265,6 +324,11 @@ public class GUIViewFX extends Application {
         }
     }
 
+    /**
+     * method that manages the main stage (the one that shows the board)
+     * @param scene name of the scene that has to be loaded (board)
+     * @param board serialized board notified by the model
+     */
     protected void sceneShowBoard(String scene, SerializedBoardAbstract board) {
         BoardFourAdvancedController currentController = (BoardFourAdvancedController) controllerMap.get(scene);
         if(board.getType().equals("standard")){
@@ -286,6 +350,11 @@ public class GUIViewFX extends Application {
         this.stage.show();
     }
 
+    /**
+     * method that manages the stage that shows the winner
+     * @param scene name of the scene that has to be loaded
+     * @param board serialized board notified by the model
+     */
     public void sceneShowWinner(String scene, SerializedBoardAbstract board){
         ShowWinnerController currentController = (ShowWinnerController) controllerMap.get(scene);
 
@@ -305,6 +374,10 @@ public class GUIViewFX extends Application {
         this.stage.show();
     }
 
+    /**
+     * method that manages the stage that notifies that a client has disconnected
+     * @param msg string that must be printed
+     */
     public void sceneClientDisconnect(String msg) {
         DisconnectController currentController = (DisconnectController) controllerMap.get(DISCONNECT);
         currentController.setMessage(msg);

@@ -21,6 +21,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * controller of the Character card dialog scene
+ */
 public class CharacterCardDialogController {
     @FXML private AnchorPane general_anchor;
     @FXML private Label card_name;
@@ -112,6 +115,10 @@ public class CharacterCardDialogController {
     private AbstractCharacterCard card;
     private int playerIndex; // index of the player who wants to use the Character card inside schools list and sitPlayers
 
+    /**
+     * mandatory method to show personalized information in the scene. the initialization of the scene must be done here, than can be
+     * modified where we want
+     */
     public void initialize(){
         this.choicesLeft = new ArrayList<>();
         this.choicesLeft.add(this.choice1_left);
@@ -126,22 +133,41 @@ public class CharacterCardDialogController {
         this.forbid_icon.setVisible(false);
     }
 
+    /**
+     * setter of card type
+     * @param cardType card type
+     */
     public void setCardType(CharacterCardEnumeration cardType) {
         this.cardType = cardType;
     }
 
+    /**
+     * setter of the board
+     * @param board board
+     */
     public void setBoard(SerializedBoardAdvanced board) {
         this.board = board;
     }
 
+    /**
+     * setter of the client
+     * @param client
+     */
     public void setClient(Client client) {
         this.client = client;
     }
 
+    /**
+     * setter of gui view fx
+     * @param guiViewFX gui view fx
+     */
     public void setGuiViewFX(GUIViewFX guiViewFX) {
         this.guiViewFX = guiViewFX;
     }
 
+    /**
+     * setter of visualization of the scene, according to the specific character card selected
+     */
     public void setVisualization(){
         this.card_name.setText(cardName.get(this.cardType));
         this.card_effect.setText(cardEffect.get(this.cardType));
@@ -200,6 +226,10 @@ public class CharacterCardDialogController {
         }
     }
 
+    /**
+     * setter of the visualization of the students of the hall in the grid
+     * @param students list of students
+     */
     private void setStudentsVisualization(List<Student> students){
         int i = 0; // always 0 or 1
         int j = 0;
@@ -218,6 +248,9 @@ public class CharacterCardDialogController {
         }
     }
 
+    /**
+     * method that manages the visualization of the exchangeThreeStudents character card
+     */
     public void visualizeExchangeThreeStudents(){
         this.choice_left_label.setText("Card:");
         this.choice_right_label.setText("Hall:");
@@ -307,7 +340,9 @@ public class CharacterCardDialogController {
         });
     }
 
-
+    /**
+     * method that manages the visualization of the exchangeTwoHallDining character card
+     */
     public void visualizeExchangeTwoHallDining(){
         this.choice_left_label.setText("Hall");
         this.choice_right_label.setText("Dining Room");
@@ -404,6 +439,9 @@ public class CharacterCardDialogController {
         });
     }
 
+    /**
+     * method that manages the visualization of the excludeColourFromCounting character card
+     */
     public void visualizeExcludeColourFromCounting(){
         this.choice_left_label.setText("Colour to exclude");
 
@@ -423,6 +461,9 @@ public class CharacterCardDialogController {
         });
     }
 
+    /**
+     * method that manages the visualization of the extraStudentInDining character card
+     */
     public void visualizeExtraStudentInDining(){
         this.choice_left_label.setText("Extra colour:");
 
@@ -448,6 +489,9 @@ public class CharacterCardDialogController {
         });
     }
 
+    /**
+     * method that manages the visualization of the fakeMNMovement character card
+     */
     public void visualizeFakeMNMovement(){
         this.choice_left_label.setText("Archipelago:");
 
@@ -467,6 +511,9 @@ public class CharacterCardDialogController {
         });
     }
 
+    /**
+     * method that manages the visualization of the forbidIsland character card
+     */
     public void visualizeForbidIsland(){
         this.choice_left_label.setText("Archipelago to forbid:");
 
@@ -490,6 +537,9 @@ public class CharacterCardDialogController {
         });
     }
 
+    /**
+     * method that manages the visualization of the placeOneStudent character card
+     */
     public void visualizePlaceOneStudent(){
         this.choice_left_label.setText("Student to take:");
         this.choice_right_label.setText("Destination:");
@@ -521,6 +571,9 @@ public class CharacterCardDialogController {
         });
     }
 
+    /**
+     * method that manages the visualization of the reduceColourInDining character card
+     */
     public void visualizeReduceColourInDining(){
         this.choice_left_label.setText("Colour:");
 
@@ -540,6 +593,9 @@ public class CharacterCardDialogController {
         });
     }
 
+    /**
+     * method that manages the visualization of the takeProfessorOnEquity character card
+     */
     public void visualizeTakeProfessorOnEquity(){
         noChoiceVisualization();
 
@@ -553,6 +609,9 @@ public class CharacterCardDialogController {
         });
     }
 
+    /**
+     * method that manages the visualization of the towerNoValue character card
+     */
     public void visualizeTowerNoValue(){
         noChoiceVisualization();
 
@@ -566,6 +625,9 @@ public class CharacterCardDialogController {
         });
     }
 
+    /**
+     * method that manages the visualization of the twoExtraIslands character card
+     */
     public void visualizeTwoExtraIslands(){
         noChoiceVisualization();
 
@@ -579,6 +641,9 @@ public class CharacterCardDialogController {
         });
     }
 
+    /**
+     * method that manages the visualization of the twoExtraPoints character card
+     */
     public void visualizeTwoExtraPoints(){
         noChoiceVisualization();
 
@@ -591,6 +656,7 @@ public class CharacterCardDialogController {
             }
         });
     }
+
 
     private void noChoiceVisualization() {
         this.choice_left_label.setVisible(false);
@@ -608,6 +674,12 @@ public class CharacterCardDialogController {
         this.choice3_right.setVisible(false);
     }
 
+    /**
+     * method that says if it is possible for the client to buy a card
+     * @param coinPlayer number of coins of the player
+     * @param costCard cost of the card in coins
+     * @return true if is possible for the client to buy a card, false otherwise
+     */
     private boolean canIBuyCard(int coinPlayer, int costCard){
         if(coinPlayer < costCard){
             return false;
@@ -617,6 +689,11 @@ public class CharacterCardDialogController {
         }
     }
 
+    /**
+     * method that computes the index of the player
+     * @param boardAbstract serialized board notified by the model
+     * @return the index
+     */
     private int computeMyIndex(SerializedBoardAbstract boardAbstract) {
         int i = 0;
         for(Player p: boardAbstract.getSitPlayers()) {

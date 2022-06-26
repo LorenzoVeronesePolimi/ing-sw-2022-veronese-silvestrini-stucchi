@@ -16,6 +16,9 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.ResourceBundle;
 
+/**
+ * controller of the login scene
+ */
 public class LoginController implements GUIController, Initializable {
     private GUIViewFX guiViewFX;
     private Client client;
@@ -58,6 +61,13 @@ public class LoginController implements GUIController, Initializable {
 
     //This method is mandatory to show personalized info
     // The initialization of the scene must be done here (the modified where we want)
+
+    /**
+     * mandatory method to show personalized information in the scene. the initialization of the scene must be done here, than can be
+     * medified where we want
+     * @param url
+     * @param resourceBundle
+     */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         this.titleLogin.setText("Login information");
@@ -70,10 +80,18 @@ public class LoginController implements GUIController, Initializable {
         this.modeChoice.setOnAction(this::saveMode);
     }
 
+    /**
+     * method that saves the chosen nickname
+     * @param event
+     */
     private void saveNickname(MouseEvent event) {
         this.nicknameError.setVisible(false);
     }
 
+    /**
+     * method that saves the chosen colour
+     * @param event
+     */
     private void saveColour(ActionEvent event) {
         this.chosenColour = colourChoice.getValue();
 
@@ -83,6 +101,10 @@ public class LoginController implements GUIController, Initializable {
         }
     }
 
+    /**
+     * method that saves the number of players chosen for the game
+     * @param event
+     */
     private void saveNumPlayers(ActionEvent event) {
         this.chosenNumPlayers = numPlayersChoice.getValue();
 
@@ -92,6 +114,10 @@ public class LoginController implements GUIController, Initializable {
         }
     }
 
+    /**
+     * method that saves the chosen modality for the game
+     * @param event
+     */
     private void saveMode(ActionEvent event) {
         this.chosenMode = modeChoice.getValue().equals("Normal") ? "false" : "true";
 
@@ -101,6 +127,11 @@ public class LoginController implements GUIController, Initializable {
         }
     }
 
+    /**
+     * method that generates the message that creates the game (first player) or adds a player (other players), and manages the notification
+     * of errors of this phase
+     * @param event
+     */
     public void onButtonClicked(ActionEvent event) {
         this.chosenNick = nicknameChoice.getText();
 
@@ -157,16 +188,28 @@ public class LoginController implements GUIController, Initializable {
         this.guiViewFX.sceneLoading("Wait for other players to connect!");
     }
 
+    /**
+     * setter of gui fx
+     * @param gui gui fx to be set
+     */
     @Override
     public void setGUIFX(GUIViewFX gui) {
         this.guiViewFX = gui;
     }
 
+    /**
+     * setter of client
+     * @param client client to be set
+     */
     @Override
     public void setClient(Client client) {
         this.client = client;
     }
 
+    /**
+     * setter of first player
+     * @param firstPlayer player to set as first
+     */
     public void setFirstPlayer(boolean firstPlayer) {
         this.firstPlayer = firstPlayer;
         if(!this.firstPlayer) {
@@ -178,10 +221,18 @@ public class LoginController implements GUIController, Initializable {
         }
     }
 
+    /**
+     * setter of the number of players
+     * @param numPlayers number of players to set
+     */
     public void setNumPlayers(int numPlayers) {
         this.numPlayers = numPlayers;
     }
 
+    /**
+     * setter of the available colour, given the one that already have been chosen
+     * @param chosenColour list of already chosen colours
+     */
     public void setAvailableColours(List<PlayerColour> chosenColour) {
         //System.out.println(chosenColour);
         colourChoice.getItems().clear();
@@ -189,6 +240,11 @@ public class LoginController implements GUIController, Initializable {
         colourChoice.setVisible(true);
     }
 
+    /**
+     * method that maps a list of Player Colours into a list of strings
+     * @param colourList list of PlayerColour
+     * @return a list of strings
+     */
     private List<String> mapColourToStringList(List<PlayerColour> colourList) {
         ArrayList<String> colour = new ArrayList<>();
 

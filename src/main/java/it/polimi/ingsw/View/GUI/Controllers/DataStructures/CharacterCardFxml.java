@@ -19,6 +19,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * character card data structure
+ */
 public class CharacterCardFxml {
     private final GridPane cards;
     private List<Label> costs;
@@ -71,6 +74,13 @@ public class CharacterCardFxml {
             Map.entry(CharacterCardEnumeration.TWO_EXTRA_POINTS, "Two Extra Points")
     );
 
+    /**
+     * constructor of character card data stucture
+     * @param cards grid pane of cards
+     * @param cost1 cost label card 1
+     * @param cost2 cost label card 2
+     * @param cost3 cost label card 3
+     */
     public CharacterCardFxml(GridPane cards, Label cost1, Label cost2, Label cost3) {
         this.cards = cards;
         this.costs = new ArrayList<>();
@@ -79,21 +89,38 @@ public class CharacterCardFxml {
         this.costs.add(cost3);
     }
 
+    /**
+     * setter of client
+     * @param client client
+     */
     public void setClient(Client client) {
         this.client = client;
     }
 
+    /**
+     * setter of serialized board notified by model
+     * @param board serialized board notified by model
+     */
     public void setBoard(SerializedBoardAdvanced board) {
         this.board = board;
     }
 
-
+    /**
+     * method that sets the cloud visible or not
+     * @param isVisible value to set
+     */
     public void setVisible(boolean isVisible){
         for(Node c : this.cards.getChildren()){
             c.setVisible(isVisible);
         }
     }
 
+    /**
+     * manager of mouse click event
+     * @param image clicked image
+     * @param type type of character card
+     * @param guiFX gui fx
+     */
     private void onMouseClicked(ImageView image, CharacterCardEnumeration type, GUIViewFX guiFX){
         image.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
             /*
@@ -104,6 +131,12 @@ public class CharacterCardFxml {
         });
     }
 
+    /**
+     * setter of character card visualization
+     * @param cards list of character cards
+     * @param scale image scale
+     * @param guiViewFX gui view fx
+     */
     public void setCharacterCardsVisualization(List<AbstractCharacterCard> cards, double scale, GUIViewFX guiViewFX){
         int i = 0;
         for(AbstractCharacterCard c : cards){

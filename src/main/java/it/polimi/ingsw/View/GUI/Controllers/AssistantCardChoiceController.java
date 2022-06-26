@@ -18,6 +18,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
+/**
+ * controller of the assistant card choice scene
+ */
 public class AssistantCardChoiceController implements GUIController, Initializable {
     private GUIViewFX guiViewFX;
     private Client client;
@@ -49,7 +52,12 @@ public class AssistantCardChoiceController implements GUIController, Initializab
 
 
     private List<AssistantCardChoiceFxml> assistantCardsChoiceFxml;
-
+    /**
+     * mandatory method to show personalized information in the scene. the initialization of the scene must be done here, than can be
+     * modified where we want
+     * @param url url
+     * @param resourceBundle resource bundle
+     */
     public void initialize(URL url, ResourceBundle resourceBundle) {
         this.assistantCardsChoiceFxml = new ArrayList<>();
         assistantCardsChoiceFxml.add(new AssistantCardChoiceFxml(1, imageC1, buttonC1));
@@ -64,6 +72,9 @@ public class AssistantCardChoiceController implements GUIController, Initializab
         assistantCardsChoiceFxml.add(new AssistantCardChoiceFxml(10, imageC10, buttonC10));
     }
 
+    /**
+     * setter of data structures
+     */
     public void setDataStructures(){
         for(AssistantCardChoiceFxml c : this.assistantCardsChoiceFxml){
             c.setController(this);
@@ -72,6 +83,10 @@ public class AssistantCardChoiceController implements GUIController, Initializab
         }
     }
 
+    /**
+     * setter of the serialized board notified by model
+     * @param serializedBoardAbstract serialized board notified by model
+     */
     public void setSerializedBoardAbstract(SerializedBoardAbstract serializedBoardAbstract) {
         this.serializedBoardAbstract = serializedBoardAbstract;
         Player player = null;
@@ -115,11 +130,19 @@ public class AssistantCardChoiceController implements GUIController, Initializab
         }
     }
 
+    /**
+     * setter of gui fx
+     * @param gui gui fx to be set
+     */
     @Override
     public void setGUIFX(GUIViewFX gui) {
         this.guiViewFX = gui;
     }
 
+    /**
+     * setter of client
+     * @param client client to be set
+     */
     @Override
     public void setClient(Client client) {
         this.client = client;
