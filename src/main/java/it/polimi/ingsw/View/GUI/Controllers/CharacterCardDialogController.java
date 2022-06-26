@@ -168,7 +168,8 @@ public class CharacterCardDialogController {
     /**
      * setter of visualization of the scene, according to the specific character card selected
      */
-    public void setVisualization(){
+    public void setVisualization(boolean useYes){
+        this.use_yes.setVisible(useYes);
         this.card_name.setText(cardName.get(this.cardType));
         this.card_effect.setText(cardEffect.get(this.cardType));
         this.card_image.setImage(new Image(getClass().getResource(cardPath.get(this.cardType)).toExternalForm()));

@@ -49,6 +49,18 @@ public class CloudFxml {
     }
 
     /**
+     * This method sets the clickable part of the scene.
+     * @param enable true if the content is clickable, false otherwise.
+     */
+    public void enableClick(boolean enable) {
+        if(enable) {
+            this.cloudGrid.setOnMouseClicked(this::onMouseClicked);
+        } else {
+            this.cloudGrid.setOnMouseClicked(null);
+        }
+    }
+
+    /**
      * setter of serialized board notified by model
      * @param board serialized board notified by model
      */

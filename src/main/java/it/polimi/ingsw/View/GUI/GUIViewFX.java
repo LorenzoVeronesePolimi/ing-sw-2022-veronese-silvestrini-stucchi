@@ -250,21 +250,22 @@ public class GUIViewFX extends Application {
      * @param type
      * @param board
      */
-    public void characterCardAlert(CharacterCardEnumeration type, SerializedBoardAdvanced board) {
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/CharacterCardDialog.fxml"));
+    public void characterCardAlert(CharacterCardEnumeration type, SerializedBoardAdvanced board, boolean clickable) {
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/" + CHARACTER_CARD_DIALOG));
         Parent parent = null;
         try {
             parent = fxmlLoader.load();
         } catch (IOException e) {
             e.printStackTrace();
         }
-        CharacterCardDialogController controller = fxmlLoader.<CharacterCardDialogController>getController();
+        CharacterCardDialogController controller = fxmlLoader.getController();
 
         controller.setCardType(type);
         controller.setBoard(board);
         controller.setClient(this.client);
         controller.setGuiViewFX(this);
-        controller.setVisualization();
+        controller.setVisualization(clickable);
+
         /*controller.setCardName(name);
         controller.setCardEffect(effect);
         controller.setCardImage(imagePath);
@@ -287,17 +288,17 @@ public class GUIViewFX extends Application {
     public void manageScene(SerializedBoardAbstract board){
         switch (board.getCurrentState()) {
             case PLANNING2:
-                this.sceneAssistantCard("AssistantCardChoice.fxml", board);
+                this.sceneAssistantCard(board);
                 break;
 
             case ACTION1:
             case ACTION2:
             case ACTION3:
-                this.sceneShowBoard("BoardGrid.fxml", board);
+                this.sceneShowBoard(board, true);
                 break;
 
             case END:
-                this.sceneShowWinner("ShowWinner.fxml", board);
+                this.sceneShowWinner(board);
                 break;
 
         }
@@ -305,20 +306,19 @@ public class GUIViewFX extends Application {
 
     /**
      * method that manages the stage for the choice of the assistant card
-     * @param scene name of the scene that has to be loaded (assistant card choice)
      * @param board serialized board notified by the model
      */
-    private void sceneAssistantCard(String scene, SerializedBoardAbstract board) {
+    public void sceneAssistantCard(SerializedBoardAbstract board) {
         if(!board.getCurrentPlayer().getNickname().equals(this.client.getNickname())) {
             Platform.runLater(() -> {
                 this.sceneLoading("Wait for other player to do their move!");
             });
         } else {
-            AssistantCardChoiceController currentController = (AssistantCardChoiceController) controllerMap.get(scene);
+            AssistantCardChoiceController currentController = (AssistantCardChoiceController) controllerMap.get(ASSISTANT_CARD);
             currentController.setSerializedBoardAbstract(board);
             currentController.setDataStructures();
 
-            this.currentScene = sceneMap.get(scene);
+            this.currentScene = sceneMap.get(ASSISTANT_CARD);
             this.stage.setScene(this.currentScene);
             this.stage.show();
         }
@@ -326,16 +326,16 @@ public class GUIViewFX extends Application {
 
     /**
      * method that manages the main stage (the one that shows the board)
-     * @param scene name of the scene that has to be loaded (board)
      * @param board serialized board notified by the model
      */
-    protected void sceneShowBoard(String scene, SerializedBoardAbstract board) {
-        BoardFourAdvancedController currentController = (BoardFourAdvancedController) controllerMap.get(scene);
+    public void sceneShowBoard(SerializedBoardAbstract board, boolean enableClick) {
+        BoardFourAdvancedController currentController = (BoardFourAdvancedController) controllerMap.get(BOARD_FOUR_ADVANCED);
         if(board.getType().equals("standard")){
             currentController.setStandardSetup(); // set advanced elements to not visible in case of standard match
         }
 
-        currentController.setBoard(board);
+        currentController.initializeDataStructure();    //TODO: try without this, maybe is not necessary anymore (because enableClick has been improved)
+        currentController.setBoard(board);  // set board parameter in controller
         currentController.setArchipelagosFxmlVisualization();
         currentController.setSchoolsFxmlVisualization();
         currentController.setCloudsVisualization();
@@ -345,18 +345,21 @@ public class GUIViewFX extends Application {
         }
         currentController.setInstructionLabels();
 
-        this.currentScene = sceneMap.get(scene);
+        // disable all button clicking if this board is shown when choosing an assistant card (setup for assistant card visualization)
+        currentController.setBackToAssistantVisible(enableClick);
+        currentController.enableClick(enableClick);
+
+        this.currentScene = sceneMap.get(BOARD_FOUR_ADVANCED);
         this.stage.setScene(this.currentScene);
         this.stage.show();
     }
 
     /**
      * method that manages the stage that shows the winner
-     * @param scene name of the scene that has to be loaded
      * @param board serialized board notified by the model
      */
-    public void sceneShowWinner(String scene, SerializedBoardAbstract board){
-        ShowWinnerController currentController = (ShowWinnerController) controllerMap.get(scene);
+    public void sceneShowWinner(SerializedBoardAbstract board){
+        ShowWinnerController currentController = (ShowWinnerController) controllerMap.get(SHOW_WINNER);
 
         boolean amIWinner = false;
         String[] winners = board.getNicknameWinner().split("\\*");
@@ -369,7 +372,7 @@ public class GUIViewFX extends Application {
 
         currentController.setVisualization(board.getSitPlayers().size(), board.getNicknameWinner(), amIWinner);
 
-        this.currentScene = sceneMap.get(scene);
+        this.currentScene = sceneMap.get(SHOW_WINNER);
         this.stage.setScene(this.currentScene);
         this.stage.show();
     }

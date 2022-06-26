@@ -16,6 +16,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -23,8 +24,11 @@ import java.util.Map;
  * character card data structure
  */
 public class CharacterCardFxml {
+    private GUIViewFX guiViewFX;
     private final GridPane cards;
     private List<Label> costs;
+    private List<ImageView> images;
+    private Map<ImageView, CharacterCardEnumeration> imageType;
 
     private Client client;  // Client class
     private SerializedBoardAdvanced board;  // Board
@@ -87,6 +91,8 @@ public class CharacterCardFxml {
         this.costs.add(cost1);
         this.costs.add(cost2);
         this.costs.add(cost3);
+        this.images = new ArrayList<>();
+        this.imageType = new HashMap<>();
     }
 
     /**
@@ -95,6 +101,14 @@ public class CharacterCardFxml {
      */
     public void setClient(Client client) {
         this.client = client;
+    }
+
+    /**
+     * setter of guiViewFx
+     * @param guiViewFX gui
+     */
+    public void setGuiViewFX(GUIViewFX guiViewFX) {
+        this.guiViewFX = guiViewFX;
     }
 
     /**
@@ -127,7 +141,7 @@ public class CharacterCardFxml {
             guiFX.characterCardAlert(cardEffect.get(type));
             event.consume();*/
             //guiFX.characterCardAlert(type, cardName.get(type), cardEffect.get(type), cardPath.get(type));
-            guiFX.characterCardAlert(type, this.board);
+            guiFX.characterCardAlert(type, this.board, true);
         });
     }
 
@@ -147,10 +161,38 @@ public class CharacterCardFxml {
             ImageView image = new ImageView(getClass().getResource(cardPath.get(c.getType())).toExternalForm());
             image.setFitWidth(100 * scale);
             image.setPreserveRatio(true);
-            this.onMouseClicked(image, c.getType(), guiViewFX);
+            this.images.add(image);
+            this.imageType.put(image, c.getType());
+            //this.onMouseClicked(image, c.getType(), guiViewFX);
             this.cards.add(image, i, 0);
 
             i++;
+        }
+    }
+
+    /**
+     * This method sets the clickable part of the scene.
+     * @param enable true if the content is clickable, false otherwise.
+     */
+    public void enableClick(boolean enable) {
+        if(enable) {
+            if (this.images.size() > 0) {
+                for (ImageView i : this.images) {
+                    if(i != null) {
+                        this.onMouseClicked(i, this.imageType.get(i), this.guiViewFX);
+                    }
+                }
+            }
+        } else {
+            if (this.images.size() > 0) {
+                for (ImageView i : this.images) {
+                    if (i != null) {
+                        i.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
+                            this.guiViewFX.characterCardAlert(this.imageType.get(i), this.board, false);
+                        });
+                    }
+                }
+            }
         }
     }
 

@@ -44,6 +44,7 @@ public class SchoolFxml {
     private SerializedBoardAbstract board;  // Board
     private BoardFourAdvancedController controller; // BoardFourAdvancedController (passed in the setSchoolsFxmlVisualization method)
     private ImageView movedStudent = null; // when a student from the hall il clicked this value is updated
+    private List<ImageView> studentImages;
 
     private Map<ImageView, SPColour> imageColour;
 
@@ -118,6 +119,8 @@ public class SchoolFxml {
         this.professors.getRowConstraints().add(row);
         this.towers.getColumnConstraints().add(col);
         this.towers.getRowConstraints().add(row);
+
+        this.studentImages = new ArrayList<>();
     }
 
     /**
@@ -221,6 +224,30 @@ public class SchoolFxml {
     }
 
     /**
+     * This method sets the clickable part of the scene.
+     * @param enable true if the content is clickable, false otherwise.
+     */
+    public void enableClick(boolean enable) {
+        if(enable) {
+            this.dining.setOnMouseClicked(this::diningClicked);
+
+            if (studentImages.size() > 0) {
+                for (ImageView i : this.studentImages) {
+                    i.setOnMouseClicked(event -> hallStudentClicked(event, i));
+                }
+            }
+        } else {
+            this.dining.setOnMouseClicked(null);
+
+            if (studentImages.size() > 0) {
+                for (ImageView i : this.studentImages) {
+                    i.setOnMouseClicked(null);
+                }
+            }
+        }
+    }
+
+    /**
      * method that removes everything from a grid pane
      * @param grid grid to clear
      */
@@ -269,6 +296,7 @@ public class SchoolFxml {
             //image.setOnMouseDragged(event -> studentHallDragged(event, image));
             //image.setPreserveRatio(true);
 
+            this.studentImages.add(image);
             image.setOnMouseClicked(event -> hallStudentClicked(event, image));
             this.imageColour.put(image, s.getColour());
 

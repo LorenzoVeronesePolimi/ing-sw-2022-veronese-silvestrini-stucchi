@@ -7,6 +7,7 @@ import it.polimi.ingsw.Model.Places.School.School;
 import it.polimi.ingsw.Model.Player;
 import it.polimi.ingsw.View.GUI.Controllers.DataStructures.AssistantCardChoiceFxml;
 import it.polimi.ingsw.View.GUI.GUIViewFX;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -50,6 +51,8 @@ public class AssistantCardChoiceController implements GUIController, Initializab
     @FXML private Button buttonC9;
     @FXML private Button buttonC10;
 
+    @FXML private Button showBoard;
+
 
     private List<AssistantCardChoiceFxml> assistantCardsChoiceFxml;
     /**
@@ -70,6 +73,17 @@ public class AssistantCardChoiceController implements GUIController, Initializab
         assistantCardsChoiceFxml.add(new AssistantCardChoiceFxml(8, imageC8, buttonC8));
         assistantCardsChoiceFxml.add(new AssistantCardChoiceFxml(9, imageC9, buttonC9));
         assistantCardsChoiceFxml.add(new AssistantCardChoiceFxml(10, imageC10, buttonC10));
+        showBoard.setOnAction(this::showBoardForAssistant);
+    }
+
+    /**
+     * This method is called when the button showBoard is pressed. It invoces the call of showBoard with specific parameters.
+     * @param e event of button pressed.
+     */
+    private void showBoardForAssistant(ActionEvent e) {
+        Platform.runLater(() -> {
+            this.guiViewFX.sceneShowBoard(this.serializedBoardAbstract, false);
+        });
     }
 
     /**

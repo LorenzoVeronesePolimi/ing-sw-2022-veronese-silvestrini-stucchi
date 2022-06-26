@@ -1,7 +1,6 @@
 package it.polimi.ingsw.View.GUI.Controllers;
 
 import it.polimi.ingsw.Client.Client;
-import it.polimi.ingsw.Controller.Enumerations.State;
 import it.polimi.ingsw.Model.Board.SerializedBoardAbstract;
 import it.polimi.ingsw.Model.Board.SerializedBoardAdvanced;
 import it.polimi.ingsw.Model.Enumerations.SPColour;
@@ -11,15 +10,17 @@ import it.polimi.ingsw.Model.Places.School.SchoolAdvanced;
 import it.polimi.ingsw.Model.Player;
 import it.polimi.ingsw.View.GUI.Controllers.DataStructures.*;
 import it.polimi.ingsw.View.GUI.GUIViewFX;
+import javafx.application.Platform;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Cursor;
 import javafx.scene.ImageCursor;
 import javafx.scene.Node;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 
@@ -35,6 +36,8 @@ public class BoardFourAdvancedController implements GUIController, Initializable
     private GUIViewFX guiViewFX;
     private Client client;
     private SerializedBoardAbstract board;
+
+    @FXML private Button backToAssistant;
 
     // AnchorPanes
     @FXML public AnchorPane general_anchor;
@@ -311,6 +314,10 @@ public class BoardFourAdvancedController implements GUIController, Initializable
      * @param resourceBundle resource bundle
      */
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        initializeDataStructure();
+    }
+
+    public void initializeDataStructure() {
         // Create Archipelagos data structure
         archipelagosFxml = new ArrayList<>();
         /* substituted by onMouseClicked in ArchipelagoFxml
@@ -355,6 +362,41 @@ public class BoardFourAdvancedController implements GUIController, Initializable
 
         // Character Cards data structure
         characterCardsFxml = new CharacterCardFxml(character_card_grid, card_1_cost_label, card_2_cost_label, card_3_cost_label);
+
+        this.backToAssistant.setVisible(false);
+    }
+
+    /**
+     * This method sets the clickable part of the scene.
+     * @param enable true if the content is clickable, false otherwise.
+     */
+    public void enableClick(boolean enable) {
+        for(ArchipelagoFxml a : this.archipelagosFxml) {
+            a.enableClick(enable);
+        }
+
+        for(SchoolFxml s : this.schoolsFxml) {
+            s.enableClick(enable);
+        }
+
+        for(CloudFxml c : this.cloudsFxml) {
+            c.enableClick(enable);
+        }
+
+        this.characterCardsFxml.enableClick(enable);
+    }
+
+    public void setBackToAssistantVisible(boolean visible) {
+        if(!visible) {
+            this.backToAssistant.setVisible(true);
+            this.backToAssistant.setOnAction(this::backToAssistant);
+        }
+    }
+
+    private void backToAssistant(ActionEvent e) {
+        Platform.runLater(() -> {
+            this.guiViewFX.sceneAssistantCard(this.board);
+        });
     }
 
     /**
@@ -527,7 +569,10 @@ public class BoardFourAdvancedController implements GUIController, Initializable
         for(int i = 0; i < board.getSitPlayers().size(); i++){
             School onWorkingSchool = board.getSchools().get(onWorkingPlayerIndex);
 
-            this.assistantCardsFxml.get(i).setAssistantCardVisualization(onWorkingSchool.getPlayer().getLastCard().getTurnPriority());
+            if(onWorkingSchool.getPlayer().getLastCard() != null)
+                this.assistantCardsFxml.get(i).setAssistantCardVisualization(onWorkingSchool.getPlayer().getLastCard().getTurnPriority());
+            else
+                this.assistantCardsFxml.get(i).setAssistantCardVisualization(-1);
 
             onWorkingPlayerIndex = (onWorkingPlayerIndex + 1) % board.getSitPlayers().size();
         }
@@ -571,6 +616,7 @@ public class BoardFourAdvancedController implements GUIController, Initializable
     public void setCharacterCardsVisualization(){ //assumes that the baord is advanced
         this.characterCardsFxml.setBoard((SerializedBoardAdvanced) this.board);
         this.characterCardsFxml.setClient(this.client);
+        this.characterCardsFxml.setGuiViewFX(this.guiViewFX);
 
         if(board.getType().equals("advanced")){
             this.characterCardsFxml.setVisible(true);
@@ -697,8 +743,8 @@ public class BoardFourAdvancedController implements GUIController, Initializable
     private int computeMNMoves(int mnArchi, int clickedArchi) {
         int moves = 0;
 
-        for(int i = mnArchi; i < board.getArchipelagos().size(); i++) {
-            if(i != clickedArchi) { // if archipelago not found
+        for (int i = mnArchi; i < board.getArchipelagos().size(); i++) {
+            if (i != clickedArchi) { // if archipelago not found
                 moves++;
             } else { // if archielago found
                 return moves;
@@ -713,86 +759,13 @@ public class BoardFourAdvancedController implements GUIController, Initializable
                 4: i = 1 != 2 -> moves = 4
                 5: i = 2 = 2 -> return moves 4
              */
-            if(i == board.getArchipelagos().size() - 1) {
+            if (i == board.getArchipelagos().size() - 1) {
                 i = -1;
             }
         }
         System.out.println("Error in computeMNMoves");
         return 0;
     }
-
-    private void archiClicked(MouseEvent event){
-        //TODO: modify this method in order to consider merged archipelagos (both for student move and for mother nature move)
-
-        if(isCurrentPlayer(this.client.getNickname())) {
-            if(this.movedStudent != null && board.getCurrentState().equals(State.ACTION1)) {
-
-                this.client.asyncWriteToSocket("studentToArchipelago " + this.movedStudent + " 0");
-                this.movedStudent = null;
-
-                for(SchoolFxml s : schoolsFxml) {
-                    s.setMovedStudent(null);
-                }
-            } else if(board.getCurrentState().equals(State.ACTION2)) {
-                Archipelago mnArchi = board.getMn().getCurrentPosition();
-                int i = 0;
-                boolean found = false;
-                for(Archipelago a : board.getArchipelagos()) {
-                    if(!found) {
-                        if(!a.equals(mnArchi)) {
-                            i++;
-                        } else {
-                            found = true;
-                            //TODO: break
-                        }
-                    }
-                }
-
-                this.client.asyncWriteToSocket("moveMotherNature " + computeMNMoves(i, 0));
-            }
-        }
-    }
-
-    /* substituted by onMouseClicked in ArchipelagoFxml
-    private void archiOneClicked(MouseEvent event) {
-        //TODO: modify this method in order to consider merged archipelagos (both for student move and for mother nature move)
-
-        if(isCurrentPlayer(this.client.getNickname())) {
-            if(this.movedStudent != null) {
-                this.client.asyncWriteToSocket("studentToArchipelago " + this.movedStudent + " 1");
-                this.movedStudent = null;
-
-                for(SchoolFxml s : schoolsFxml) {
-                    s.setMovedStudent(null);
-                }
-            } else if(board.getCurrentState().equals(State.ACTION2)) {
-                Archipelago mnArchi = board.getMn().getCurrentPosition();
-                int i = 0;
-                boolean found = false;
-                for(Archipelago a : board.getArchipelagos()) {
-                    if(!found) {
-                        if(!a.equals(mnArchi)) {
-                            i++;
-                        } else {
-                            found = true;
-                        }
-                    }
-                }
-
-                this.client.asyncWriteToSocket("moveMotherNature " + computeMNMoves(i, 1));
-            }
-        }
-    }*/
-
-    /* replaced in CloudFxml
-    private void cloudOneClicked(MouseEvent event) {
-        if(isCurrentPlayer(this.client.getNickname())) {
-            if(board.getCurrentState().equals(State.ACTION3)) {
-                this.client.asyncWriteToSocket("studentCloudToSchool " + 0);
-            }
-        }
-    }*/
-
 
     /**
      * setter of the cursor as certain image

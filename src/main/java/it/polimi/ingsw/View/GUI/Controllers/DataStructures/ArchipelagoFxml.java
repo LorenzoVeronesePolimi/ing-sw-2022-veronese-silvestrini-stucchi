@@ -83,7 +83,19 @@ public class ArchipelagoFxml {
         );
 
         // set actions
-        archi.setOnMouseClicked(this::onMouseClicked);
+        this.archiAnchor.setOnMouseClicked(this::onMouseClicked);
+    }
+
+    /**
+     * This method sets the clickable part of the scene.
+     * @param enable true if the content is clickable, false otherwise.
+     */
+    public void enableClick(boolean enable) {
+        if(enable) {
+            this.archiAnchor.setOnMouseClicked(this::onMouseClicked);
+        } else {
+            this.archiAnchor.setOnMouseClicked(null);
+        }
     }
 
     /**

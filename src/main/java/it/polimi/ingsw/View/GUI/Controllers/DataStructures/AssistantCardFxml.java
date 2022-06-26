@@ -46,14 +46,19 @@ public class AssistantCardFxml {
      * setter of assistant card visualization
      * @param turnPriority turn priority of the chosen card
      */
-    public void setAssistantCardVisualization(int turnPriority){
-        for(int i = 1; i <= 10; i++){
-            if(i == turnPriority){
-                //ImageView image = this.priorityImage.get(i);
-                this.priorityImage.get(i).setVisible(true);
-                //this.priorityImage.get(i).setOnMouseDragOver(event -> ACDragged(event, image));
+    public void setAssistantCardVisualization(int turnPriority) {
+        if (turnPriority >= 1 && turnPriority <= 10) {
+            for (int i = 1; i <= 10; i++) {
+                if (i == turnPriority) {
+                    //ImageView image = this.priorityImage.get(i);
+                    this.priorityImage.get(i).setVisible(true);
+                    //this.priorityImage.get(i).setOnMouseDragOver(event -> ACDragged(event, image));
+                } else {
+                    this.priorityImage.get(i).setVisible(false);
+                }
             }
-            else{
+        } else {
+            for(int i = 1; i <= 10; i++) {
                 this.priorityImage.get(i).setVisible(false);
             }
         }
