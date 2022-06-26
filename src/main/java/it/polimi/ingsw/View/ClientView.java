@@ -34,7 +34,7 @@ public abstract class ClientView {
      * method that says is a view is in an error status
      * @return true if it is in an error status, false otherwise
      */
-    public boolean isErrorStatus() {
+    public synchronized boolean isErrorStatus() {
         return errorStatus;
     }
 
