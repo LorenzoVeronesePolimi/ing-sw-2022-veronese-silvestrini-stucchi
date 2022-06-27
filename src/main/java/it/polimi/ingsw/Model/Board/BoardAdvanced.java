@@ -24,6 +24,7 @@ public class BoardAdvanced extends Observable implements Board, Serializable{
     private final BoardAbstract board;
     private boolean twoExtraPointsFlag = false;
     private SPColour colourToExclude = null;
+    private boolean fakeMNMovementFlag = false;
     private final List<AbstractCharacterCard> extractedCards; //is final... temporarily removed just for testing card usage
     private final Bank bank;
 
@@ -133,6 +134,14 @@ public class BoardAdvanced extends Observable implements Board, Serializable{
         extractedCards.clear();
         extractedCards.add(c1);
         extractedCards.add(c2);
+    }
+
+    /**
+     * setter of fakeMNMovementFlag. It's true when the fake conquer is running, so that the notify is not made by
+     * the board, but by the character card
+     */
+    public void setFakeMNMovementFlag(boolean fakeMNMovementFlag) {
+        this.fakeMNMovementFlag = fakeMNMovementFlag;
     }
 
     /**
@@ -393,7 +402,9 @@ public class BoardAdvanced extends Observable implements Board, Serializable{
             this.board.mergeArchipelagos();
         }
 
-        notifyPlayers();
+        if(!this.fakeMNMovementFlag){ //if conquer is fake, notify will be by the character card
+            notifyPlayers();
+        }
     }
 
     /**
@@ -724,8 +735,8 @@ public class BoardAdvanced extends Observable implements Board, Serializable{
     public void useFakeMNMovement(Player player, int fakeMNPosition, int indexCard) throws
             EmptyCaveauException, ExceededMaxNumCoinException, CoinNotFoundException, InvalidTowerNumberException,
             AnotherTowerException, ExceededMaxTowersException, TowerNotFoundException {
-        System.out.println("[BoardAdvanced, useFakeMNMovement]: fake" + this.extractedCards.get(indexCard).getCurrentPrice());
-        System.out.println("[BoardAdvanced, useFakeMNMovement]: type" + this.extractedCards.get(indexCard).getType());
+        System.out.println("[BoardAdvanced, useFakeMNMovement]: fake " + this.extractedCards.get(indexCard).getCurrentPrice());
+        System.out.println("[BoardAdvanced, useFakeMNMovement]: type " + this.extractedCards.get(indexCard).getType());
         if(this.makePayment(player, this.extractedCards.get(indexCard))) {
             ((FakeMNMovement) this.extractedCards.get(indexCard)).useEffect(player, fakeMNPosition);
             this.extractedCards.get(indexCard).updatePrice(this.bank.getCoin());

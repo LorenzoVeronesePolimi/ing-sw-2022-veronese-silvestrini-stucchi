@@ -638,7 +638,7 @@ public class Controller implements ObserverController<Message>, Serializable {
             this.precomputedPlayer = this.sitPlayers.get(this.computeNextACIndex());
         }
         else{
-            List<Player> precomputedNextPlayersList = precomputeTurnOrder(this.sitPlayers, turnPriority); //TODO: there was thi.players before
+            List<Player> precomputedNextPlayersList = precomputeTurnOrder(this.players, turnPriority); //TODO: there was thi.players before
             this.precomputedPlayer = precomputedNextPlayersList.get(0);
             this.precomputedState = State.ACTION1;
         }

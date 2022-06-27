@@ -536,6 +536,7 @@ public class BoardFourAdvancedController implements GUIController, Initializable
                 this.schoolsFxml.get(i).setTowersVisualization(onWorkingSchool.getTowers(), 0.78);
             }
 
+            System.out.println(board.getType());
             if(board.getType().equals("advanced")){
                 this.schoolsFxml.get(i).setCoinsVisualization(((SchoolAdvanced)board.getSchools().get(onWorkingPlayerIndex)).getNumCoins());
             }

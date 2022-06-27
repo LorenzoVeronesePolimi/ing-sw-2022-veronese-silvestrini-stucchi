@@ -40,9 +40,11 @@ public class FakeMNMovement extends AbstractCharacterCard implements Serializabl
 
         int mnRealPosition = boardAdvanced.whereIsMotherNature();
 
+        boardAdvanced.setFakeMNMovementFlag(true);
         boardAdvanced.moveMotherNature(fakeMNPosition);
         boardAdvanced.tryToConquer(currentPlayer); //if conquerable -> conquer
         boardAdvanced.moveMotherNatureInArchipelagoIndex(mnRealPosition);
+        boardAdvanced.setFakeMNMovementFlag(false);
     }
 
     @Override
