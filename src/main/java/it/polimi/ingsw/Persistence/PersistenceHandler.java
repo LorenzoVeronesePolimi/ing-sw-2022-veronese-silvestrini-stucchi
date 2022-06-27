@@ -5,9 +5,17 @@ import it.polimi.ingsw.Controller.Controller;
 import java.io.*;
 import java.nio.file.Files;
 
+/**
+ * class that implements the advanced functionality of persistence (when a match is interrupted because of a client disconnection,
+ * the game status is saved, and if all the players reconnect to the server the match will continue from where it stopped)
+ */
 public class PersistenceHandler {
     String GAME_SAVED_PATH = "game_saved.bless";
 
+    /**
+     * method creates a serialized controller and saves it in a file
+     * @param controller controller to be saved
+     */
     public void saveMatch(Controller controller) {
         SerializedController serializedController = new SerializedController(controller);
 
@@ -22,6 +30,10 @@ public class PersistenceHandler {
         }
     }
 
+    /**
+     * method that reads from a file (where the controller was saved after the disconnection) the serialized controller
+     * @return controller that was saved
+     */
     public Controller restoreMatch() {
         SerializedController serializedController;
 
@@ -38,6 +50,9 @@ public class PersistenceHandler {
         }
     }
 
+    /**
+     * method that deletes the file containing information about the match
+     */
     public void deleteMatch() {
         File file = new File(GAME_SAVED_PATH);
         try {
