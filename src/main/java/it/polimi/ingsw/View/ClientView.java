@@ -37,12 +37,12 @@ public abstract class ClientView {
     public synchronized boolean isErrorStatus() {
         return errorStatus;
     }
-
+    //TODO: synch in this needed? (try in multi pc)
     /**
      * setter of the error status (true if in error, false otherwise)
      * @param errorStatus status to be set
      */
-    public void setErrorStatus(boolean errorStatus) {
+    public synchronized void setErrorStatus(boolean errorStatus) {
         this.errorStatus = errorStatus;
     }
 

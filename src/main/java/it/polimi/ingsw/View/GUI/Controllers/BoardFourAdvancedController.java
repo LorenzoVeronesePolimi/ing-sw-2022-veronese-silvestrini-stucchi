@@ -386,8 +386,11 @@ public class BoardFourAdvancedController implements GUIController, Initializable
         this.characterCardsFxml.enableClick(enable);
     }
 
-    public void setBackToAssistantVisible(boolean visible) {
-        if(!visible) {
+    public void setBackToAssistantVisible(boolean enableClick) {
+        if(enableClick) {
+            this.backToAssistant.setVisible(false);
+            this.backToAssistant.setOnAction(null);
+        } else {
             this.backToAssistant.setVisible(true);
             this.backToAssistant.setOnAction(this::backToAssistant);
         }

@@ -334,7 +334,7 @@ public class GUIViewFX extends Application {
             currentController.setStandardSetup(); // set advanced elements to not visible in case of standard match
         }
 
-        currentController.initializeDataStructure();    //TODO: try without this, maybe is not necessary anymore (because enableClick has been improved)
+        //currentController.initializeDataStructure();    //TODO: try without this, maybe is not necessary anymore (because enableClick has been improved)
         currentController.setBoard(board);  // set board parameter in controller
         currentController.setArchipelagosFxmlVisualization();
         currentController.setSchoolsFxmlVisualization();

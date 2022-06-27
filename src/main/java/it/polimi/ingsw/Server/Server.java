@@ -40,9 +40,9 @@ public class Server {
 
         try {
             this.serverSocket = new ServerSocket(PORT);
-            System.out.println("Server started in port: " + PORT);
+            System.out.println("[Server, Server]: Server started in port: " + PORT);
         } catch(IOException e) {
-            System.err.println("Server could not start.");
+            System.err.println("[Server, Server]: Server could not start.");
             return;
         }
 
@@ -75,18 +75,37 @@ public class Server {
             System.out.println("> Insert the server port: ");
             System.out.print("> ");
             response = scanner.nextLine();
-        }while(invalidPort(response));
+        }while(!validPort(response));
 
         return Integer.parseInt(response);
     }
 
     /**
      * Checks if the response is a valid Port.
-     * @param response server Port from the user.
+     * @param chosenPort server Port from the user.
      * @return true if the response is a valid Port.
      */
-    private boolean invalidPort(String response) {
-        //TODO: check Port (also check that it is an int)
+    private boolean validPort(String chosenPort) {
+        int port;
+        try {
+            port = Integer.parseInt(chosenPort);
+        } catch(NumberFormatException e) {
+            return false;
+        }
+
+        if(port >= 0 && port <= 1023) {
+            System.out.println("[Server, askPort]: you chose a well-known port");
+            return false;
+        }
+        if(port >= 1024 && port <= 49151) {
+            System.out.println("[Server, askPort]: you chose a registered port at your own risk");
+            return true;
+        }
+        if(port >= 50152 && port <= 65535) {
+            System.out.println("[Server, askPort]: port set");
+            return true;
+        }
+
         return false;
     }
 

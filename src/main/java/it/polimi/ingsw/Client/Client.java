@@ -2,6 +2,7 @@ package it.polimi.ingsw.Client;
 
 import it.polimi.ingsw.Messages.ActiveMessageView;
 import it.polimi.ingsw.Messages.INMessages.PingMessage;
+import it.polimi.ingsw.Messages.OUTMessages.PongMessage;
 import it.polimi.ingsw.View.CLIView;
 import it.polimi.ingsw.View.ClientView;
 import it.polimi.ingsw.View.GUI.GUIViewFX;
@@ -262,8 +263,11 @@ public class Client {
 
                                 this.view.setErrorStatus(false);
                             } else {
-                                // save the message in order to manage errors and let the player repeat the move
-                                prevMessage = (ActiveMessageView) inputMessage;
+                                //ignoring pong messages from server
+                                if(!(inputMessage instanceof PongMessage)) {
+                                    // save the message in order to manage errors and let the player repeat the move
+                                    prevMessage = (ActiveMessageView) inputMessage;
+                                }
                             }
                         }
                     }
@@ -291,7 +295,7 @@ public class Client {
                 System.out.println("[Client, asyncReadFromSocket]: finally");
 
                 this.setActive(false);
-                //checkPossibleReconnect(); // TODO: maybe this here and not in asyncWrite
+                //checkPossibleReconnect(); // TODO: maybe this here and not in asyncWrite (or not even here, because it is in the end of the thread in connecting)
             }
         });
         this.readThread.start();
@@ -324,7 +328,7 @@ public class Client {
             checkErrorSource(); // TODO: check if needed, i think not
 
             this.setActive(false);
-            //checkPossibleReconnect();   // TODO: maybe this is in finally of asyncRead or only in connecting
+            //checkPossibleReconnect();   // TODO: maybe this is in finally of asyncRead or only in connecting (or not even here, because it is in the end of the thread in connecting)
         }
     }
 
@@ -425,7 +429,7 @@ public class Client {
             System.out.println("> Insert the server ip: ");
             System.out.print("> ");
             response = scanner.nextLine();
-        }while(invalidIP(response));
+        }while(!validIP(response));
 
         return response;
     }
@@ -440,29 +444,58 @@ public class Client {
             System.out.println("> Insert the server port: ");
             System.out.print("> ");
             response = scanner.nextLine();
-        }while(invalidPort(response));
+        }while(!validPort(response));
 
         return Integer.parseInt(response);
     }
 
     /**
      * Checks if the response is a valid IP.
-     * @param response server IP from the user.
+     * @param chosenIP server IP from the user.
      * @return true if the response is a valid IP.
      */
-    private boolean invalidIP(String response) {
-        //TODO: check IP
-        return false;
+    private boolean validIP(String chosenIP) {
+        try {
+            if (chosenIP == null || chosenIP.isEmpty()) {
+                System.out.println("[Client, validIP]: invalid ip, empty");
+                return false;
+            }
+
+            String[] nets = chosenIP.split( "\\.", -1);
+            if (nets.length != 4) {
+                System.out.println("[Client, validIP]: invalid ip, wrong number of nets");
+                return false;
+            }
+
+            for (String net : nets) {
+                int i = Integer.parseInt(net);
+                if (i < 0 || i > 255) {
+                    System.out.println("[Client, validIP]: invalid ip, wrong net number");
+                    return false;
+                }
+            }
+
+            return true;
+        } catch (NumberFormatException e) {
+            System.out.println("[Client, validIP]: invalid ip, number format exception");
+            return false;
+        }
     }
 
     /**
      * Checks if the response is a valid Port.
-     * @param response server Port from the user.
+     * @param chosenPort server Port from the user.
      * @return true if the response is a valid Port.
      */
-    private boolean invalidPort(String response) {
-        //TODO: check Port (also check that it is an int)
-        return false;
+    private boolean validPort(String chosenPort) {
+        int port;
+        try {
+            port = Integer.parseInt(chosenPort);
+        } catch(NumberFormatException e) {
+            return false;
+        }
+
+        return port > 0 && port <= 65535;
     }
 
     /**
