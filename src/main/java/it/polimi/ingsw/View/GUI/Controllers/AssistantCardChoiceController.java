@@ -77,7 +77,7 @@ public class AssistantCardChoiceController implements GUIController, Initializab
     }
 
     /**
-     * This method is called when the button showBoard is pressed. It invoces the call of showBoard with specific parameters.
+     * This method is called when the button showBoard is pressed. It invokes the call of showBoard with specific parameters.
      * @param e event of button pressed.
      */
     private void showBoardForAssistant(ActionEvent e) {

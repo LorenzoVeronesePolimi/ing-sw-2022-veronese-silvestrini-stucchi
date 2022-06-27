@@ -327,8 +327,9 @@ public class GUIViewFX extends Application {
     /**
      * method that manages the main stage (the one that shows the board)
      * @param board serialized board notified by the model
+     * @param roundVisualizationStatus true if the bouard needs to be shown for the normal turn; false if it is used for assistantCard purpose
      */
-    public void sceneShowBoard(SerializedBoardAbstract board, boolean enableClick) {
+    public void sceneShowBoard(SerializedBoardAbstract board, boolean roundVisualizationStatus) {
         BoardFourAdvancedController currentController = (BoardFourAdvancedController) controllerMap.get(BOARD_FOUR_ADVANCED);
         if(board.getType().equals("standard")){
             currentController.setStandardSetup(); // set advanced elements to not visible in case of standard match
@@ -346,8 +347,8 @@ public class GUIViewFX extends Application {
         currentController.setInstructionLabels();
 
         // disable all button clicking if this board is shown when choosing an assistant card (setup for assistant card visualization)
-        currentController.setBackToAssistantVisible(enableClick);
-        currentController.enableClick(enableClick);
+        currentController.setBackToAssistantVisible(roundVisualizationStatus);
+        currentController.enableClick(roundVisualizationStatus);
 
         this.currentScene = sceneMap.get(BOARD_FOUR_ADVANCED);
         this.stage.setScene(this.currentScene);

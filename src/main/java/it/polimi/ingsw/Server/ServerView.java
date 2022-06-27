@@ -68,7 +68,8 @@ public class ServerView implements Observer<SerializedBoardAbstract> {
             //Parsing of messages (from String to Message)
             try{
                 // log
-                System.out.println("[ServerView, update]: The message contains: " + this.serverView.playerNickname + " " + messageInput);
+                if(!messageInput.contains("Ping"))
+                    System.out.println("[ServerView, update]: The message contains: " + this.serverView.playerNickname + " " + messageInput);
 
                 // correct message adding player nickname
                 Message messageToController = this.parseStringToMessage(messageInput);
@@ -163,7 +164,7 @@ public class ServerView implements Observer<SerializedBoardAbstract> {
         finalMessage.setCurrentPlayer(this.controller.getPrecomputedPlayer());
         finalMessage.setNicknameWinner(this.controller.getNicknameWinner());
         finalMessage.setSitPlayers(this.controller.getSitPlayers());
-
+        System.out.println("[ServerView, update]: sending board type " + finalMessage.getType());
         // send the Model to the client
         this.socketClientConnection.asyncSendModel(finalMessage);
     }
