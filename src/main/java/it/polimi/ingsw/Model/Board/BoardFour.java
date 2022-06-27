@@ -103,11 +103,6 @@ public class BoardFour extends BoardAbstract implements Serializable {
         super.moveStudentBagToSchool(7);
     }
 
-    public BoardFour(BoardAbstract toCopy){ //added for gameEndedArchipelagos in Controller
-        super(toCopy);
-        this.teammates = ((BoardFour)toCopy).getTeammates();
-    }
-
     /**
      * constructor of the BoardFour: builds a copy of a given BoardFour
      * @param toCopy

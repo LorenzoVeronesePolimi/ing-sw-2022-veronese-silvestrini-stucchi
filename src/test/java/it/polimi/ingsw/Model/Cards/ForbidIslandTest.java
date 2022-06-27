@@ -36,6 +36,32 @@ public class ForbidIslandTest {
         ForbidIsland card = new ForbidIsland(boardAdvanced);
         Assertions.assertEquals("ForbidIsland [c. " + 2 + "]", card.toString());
 
+        Assertions.assertEquals(4, card.getForbidIconsRemained());
+        try {
+            card.useEffect(0);
+            Assertions.assertEquals(3, card.getForbidIconsRemained());
+            card.useEffect(1);
+            Assertions.assertEquals(2, card.getForbidIconsRemained());
+            card.useEffect(2);
+            Assertions.assertEquals(1, card.getForbidIconsRemained());
+            card.useEffect(3);
+            Assertions.assertEquals(0, card.getForbidIconsRemained());
+            Assertions.assertThrows(ExceededNumberForbidFlagException.class, () -> card.useEffect(4));
+        } catch (ExceededNumberForbidFlagException e) {
+            throw new RuntimeException(e);
+        }
+
+        card.addForbidIconsRemained();
+        Assertions.assertEquals(1, card.getForbidIconsRemained());
+        card.addForbidIconsRemained();
+        Assertions.assertEquals(2, card.getForbidIconsRemained());
+        card.addForbidIconsRemained();
+        Assertions.assertEquals(3, card.getForbidIconsRemained());
+        card.addForbidIconsRemained();
+        Assertions.assertEquals(4, card.getForbidIconsRemained());
+        card.addForbidIconsRemained();
+        Assertions.assertEquals(4, card.getForbidIconsRemained());
+
         assert boardAdvanced != null;
         boardAdvanced.setExtractedCards(card);
 

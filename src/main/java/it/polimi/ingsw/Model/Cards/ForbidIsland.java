@@ -39,7 +39,8 @@ public class ForbidIsland extends AbstractCharacterCard implements Serializable 
     }
 
     public void addForbidIconsRemained(){
-        this.forbidIconsRemained++;
+        if(this.forbidIconsRemained < 4)
+            this.forbidIconsRemained++;
     }
 
     @Override

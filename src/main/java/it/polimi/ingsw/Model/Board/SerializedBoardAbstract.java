@@ -120,7 +120,7 @@ public class SerializedBoardAbstract implements Serializable, ActiveMessageView 
      * getter of current state
      * @return current state
      */
-    public State getCurrentState(){return this.currentState;}
+    public State getCurrentState(){ return this.currentState;}
 
     /**
      * getter of current player
@@ -140,13 +140,13 @@ public class SerializedBoardAbstract implements Serializable, ActiveMessageView 
 
     /**
      * setter of current state
-     * @param newState state to be setted
+     * @param newState state to be set
      */
     public void setCurrentState(State newState){this.currentState = newState;}
 
     /**
      * setter of current player
-     * @param currentPlayer current player to be setted
+     * @param currentPlayer current player to be set
      */
     public void setCurrentPlayer(Player currentPlayer){this.currentPlayer = currentPlayer;}
 
