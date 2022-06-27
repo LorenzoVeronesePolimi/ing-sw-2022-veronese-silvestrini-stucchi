@@ -263,7 +263,9 @@ public abstract class BoardAbstract extends Observable implements Board, Seriali
      */
     public void moveMotherNatureInArchipelagoIndex(int index){
         mn.putInPosition(archipelagos.get(index));
-        notifyPlayers(); //TODO: check if ok
+        /*if(!(this.schools.get(0) instanceof SchoolAdvanced))  //TODO: maybe needed
+            notifyPlayers(); //TODO: check if ok
+         */
     }
 
     /**

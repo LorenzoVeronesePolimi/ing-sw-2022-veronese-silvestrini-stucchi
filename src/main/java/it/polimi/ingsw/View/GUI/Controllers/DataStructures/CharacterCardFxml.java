@@ -135,13 +135,13 @@ public class CharacterCardFxml {
      * @param type type of character card
      * @param guiFX gui fx
      */
-    private void onMouseClicked(ImageView image, CharacterCardEnumeration type, GUIViewFX guiFX){
+    private void onMouseClicked(ImageView image, CharacterCardEnumeration type, GUIViewFX guiFX, boolean clickable){
         image.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
             /*
             guiFX.characterCardAlert(cardEffect.get(type));
             event.consume();*/
             //guiFX.characterCardAlert(type, cardName.get(type), cardEffect.get(type), cardPath.get(type));
-            guiFX.characterCardAlert(type, this.board, true);
+            guiFX.characterCardAlert(type, this.board, clickable);
         });
     }
 
@@ -149,9 +149,8 @@ public class CharacterCardFxml {
      * setter of character card visualization
      * @param cards list of character cards
      * @param scale image scale
-     * @param guiViewFX gui view fx
      */
-    public void setCharacterCardsVisualization(List<AbstractCharacterCard> cards, double scale, GUIViewFX guiViewFX){
+    public void setCharacterCardsVisualization(List<AbstractCharacterCard> cards, double scale){
         int i = 0;
         for(AbstractCharacterCard c : cards){
             // set cost
@@ -175,25 +174,14 @@ public class CharacterCardFxml {
      * @param enable true if the content is clickable, false otherwise.
      */
     public void enableClick(boolean enable) {
-        if(enable) {
-            if (this.images.size() > 0) {
-                for (ImageView i : this.images) {
-                    if(i != null) {
-                        this.onMouseClicked(i, this.imageType.get(i), this.guiViewFX);
-                    }
-                }
-            }
-        } else {
-            if (this.images.size() > 0) {
-                for (ImageView i : this.images) {
-                    if (i != null) {
-                        i.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
-                            this.guiViewFX.characterCardAlert(this.imageType.get(i), this.board, false);
-                        });
-                    }
+        if (this.images.size() > 0) {
+            for (ImageView i : this.images) {
+                if(i != null) {
+                    this.onMouseClicked(i, this.imageType.get(i), this.guiViewFX, enable);
                 }
             }
         }
+
     }
 
 

@@ -394,6 +394,7 @@ public class CLIView extends ClientView {
      * @param serializedBoardAbstract serialized board notified by the model
      */
     private void manageNextMove(SerializedBoardAbstract serializedBoardAbstract) {
+        System.out.println("[CLIView, manageNextMove]: receiving board type " + serializedBoardAbstract.getType());
         //System.out.println("State: " + serializedBoardAbstract.getCurrentState());
         switch(serializedBoardAbstract.getCurrentState()){
             case PLANNING2:

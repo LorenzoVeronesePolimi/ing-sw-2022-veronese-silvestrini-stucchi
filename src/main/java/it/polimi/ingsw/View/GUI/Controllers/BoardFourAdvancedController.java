@@ -386,8 +386,12 @@ public class BoardFourAdvancedController implements GUIController, Initializable
         this.characterCardsFxml.enableClick(enable);
     }
 
-    public void setBackToAssistantVisible(boolean enableClick) {
-        if(enableClick) {
+    /**
+     * This method is used to hyde the "BACK TO ASSISTANT" button when playing a normal round and show it when in a "chose assistant card" situation
+     * @param roundVisualizationStatus true if normal playing round; false if the board is shown for assistant card choice purposes
+     */
+    public void setBackToAssistantVisible(boolean roundVisualizationStatus) {
+        if(roundVisualizationStatus) {
             this.backToAssistant.setVisible(false);
             this.backToAssistant.setOnAction(null);
         } else {
@@ -624,7 +628,7 @@ public class BoardFourAdvancedController implements GUIController, Initializable
 
         if(board.getType().equals("advanced")){
             this.characterCardsFxml.setVisible(true);
-            this.characterCardsFxml.setCharacterCardsVisualization(((SerializedBoardAdvanced)board).getExtractedCards(), 1, this.guiViewFX);
+            this.characterCardsFxml.setCharacterCardsVisualization(((SerializedBoardAdvanced)board).getExtractedCards(), 1);
         }
         else{
             this.characterCardsFxml.setVisible(false);
