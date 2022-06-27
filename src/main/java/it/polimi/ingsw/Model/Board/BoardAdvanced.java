@@ -25,6 +25,7 @@ public class BoardAdvanced extends Observable implements Board, Serializable{
     private boolean twoExtraPointsFlag = false;
     private SPColour colourToExclude = null;
     private boolean fakeMNMovementFlag = false;
+    private boolean takeProfessorOnEquityFlag = false;
     private final List<AbstractCharacterCard> extractedCards; //is final... temporarily removed just for testing card usage
     private final Bank bank;
 
@@ -81,7 +82,7 @@ public class BoardAdvanced extends Observable implements Board, Serializable{
         cards.add(new PlaceOneStudent(this));
         cards.add(new TakeProfessorOnEquity(this));
         cards.add(new FakeMNMovement(this));
-        cards.add(new TwoExtraIslands());
+        /*cards.add(new TwoExtraIslands());
         cards.add(new ForbidIsland(this));
         cards.add(new TowerNoValue(this));
         cards.add(new ExchangeThreeStudents(this));
@@ -89,7 +90,7 @@ public class BoardAdvanced extends Observable implements Board, Serializable{
         cards.add(new ExcludeColourFromCounting(this));
         cards.add(new ExchangeTwoHallDining(this));
         cards.add(new ExtraStudentInDining(this));
-        cards.add(new ReduceColourInDining(this));
+        cards.add(new ReduceColourInDining(this));*/
 
         Collections.shuffle(cards, new Random());
 
@@ -142,6 +143,14 @@ public class BoardAdvanced extends Observable implements Board, Serializable{
      */
     public void setFakeMNMovementFlag(boolean fakeMNMovementFlag) {
         this.fakeMNMovementFlag = fakeMNMovementFlag;
+    }
+
+    /**
+     * setter of takeProfessorOnEquityFlag. It's true during the turn in which the CharacterCard TakeProfessorOnEquity was used.
+     * While it's true, it's effect is activated for each movement of a Student to the DiningRoom
+     */
+    public void setTakeProfessorOnEquityFlag(boolean takeProfessorOnEquityFlag) {
+        this.takeProfessorOnEquityFlag = takeProfessorOnEquityFlag;
     }
 
     /**
@@ -210,6 +219,14 @@ public class BoardAdvanced extends Observable implements Board, Serializable{
      */
     public List<AbstractCharacterCard> getExtractedCards(){
         return new ArrayList<>(this.extractedCards);
+    }
+
+    /**
+     * getter of takeProfessorOnEquityFlag. It's true during the turn in which the CharacterCard TakeProfessorOnEquity was used.
+     * While it's true, it's effect is activated for each movement of a Student to the DiningRoom
+     */
+    public boolean getTakeProfessorOnEquityFlag() {
+        return this.takeProfessorOnEquityFlag;
     }
 
     /**
@@ -287,6 +304,12 @@ public class BoardAdvanced extends Observable implements Board, Serializable{
         currentSchool.addStudentDiningRoom(toBeMoved);
         checkCoinNeed(currentSchool, numRed,numBlue, numGreen,numPink,numYellow);
         this.conquerProfessor(player, colour); //has the movement of the Student caused the conquering of the Professor?
+
+        if(this.getTakeProfessorOnEquityFlag()){
+            for(AbstractCharacterCard c : this.extractedCards){
+
+            }
+        }
 
         notifyPlayers();
     }

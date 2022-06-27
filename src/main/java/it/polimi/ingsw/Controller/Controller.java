@@ -8,6 +8,7 @@ import it.polimi.ingsw.Messages.Enumerations.INMessageType;
 import it.polimi.ingsw.Messages.INMessages.*;
 import it.polimi.ingsw.Model.Board.*;
 import it.polimi.ingsw.Model.Cards.*;
+import it.polimi.ingsw.Model.Enumerations.CharacterCardEnumeration;
 import it.polimi.ingsw.Model.Enumerations.PlayerColour;
 import it.polimi.ingsw.Model.Enumerations.SPColour;
 import it.polimi.ingsw.Model.Exceptions.*;
@@ -484,32 +485,6 @@ public class Controller implements ObserverController<Message>, Serializable {
             if(colour == PlayerColour.GRAY){
                 return false; //TODO: test (put in integrity)
             }
-            /*
-            long numSameColour = 0;
-            // check for how many player already have the chosen colour
-            numSameColour = this.players.stream().filter(x -> x.getColour().equals(colour)).count();
-
-            // if no one has the chosen colour, check if there are not already two players with different colour
-            // this can happen if player1->black
-            //                    player2->white
-            //                    player3->gray --> ERROR
-            if(numSameColour == 0) {
-                if(this.players.stream().anyMatch(x -> x.getColour().equals(PlayerColour.WHITE))) {
-                    if(this.players.stream().anyMatch(x -> x.getColour().equals(PlayerColour.BLACK)) ||
-                            this.players.stream().anyMatch(x -> x.getColour().equals(PlayerColour.GRAY))) {
-                        return false;//TODO: test
-                    }
-                } else if(this.players.stream().anyMatch(x -> x.getColour().equals(PlayerColour.BLACK))) {
-                    if(this.players.stream().anyMatch(x -> x.getColour().equals(PlayerColour.GRAY))) {
-                        return false;//TODO: test
-                    }
-                }
-            }
-
-            // check is the chosen colour has already been chosen by two players
-            if(numSameColour >= 2){
-                return false;//TODO: test
-            }*/
         }
         else{
             if(this.players.stream().anyMatch(x -> x.getColour().equals(colour)))
@@ -641,8 +616,8 @@ public class Controller implements ObserverController<Message>, Serializable {
             //need to create a list from the first to the penultimate
             List<Player> inOrderAC = new ArrayList<>();
             int indexOfFirst = this.sitPlayers.indexOf(this.players.get(0));
-            for(int i = 0; i < this.players.size(); i++){
-                inOrderAC.add(this.players.get((indexOfFirst + i) % this.players.size()));
+            for(int i = 0; i < this.sitPlayers.size(); i++){
+                inOrderAC.add(this.sitPlayers.get((indexOfFirst + i) % this.sitPlayers.size()));
             }
             List<Player> precomputedNextPlayersList = precomputeTurnOrder(inOrderAC, turnPriority); //TODO: there was this.players or this.sitPlayers before
             this.precomputedPlayer = precomputedNextPlayersList.get(0);
@@ -668,21 +643,25 @@ public class Controller implements ObserverController<Message>, Serializable {
         }
 
         if(controllerIntegrity.checkStudentHallToDiningRoom(getCurrentPlayer(), studentColour)){
-            if(this.advanced){
-                try {
+            try {
+                if(this.advanced) {
                     boardAdvanced.moveStudentHallToDiningRoom(getCurrentPlayer(), studentColour);
-                } catch (ExceededMaxStudentsDiningRoomException | ProfessorNotFoundException | NoProfessorBagException | StudentNotFoundException e) {//TODO: test
-                    return false; //TODO: test
-                }
-                catch(EmptyCaveauException e){
-                    // do nothing: simply he doesn't receive the coin
-                }
-            } else{
-                try {
+                    if(boardAdvanced.getTakeProfessorOnEquityFlag()){
+                        for(AbstractCharacterCard c : boardAdvanced.getExtractedCards()){
+                            if(c.getType() == CharacterCardEnumeration.TAKE_PROFESSOR_ON_EQUITY){
+                                ((TakeProfessorOnEquity)c).useEffect(getCurrentPlayer());
+                            }
+                        }
+                        this.manageCCTakeProfessorOnEquity(new MessageCCTakeProfessorOnEquity(nicknamePlayer));
+                    }
+
+                } else {
                     board.moveStudentHallToDiningRoom(getCurrentPlayer(), studentColour);
-                } catch (ExceededMaxStudentsDiningRoomException | ProfessorNotFoundException | NoProfessorBagException | StudentNotFoundException e) {
-                    return false; //TODO: test
                 }
+            } catch (ExceededMaxStudentsDiningRoomException | ProfessorNotFoundException | NoProfessorBagException | StudentNotFoundException | TowerNotFoundException | InvalidTowerNumberException | AnotherTowerException | ExceededMaxTowersException e) {//TODO: test
+                return false; //TODO: test
+            } catch (EmptyCaveauException e) { //case boardAdvanced
+                // do nothing: simply he doesn't receive the coin
             }
             this.numStudentsToMoveCurrent--;
             if(this.numStudentsToMoveCurrent == 0 || // all possible Students moved
@@ -709,25 +688,21 @@ public class Controller implements ObserverController<Message>, Serializable {
         if(!isCurrentPlayer(nicknamePlayer)){return false;}
 
         if(this.numStudentsToMoveCurrent == 1 || // all possible Students are going to be moved
-                this.board.getPlayerSchool(getCurrentPlayer()).getStudentsHall().size() == 1){//TODO: test (second condition)
+                this.board.getPlayerSchool(getCurrentPlayer()).getStudentsHall().size() == 1){
             this.precomputedState = State.ACTION2;
         }
 
         if(controllerIntegrity.checkStudentToArchipelago(getCurrentPlayer(), studentColour, destinationArchipelagoIndex)){
-            if(isAdvanced()){
-                try {
+            try {
+                if (isAdvanced()) {
                     boardAdvanced.moveStudentSchoolToArchipelagos(getCurrentPlayer(), studentColour, destinationArchipelagoIndex);
-                } catch (StudentNotFoundException e) {
-                    return false; //TODO: test
-                }
-            } else {
-                try {
+                } else {
                     board.moveStudentSchoolToArchipelagos(getCurrentPlayer(), studentColour, destinationArchipelagoIndex);
-                } catch (StudentNotFoundException e) {
-                    return false;//TODO: test
                 }
             }
-
+            catch (StudentNotFoundException e) {
+                return false; //TODO: test
+            }
             this.numStudentsToMoveCurrent--;
             if(this.numStudentsToMoveCurrent == 0 || // all possible Students moved
                     this.board.getPlayerSchool(getCurrentPlayer()).getStudentsHall().size() == 0){ // no Students remained //TODO: test (second condition)
@@ -754,7 +729,7 @@ public class Controller implements ObserverController<Message>, Serializable {
         } catch (EmptyCaveauException | ExceededMaxStudentsHallException | StudentNotFoundException | InvalidTowerNumberException | AnotherTowerException | ExceededMaxTowersException e) {
             this.precomputedState = State.ACTION2; //TODO: test
             return false;
-        } catch (TowerNotFoundException e){ //TODO: ok? No towers left, so I Win
+        } catch (TowerNotFoundException e){ // No towers left, so I Win
             this.precomputedState = State.END;
             controllerState.setState(State.END);
             if(this.numPlayers < 4){
@@ -773,29 +748,23 @@ public class Controller implements ObserverController<Message>, Serializable {
         }
 
         if(controllerIntegrity.checkMoveMotherNature(getCurrentPlayer(), moves)){
-            if(isAdvanced()){
-                boardAdvanced.moveMotherNature(moves);
-                try {
+            try {
+                if (isAdvanced()) {
+                    boardAdvanced.moveMotherNature(moves);
                     boardAdvanced.tryToConquer(getCurrentPlayer());
-                } catch (InvalidTowerNumberException | AnotherTowerException | ExceededMaxTowersException | TowerNotFoundException e) {
-                    this.precomputedState = State.ACTION2;//TODO: test
-                    return false;
-                }
-            }else {
-                board.moveMotherNature(moves);
-                try {
+                } else {
+                    board.moveMotherNature(moves);
                     board.tryToConquer(getCurrentPlayer());
-                } catch (InvalidTowerNumberException | AnotherTowerException | ExceededMaxTowersException |
-                         TowerNotFoundException e) {
-                    this.precomputedState = State.ACTION2;
-                    return false;
                 }
+            } catch (InvalidTowerNumberException | AnotherTowerException | ExceededMaxTowersException | TowerNotFoundException e) {
+                this.precomputedState = State.ACTION2;
+                return false;
             }
             if(this.precomputedState != State.END){
                 controllerState.setState(State.ACTION3);
             }
             else{
-                controllerState.setState(State.END); //TODO: ok?
+                controllerState.setState(State.END);
             }
 
             return true;
@@ -835,18 +804,14 @@ public class Controller implements ObserverController<Message>, Serializable {
         }
 
         if(controllerIntegrity.checkStudentCloudToSchool(getCurrentPlayer(), indexCloud) || this.gameEnded){//TODO: I can choose a void cloud only if the game is going to finish, RIGHT?
-            if(isAdvanced()) {
-                try{
+            try{
+                if(isAdvanced()) {
                     boardAdvanced.moveStudentCloudToSchool(getCurrentPlayer(), indexCloud);
-                } catch(ExceededMaxStudentsHallException ex){//TODO: test
-                    return false;
-                }
-            } else {
-                try{
+                } else {
                     board.moveStudentCloudToSchool(getCurrentPlayer(), indexCloud);
-                } catch(ExceededMaxStudentsHallException ex){//TODO: test
-                    return false;
                 }
+            } catch(ExceededMaxStudentsHallException ex){
+                return false;
             }
 
             // change current Player
@@ -875,6 +840,8 @@ public class Controller implements ObserverController<Message>, Serializable {
                 }
             }
 
+            // reset use of continuative effects of CharacterCards
+            boardAdvanced.setTakeProfessorOnEquityFlag(false);
             //TODO: remove some card effects (colourtoexclude, towernovalue...)
 
             return true;
@@ -913,7 +880,6 @@ public class Controller implements ObserverController<Message>, Serializable {
 
                 return true;
             }
-
         } catch(WrongNumberOfStudentsTransferException | StudentNotFoundException | ExceededMaxStudentsHallException | CoinNotFoundException | EmptyCaveauException | ExceededMaxNumCoinException ex){
             return false;//TODO: test
         }

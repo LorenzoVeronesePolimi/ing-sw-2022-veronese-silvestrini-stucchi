@@ -40,6 +40,8 @@ public class TakeProfessorOnEquity extends AbstractCharacterCard implements Seri
         var availableColours = new SPColour[]{SPColour.BLUE, SPColour.PINK, SPColour.RED, SPColour.GREEN, SPColour.YELLOW};
         School currentSchoolPlayer = boardAdvanced.getPlayerSchool(currentPlayer);
 
+        boardAdvanced.setTakeProfessorOnEquityFlag(true);
+
         for(SPColour colour: availableColours) {
             if(boardAdvanced.isProfessorInSchool(colour)) {
                 School professorSchool = boardAdvanced.whereIsProfessor(colour);
