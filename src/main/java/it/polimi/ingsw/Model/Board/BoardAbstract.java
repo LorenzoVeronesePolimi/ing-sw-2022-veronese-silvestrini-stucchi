@@ -263,7 +263,9 @@ public abstract class BoardAbstract extends Observable implements Board, Seriali
      */
     public void moveMotherNatureInArchipelagoIndex(int index){
         mn.putInPosition(archipelagos.get(index));
-        notifyPlayers();
+        /*if(!(this.schools.get(0) instanceof SchoolAdvanced))  //TODO: maybe needed
+            notifyPlayers(); //TODO: check if ok
+         */
     }
 
     /**
@@ -576,6 +578,7 @@ public abstract class BoardAbstract extends Observable implements Board, Seriali
         // conqueror's Towers to put on the Archipelago
         List<Tower> conquerorTowers;
         conquerorTowers = this.playerSchool.get(conqueror).removeNumTowers(toConquer.getNumIslands());
+
         moveTower(conquerorTowers, toConquer);
     }
 

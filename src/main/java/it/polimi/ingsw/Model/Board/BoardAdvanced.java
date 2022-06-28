@@ -24,6 +24,8 @@ public class BoardAdvanced extends Observable implements Board, Serializable{
     private final BoardAbstract board;
     private boolean twoExtraPointsFlag = false;
     private SPColour colourToExclude = null;
+    private boolean fakeMNMovementFlag = false;
+    private boolean takeProfessorOnEquityFlag = false;
     private final List<AbstractCharacterCard> extractedCards; //is final... temporarily removed just for testing card usage
     private final Bank bank;
 
@@ -77,6 +79,7 @@ public class BoardAdvanced extends Observable implements Board, Serializable{
         }
 
         List<AbstractCharacterCard> cards = new ArrayList<>();
+
         cards.add(new PlaceOneStudent(this));
         cards.add(new TakeProfessorOnEquity(this));
         cards.add(new FakeMNMovement(this));
@@ -133,6 +136,22 @@ public class BoardAdvanced extends Observable implements Board, Serializable{
         extractedCards.clear();
         extractedCards.add(c1);
         extractedCards.add(c2);
+    }
+
+    /**
+     * setter of fakeMNMovementFlag. It's true when the fake conquer is running, so that the notify is not made by
+     * the board, but by the character card
+     */
+    public void setFakeMNMovementFlag(boolean fakeMNMovementFlag) {
+        this.fakeMNMovementFlag = fakeMNMovementFlag;
+    }
+
+    /**
+     * setter of takeProfessorOnEquityFlag. It's true during the turn in which the CharacterCard TakeProfessorOnEquity was used.
+     * While it's true, it's effect is activated for each movement of a Student to the DiningRoom
+     */
+    public void setTakeProfessorOnEquityFlag(boolean takeProfessorOnEquityFlag) {
+        this.takeProfessorOnEquityFlag = takeProfessorOnEquityFlag;
     }
 
     /**
@@ -201,6 +220,14 @@ public class BoardAdvanced extends Observable implements Board, Serializable{
      */
     public List<AbstractCharacterCard> getExtractedCards(){
         return new ArrayList<>(this.extractedCards);
+    }
+
+    /**
+     * getter of takeProfessorOnEquityFlag. It's true during the turn in which the CharacterCard TakeProfessorOnEquity was used.
+     * While it's true, it's effect is activated for each movement of a Student to the DiningRoom
+     */
+    public boolean getTakeProfessorOnEquityFlag() {
+        return this.takeProfessorOnEquityFlag;
     }
 
     /**
@@ -384,16 +411,21 @@ public class BoardAdvanced extends Observable implements Board, Serializable{
      */
     public void tryToConquer(Player currentPlayer) throws
             InvalidTowerNumberException, AnotherTowerException, ExceededMaxTowersException, TowerNotFoundException {
+        System.out.println("[BoardAdvanced, tryToConquer]: entering conquer ");
         int currPosMotherNature = this.board.whereIsMotherNature();
         boolean archipelagoConquerable = this.checkIfConquerable(currentPlayer);
         if(archipelagoConquerable){
+            System.out.println("[BoardAdvanced, tryToConquer]: conquerable ");
             this.board.conquerArchipelago(currentPlayer, this.board.archipelagos.get(currPosMotherNature));
 
             //let's merge Archipelagos
             this.board.mergeArchipelagos();
         }
 
-        notifyPlayers();
+        if(!this.fakeMNMovementFlag){ //if conquer is fake, notify will be by the character card
+            System.out.println("[BoardAdvanced, tryToConquer]: normal notify ");
+            notifyPlayers();
+        }
     }
 
     /**
@@ -413,17 +445,21 @@ public class BoardAdvanced extends Observable implements Board, Serializable{
                         ((ForbidIsland)c).addForbidIconsRemained();
                     }
                 }
+                System.out.println("[BoardAdvanced, tryToConquer]: forbid ");
                 return false;
             }
 
             if (currentArchipelago.getOwner() == currentPlayer) {
+                System.out.println("[BoardAdvanced, tryToConquer]: already owner ");
                 return false;
             } else if (currentArchipelago.getOwner() == null) { //archipelago never conquered before
                 List<Professor> conquerorProfessors = this.board.playerSchool.get(currentPlayer).getProfessors();
+                System.out.println("[BoardAdvanced, tryToConquer]: no owner ");
                 return setConquerable(currentArchipelago, conquerorProfessors);
             }
             //the current Player is not the owner: can he conquer the Archipelago?
             else {
+                System.out.println("[BoardAdvanced, tryToConquer]: battle ");
                 //who has higher influence according to rules?
                 Player winner = this.computeWinner(currentArchipelago.getOwner(), currentPlayer, currentArchipelago, twoExtraPointsFlag, colourToExclude);
                 currentArchipelago.setTowerNoValueFlag(false);
@@ -469,10 +505,14 @@ public class BoardAdvanced extends Observable implements Board, Serializable{
      */
     private boolean setConquerable(Archipelago currentArchipelago, List<Professor> conquerorProfessors) {
         boolean conquerable = false;
+        System.out.println("[BoardAdvanced, setConquerable]: archi " + this.getArchiList().indexOf(currentArchipelago));
         for(Professor p : conquerorProfessors){
+            System.out.println("[BoardAdvanced, setConquerable]: loop ");
             //can't conquer an Island without Students coloured without the Colour of a Professor of mine, even if no one has conquered it before
-            if(!conquerable && !p.getColour().equals(colourToExclude))
+            if(!conquerable && !p.getColour().equals(colourToExclude)) {
+                System.out.println("[BoardAdvanced, tryToConquer]: conquerable for " + p.getColour() + " = " + (currentArchipelago.howManyStudents().get(p.getColour()) > 0));
                 conquerable = currentArchipelago.howManyStudents().get(p.getColour()) > 0;
+            }
         }
         this.colourToExclude = null;
         return conquerable;
@@ -525,6 +565,7 @@ public class BoardAdvanced extends Observable implements Board, Serializable{
      * @return the player who has most influence
      */
     protected Player computeWinner(Player owner, Player challenger, Archipelago archipelago, boolean twoExtraPointsFlag, SPColour colourToExclude){
+        System.out.println("[BoardAdvanced, computeWinner]: entering compute ");
         if(this.board instanceof BoardTwo || this.board instanceof BoardThree) {
             int ownerInfluence = this.computeInfluenceOfPlayer(owner, archipelago, colourToExclude);
             int challengerInfluence = this.computeInfluenceOfPlayer(challenger, archipelago, colourToExclude);
@@ -535,8 +576,10 @@ public class BoardAdvanced extends Observable implements Board, Serializable{
             }
 
             if (ownerInfluence >= challengerInfluence) {
+                System.out.println("[BoardAdvanced, tryToConquer]: owner ");
                 return owner;
             } else {
+                System.out.println("[BoardAdvanced, tryToConquer]: challenger ");
                 return challenger;
             }
         } else if(this.board instanceof BoardFour){
@@ -724,8 +767,8 @@ public class BoardAdvanced extends Observable implements Board, Serializable{
     public void useFakeMNMovement(Player player, int fakeMNPosition, int indexCard) throws
             EmptyCaveauException, ExceededMaxNumCoinException, CoinNotFoundException, InvalidTowerNumberException,
             AnotherTowerException, ExceededMaxTowersException, TowerNotFoundException {
-        System.out.println("[BoardAdvanced, useFakeMNMovement]: fake" + this.extractedCards.get(indexCard).getCurrentPrice());
-        System.out.println("[BoardAdvanced, useFakeMNMovement]: type" + this.extractedCards.get(indexCard).getType());
+        System.out.println("[BoardAdvanced, useFakeMNMovement]: fake " + this.extractedCards.get(indexCard).getCurrentPrice());
+        System.out.println("[BoardAdvanced, useFakeMNMovement]: type " + this.extractedCards.get(indexCard).getType());
         if(this.makePayment(player, this.extractedCards.get(indexCard))) {
             ((FakeMNMovement) this.extractedCards.get(indexCard)).useEffect(player, fakeMNPosition);
             this.extractedCards.get(indexCard).updatePrice(this.bank.getCoin());
@@ -733,6 +776,7 @@ public class BoardAdvanced extends Observable implements Board, Serializable{
             throw new CoinNotFoundException();
         }
 
+        System.out.println("[BoardAdvanced, tryToConquer]: fake notify ");
         notifyPlayers();
     }
 

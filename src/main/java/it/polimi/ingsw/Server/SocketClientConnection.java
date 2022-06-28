@@ -167,8 +167,8 @@ public class SocketClientConnection extends ClientConnection implements Runnable
             out.writeObject(message);
             out.flush();
         } catch(IOException | NullPointerException e){
-            System.err.println("[SocketClientConnection, run]: " + e.getMessage());
-            System.out.println("[SocketClientConnection, run]: send exception");
+            System.err.println("[SocketClientConnection, send]: " + e.getMessage());
+            System.out.println("[SocketClientConnection, send]: send exception");
             this.enablePinger(false);
             if(server.isActiveConnection(this))
                 server.deregisterConnection(this);

@@ -1211,7 +1211,7 @@ public class ControllerTest {
 
 
         //**********TEST BOARD TWO NOT ADVANCED**********
-        for(int i = 0; i < 2; i++) {
+        for(int i = 0; i < 10; i++) {
             List<String> players = new ArrayList<>();
             players.add("First");
             players.add("Second");
@@ -1229,11 +1229,12 @@ public class ControllerTest {
             finished = makeParametricRound(finished, new int[]{7, 8}, new String[]{"First", "Second"});
             finished = makeParametricRound(finished, new int[]{8, 9}, new String[]{"First", "Second"});
             finished = makeParametricRound(finished, new int[]{9, 10}, new String[]{"First", "Second"});
+            finished = makeParametricRound(finished, new int[]{9, 10}, new String[]{"First", "Second"});
             Assertions.assertTrue(finished);
         }
 
         //**********TEST BOARD TWO ADVANCED**********
-        for(int i = 0; i < 2; i++) {
+        for(int i = 0; i < 10; i++) {
             List<String> players = new ArrayList<>();
             players.add("First");
             players.add("Second");
@@ -1255,7 +1256,7 @@ public class ControllerTest {
         }
 
         //**********TEST BOARD THREE NOT ADVANCED**********
-        for(int i = 0; i < 2; i++) {
+        for(int i = 0; i < 10; i++) {
             List<String> players = new ArrayList<>();
             players.add("First");
             players.add("Second");
@@ -1278,7 +1279,7 @@ public class ControllerTest {
         }
 
         //**********TEST BOARD THREE ADVANCED**********
-        for(int i = 0; i < 2; i++) {
+        for(int i = 0; i < 10; i++) {
             List<String> players = new ArrayList<>();
             players.add("First");
             players.add("Second");
@@ -1301,7 +1302,7 @@ public class ControllerTest {
         }
 
         //**********CASE BOARD FOUR NOT ADVANCED**********
-        for(int i = 0; i < 5; i++) {
+        for(int i = 0; i < 10; i++) {
             List<String> players = new ArrayList<>();
             players.add("First");
             players.add("Second");
@@ -1325,7 +1326,7 @@ public class ControllerTest {
         }
 
         //**********CASE BOARD FOUR ADVANCED**********
-        for(int i = 0; i < 10; i++) {
+        for(int i = 0; i < 20; i++) {
             List<String> players = new ArrayList<>();
             players.add("First");
             players.add("Second");

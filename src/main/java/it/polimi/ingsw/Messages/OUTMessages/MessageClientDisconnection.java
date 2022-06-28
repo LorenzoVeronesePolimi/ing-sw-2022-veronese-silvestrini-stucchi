@@ -18,7 +18,6 @@ public class MessageClientDisconnection extends OUTMessage implements Serializab
     public void manageMessage(ClientView view) {
         view.clientDisconnectionEnd();
         view.setClientActive(false);
-        view.setClientError(true);
         view.enablePinger(false);
     }
 }

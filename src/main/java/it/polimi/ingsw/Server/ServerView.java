@@ -163,7 +163,7 @@ public class ServerView implements Observer<SerializedBoardAbstract> {
         finalMessage.setCurrentPlayer(this.controller.getPrecomputedPlayer());
         finalMessage.setNicknameWinner(this.controller.getNicknameWinner());
         finalMessage.setSitPlayers(this.controller.getSitPlayers());
-
+        System.out.println("[ServerView, update]: sending board type " + finalMessage.getType());
         // send the Model to the client
         this.socketClientConnection.asyncSendModel(finalMessage);
     }
