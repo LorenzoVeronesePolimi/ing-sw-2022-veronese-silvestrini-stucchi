@@ -841,7 +841,9 @@ public class Controller implements ObserverController<Message>, Serializable {
             }
 
             // reset use of continuative effects of CharacterCards
-            boardAdvanced.setTakeProfessorOnEquityFlag(false);
+            if(isAdvanced()) {
+                boardAdvanced.setTakeProfessorOnEquityFlag(false);
+            }
             //TODO: remove some card effects (colourtoexclude, towernovalue...)
 
             return true;

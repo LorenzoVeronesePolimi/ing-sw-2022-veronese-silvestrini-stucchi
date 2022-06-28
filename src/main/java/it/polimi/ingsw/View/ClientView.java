@@ -63,11 +63,6 @@ public abstract class ClientView {
     public abstract void clientDisconnectionEnd();
 
     /**
-     * method that asks a client if he wants to reconnect to the server, after the disconnection of another client from the game
-     */
-    public abstract void askReconnect();
-
-    /**
      * method that asks a client if he wants to play through a CLI or GUI view
      */
     public abstract void askCLIorGUI();
@@ -103,14 +98,6 @@ public abstract class ClientView {
      */
     public void setClientActive(boolean active) {
         this.client.setActive(active);
-    }
-
-    /**
-     * setter of error status of a client
-     * @param err status to be setted
-     */
-    public void setClientError(boolean err) {
-        this.client.setClientError(err);
     }
 
     /**

@@ -37,16 +37,12 @@ public class Client {
     private ObjectOutputStream socketOut;   // output socket
     private boolean CLIorGUI = false;       // if this.view is a CLIView or a GUIView
     private boolean activeConnection = true;    // if the connection is still active
-    private boolean clientReconnect = false;    // if the player wants to reconnect
-    private boolean clientError = false;        // if the disconnection is caused by a player disconnection
-    private boolean serverError = false;        // if the disconnection is caused by a server disconnection
     private boolean endGame = false;            // if is the end of the game
-    private boolean socketNull = true;          // if the socket is null
     private boolean platformReady = false;      // if the JavaFX platform is ready to operate
+    private boolean connectionError = false;
     private ActiveMessageView prevMessage = null;   // message used in case of errors
     private GUIViewFX guiViewFX;                // for activating GUIView
     private ScheduledExecutorService pinger;  // for check of connections
-    private boolean exception = false; // to check wheather the client experienced an exception
     private Thread readThread;
 
     /**
@@ -64,39 +60,6 @@ public class Client {
     }
 
     /**
-     * @param rec value of clientReconnect.
-     */
-    public synchronized void setClientReconnect(boolean rec) { this.clientReconnect = rec; }
-
-    /**
-     * @param clientError whether the error in communication begun with one of the Clients.
-     */
-    public synchronized void setClientError(boolean clientError) {
-        this.clientError = clientError;
-    }
-
-    /**
-     * @return the value of clientError.
-     */
-    public synchronized boolean getClientError() {
-        return this.clientError;
-    }
-
-    /**
-     * @param serverError the next value of serverError.
-     */
-    public synchronized void setServerError(boolean serverError) {
-        this.serverError = serverError;
-    }
-
-    /**
-     * @return the value of serverError.
-     */
-    public synchronized boolean getServerError() {
-        return this.serverError;
-    }
-
-    /**
      * @param endGame whether the match has ended or not.
      */
     public synchronized void setEndGame(boolean endGame) {
@@ -111,20 +74,6 @@ public class Client {
     }
 
     /**
-     * @param ex whether an exception occurred or not.
-     */
-    public synchronized void setExceptionStatus(boolean ex) {
-        this.exception = ex;
-    }
-
-    /**
-     * @return the value of exception.
-     */
-    public synchronized boolean getExceptionStatus() {
-        return this.exception;
-    }
-
-    /**
      * @param platformReady whether the JavaFX platform is ready.
      */
     public synchronized void setPlatformReady(boolean platformReady) {
@@ -136,20 +85,6 @@ public class Client {
      */
     public synchronized boolean getPlatformReady() {
         return this.platformReady;
-    }
-
-    /**
-     * @param socketnull the next value of socketNull.
-     */
-    public synchronized void setSocketNull(boolean socketnull) {
-        this.socketNull = socketnull;
-    }
-
-    /**
-     * @return the value of socketNull.
-     */
-    public synchronized boolean getSocketNull() {
-        return this.socketNull;
     }
 
     /**
@@ -276,26 +211,26 @@ public class Client {
             } catch (SocketException e) {
                 enablePinger(false);
                 System.out.println("[Client, asyncReadFromSocket]: SocketException");
-                //this.view.printErrorMessage("Error. You have been disconnected!");
-                this.setExceptionStatus(true);
                 checkErrorSource();
+                disconnect();
 
-                //e.printStackTrace();
             } catch (IOException e) {
                 enablePinger(false);
                 System.out.println("[Client, asyncReadFromSocket]: IOException");
-                this.setExceptionStatus(true);
                 checkErrorSource();
+                disconnect();
+
             }catch (Exception e) {
-                //System.out.println("[Client, asyncReadFromSocket]: exception");
-                //e.printStackTrace();
+                enablePinger(false);
+                System.out.println("[Client, asyncReadFromSocket]: Exception");
+                checkErrorSource();
+                disconnect();
+
             } finally {
-                if (!this.getExceptionStatus() && !this.getEndGame())
-                    this.setSocketNull(true);
                 System.out.println("[Client, asyncReadFromSocket]: finally");
 
                 this.setActive(false);
-                //checkPossibleReconnect(); // TODO: maybe this here and not in asyncWrite (or not even here, because it is in the end of the thread in connecting)
+                disconnect();
             }
         });
         this.readThread.start();
@@ -312,23 +247,13 @@ public class Client {
             this.socketOut.writeObject(messageToController);
             this.socketOut.flush();
         } catch(IOException | NullPointerException e){
-            //e.printStackTrace();
             System.out.println("[Client, asyncWriteFromSocket]: asyncWriteException");
 
-            try {
-                this.socketIn.close();  // this will generate an IOException in readThread executing asyncReadFromSocket
-            } catch (IOException ex) {
-                System.out.println("[Client, asyncWriteFromSocket]: socket already closed");
-            }
-
-            this.enablePinger(false);
-            this.setExceptionStatus(true);
-
-            // if it is a client error or a server error
-            checkErrorSource(); // TODO: check if needed, i think not
-
             this.setActive(false);
-            //checkPossibleReconnect();   // TODO: maybe this is in finally of asyncRead or only in connecting (or not even here, because it is in the end of the thread in connecting)
+            this.enablePinger(false);
+            // if it is a client error or a server error
+            checkErrorSource();
+            disconnect();
         }
     }
 
@@ -337,20 +262,12 @@ public class Client {
      */
     private void checkErrorSource() {
         this.view.printErrorMessage("Error. You have been disconnected!");
-        this.setClientError(true);
-        this.setSocketNull(true);
 
         // testing reconnection in order to identify server status
         try {
             this.socket = new Socket(this.ip, this.port);
         } catch(IOException ex) {
-            this.setServerError(true);
-            this.setClientError(false);
             this.view.printErrorMessage("Error 404. Server not responding.");
-        } finally {
-            if(!this.getServerError() && this.getClientError()) {
-                this.setSocketNull(false);
-            }
         }
     }
 
@@ -373,17 +290,11 @@ public class Client {
      */
     private void connecting() throws IOException {
         // initialization of the parameters of the client
-        this.setClientReconnect(false);
-        this.setClientError(false);
-        this.setEndGame(false);
-
         // connection to the server
-        if(this.getSocketNull())
-            this.socket = new Socket(this.ip, this.port);
+        this.socket = new Socket(this.ip, this.port);
 
         System.out.println("Connection established");
         this.setActive(true);
-        this.setSocketNull(false);
 
         //Socket for communication
         this.socketOut = new ObjectOutputStream(socket.getOutputStream());
@@ -395,27 +306,21 @@ public class Client {
 
         try{
             // ready to listen to the server
-            //Thread t0 = asyncReadFromSocket();
             this.pinger = Executors.newSingleThreadScheduledExecutor();
             this.enablePinger(true);
             asyncReadFromSocket();
             this.readThread.join();
-            //t0.join();
+            disconnect();
 
-            // when the match is somehow ended (error or normale game end)
-            checkPossibleReconnect();
-
-        } catch (/*InterruptedException |*/ NoSuchElementException e){
+        } catch (NoSuchElementException e){
             System.out.println("[Client, connecting]: Connection closed from the client side");
             e.printStackTrace();
         } catch (InterruptedException e) {
             System.out.println("[Client, connecting]: interruptException");
         } finally {
-            if(!this.getClientError() && !this.getServerError()) {
-                this.socketIn.close();
-                this.socketOut.close();
-                this.socket.close();
-            }
+            this.socketIn.close();
+            this.socketOut.close();
+            this.socket.close();
         }
     }
 
@@ -502,31 +407,11 @@ public class Client {
      * This method is used to check if the client can reconnect and start playing again by testing the server response.
      * If the client is able to reconnect it will the player.
      */
-    private void checkPossibleReconnect() {
-        if((this.getClientError() || this.getEndGame()) && !this.getServerError()) {
-            try {
-                this.askReconnect();    // TODO: ask reconnect in gui? remove button from client disconnect?
-            } catch (IOException e) {
-                this.view.printErrorMessage("[Client, checkPossibleReconnect]: reconnecting error");
-                e.printStackTrace();
-            }
-        } else {
-            this.view.endView();
-            // if it's cli we terminate the process without asking, while if it's gui we wait the button pressed
-            if(this.view instanceof CLIView)    // maybe the gui will always terminate without waiting for a button pressed
-                System.exit(0);
-        }
-    }
-
-    /**
-     * Ask the user if there is the intention to reconnect to the server after the match has ended(normally or unintentionally)
-     * @throws IOException when there is a Socket error.
-     */
-    private void askReconnect() throws IOException {
-        this.view.askReconnect();
-
-        if (clientReconnect)
-            connecting();
+    private void disconnect() {
+        this.view.endView();
+        // if it's cli we terminate the process without asking, while if it's gui we wait the button pressed
+        if(this.view instanceof CLIView)    // maybe the gui will always terminate without waiting for a button pressed
+            System.exit(0);
     }
 
     /**

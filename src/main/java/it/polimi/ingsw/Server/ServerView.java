@@ -68,8 +68,7 @@ public class ServerView implements Observer<SerializedBoardAbstract> {
             //Parsing of messages (from String to Message)
             try{
                 // log
-                if(!messageInput.contains("Ping"))
-                    System.out.println("[ServerView, update]: The message contains: " + this.serverView.playerNickname + " " + messageInput);
+                System.out.println("[ServerView, update]: The message contains: " + this.serverView.playerNickname + " " + messageInput);
 
                 // correct message adding player nickname
                 Message messageToController = this.parseStringToMessage(messageInput);
