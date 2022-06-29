@@ -41,6 +41,13 @@ public class ExtraStudentInDiningTest {
         }
         Assertions.assertEquals("ExtraStudentInDining [c. " + 2 + "]", card.toString());
 
+        List<Student> studentList = card.getStudentsOnCard();
+        Assertions.assertEquals("[" + studentList.get(0).toString()
+                + ", " + studentList.get(1).toString()
+                + ", " + studentList.get(2).toString()
+                + ", " + studentList.get(3).toString()
+                +"]", card.printStudents());
+
         assert boardAdvanced != null;
         boardAdvanced.setExtractedCards(card);
 

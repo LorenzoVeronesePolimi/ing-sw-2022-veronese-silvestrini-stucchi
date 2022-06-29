@@ -5,7 +5,6 @@ import it.polimi.ingsw.Model.Enumerations.PlayerColour;
 import it.polimi.ingsw.Model.Exceptions.AssistantCardAlreadyPlayedTurnException;
 import it.polimi.ingsw.Model.Exceptions.NoAssistantCardException;
 import it.polimi.ingsw.Model.Player;
-import it.polimi.ingsw.View.CLIView;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -60,7 +59,6 @@ public class SerializedBoardAbstractTest {
 
         serializedBoard.setSitPlayers(playerList);
         Assertions.assertEquals(playerList, serializedBoard.getSitPlayers());
-
 
         try {
             b2.useAssistantCard(usedCards, p1, 1);
