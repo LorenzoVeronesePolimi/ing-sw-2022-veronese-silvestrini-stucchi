@@ -1,7 +1,6 @@
 package it.polimi.ingsw.Client;
 
 import it.polimi.ingsw.Messages.ActiveMessageView;
-import it.polimi.ingsw.Messages.INMessages.PingMessage;
 import it.polimi.ingsw.Messages.OUTMessages.PongMessage;
 import it.polimi.ingsw.View.CLIView;
 import it.polimi.ingsw.View.ClientView;

@@ -5,6 +5,10 @@ import it.polimi.ingsw.Controller.Exceptions.ControllerException;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * class that implements an object that can be observed form the controller.
+ * @param <T> type of the message that is notified by the observable
+ */
 public class ObservableController<T> {
 
     private final List<ObserverController<T>> observers = new ArrayList<>();

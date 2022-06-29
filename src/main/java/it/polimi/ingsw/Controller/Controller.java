@@ -60,6 +60,10 @@ public class Controller implements ObserverController<Message>, Serializable {
 
     private boolean characterCardUsed = false; //true when a CC has been used
 
+    /**
+     * Constructor that initializes the lists and maps of the class.
+     * @param server
+     */
     public Controller(Server server){
         this.server = server;
         this.players = new ArrayList<>();
@@ -241,7 +245,7 @@ public class Controller implements ObserverController<Message>, Serializable {
      * @param message is INMessage coming from the ServerView. It contains the user action
      * @throws ControllerException if the action made is not possible.
      */
-    public void update(Message message) throws ControllerException {
+    public void update(Message message) throws ControllerException {    //TODO: synchronized for multiple ping received
         if(!controllerInput.checkFormat(message)){
             System.out.println("[Controller, update]: Invalid format");
             throw new ControllerException(ControllerErrorType.FORMAT_ERROR);
