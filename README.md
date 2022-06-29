@@ -20,7 +20,7 @@ Nella cartella "deliverables" sono contenuti i diagrammi UML che rappresentano l
 | Controller | ControllerInput | 11/11 (100%) | 27/27 (100%)
 | Controller | ControllerIntegrity | 21/21 (100%) | 75/75 (100%)
 | Controller | ControllerState | 5/5 (100%) | 15/15 (100%)
-| Model | Package | 304/305 (99.7%) | 1251/1301 (96%)
+| Model |  | 304/305 (99.7%) | 1251/1301 (96%)
 
 ## Funzionalità Sviluppate
 | Funzionalitá | Implementazione |
