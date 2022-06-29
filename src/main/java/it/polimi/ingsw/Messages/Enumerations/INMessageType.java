@@ -1,5 +1,8 @@
 package it.polimi.ingsw.Messages.Enumerations;
 
+/**
+ * enumeration for the type of input (controller POV) messages
+ */
 public enum INMessageType {
     CREATE_MATCH,
     ADD_PLAYER,
