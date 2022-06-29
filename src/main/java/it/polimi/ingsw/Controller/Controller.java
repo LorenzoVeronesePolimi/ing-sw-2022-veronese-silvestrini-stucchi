@@ -71,72 +71,148 @@ public class Controller implements ObserverController<Message>, Serializable {
         this.serverViews = new ArrayList<>();
     }
 
+    /**
+     * method that says if a game is ended
+     * @return true if the game is ended (there is a winner), false otherwise
+     */
     public boolean isGameEnded() {
         return gameEnded;
     }
 
+    /**
+     * getter of precomputed player (the next player to make his moves)
+     * @return precomputed player
+     */
     public Player getPrecomputedPlayer() {
         return precomputedPlayer;
     }
 
+    /**
+     * getter of precomputed state (state in which the game will be after the current player finishes his moves)
+     * @return precomputed state
+     */
     public State getPrecomputedState() {
         return precomputedState;
     }
 
+    /**
+     * getter of current player
+     * @return current player
+     */
     public Player getCurrentPlayer(){
         return this.players.get(this.currentPlayerIndex);
     }
 
+    /**
+     * getter of the current player from the list of sit players (in order of entrance in the game)
+     * @return current player
+     */
     public Player getCurrentSitPlayer(){
         return this.sitPlayers.get(this.currentPlayerIndex);
     }
 
+    /**
+     * getter of the index of current player
+     * @return index of current player
+     */
     public int getCurrentPlayerIndex(){
         return this.currentPlayerIndex;
     }
 
+    /**
+     * getter of the list of players
+     * @return list of players
+     */
     public List<Player> getPlayers(){
         return new ArrayList<>(this.players);
     }
 
+    /**
+     * getter of the list of sit players(in order of entrance in the game)
+     * @return list of sit players
+     */
     public List<Player> getSitPlayers() {
         return new ArrayList<>(this.sitPlayers);
     }
 
+    /**
+     * getter of the number of students that the current player must move
+     * @return number of students that the current player must move
+     */
     public int getNumStudentsToMoveCurrent(){
         return this.numStudentsToMoveCurrent;
     }
 
+    /**
+     * getter of the board
+     * @return board
+     */
     public BoardAbstract getBoard(){return this.board;}
 
+    /**
+     * getter of advanced board
+     * @return board advanced
+     */
     public BoardAdvanced getBoardAdvanced(){return this.boardAdvanced;}
 
+    /**
+     * getter of winner's nickname
+     * @return winner's nickname
+     */
     public String getNicknameWinner(){return this.nicknameWinner;}
 
+    /**
+     * method that says is a game is advanced or not
+     * @return true is advanced game, false otherwise
+     */
     public boolean isAdvanced(){
         return this.advanced;
     }
 
+    /**
+     * getter of controller state
+     * @return controller state
+     */
     public ControllerState getControllerState(){
         return this.controllerState;
     }
 
+    /**
+     * getter of integrity controller
+     * @return integrity controller
+     */
     public ControllerIntegrity getControllerIntegrity(){
         return this.controllerIntegrity;
     }
 
+    /**
+     * getter of input controller
+     * @return input controller
+     */
     public ControllerInput getControllerInput(){
         return this.controllerInput;
     }
 
+    /**
+     * method that says if at least one character card was used
+     * @return true if at least one character card was used, false otherwise
+     */
     public boolean isCharacterCardUsed(){
         return this.characterCardUsed;
     }
 
+    /**
+     * setter of characterCardUsed
+     * @param newValue boolean value to set
+     */
     public void setCharacterCardUsed(boolean newValue){
         this.characterCardUsed = newValue;
     }
 
+    /**
+     * method that enables and disables the use of persistence
+     * @param usePersistence boolean enabler
+     */
     public void setUsePersistence(boolean usePersistence) {
         this.usePersistence = usePersistence;
     }
@@ -841,7 +917,9 @@ public class Controller implements ObserverController<Message>, Serializable {
             }
 
             // reset use of continuative effects of CharacterCards
-            boardAdvanced.setTakeProfessorOnEquityFlag(false);
+            if(isAdvanced()) {
+                boardAdvanced.setTakeProfessorOnEquityFlag(false);
+            }
             //TODO: remove some card effects (colourtoexclude, towernovalue...)
 
             return true;
@@ -1620,6 +1698,10 @@ public class Controller implements ObserverController<Message>, Serializable {
         }
     }
 
+    /**
+     * method that restores a given controller by coping its information in this controller
+     * @param controller controller to restore
+     */
     private void restoreController(Controller controller) {
         this.numPlayers = controller.numPlayers;
         this.advanced = controller.advanced;

@@ -1,6 +1,7 @@
 package it.polimi.ingsw.View;
 
 import it.polimi.ingsw.Client.Client;
+import it.polimi.ingsw.Controller.Enumerations.State;
 import it.polimi.ingsw.Model.Board.SerializedBoardAbstract;
 import it.polimi.ingsw.Model.Board.SerializedBoardAdvanced;
 import it.polimi.ingsw.Model.Cards.*;
@@ -94,28 +95,6 @@ public class CLIView extends ClientView {
         System.out.print(ANSI_RED);
         printCustom("An error occurred on one of the other players. The match is ended. :(");
         System.out.print(ANSI_RESET);
-        AnsiConsole.systemUninstall();
-    }
-
-    /**
-     * method that asks a client if he wants to reconnect to the server, after the disconnection of another client from the game
-     */
-    public void askReconnect() {
-        String response;
-
-        AnsiConsole.systemInstall();
-        System.out.println();
-        do {
-            System.out.println("> Do you want to be play another match? [Y/N]");
-            System.out.print("> ");
-            response = input.nextLine();
-        } while(!response.equalsIgnoreCase("Y") && !response.equalsIgnoreCase("N"));
-
-        if(response.equalsIgnoreCase("Y"))
-            this.client.setClientReconnect(true);
-        else
-            this.client.setClientReconnect(false);
-
         AnsiConsole.systemUninstall();
     }
 
@@ -381,7 +360,12 @@ public class CLIView extends ClientView {
 
             manageNextMove(serializedBoardAbstract);
         } else {
-            System.out.println("\n> IT'S " + serializedBoardAbstract.getCurrentPlayer().getNickname() + "'s TURN! WAIT...");
+            if(serializedBoardAbstract.getCurrentState().equals(State.END)) {
+                showWinner(serializedBoardAbstract);
+                this.client.setEndGame(true);
+            } else {
+                System.out.println("\n> IT'S " + serializedBoardAbstract.getCurrentPlayer().getNickname() + "'s TURN! WAIT...");
+            }
         }
         System.out.print(ANSI_RESET);
         AnsiConsole.systemUninstall();

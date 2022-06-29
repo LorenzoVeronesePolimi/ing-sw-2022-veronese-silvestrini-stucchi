@@ -1,6 +1,7 @@
 package it.polimi.ingsw.View;
 
 import it.polimi.ingsw.Client.Client;
+import it.polimi.ingsw.Controller.Enumerations.State;
 import it.polimi.ingsw.Model.Board.SerializedBoardAbstract;
 import it.polimi.ingsw.Model.Enumerations.PlayerColour;
 import it.polimi.ingsw.View.GUI.GUIViewFX;
@@ -18,12 +19,6 @@ import java.util.List;
  */
 public class GUIView extends ClientView {
     private GUIViewFX guiViewFX;
-    private Stage currentStage;
-
-    @FXML
-    private Circle myCircle;
-    private double x;
-    private double y;
 
     /**
      * constructor of the class
@@ -34,26 +29,11 @@ public class GUIView extends ClientView {
     }
 
     /**
-     * default constructor of the class
-     */
-    public GUIView() {
-        super();
-    }
-
-    /**
      * setter of the stage FX
      * @param guiViewFX FX to be set
      */
     public void setGuiViewFX(GUIViewFX guiViewFX) {
         this.guiViewFX = guiViewFX;
-    }
-
-    /**
-     * setter of the current stage
-     * @param currentStage stage to be set
-     */
-    public void setCurrentStage(Stage currentStage) {
-        this.currentStage = currentStage;
     }
 
     /**
@@ -89,14 +69,6 @@ public class GUIView extends ClientView {
         Platform.runLater(() -> {
                 this.guiViewFX.sceneClientDisconnect(null);
         });
-    }
-
-    /**
-     * method that asks a client if he wants to reconnect to the sever, after the disconnection of another client of the game
-     */
-    @Override
-    public void askReconnect() {
-        // we will not implement this
     }
 
     /**
@@ -142,9 +114,14 @@ public class GUIView extends ClientView {
      */
     @Override
     public void showBoard(SerializedBoardAbstract serializedBoardAbstract) {
-        //System.out.println("show board (outside)");
+        System.out.println("[GUIVIew, showBoard]: current player " + serializedBoardAbstract.getCurrentPlayer());
+        System.out.println("[GUIVIew, showBoard]: current state " + serializedBoardAbstract.getCurrentState());
+
+        if(serializedBoardAbstract.getCurrentState().equals(State.END)) {
+            this.client.setEndGame(true);
+        }
+
         Platform.runLater(() -> {
-            //System.out.println("show board (inside)");
             this.guiViewFX.manageScene(serializedBoardAbstract);
         });
     }
