@@ -600,6 +600,20 @@ public class ControllerTest {
             e.printStackTrace();
         }
 
+        //-----MessageStudentHallToDiningRoom 2-----
+        // choose a Student which exists
+        colourToMove = mapSPColourToString(controller.getBoard().getPlayerSchool(controller.getCurrentPlayer()).getStudentsHall().get(0).getColour());
+
+        MessageStudentHallToDiningRoom mFinal = new MessageStudentHallToDiningRoom(controller.getCurrentPlayer().getNickname(), colourToMove);
+        Assertions.assertEquals(controller.getNumStudentsToMoveCurrent(), 3);
+        try {
+            controller.update(mFinal);
+        } catch (ControllerException e) {
+            e.printStackTrace();
+        }
+        Assertions.assertEquals(controller.getNumStudentsToMoveCurrent(), 2);
+        Assertions.assertEquals(State.ACTION1, controller.getControllerState().getState());
+
 
 
         //**********CASE BOARD ADVANCED (2 players): test ending due to 3 archipelagos**********
@@ -1211,7 +1225,7 @@ public class ControllerTest {
 
 
         //**********TEST BOARD TWO NOT ADVANCED**********
-        for(int i = 0; i < 10; i++) {
+        for(int i = 0; i < 5; i++) {
             List<String> players = new ArrayList<>();
             players.add("First");
             players.add("Second");
@@ -1234,7 +1248,7 @@ public class ControllerTest {
         }
 
         //**********TEST BOARD TWO ADVANCED**********
-        for(int i = 0; i < 10; i++) {
+        for(int i = 0; i < 5; i++) {
             List<String> players = new ArrayList<>();
             players.add("First");
             players.add("Second");
@@ -1256,7 +1270,7 @@ public class ControllerTest {
         }
 
         //**********TEST BOARD THREE NOT ADVANCED**********
-        for(int i = 0; i < 10; i++) {
+        for(int i = 0; i < 5; i++) {
             List<String> players = new ArrayList<>();
             players.add("First");
             players.add("Second");
@@ -1279,7 +1293,7 @@ public class ControllerTest {
         }
 
         //**********TEST BOARD THREE ADVANCED**********
-        for(int i = 0; i < 10; i++) {
+        for(int i = 0; i < 5; i++) {
             List<String> players = new ArrayList<>();
             players.add("First");
             players.add("Second");
@@ -1326,7 +1340,7 @@ public class ControllerTest {
         }
 
         //**********CASE BOARD FOUR ADVANCED**********
-        for(int i = 0; i < 20; i++) {
+        for(int i = 0; i < 15; i++) {
             List<String> players = new ArrayList<>();
             players.add("First");
             players.add("Second");
