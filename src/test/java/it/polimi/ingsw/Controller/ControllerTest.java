@@ -1340,7 +1340,7 @@ public class ControllerTest {
         }
 
         //**********CASE BOARD FOUR ADVANCED**********
-        for(int i = 0; i < 30; i++) {
+        for(int i = 0; i < 15; i++) {
             List<String> players = new ArrayList<>();
             players.add("First");
             players.add("Second");
