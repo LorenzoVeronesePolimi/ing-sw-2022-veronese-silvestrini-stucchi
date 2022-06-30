@@ -87,7 +87,7 @@ public class CLIView extends ClientView {
     }
 
     /**
-     * method that disconnect a client
+     * method that shows a disconnection message
      */
     @Override
     public void clientDisconnectionEnd() {
@@ -139,12 +139,13 @@ public class CLIView extends ClientView {
             this.playerNick = nickname;
         } while (nickname.equals(""));
 
+        // show colour possibility based on number of players and based on other players choices
         if(numPlayer==2){
             colour= chosenColourList.get(0).equals(PlayerColour.WHITE) ? "BLACK" : "WHITE";
             System.out.println("> your colour is " + colour);
         }
         if(numPlayer == 3 ){
-            if(chosenColourList.size() == 1){
+            if(chosenColourList.size() == 1){   // if only a player chose his colour
                 if(chosenColourList.get(0).equals(PlayerColour.WHITE)) {
                     do {
                         System.out.println("> What colour would you like [Black/Gray]:");
@@ -170,7 +171,7 @@ public class CLIView extends ClientView {
                     } while (!colour.equalsIgnoreCase("black") && !colour.equalsIgnoreCase("white"));
                 }
             }
-            if(chosenColourList.size() == 2){
+            if(chosenColourList.size() == 2){   // if two players chose their colour
                 if(chosenColourList.contains(PlayerColour.WHITE) && chosenColourList.contains(PlayerColour.BLACK)) {
                     colour = "GRAY";
                 }
@@ -183,7 +184,7 @@ public class CLIView extends ClientView {
                 System.out.println("> Your colour is " + colour);
             }
         }
-        if (numPlayer == 4){
+        if (numPlayer == 4){    // if match with four players only possibility are black and white
             long black = chosenColourList.stream().filter(x -> x.equals(PlayerColour.BLACK)).count();
             long white = chosenColourList.stream().filter(x -> x.equals(PlayerColour.WHITE)).count();
 
@@ -235,6 +236,7 @@ public class CLIView extends ClientView {
         String gameMode;
 
         AnsiConsole.systemInstall();
+        // asking nickname
         do {
             System.out.println("> Write your nickname:");
             System.out.print("> ");
@@ -243,6 +245,7 @@ public class CLIView extends ClientView {
             this.playerNick = nickname;
         } while (nickname.equals(""));
 
+        // asking number of players
         do {
             System.out.println("> Select number of players [2 - 3 - 4]:");
             System.out.print("> ");
@@ -250,6 +253,7 @@ public class CLIView extends ClientView {
             numPlayers = input.nextLine();
         } while (!numPlayers.equals("2") && !numPlayers.equals("3") && !numPlayers.equals("4"));
 
+        // askign colour
         if(Integer.parseInt(numPlayers)==2 || Integer.parseInt(numPlayers)==4){
             do {
                 System.out.println("> What colour would you like [Black/White]:");
@@ -294,6 +298,7 @@ public class CLIView extends ClientView {
     public void showBoard(SerializedBoardAbstract serializedBoardAbstract) {
         AnsiConsole.systemInstall();
         System.out.println("\n" + TAB + " The Board is this:");
+        // showing clouds (index and content)
         System.out.println("Clouds: ");
         for(int i=0; i<serializedBoardAbstract.getClouds().size(); i++) {
             if(serializedBoardAbstract.getClouds().get(i).getStudents().size() > 0) {
@@ -302,8 +307,10 @@ public class CLIView extends ClientView {
             }
         }
 
+        // showing archipelagos and school
         if(serializedBoardAbstract.getType().equals("standard")) {
             System.out.println("Archipelagos: ");
+            // index and content + mother nature
             for (int i = 0; i < serializedBoardAbstract.getArchipelagos().size(); i++) {
                 colourArchipelago(serializedBoardAbstract, i, serializedBoardAbstract.getArchipelagos(), serializedBoardAbstract);
                 if (serializedBoardAbstract.getMn().getCurrentPosition().equals(serializedBoardAbstract.getArchipelagos().get(i))) {
@@ -315,14 +322,17 @@ public class CLIView extends ClientView {
                removeColour();
             }
 
+            // standars school
             printSchool(serializedBoardAbstract);
 
         }
         else{
+            // showing colour to exclude
             SerializedBoardAdvanced serializedBoardAdvanced = (SerializedBoardAdvanced)serializedBoardAbstract;
             if(serializedBoardAdvanced.getColourToExclude()!=null){
                 System.out.println(ANSI_RED + "Colour to exclude: "+ serializedBoardAdvanced.getColourToExclude().toString() + ANSI_RESET);
             }
+            // index and content + mother nature + forbid conquer flag
             System.out.println("Archipelagos: ");
             for (int i = 0; i < serializedBoardAdvanced.getArchipelagos().size(); i++) {
                 colourArchipelago(serializedBoardAbstract, i, serializedBoardAdvanced.getArchipelagos(), serializedBoardAdvanced);
@@ -378,7 +388,7 @@ public class CLIView extends ClientView {
      * @param serializedBoardAbstract serialized board notified by the model
      */
     private void manageNextMove(SerializedBoardAbstract serializedBoardAbstract) {
-        System.out.println("[CLIView, manageNextMove]: receiving board type " + serializedBoardAbstract.getType());
+        //System.out.println("[CLIView, manageNextMove]: receiving board type " + serializedBoardAbstract.getType());
         //System.out.println("State: " + serializedBoardAbstract.getCurrentState());
         switch(serializedBoardAbstract.getCurrentState()){
             case PLANNING2:

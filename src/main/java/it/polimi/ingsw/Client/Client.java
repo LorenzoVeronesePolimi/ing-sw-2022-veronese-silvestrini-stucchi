@@ -129,17 +129,6 @@ public class Client {
                         When a match begins everyone sees the Intro page
                         The Login page is show at each player in order (like in CLI) so, after the first player has
                         clicked on PLAY, the second player can do the same and so on...
-                        In order to manage a better UI we need to implement a waining page for the next players waiting their
-                        turn of Login actions.
-
-                        Currently, the Login page is not customized at all by the GUI.
-                        In order to do that, and all the other future stuff, we need to add some method to GUIViewFX, like:
-                        - askFirstPlayerScene(parameter of the askFirstPLayer in GUIView received via the message) -> passing
-                                parameters to controller in order to show and customize them
-                        - askNickName(parameters of the askNickName in GUIView received via the message) -> passing parameters to controller...
-                        - showBoardScene(parameter os ShowBoard method in GUIView) -> passing parameters to controller..
-                        - and so on...
-
 
                      */
                     this.setPlatformReady(false); // in order to way for JavaFX Platform to initialize
@@ -150,6 +139,7 @@ public class Client {
 
                     this.guiViewFX.init(); // this method is mandatory (found on stackoverflow)
 
+                    // starting a new thread for GUI purposes
                     new Thread(() -> {
                         // Thread that runs JavaFX application
                         Platform.startup(() -> {
@@ -208,24 +198,24 @@ public class Client {
 
                 }
             } catch (SocketException e) {
-                enablePinger(false);    // repeated, but i want to be sure it stops in time
+                enablePinger(false);    // repeated, but I want to be sure it stops in time
                 System.out.println("[Client, asyncReadFromSocket]: SocketException");
                 checkErrorSource();
 
             } catch (IOException e) {
-                enablePinger(false); // repeated, but i want to be sure it stops in time
+                enablePinger(false); // repeated, but I want to be sure it stops in time
                 System.out.println("[Client, asyncReadFromSocket]: IOException");
                 checkErrorSource();
 
             }catch (Exception e) {
-                enablePinger(false); // repeated, but i want to be sure it stops in time
+                enablePinger(false); // repeated, but I want to be sure it stops in time
                 System.out.println("[Client, asyncReadFromSocket]: Exception");
                 checkErrorSource();
 
             } finally {
                 System.out.println("[Client, asyncReadFromSocket]: finally");
 
-                enablePinger(false); // repeated, but i want to be sure it stops in time
+                enablePinger(false); // repeated, but I want to be sure it stops in time
                 this.setActive(false);
                 disconnect();
             }
@@ -255,7 +245,7 @@ public class Client {
     }
 
     /**
-     * This method is used to check whether the connection error is client side or server side, thus impeding the reconnection.
+     * This method is used to check whether the connection error is client side or server side, and show it to the client.
      */
     private void checkErrorSource() {
         this.view.printErrorMessage("Error. You have been disconnected!");
@@ -286,7 +276,6 @@ public class Client {
      * @throws IOException when an error on the Socket occurs.
      */
     private void connecting() throws IOException {
-        // initialization of the parameters of the client
         // connection to the server
         this.socket = new Socket(this.ip, this.port);
 

@@ -895,7 +895,8 @@ public class Controller implements ObserverController<Message>, Serializable {
                     board.moveStudentCloudToSchool(getCurrentPlayer(), indexCloud);
                 }
             } catch(ExceededMaxStudentsHallException ex){
-                boardAdvanced.setNameCardUsed(storeNameCardUsed);
+                if(isAdvanced())
+                    boardAdvanced.setNameCardUsed(storeNameCardUsed);
                 return false;
             }
 
