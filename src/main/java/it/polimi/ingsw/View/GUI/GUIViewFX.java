@@ -38,7 +38,7 @@ public class GUIViewFX extends Application {
     private static final String INTRO_CSS = "Intro.css";
     private static final String LOGIN_CSS = "Login.css";
     private static final String LOADING_CSS = "LoadingCSS.css";
-    private static final String BOARD_FOUR_ADVANCED_CSS = "BoardGrid.css"; //TODO: to be changed
+    private static final String BOARD_FOUR_ADVANCED_CSS = "BoardGrid.css";
     private static final String CHARACTER_CARD_DIALOG_CSS = "CharacterCardDialog.css";
     private static final String SHOW_WINNER_CSS = "ShowWinner.css";
     private final HashMap<String, Scene> sceneMap = new HashMap<>();
@@ -96,7 +96,6 @@ public class GUIViewFX extends Application {
                 sceneMap.put(path, new Scene(root));    // creating a map of scenes based on their path
                 controller.setGUIFX(this);  // set the GUIFX in the controller (don't know if it's necessary)
                 controller.setClient(this.client);  // set the client in controller (mandatory to call asyncWriteToSocket)
-                //this.client.printOut("client in gui");
                 controllerMap.put(path, controller);    // create a map of controller and path (don't know if it's necessary)
 
                 // applying css to the scenes
@@ -144,7 +143,7 @@ public class GUIViewFX extends Application {
      * method that runs the GUI application
      */
     public void run() {
-        //System.out.println("GUI running");
+        // set english as default
         Locale.setDefault(new Locale("en", "english"));
         stage.setResizable(false);
         stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
@@ -228,11 +227,6 @@ public class GUIViewFX extends Application {
      * method that changes the scene into the askNickname one
      */
     public void sceneAskNickname(List<PlayerColour> colourList, int numPlayers){
-        /*  Example of what should be done for every scene:
-             - receiving the parameters from Message->GUIView
-             - passing them to the scene controller in order to show personalized info
-             - when showing a scene the controller SHOULD execute the initialize method first (try this, I'm not sure)
-        */
         LoginController currentController = (LoginController) controllerMap.get(LOGIN);
         currentController.setFirstPlayer(false);    //used to show firstPlayer or not
         currentController.setNumPlayers(numPlayers);    // used to choose the colour automatically
@@ -254,12 +248,6 @@ public class GUIViewFX extends Application {
         alert.showAndWait();
     }
 
-    /*
-    public void characterCardAlert(String effect){
-        Alert alert = new Alert(Alert.AlertType.INFORMATION, effect);
-        alert.showAndWait();
-    }*/
-
     /**
      *
      * @param type
@@ -280,11 +268,6 @@ public class GUIViewFX extends Application {
         controller.setClient(this.client);
         controller.setGuiViewFX(this);
         controller.setVisualization(clickable);
-
-        /*controller.setCardName(name);
-        controller.setCardEffect(effect);
-        controller.setCardImage(imagePath);
-        controller.setCharacterCardActions(type);*/
 
         Stage alertStage = new Stage();
         Scene alertScene = new Scene(parent);

@@ -86,9 +86,7 @@ public class GUIView extends ClientView {
      */
     @Override
     public void askFirstPlayerInfo() {
-        //System.out.println("askFirstPlayer");
         Platform.runLater(() ->{
-            //System.out.println("askFirstPlayer2");
             this.guiViewFX.sceneAskFirstPlayerInfo();
         });
 
@@ -101,9 +99,7 @@ public class GUIView extends ClientView {
      */
     @Override
     public void askNickName(List<PlayerColour> list, int numPlayer) {
-        //System.out.println("askNickname");
         Platform.runLater(() -> {
-            //System.out.println("askNickname2");
             this.guiViewFX.sceneAskNickname(list, numPlayer);
         });
     }
@@ -132,7 +128,6 @@ public class GUIView extends ClientView {
      */
     public void showWinner(SerializedBoardAbstract serializedBoardAbstract){
         Platform.runLater(() -> {
-            //System.out.println("show board (inside)");
             this.guiViewFX.manageScene(serializedBoardAbstract);
         });
     }
