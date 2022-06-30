@@ -155,7 +155,7 @@ public class ServerView implements Observer<SerializedBoardAbstract> {
         if(message instanceof SerializedBoardAdvanced) {
             finalMessage = new SerializedBoardAdvanced(message.getArchipelagos(),
                     message.getClouds(), message.getMn(), message.getSchools(), ((SerializedBoardAdvanced) message).getColourToExclude(),
-                    ((SerializedBoardAdvanced) message).getExtractedCards(), this.playerNickname);
+                    ((SerializedBoardAdvanced) message).getNameCardUsed(), ((SerializedBoardAdvanced) message).getExtractedCards(), this.playerNickname);
         } else {
             finalMessage = new SerializedBoardAbstract(message.getArchipelagos(),
                     message.getClouds(), message.getMn(), message.getSchools(), this.playerNickname);

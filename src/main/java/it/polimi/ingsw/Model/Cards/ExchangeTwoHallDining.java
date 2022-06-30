@@ -74,8 +74,9 @@ public class ExchangeTwoHallDining extends AbstractCharacterCard implements Seri
             currentPlayerSchool.addStudentDiningRoom(s);
         }
 
-        boardAdvanced.conquerProfessor(player, hallStudents.get(0));
-        boardAdvanced.conquerProfessor(player, hallStudents.get(1));
+
+        if(hallStudents.get(0) != null) boardAdvanced.conquerProfessor(player, hallStudents.get(0));
+        if(hallStudents.size() > 1) boardAdvanced.conquerProfessor(player, hallStudents.get(1));
     }
 
     @Override

@@ -28,6 +28,7 @@ public class BoardAdvanced extends Observable implements Board, Serializable{
     private boolean takeProfessorOnEquityFlag = false;
     private final List<AbstractCharacterCard> extractedCards; //is final... temporarily removed just for testing card usage
     private final Bank bank;
+    private String nameCardUsed = "";
 
 
     /**
@@ -80,17 +81,17 @@ public class BoardAdvanced extends Observable implements Board, Serializable{
 
         List<AbstractCharacterCard> cards = new ArrayList<>();
 
-        cards.add(new PlaceOneStudent(this));
-        cards.add(new TakeProfessorOnEquity(this));
-        cards.add(new FakeMNMovement(this));
-        cards.add(new TwoExtraIslands());
-        cards.add(new ForbidIsland(this));
-        cards.add(new TowerNoValue(this));
+        //cards.add(new PlaceOneStudent(this));
+        //cards.add(new TakeProfessorOnEquity(this));
+        //cards.add(new FakeMNMovement(this));
+        //cards.add(new TwoExtraIslands());
+        //cards.add(new ForbidIsland(this));
+        //cards.add(new TowerNoValue(this));
         cards.add(new ExchangeThreeStudents(this));
-        cards.add(new TwoExtraPoints(this));
-        cards.add(new ExcludeColourFromCounting(this));
+        //cards.add(new TwoExtraPoints(this));
+        //cards.add(new ExcludeColourFromCounting(this));
         cards.add(new ExchangeTwoHallDining(this));
-        cards.add(new ExtraStudentInDining(this));
+        //cards.add(new ExtraStudentInDining(this));
         cards.add(new ReduceColourInDining(this));
 
         Collections.shuffle(cards, new Random());
@@ -152,6 +153,29 @@ public class BoardAdvanced extends Observable implements Board, Serializable{
      */
     public void setTakeProfessorOnEquityFlag(boolean takeProfessorOnEquityFlag) {
         this.takeProfessorOnEquityFlag = takeProfessorOnEquityFlag;
+    }
+
+    /**
+     * Method to assing to nameCardUsed the value ""
+     */
+    public void resetNameCardUsed() {
+        this.nameCardUsed = "";
+    }
+
+    /**
+     * Setter of nameCardUsed
+     * @param name the new value of nameCardUsed
+     */
+    public void setNameCardUsed(String name) {
+        this.nameCardUsed = name;
+    }
+
+    /**
+     * Getter of name card used
+     * @return the value of nameCardUsed
+     */
+    public String getNameCardUsed() {
+        return this.nameCardUsed;
     }
 
     /**
@@ -719,6 +743,7 @@ public class BoardAdvanced extends Observable implements Board, Serializable{
             throw new CoinNotFoundException();
         }
 
+        this.nameCardUsed = "Place one student";
         notifyPlayers();
     }
 
@@ -748,6 +773,7 @@ public class BoardAdvanced extends Observable implements Board, Serializable{
             throw new CoinNotFoundException();
         }
 
+        this.nameCardUsed = "Take prof. on equity";
         notifyPlayers();
     }
 
@@ -777,6 +803,7 @@ public class BoardAdvanced extends Observable implements Board, Serializable{
         }
 
         System.out.println("[BoardAdvanced, tryToConquer]: fake notify ");
+        this.nameCardUsed = "Fake MN movement";
         notifyPlayers();
     }
 
@@ -799,6 +826,7 @@ public class BoardAdvanced extends Observable implements Board, Serializable{
             throw new CoinNotFoundException();
         }
 
+        this.nameCardUsed = "Two extra islands";
         notifyPlayers();
     }
 
@@ -823,6 +851,7 @@ public class BoardAdvanced extends Observable implements Board, Serializable{
             throw new CoinNotFoundException();
         }
 
+        this.nameCardUsed = "Forbid island";
         notifyPlayers();
     }
 
@@ -845,6 +874,7 @@ public class BoardAdvanced extends Observable implements Board, Serializable{
             throw new CoinNotFoundException();
         }
 
+        this.nameCardUsed = "Tower no value";
         notifyPlayers();
     }
 
@@ -873,6 +903,7 @@ public class BoardAdvanced extends Observable implements Board, Serializable{
             throw new CoinNotFoundException();
         }
 
+        this.nameCardUsed = "Exchange three students";
         notifyPlayers();
     }
 
@@ -895,6 +926,7 @@ public class BoardAdvanced extends Observable implements Board, Serializable{
             throw new CoinNotFoundException();
         }
 
+        this.nameCardUsed = "Two extra points";
         notifyPlayers();
     }
 
@@ -923,6 +955,7 @@ public class BoardAdvanced extends Observable implements Board, Serializable{
             throw new CoinNotFoundException();
         }
 
+        this.nameCardUsed = "Exclude col. from count.";
         notifyPlayers();
     }
 
@@ -954,6 +987,7 @@ public class BoardAdvanced extends Observable implements Board, Serializable{
             throw new CoinNotFoundException();
         }
 
+        this.nameCardUsed = "Exchange two hall dining";
         notifyPlayers();
     }
 
@@ -980,6 +1014,7 @@ public class BoardAdvanced extends Observable implements Board, Serializable{
             throw new CoinNotFoundException();
         }
 
+        this.nameCardUsed = "Extra stud. in dining";
         notifyPlayers();
     }
 
@@ -1004,6 +1039,7 @@ public class BoardAdvanced extends Observable implements Board, Serializable{
             throw new CoinNotFoundException();
         }
 
+        this.nameCardUsed = "Reduce col. in dining";
         notifyPlayers();
     }
 
@@ -1042,7 +1078,8 @@ public class BoardAdvanced extends Observable implements Board, Serializable{
         System.out.println("[BoardAdvanced, notifyPlayers]: advanced");
         SerializedBoardAdvanced serializedBoardAdvanced =
                 new SerializedBoardAdvanced(this.board.archipelagos, this.board.clouds, this.board.mn,
-                        this.board.schools, this.colourToExclude, this.extractedCards);
+                        this.board.schools, this.colourToExclude, this.nameCardUsed, this.extractedCards);
+
         notify(serializedBoardAdvanced);
     }
 }

@@ -42,7 +42,7 @@ public class SerializedBoardAdvancedTest {
         }
 
         assert boardAdvanced != null;
-        SerializedBoardAdvanced serializedBoard = new SerializedBoardAdvanced(b2.archipelagos, b2.clouds, b2.mn, b2.schools, boardAdvanced.getColourToExclude(), boardAdvanced.getExtractedCards());
+        SerializedBoardAdvanced serializedBoard = new SerializedBoardAdvanced(b2.archipelagos, b2.clouds, b2.mn, b2.schools, boardAdvanced.getColourToExclude(), "", boardAdvanced.getExtractedCards());
         Assertions.assertEquals(b2.archipelagos, serializedBoard.getArchipelagos());
         Assertions.assertEquals(b2.clouds, serializedBoard.getClouds());
         Assertions.assertEquals(b2.mn, serializedBoard.getMn());

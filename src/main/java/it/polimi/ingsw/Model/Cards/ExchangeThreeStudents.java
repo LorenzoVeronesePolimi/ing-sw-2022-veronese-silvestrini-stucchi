@@ -69,6 +69,7 @@ public class ExchangeThreeStudents extends AbstractCharacterCard implements Seri
 
         List<Student> cardToHall = new ArrayList<>();
         for(SPColour colour: exchangeStudents) {
+            // extracting students from the card based on the received colours
             List<Student> temp = students.stream().filter(x -> x.getColour().equals(colour)).collect(Collectors.toList());
 
             if(!temp.isEmpty()) {

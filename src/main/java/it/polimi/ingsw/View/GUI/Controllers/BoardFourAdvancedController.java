@@ -675,6 +675,8 @@ public class BoardFourAdvancedController implements GUIController, Initializable
             if(this.board.getType().equals("advanced")) {
                 if(((SerializedBoardAdvanced)this.board).getColourToExclude() != null) {
                     this.turnLabel.setText("It's your turn!\nColour to exclude: " + ((SerializedBoardAdvanced)this.board).getColourToExclude());
+                } else if(((SerializedBoardAdvanced)this.board).getNameCardUsed() != null) {
+                    this.turnLabel.setText("It's your turn!\n" + ((SerializedBoardAdvanced)this.board).getNameCardUsed());
                 }
             }
 
@@ -705,6 +707,15 @@ public class BoardFourAdvancedController implements GUIController, Initializable
             }
         } else {
             this.turnLabel.setText("It's " + board.getCurrentPlayer().getNickname() + " turn!");
+            if(this.board.getType().equals("advanced")) {
+                if(((SerializedBoardAdvanced)this.board).getColourToExclude() != null) {
+                    this.turnLabel.setText("It's " + board.getCurrentPlayer().getNickname() + " turn!" +
+                            "\nColour to exclude: " + ((SerializedBoardAdvanced)this.board).getColourToExclude());
+                } else if(((SerializedBoardAdvanced)this.board).getNameCardUsed() != null) {
+                    this.turnLabel.setText("It's " + board.getCurrentPlayer().getNickname() + " turn!" +
+                            "\n" + ((SerializedBoardAdvanced)this.board).getNameCardUsed());
+                }
+            }
 
             switch (board.getCurrentState()) {
                 case ACTION1:

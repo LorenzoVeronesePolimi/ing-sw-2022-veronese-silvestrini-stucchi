@@ -20,6 +20,7 @@ public class SerializedBoardAdvanced extends SerializedBoardAbstract implements 
     private static final long serialVersionUID = 1L;
     private SPColour colourToExclude;
     private List<AbstractCharacterCard> extractedCards;
+    private String nameCardUsed = "";
 
     /**
      * constructor of the serialized board abstract with complete information
@@ -31,11 +32,12 @@ public class SerializedBoardAdvanced extends SerializedBoardAbstract implements 
      * @param extractedCards list of extracted cards
      */
     public SerializedBoardAdvanced(List<Archipelago> archipelagos, List<Cloud> clouds, MotherNature mn,
-                                   List<School> schoolList, SPColour colourToExclude, List<AbstractCharacterCard> extractedCards) {
+                                   List<School> schoolList, SPColour colourToExclude, String nameCardUsed, List<AbstractCharacterCard> extractedCards) {
         super(archipelagos, clouds, mn, schoolList);
         super.type = "advanced";
         this.colourToExclude = colourToExclude;
         this.extractedCards = extractedCards;
+        this.nameCardUsed = nameCardUsed;
     }
 
 
@@ -50,12 +52,13 @@ public class SerializedBoardAdvanced extends SerializedBoardAbstract implements 
      * @param nickname nick of the player to which the serialized board will arrive
      */
     public SerializedBoardAdvanced(List<Archipelago> archipelagos, List<Cloud> clouds, MotherNature mn,
-                                   List<School> schoolList, SPColour colourToExclude,
+                                   List<School> schoolList, SPColour colourToExclude, String nameCardUsed,
                                    List<AbstractCharacterCard> extractedCards, String nickname) {
         super(archipelagos, clouds, mn, schoolList, nickname);
         super.type = "advanced";
         this.colourToExclude = colourToExclude;
         this.extractedCards = extractedCards;
+        this.nameCardUsed = nameCardUsed;
     }
 
     /**
@@ -72,5 +75,21 @@ public class SerializedBoardAdvanced extends SerializedBoardAbstract implements 
      */
     public List<AbstractCharacterCard> getExtractedCards() {
         return extractedCards;
+    }
+
+    /**
+     * Setter of nameCardUsed
+     * @param name name of the card used
+     */
+    public void setNameCardUsed(String name) {
+        this.nameCardUsed = name;
+    }
+
+    /**
+     * getter of nameCardUsed
+     * @return the value of nameCardUsed
+     */
+    public String getNameCardUsed() {
+        return this.nameCardUsed;
     }
 }

@@ -884,14 +884,18 @@ public class Controller implements ObserverController<Message>, Serializable {
             this.precomputedPlayer = this.players.get(currentPlayerIndex+1);
         }
 
+        String storeNameCardUsed = "";
         if(controllerIntegrity.checkStudentCloudToSchool(getCurrentPlayer(), indexCloud) || this.gameEnded){//TODO: I can choose a void cloud only if the game is going to finish, RIGHT?
             try{
                 if(isAdvanced()) {
+                    storeNameCardUsed = boardAdvanced.getNameCardUsed();
+                    boardAdvanced.resetNameCardUsed();
                     boardAdvanced.moveStudentCloudToSchool(getCurrentPlayer(), indexCloud);
                 } else {
                     board.moveStudentCloudToSchool(getCurrentPlayer(), indexCloud);
                 }
             } catch(ExceededMaxStudentsHallException ex){
+                boardAdvanced.setNameCardUsed(storeNameCardUsed);
                 return false;
             }
 
