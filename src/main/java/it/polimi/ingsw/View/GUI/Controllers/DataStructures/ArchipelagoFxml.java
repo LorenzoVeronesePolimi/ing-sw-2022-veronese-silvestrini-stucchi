@@ -244,21 +244,21 @@ public class ArchipelagoFxml {
 
         if(this.controller.isCurrentPlayer(this.client.getNickname())) {
             if(this.controller.getMovedStudent() != null && this.board.getCurrentState().equals(State.ACTION1)) {
-                if(!this.archiClicked) {    //check if the archipelago has not been already clicked
+                if(!this.archiClicked && !this.controller.getMessageSent()) {    //check if the archipelago has not been already clicked or a message already sent(for CharacterCard)
                     this.archiClicked = true;
                     this.client.asyncWriteToSocket("studentToArchipelago " + this.controller.getMovedStudent() + " " + this.index);
+                    this.controller.setMessageSent(true);
                     this.controller.setMovedStudent(null);
-                    this.controller.getSchoolsFxml().get(0).setSentMessage(true);
 
                     for (SchoolFxml s : controller.getSchoolsFxml()) {
                         s.setMovedStudent(null);
-                        s.setSentMessage(true);
                     }
                 }
             } else if(this.board.getCurrentState().equals(State.ACTION2)) {
-                if(!this.archiClicked) { //check if the archipelago has not been already clicked
+                if(!this.archiClicked && !this.controller.getMessageSent()) { //check if the archipelago has not been already clicked
                     this.archiClicked = true;
                     this.client.asyncWriteToSocket("moveMotherNature " + computeMNMoves(this.board.getArchipelagos().indexOf(this.board.getMn().getCurrentPosition()), this.index));
+                    this.controller.setMessageSent(true);
                 }
             }
         }

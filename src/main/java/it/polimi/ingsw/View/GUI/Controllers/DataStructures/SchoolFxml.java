@@ -46,7 +46,6 @@ public class SchoolFxml {
     private BoardFourAdvancedController controller; // BoardFourAdvancedController (passed in the setSchoolsFxmlVisualization method)
     private ImageView movedStudent = null; // when a student from the hall il clicked this value is updated
     private List<ImageView> studentImages;
-    private boolean sentMessage = false;
 
     private Map<ImageView, SPColour> imageColour;
 
@@ -359,14 +358,6 @@ public class SchoolFxml {
     }
 
     /**
-     * setter of parameter to indicate if the message as been sent.
-     * @param sentMessage
-     */
-    public void setSentMessage(boolean sentMessage) {
-        this.sentMessage = sentMessage;
-    }
-
-    /**
      * manager of student click event
      * @param e event
      * @param image student image
@@ -379,7 +370,7 @@ public class SchoolFxml {
         }
         if(this.client.getNickname().equals(this.board.getCurrentPlayer().getNickname())) { // if it's the player turn
             if(this.board.getCurrentState().equals(State.ACTION1)) {
-                if(!this.sentMessage) {
+                if(!this.controller.getMessageSent()) {
                     for (Node n : this.hall.getChildren()) { // if he touched a hall student
                         if (n == image) {
                             image.setOpacity(0);    // I think it is fancier if the student "disappears" from the hall
@@ -400,9 +391,9 @@ public class SchoolFxml {
      * @param event event
      */
     private void diningClicked(MouseEvent event) {
-        if(this.movedStudent != null) {
+        if(this.movedStudent != null && !this.controller.getMessageSent()) {
             this.client.asyncWriteToSocket("studentHallToDiningRoom " + this.imageColour.get(movedStudent));
-            this.sentMessage = true;
+            this.controller.setMessageSent(true);
             this.movedStudent = null;
             this.controller.setMovedStudent(null);
             this.controller.setCursorToDefault();

@@ -531,7 +531,6 @@ public class BoardFourAdvancedController implements GUIController, Initializable
             s.setBoard(board);
             s.setClient(this.client);
             s.setController(this);
-            s.setSentMessage(false);
         }
 
         //int onWorkingPlayerIndex = board.getOrderedPlayers().indexOf(board.getCurrentPlayer());
@@ -837,6 +836,22 @@ public class BoardFourAdvancedController implements GUIController, Initializable
      */
     public void setCursorToDefault(){
         this.general_anchor.setCursor(Cursor.DEFAULT);
+    }
+
+    /**
+     * Setter of message sent
+     * @param sent new value of message sent
+     */
+    public void setMessageSent(boolean sent) {
+        this.guiViewFX.setMessageSent(sent);
+    }
+
+    /**
+     * getter of message sent
+     * @return the value of message sent (true if message sent, false otherwise)
+     */
+    public boolean getMessageSent() {
+        return this.guiViewFX.getMessageSent();
     }
 
     /**
