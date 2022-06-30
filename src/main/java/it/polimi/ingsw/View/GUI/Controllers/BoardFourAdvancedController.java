@@ -23,6 +23,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.shape.Rectangle;
 
 import java.net.URL;
 import java.util.ArrayList;
@@ -56,6 +57,8 @@ public class BoardFourAdvancedController implements GUIController, Initializable
     @FXML private GridPane my_professors;
     @FXML private GridPane my_towers;
     @FXML private Label my_coins;
+    @FXML private Rectangle my_rectangle_coins;
+    @FXML private ImageView my_image_coin;
     // School 1
     @FXML private Label opponent1_nick;
     @FXML private GridPane opponent1_hall;
@@ -63,6 +66,8 @@ public class BoardFourAdvancedController implements GUIController, Initializable
     @FXML private GridPane opponent1_professors;
     @FXML private GridPane opponent1_towers;
     @FXML private Label opponent1_coins;
+    @FXML private Rectangle opp1_rectangle_coins;
+    @FXML private ImageView opp1_image_coin;
     // School 2
     @FXML private Label opponent2_nick;
     @FXML private GridPane opponent2_hall;
@@ -70,6 +75,8 @@ public class BoardFourAdvancedController implements GUIController, Initializable
     @FXML private GridPane opponent2_professors;
     @FXML private GridPane opponent2_towers;
     @FXML private Label opponent2_coins;
+    @FXML private Rectangle opp2_rectangle_coins;
+    @FXML private ImageView opp2_image_coin;
     // School 3
     @FXML private Label opponent3_nick;
     @FXML private GridPane opponent3_hall;
@@ -77,6 +84,8 @@ public class BoardFourAdvancedController implements GUIController, Initializable
     @FXML private GridPane opponent3_professors;
     @FXML private GridPane opponent3_towers;
     @FXML private Label opponent3_coins;
+    @FXML private Rectangle opp3_rectangle_coins;
+    @FXML private ImageView opp3_image_coin;
 
     // Archipelago 0
     @FXML private AnchorPane archi0;
@@ -456,6 +465,14 @@ public class BoardFourAdvancedController implements GUIController, Initializable
         for(SchoolFxml s : this.schoolsFxml){
             s.getCoins().setVisible(false);
         }
+        my_image_coin.setVisible(false);
+        my_rectangle_coins.setVisible(false);
+        opp1_image_coin.setVisible(false);
+        opp1_rectangle_coins.setVisible(false);
+        opp2_image_coin.setVisible(false);
+        opp2_rectangle_coins.setVisible(false);
+        opp3_image_coin.setVisible(false);
+        opp3_rectangle_coins.setVisible(false);
         card_1_cost.setVisible(false);
         card_2_cost.setVisible(false);
         card_3_cost.setVisible(false);
@@ -655,6 +672,11 @@ public class BoardFourAdvancedController implements GUIController, Initializable
     public void setInstructionLabels() {
         if(board.getCurrentPlayer().getNickname().equals(this.client.getNickname())) {
             this.turnLabel.setText("It's your turn!");
+            if(this.board.getType().equals("advanced")) {
+                if(((SerializedBoardAdvanced)this.board).getColourToExclude() != null) {
+                    this.turnLabel.setText("It's your turn!\nColour to exclude: " + ((SerializedBoardAdvanced)this.board).getColourToExclude());
+                }
+            }
 
             switch (board.getCurrentState()) {
                 case ACTION1:

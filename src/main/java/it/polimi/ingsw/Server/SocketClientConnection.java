@@ -188,7 +188,7 @@ public class SocketClientConnection extends ClientConnection implements Runnable
                 } else if(message.getType().equalsIgnoreCase("standard")) {
                     //System.out.println("sendModel abstract");
                 } else {
-                    //System.out.println("Errore sendModel");   //TODO: thorw a NullPointer here
+                    //System.out.println("Errore sendModel");   //TODO: throw a NullPointer here
                 }
             }
             out.reset();

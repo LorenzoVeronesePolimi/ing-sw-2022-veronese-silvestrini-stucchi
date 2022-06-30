@@ -37,8 +37,11 @@ public abstract class AbstractCharacterCard implements Serializable {
      * @param coin
      */
     public void updatePrice(Coin coin){
-        addedPrice.add(coin);
-    }   // TODO: update only one time the price?
+        // update the price only once (from the rules it is not clear if the price should be update once or every time the card is used)
+        // if the price should be updated every time
+        if(addedPrice.size() == 0)
+            addedPrice.add(coin);
+    }
 
     /**
      *

@@ -10,6 +10,7 @@ import it.polimi.ingsw.Model.Pawns.Student;
 import it.polimi.ingsw.Model.Places.School.SchoolAdvanced;
 import it.polimi.ingsw.Model.Player;
 import it.polimi.ingsw.View.GUI.GUIViewFX;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
@@ -18,6 +19,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -250,11 +252,196 @@ public class CharacterCardDialogController {
     }
 
     /**
+     * This method is used to generate the out message to the server, in order to add the relevant parameters
+     * @param outMessage message that needs to be modified and sent
+     * @param content new content of the message
+     * @param maxElemNum maximum number of elements that the message can contain
+     */
+    private void generateOutMessage(StringBuilder outMessage, List<String> content, int maxElemNum) {
+        int i = maxElemNum;
+        for(String s : content){
+            outMessage.append(s);
+            outMessage.append(" ");
+            i--;
+        }
+        while(i > 0){ //add "-" if no choice
+            outMessage.append("- ");
+            i--;
+        }
+    }
+
+    /**
+     * This method is used to set the different left choice box of the Character card Alert
+     * @param visible1 relative to choice1_left
+     * @param visible2 relative to choice2_left
+     * @param visible3 relative to choice3_left
+     * @param choices content of the choice boxes
+     */
+    private void setLeftChoices(boolean visible1, boolean visible2, boolean visible3,List<String> choices) {
+        if(visible1) {
+            this.choice1_left.getItems().addAll(choices);
+            this.choice1_left.setOnAction((ActionEvent e) -> {
+                if (this.choice1_left.getValue() == null) {
+                    return;
+                }
+
+                // removing items if already chosen
+                setNewValue(this.choice1_left, this.choice2_left, this.choice3_left, choices);
+            });
+        } else {
+            this.choice1_left.setVisible(false);
+        }
+
+        if(visible2) {
+            this.choice2_left.getItems().addAll(choices);
+            this.choice2_left.setOnAction((ActionEvent e) -> {
+                if (this.choice2_left.getValue() == null) {
+                    return;
+                }
+
+                // removing items if already chosen
+                setNewValue(this.choice1_left, this.choice2_left, this.choice3_left, choices);
+            });
+        } else {
+            this.choice2_left.setVisible(false);
+        }
+
+        if(visible3) {
+            this.choice3_left.getItems().addAll(choices);
+            this.choice3_left.setOnAction((ActionEvent e) -> {
+                if (this.choice3_left.getValue() == null) {
+                    return;
+                }
+
+                // removing items if already chosen
+                setNewValue(this.choice1_left, this.choice2_left, this.choice3_left, choices);
+            });
+        } else {
+            this.choice3_left.setVisible(false);
+        }
+    }
+
+    /**
+     * This method is used to set the different right choice box of the Character card Alert
+     * @param visible1 relative to choice1_right
+     * @param visible2 relative to choice2_right
+     * @param visible3 relative to choice3_right
+     * @param choices content of the choice boxes
+     */
+    private void setRigthChoices(boolean visible1, boolean visible2, boolean visible3, List<String> choices) {
+        if(visible1) {
+            this.choice1_right.getItems().addAll(choices);
+            this.choice1_right.setOnAction((ActionEvent e) -> {
+                if (this.choice1_right.getValue() == null) {
+                    return;
+                }
+
+                // removing items if already chosen
+                setNewValue(this.choice1_right, this.choice2_right, this.choice3_right, choices);
+            });
+        } else {
+            this.choice1_right.setVisible(false);
+        }
+
+        if(visible2) {
+            this.choice2_right.getItems().addAll(choices);
+            this.choice2_right.setOnAction((ActionEvent e) -> {
+                if (this.choice2_right.getValue() == null) {
+                    return;
+                }
+
+                // removing items if already chosen
+                setNewValue(this.choice1_right, this.choice2_right, this.choice3_right, choices);
+            });
+        } else {
+            this.choice2_right.setVisible(false);
+        }
+
+        if(visible3) {
+            this.choice3_right.getItems().addAll(choices);
+            this.choice2_right.setOnAction((ActionEvent e) -> {
+                if (this.choice3_right.getValue() == null) {
+                    return;
+                }
+
+                // removing items if already chosen
+                setNewValue(this.choice1_right, this.choice2_right, this.choice3_right, choices);
+            });
+        } else {
+            this.choice3_right.setVisible(false);
+        }
+    }
+
+    /**
+     * This method is used to update the value of all the choice boxes when another choice box sets it's value (the user sets it)
+     * @param choice1 first choice box
+     * @param choice2 second choice box
+     * @param choice3 third choice box
+     * @param students original content of all choice boxes
+     */
+    private void setNewValue(ChoiceBox<String> choice1, ChoiceBox<String> choice2, ChoiceBox<String> choice3, List<String> students) {
+        List<String> newStudents = new ArrayList<>(students);
+        String chosen1 = null;
+        String chosen2 = null;
+        String chosen3 = null;
+
+        if(choice1.isVisible()) {
+            chosen1 = choice1.getValue();
+            if(chosen1 != null) newStudents.remove(chosen1);
+        }
+
+        if(choice2.isVisible()) {
+            chosen2 = choice2.getValue();
+            if(chosen2 != null) newStudents.remove(chosen2);
+        }
+
+        if(choice3.isVisible()) {
+            chosen3 = choice3.getValue();
+            if(chosen3 != null) newStudents.remove(chosen3);
+        }
+
+        if(choice1.isVisible()) {
+            choice1.getItems().clear();
+            choice1.getItems().addAll(newStudents);
+            if (chosen1 != null) choice1.setValue(chosen1);
+        }
+
+        if(choice2.isVisible()) {
+            choice2.getItems().clear();
+            choice2.getItems().addAll(newStudents);
+            if (chosen2 != null) choice2.setValue(chosen2);
+        }
+
+        if(choice3.isVisible()) {
+            choice3.getItems().clear();
+            choice3.getItems().addAll(newStudents);
+            if (chosen3 != null) choice3.setValue(chosen3);
+        }
+    }
+
+    /**
+     * This method is used to get a list of String of elements selected in the different choice boxes
+     * @param choices list of choice boxes
+     * @return
+     */
+    private ArrayList<String> getSelected(List<ChoiceBox<String>> choices) {
+        ArrayList<String> selected = new ArrayList<>();
+        for(ChoiceBox<String> c : choices){
+            if(c.getValue() != null){
+                selected.add(c.getValue());
+            }
+        }
+
+        return selected;
+    }
+
+    /**
      * method that manages the visualization of the exchangeThreeStudents character card
      */
     public void visualizeExchangeThreeStudents(){
         this.choice_left_label.setText("Card:");
         this.choice_right_label.setText("Hall:");
+
         List<String> cardStudents = new ArrayList();
         for(Student s : ((ExchangeThreeStudents)this.card).getStudentsOnCard()){
             cardStudents.add(SPColourString.get(s.getColour()));
@@ -266,12 +453,12 @@ public class CharacterCardDialogController {
             hallStudents.add(SPColourString.get(s.getColour()));
         }
 
-        this.choice1_left.getItems().addAll(cardStudents);
-        this.choice2_left.getItems().addAll(cardStudents);
-        this.choice3_left.getItems().addAll(cardStudents);
-        this.choice1_right.getItems().addAll(hallStudents);
-        this.choice2_right.getItems().addAll(hallStudents);
-        this.choice3_right.getItems().addAll(hallStudents);
+        // left choices
+        setLeftChoices(true, true, true, cardStudents);
+
+        // right choices
+        setRigthChoices(true, true, true, hallStudents);
+
 
         this.use_yes.setOnAction(actionEvent -> {
             if(!this.canIBuyCard(((SchoolAdvanced)this.board.getSchools().get(this.playerIndex)).getNumCoins(), this.card.getCurrentPrice())){
@@ -279,21 +466,11 @@ public class CharacterCardDialogController {
             }
             else{
                 StringBuilder outMessage = new StringBuilder("exchangeThreeStudents ");
-                List<String> cardStudentsSelected = new ArrayList<>();
-                List<String> hallStudentsSelected = new ArrayList<>();
-                for(ChoiceBox<String> c : choicesLeft){
-                    if(c.getValue() != null){
-                        //cardStudentsSelected.add(c.getSelectionModel().getSelectedItem());
-                        cardStudentsSelected.add(c.getValue());
-                    }
-                }
-                for(ChoiceBox<String> c : choicesRight){
-                    if(c.getValue() != null){
-                        hallStudentsSelected.add(c.getValue());
-                    }
-                }
+                List<String> cardStudentsSelected = getSelected(choicesLeft);
+                List<String> hallStudentsSelected = getSelected(choicesRight);
+
                 if(cardStudentsSelected.size() != hallStudentsSelected.size()){
-                    guiViewFX.sceneAlert("Incorrect colours selected", Alert.AlertType.ERROR);
+                    guiViewFX.sceneAlert("Incorrect number of colours selected", Alert.AlertType.ERROR);
                 }
                 else{
                     int initialCardSize = cardStudents.size();
@@ -308,30 +485,13 @@ public class CharacterCardDialogController {
                         for(String s : hallStudentsSelected){
                             hallStudents.remove(s);
                         }
-                        if(cardStudents.size() != initialCardSize - cardStudentsSelected.size()){
+                        if(hallStudents.size() != initialHallSize - hallStudentsSelected.size()){
                             guiViewFX.sceneAlert("You've chosen more students than you have!", Alert.AlertType.ERROR);
                         }
                         else{
-                            int i = 3;//cardStudentsSelected.size();
-                            for(String s : cardStudentsSelected){
-                                outMessage.append(s);
-                                outMessage.append(" ");
-                                i--;
-                            }
-                            while(i > 0){ //add "-" if no choice
-                                outMessage.append("- ");
-                                i--;
-                            }
-                            i = 3;//hallStudentsSelected.size();
-                            for(String s : hallStudentsSelected){
-                                outMessage.append(s);
-                                outMessage.append(" ");
-                                i--;
-                            }
-                            while(i > 0){ //add "-" if no choice
-                                outMessage.append("- ");
-                                i--;
-                            }
+                            generateOutMessage(outMessage, cardStudentsSelected, 3);
+                            generateOutMessage(outMessage, hallStudentsSelected, 3);
+
                             this.client.asyncWriteToSocket(String.valueOf(outMessage));
                         }
                     }
@@ -365,12 +525,8 @@ public class CharacterCardDialogController {
             }
         }
 
-        this.choice1_left.getItems().addAll(hallStudents);
-        this.choice2_left.getItems().addAll(hallStudents);
-        this.choice3_left.setVisible(false);
-        this.choice1_right.getItems().addAll(diningStudents);
-        this.choice2_right.getItems().addAll(diningStudents);
-        this.choice3_right.setVisible(false);
+        setLeftChoices(true, true, false, hallStudents);
+        setRigthChoices(true, true, false, diningStudents);
 
         this.use_yes.setOnAction(actionEvent -> {
             if(!this.canIBuyCard(((SchoolAdvanced)this.board.getSchools().get(this.playerIndex)).getNumCoins(), this.card.getCurrentPrice())){
@@ -378,21 +534,11 @@ public class CharacterCardDialogController {
             }
             else{
                 StringBuilder outMessage = new StringBuilder("exchangeTwoHallDining ");
-                List<String> hallStudentsSelected = new ArrayList<>();
-                List<String> diningStudentsSelected = new ArrayList<>();
-                for(ChoiceBox<String> c : choicesLeft){
-                    if(c.getValue() != null){
-                        //cardStudentsSelected.add(c.getSelectionModel().getSelectedItem());
-                        hallStudentsSelected.add(c.getValue());
-                    }
-                }
-                for(ChoiceBox<String> c : choicesRight){
-                    if(c.getValue() != null){
-                        diningStudentsSelected.add(c.getValue());
-                    }
-                }
+                List<String> hallStudentsSelected = getSelected(choicesLeft);
+                List<String> diningStudentsSelected = getSelected(choicesRight);
+
                 if(hallStudentsSelected.size() != diningStudentsSelected.size()){
-                    guiViewFX.sceneAlert("Incorrect colours selected", Alert.AlertType.ERROR);
+                    guiViewFX.sceneAlert("Incorrect number of colours selected", Alert.AlertType.ERROR);
                 }
                 else{
                     int initialHallSize = hallStudents.size();
@@ -411,26 +557,8 @@ public class CharacterCardDialogController {
                             guiViewFX.sceneAlert("You've chosen more students than you have!", Alert.AlertType.ERROR);
                         }
                         else{
-                            int i = 2;//hallStudentsSelected.size();
-                            for(String s : hallStudentsSelected){
-                                outMessage.append(s);
-                                outMessage.append(" ");
-                                i--;
-                            }
-                            while(i > 0){ //add "-" if no choice
-                                outMessage.append("- ");
-                                i--;
-                            }
-                            i = 2;//hallStudentsSelected.size();
-                            for(String s : diningStudentsSelected){
-                                outMessage.append(s);
-                                outMessage.append(" ");
-                                i--;
-                            }
-                            while(i > 0){ //add "-" if no choice
-                                outMessage.append("- ");
-                                i--;
-                            }
+                            generateOutMessage(outMessage, hallStudentsSelected, 2);
+                            generateOutMessage(outMessage, diningStudentsSelected, 2);
                             this.client.asyncWriteToSocket(String.valueOf(outMessage));
                         }
                     }
@@ -445,12 +573,11 @@ public class CharacterCardDialogController {
      */
     public void visualizeExcludeColourFromCounting(){
         this.choice_left_label.setText("Colour to exclude");
+        this.choice_right_label.setVisible(false);
 
-        String[] colours = {"blue", "pink", "red", "yellow", "green"};
-        for(String c : colours){
-            this.choice1_left.getItems().add(c);
-        }
-        oneChoiceVisualization();
+        List<String> colours = Arrays.asList("blue", "pink", "red", "yellow", "green");
+        setLeftChoices(true, false, false, colours);
+        setRigthChoices(false, false, false, null);
 
         this.use_yes.setOnAction(actionEvent -> {
             if(!this.canIBuyCard(((SchoolAdvanced)this.board.getSchools().get(this.playerIndex)).getNumCoins(), this.card.getCurrentPrice())){
@@ -458,6 +585,7 @@ public class CharacterCardDialogController {
             }
             else{
                 this.client.asyncWriteToSocket("excludeColourFromCounting " + choice1_left.getValue());
+                //TODO: add lable to indicate colour excluded
             }
         });
     }
@@ -474,8 +602,10 @@ public class CharacterCardDialogController {
                 cardColours.add(SPColourString.get(s.getColour()));
             }
         }
-        this.choice1_left.getItems().addAll(cardColours);
-        oneChoiceVisualization();
+
+        this.choice_right_label.setVisible(false);
+        setLeftChoices(true, false, false, cardColours);
+        setRigthChoices(false, false, false, null);
 
         this.setStudentsVisualization(((ExtraStudentInDining)this.card).getStudentsOnCard());
 
@@ -545,21 +675,34 @@ public class CharacterCardDialogController {
         this.choice_left_label.setText("Student to take:");
         this.choice_right_label.setText("Destination:");
 
-        this.choice2_left.setVisible(false);
-        this.choice3_left.setVisible(false);
-        this.choice2_right.setVisible(false);
-        this.choice3_right.setVisible(false);
-
+        this.setStudentsVisualization(((PlaceOneStudent)this.card).getStudentsOnCard());
         List<String> cardStudents = new ArrayList();
         for(Student s : ((PlaceOneStudent)this.card).getStudentsOnCard()){
             cardStudents.add(SPColourString.get(s.getColour()));
         }
-        this.setStudentsVisualization(((PlaceOneStudent)this.card).getStudentsOnCard());
-        this.choice1_left.getItems().addAll(cardStudents);
+        setLeftChoices(true, false, false, cardStudents);
 
+        this.choice2_right.setVisible(false);
+        this.choice3_right.setVisible(false);
         for(int i = 0; i < this.board.getArchipelagos().size(); i++){
             this.choice1_right.getItems().add(Integer.toString(i));
         }
+        this.choice1_right.setOnAction((ActionEvent e) -> {
+            if(this.choice1_right.getValue() == null) {
+                return;
+            }
+
+            String chosen = this.choice1_right.getValue();
+            List<String> newIndexes = new ArrayList<>();
+            for(int i = 0; i < this.board.getArchipelagos().size(); i++){
+                newIndexes.add(Integer.toString(i));
+            }
+            newIndexes.remove(chosen);
+            this.choice1_right.getItems().clear();
+            this.choice1_right.getItems().addAll(newIndexes);
+            this.choice1_right.setValue(chosen);
+
+        });
 
         this.use_yes.setOnAction(actionEvent -> {
             if(!this.canIBuyCard(((SchoolAdvanced)this.board.getSchools().get(this.playerIndex)).getNumCoins(), this.card.getCurrentPrice())){
@@ -577,12 +720,11 @@ public class CharacterCardDialogController {
      */
     public void visualizeReduceColourInDining(){
         this.choice_left_label.setText("Colour:");
+        this.choice_right_label.setVisible(false);
 
-        String[] colours = {"blue", "pink", "red", "yellow", "green"};
-        for(String c : colours){
-            this.choice1_left.getItems().add(c);
-        }
-        oneChoiceVisualization();
+        List<String> colours = Arrays.asList("blue", "pink", "red", "yellow", "green");
+        setLeftChoices(true, false, false, colours);
+        setRigthChoices(false, false, false, null);
 
         this.use_yes.setOnAction(actionEvent -> {
             if(!this.canIBuyCard(((SchoolAdvanced)this.board.getSchools().get(this.playerIndex)).getNumCoins(), this.card.getCurrentPrice())){

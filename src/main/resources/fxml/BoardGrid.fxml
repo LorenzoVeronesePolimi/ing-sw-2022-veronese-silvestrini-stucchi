@@ -96,12 +96,12 @@
                </image>
             </ImageView>
             <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="29.0" layoutY="-6.0" stroke="BLACK" strokeType="INSIDE" width="472.0" />
-            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="30.0" layoutX="379.0" layoutY="159.0" stroke="BLACK" strokeType="INSIDE" width="92.0" />
+            <Rectangle fx:id="opp1_rectangle_coins" arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="30.0" layoutX="379.0" layoutY="159.0" stroke="BLACK" strokeType="INSIDE" width="92.0" />
             <Label fx:id="opponent1_coins" layoutX="412.0" layoutY="159.0" prefHeight="29.0" prefWidth="58.0">
                <font>
                   <Font name="Segoe UI Black" size="12.0" />
                </font></Label>
-            <ImageView fitHeight="29.0" fitWidth="30.0" layoutX="379.0" layoutY="159.0" preserveRatio="true">
+            <ImageView fx:id="opp1_image_coin" fitHeight="29.0" fitWidth="30.0" layoutX="379.0" layoutY="159.0" preserveRatio="true">
                <image>
                   <Image url="@../images/Coin.png" />
                </image>
@@ -297,7 +297,7 @@
          <font>
             <Font name="Segoe UI Black Italic" size="12.0" />
          </font></Label>
-      <Label fx:id="turnLabel" layoutX="1080.0" layoutY="17.0" prefHeight="58.0" prefWidth="170.0" text="Label">
+      <Label fx:id="turnLabel" layoutX="1080.0" layoutY="13.0" prefHeight="58.0" prefWidth="170.0" text="Label">
          <font>
             <Font name="Segoe UI Black Italic" size="12.0" />
          </font></Label>
@@ -335,12 +335,12 @@
                   <Image url="@../images/Assistants/1.png" />
                </image>
             </ImageView>
-            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="30.0" layoutX="379.0" layoutY="159.0" stroke="BLACK" strokeType="INSIDE" width="92.0" />
+            <Rectangle fx:id="opp2_rectangle_coins" arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="30.0" layoutX="379.0" layoutY="159.0" stroke="BLACK" strokeType="INSIDE" width="92.0" />
             <Label fx:id="opponent2_coins" layoutX="412.0" layoutY="159.0" prefHeight="29.0" prefWidth="58.0">
                <font>
                   <Font name="Segoe UI Black" size="12.0" />
                </font></Label>
-            <ImageView fitHeight="29.0" fitWidth="30.0" layoutX="379.0" layoutY="159.0" preserveRatio="true">
+            <ImageView fx:id="opp2_image_coin" fitHeight="29.0" fitWidth="30.0" layoutX="379.0" layoutY="159.0" preserveRatio="true">
                <image>
                   <Image url="@../images/Coin.png" />
                </image>
@@ -467,12 +467,12 @@
                   <Image url="@../images/Assistants/1.png" />
                </image>
             </ImageView>
-            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="30.0" layoutX="379.0" layoutY="159.0" stroke="BLACK" strokeType="INSIDE" width="92.0" />
+            <Rectangle fx:id="opp3_rectangle_coins" arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="30.0" layoutX="379.0" layoutY="159.0" stroke="BLACK" strokeType="INSIDE" width="92.0" />
             <Label fx:id="opponent3_coins" layoutX="412.0" layoutY="159.0" prefHeight="29.0" prefWidth="58.0">
                <font>
                   <Font name="Segoe UI Black" size="12.0" />
                </font></Label>
-            <ImageView fitHeight="29.0" fitWidth="30.0" layoutX="379.0" layoutY="159.0" preserveRatio="true">
+            <ImageView fx:id="opp3_image_coin" fitHeight="29.0" fitWidth="30.0" layoutX="379.0" layoutY="159.0" preserveRatio="true">
                <image>
                   <Image url="@../images/Coin.png" />
                </image>
@@ -1369,8 +1369,8 @@
             <Image url="@../images/Assistants/10.png" />
          </image>
       </ImageView>
-      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="26.0" layoutX="948.0" layoutY="673.0" stroke="BLACK" strokeType="INSIDE" width="95.0" />
-      <ImageView fitHeight="29.0" fitWidth="30.0" layoutX="949.0" layoutY="672.0" preserveRatio="true">
+      <Rectangle fx:id="my_rectangle_coins" arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="26.0" layoutX="948.0" layoutY="673.0" stroke="BLACK" strokeType="INSIDE" width="95.0" />
+      <ImageView fx:id="my_image_coin" fitHeight="29.0" fitWidth="30.0" layoutX="949.0" layoutY="672.0" preserveRatio="true">
          <image>
             <Image url="@../images/Coin.png" />
          </image>

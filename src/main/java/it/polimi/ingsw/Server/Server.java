@@ -213,7 +213,7 @@ public class Server {
      * @param c SocketClientConnection of the client that has generated an error.
      */
     public synchronized void deregisterConnection(SocketClientConnection c) {
-        // if a player connected but not in a match (because the match has already begun with other players) tryes to close the connection, we don't affect other players
+        // if a player connected but not in a match (because the match has already begun with other players) tries to close the connection, we don't affect other players
         if((socketConnections.indexOf(c) >= this.controller.getPlayers().size()) && this.controller.getPlayers().size() > 0) {
             c.close();
             connections--;
