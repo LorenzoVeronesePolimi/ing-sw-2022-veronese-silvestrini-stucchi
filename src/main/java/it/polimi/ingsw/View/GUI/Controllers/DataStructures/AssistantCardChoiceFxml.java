@@ -21,6 +21,7 @@ public class AssistantCardChoiceFxml {
     private Client client;  // Client class
     private SerializedBoardAbstract board;  // Board
     private AssistantCardChoiceController controller;
+    private boolean cardPlayed = false; // flag to check if the player has clicked a card
 
     private static final Map<Integer, Integer> priorityMNMovement = Map.of(
             1, 1,
@@ -84,11 +85,22 @@ public class AssistantCardChoiceFxml {
     }
 
     /**
+     * Method thad assigns a new value to cardPlayed.
+     * @param played the new value of cardPlayed.
+     */
+    public void setCardPlayed(boolean played) {
+        this.cardPlayed = played;
+    }
+
+    /**
      * method that on event sends to the controller the message of card usage
      * @param e
      */
     private void playCard(ActionEvent e) {
-        this.client.asyncWriteToSocket("assistantCard " + priorityMNMovement.get(this.index) + " " + this.index);
+        if(!this.cardPlayed) {
+            this.cardPlayed = true;
+            this.client.asyncWriteToSocket("assistantCard " + priorityMNMovement.get(this.index) + " " + this.index);
+        }
     }
 
     /**

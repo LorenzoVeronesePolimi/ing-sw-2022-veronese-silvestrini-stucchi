@@ -40,6 +40,7 @@ public class ArchipelagoFxml {
     private Client client;  // Client class
     private SerializedBoardAbstract board;  // Board
     private BoardFourAdvancedController controller; // BoardFourAdvancedController (passed in the setArchipelagosFxmlVisualization method)
+    private boolean archiClicked = false;
 
     /**
      * constructor of archipelago data structure
@@ -227,6 +228,14 @@ public class ArchipelagoFxml {
     }
 
     /**
+     * This method sets the attribute that indicates if an archipelago as been clicked.
+     * @param clicked new value of the parameter.
+     */
+    public void setArchiClicked(boolean clicked) {
+        this.archiClicked = clicked;
+    }
+
+    /**
      * manager of mouse event
      * @param event mouse event
      */
@@ -235,15 +244,22 @@ public class ArchipelagoFxml {
 
         if(this.controller.isCurrentPlayer(this.client.getNickname())) {
             if(this.controller.getMovedStudent() != null && this.board.getCurrentState().equals(State.ACTION1)) {
+                if(!this.archiClicked) {    //check if the archipelago has not been already clicked
+                    this.archiClicked = true;
+                    this.client.asyncWriteToSocket("studentToArchipelago " + this.controller.getMovedStudent() + " " + this.index);
+                    this.controller.setMovedStudent(null);
+                    this.controller.getSchoolsFxml().get(0).setSentMessage(true);
 
-                this.client.asyncWriteToSocket("studentToArchipelago " + this.controller.getMovedStudent() + " " + this.index);
-                this.controller.setMovedStudent(null);
-
-                for(SchoolFxml s : controller.getSchoolsFxml()) {
-                    s.setMovedStudent(null);
+                    for (SchoolFxml s : controller.getSchoolsFxml()) {
+                        s.setMovedStudent(null);
+                        s.setSentMessage(true);
+                    }
                 }
             } else if(this.board.getCurrentState().equals(State.ACTION2)) {
-                this.client.asyncWriteToSocket("moveMotherNature " + computeMNMoves(this.board.getArchipelagos().indexOf(this.board.getMn().getCurrentPosition()), this.index));
+                if(!this.archiClicked) { //check if the archipelago has not been already clicked
+                    this.archiClicked = true;
+                    this.client.asyncWriteToSocket("moveMotherNature " + computeMNMoves(this.board.getArchipelagos().indexOf(this.board.getMn().getCurrentPosition()), this.index));
+                }
             }
         }
 

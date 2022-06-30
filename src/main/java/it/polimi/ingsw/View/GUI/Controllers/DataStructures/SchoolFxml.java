@@ -1,6 +1,7 @@
 package it.polimi.ingsw.View.GUI.Controllers.DataStructures;
 
 import it.polimi.ingsw.Client.Client;
+import it.polimi.ingsw.Controller.Enumerations.State;
 import it.polimi.ingsw.Model.Board.SerializedBoardAbstract;
 import it.polimi.ingsw.Model.Enumerations.PlayerColour;
 import it.polimi.ingsw.Model.Enumerations.SPColour;
@@ -45,6 +46,7 @@ public class SchoolFxml {
     private BoardFourAdvancedController controller; // BoardFourAdvancedController (passed in the setSchoolsFxmlVisualization method)
     private ImageView movedStudent = null; // when a student from the hall il clicked this value is updated
     private List<ImageView> studentImages;
+    private boolean sentMessage = false;
 
     private Map<ImageView, SPColour> imageColour;
 
@@ -281,20 +283,6 @@ public class SchoolFxml {
             ImageView image = new ImageView(getClass().getResource(studentColourPath.get(s.getColour())).toExternalForm());
             image.setFitHeight(30 * scale);
             image.setFitWidth(30 * scale);
-            //THIS COMMENTED PART NEEDS TO BE CANCELLED IF WE USE CLICK INSTEAD OF DRAG AND DROP
-
-            /*image.setOnDragDetected((MouseEvent event) -> {
-                System.out.println("dragga");
-                Dragboard db = image.startDragAndDrop(TransferMode.MOVE);
-                ClipboardContent content = new ClipboardContent();
-                // Store node ID in order to know what is dragged.
-                content.putString(image.getId());
-                db.setContent(content);
-                event.consume();
-            });*/
-            //image.setOnMouseClicked(event -> studentHallClicked(event, image));
-            //image.setOnMouseDragged(event -> studentHallDragged(event, image));
-            //image.setPreserveRatio(true);
 
             this.studentImages.add(image);
             image.setOnMouseClicked(event -> hallStudentClicked(event, image));
@@ -370,26 +358,12 @@ public class SchoolFxml {
         this.coins.setText(Integer.toString(numCoins));
     }
 
-    public void studentHallClicked(MouseEvent e, ImageView image) {
-        /*for(Node n : this.hall.getChildren()){
-            if(n == image){
-                this.hall.getChildren().remove(image);
-            }
-        }*/
-        /*System.out.println("MOUSE");
-        double mouseX = e.getSceneX();
-        double mouseY = e.getSceneY();
-        System.out.println(mouseX);
-        System.out.println(mouseY);
-
-        System.out.println("IMMAGINE");
-        Bounds boundsInScene = image.localToScene(image.getBoundsInLocal());
-        double imageX = boundsInScene.getMinX();
-        double imageY = boundsInScene.getMinY();
-        System.out.println(imageX);
-        System.out.println(imageY);*/
-        //System.out.println("Student y: " + image.getLayoutY());
-
+    /**
+     * setter of parameter to indicate if the message as been sent.
+     * @param sentMessage
+     */
+    public void setSentMessage(boolean sentMessage) {
+        this.sentMessage = sentMessage;
     }
 
     /**
@@ -404,19 +378,18 @@ public class SchoolFxml {
             this.controller.setMovedStudent(null);
         }
         if(this.client.getNickname().equals(this.board.getCurrentPlayer().getNickname())) { // if it's the player turn
-            for(Node n : this.hall.getChildren()) { // if he touched a hall student
-                if (n == image) {
-                    /* image blinking
-                    FadeTransition fadeTransition = new FadeTransition(Duration.seconds(0.1), image);
-                    fadeTransition.setFromValue(1.0);
-                    fadeTransition.setToValue(0.0);
-                    fadeTransition.setCycleCount(Animation.INDEFINITE);*/
-                    image.setOpacity(0);    // I think it is fancier if the student "disappears" from the hall
-                    this.controller.setCursor(studentColourPath.get(this.imageColour.get(image)));
-                    this.movedStudent = image;
-                    this.controller.setMovedStudent(this.imageColour.get(this.movedStudent)); // in case of studentToArchipelago
+            if(this.board.getCurrentState().equals(State.ACTION1)) {
+                if(!this.sentMessage) {
+                    for (Node n : this.hall.getChildren()) { // if he touched a hall student
+                        if (n == image) {
+                            image.setOpacity(0);    // I think it is fancier if the student "disappears" from the hall
+                            this.controller.setCursor(studentColourPath.get(this.imageColour.get(image)));
+                            this.movedStudent = image;
+                            this.controller.setMovedStudent(this.imageColour.get(this.movedStudent)); // in case of studentToArchipelago
 
-                    this.controller.setActionLabel("Select your DiningRoom \nor an Island.");
+                            this.controller.setActionLabel("Select your DiningRoom \nor an Island.");
+                        }
+                    }
                 }
             }
         }
@@ -429,55 +402,10 @@ public class SchoolFxml {
     private void diningClicked(MouseEvent event) {
         if(this.movedStudent != null) {
             this.client.asyncWriteToSocket("studentHallToDiningRoom " + this.imageColour.get(movedStudent));
+            this.sentMessage = true;
             this.movedStudent = null;
             this.controller.setMovedStudent(null);
             this.controller.setCursorToDefault();
         }
-    }
-
-    //THIS METHOD NEEDS TO BE CANCELLED IF WE USE CLICK INSTEAD OF DRAG AND DROP
-    public void studentHallDragged(MouseEvent e, ImageView image){
-        /*
-        Dragboard db = image.startDragAndDrop(TransferMode.MOVE);
-        ClipboardContent content = new ClipboardContent();
-        // Store node ID in order to know what is dragged.
-        content.putString(image.getId());
-        db.setContent(content);
-        //e.consume();*/
-
-        System.out.println("sto draggando");
-        System.out.println("MOUSE");
-        double mouseX = e.getSceneX();
-        double mouseY = e.getSceneY();
-        System.out.println(mouseX);
-        System.out.println(mouseY);
-
-        System.out.println("IMMAGINE");
-        Bounds boundsInScene = image.localToScene(image.getBoundsInLocal());
-        double imageX = boundsInScene.getMinX() + image.getFitWidth();
-        double imageY = boundsInScene.getMinY() - image.getFitHeight();
-        System.out.println(imageX);
-        System.out.println(imageY);
-        /*
-        System.out.println("DELTA");
-        System.out.println(image.getLayoutX() + e.getX());
-        System.out.println(image.getLayoutY() + e.getY());
-
-        double distanceX = image.getX() + e.getX();
-        double distanceY = image.getY() + e.getY();
-
-         */
-
-        double distanceX = mouseX - imageX;
-        double distanceY = mouseY - imageY;
-
-        image.setTranslateX(distanceX);
-        image.setTranslateY(distanceY);
-
-        e.consume();
-        /*
-        image.setX(image.getX() + e.getX());
-        image.setY(image.getY() + e.getY());
-        e.consume();*/
     }
 }

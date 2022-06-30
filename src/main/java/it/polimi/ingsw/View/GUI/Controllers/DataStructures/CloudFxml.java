@@ -25,6 +25,7 @@ public class CloudFxml {
     private Client client;  // Client class
     private SerializedBoardAbstract board;  // Board
     private BoardFourAdvancedController controller; // BoardFourAdvancedController (passed in the setCloudsFxmlVisualization method)
+    private boolean cloudClicked = false;
 
     private static final Map<SPColour, String> studentColourPath = Map.of(
             SPColour.BLUE, "/images/pawns/stud_blue.png",
@@ -94,6 +95,14 @@ public class CloudFxml {
     }
 
     /**
+     * Method used to indicate if the cloud has been clicked.
+     * @param clicked true if the cloud has been clicked.
+     */
+    public void setCloudClicked(boolean clicked) {
+        this.cloudClicked = clicked;
+    }
+
+    /**
      * setter of students visualization on the cloud
      * @param students list of students
      * @param scale image scale
@@ -122,7 +131,10 @@ public class CloudFxml {
     private void onMouseClicked(MouseEvent event) {
         if(this.controller.isCurrentPlayer(this.client.getNickname())) {
             if(this.board.getCurrentState().equals(State.ACTION3)) {
-                this.client.asyncWriteToSocket("studentCloudToSchool " + this.index);
+                if(!this.cloudClicked) {
+                    this.cloudClicked = true;
+                    this.client.asyncWriteToSocket("studentCloudToSchool " + this.index);
+                }
             }
         }
     }

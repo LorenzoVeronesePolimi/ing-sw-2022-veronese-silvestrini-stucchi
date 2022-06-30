@@ -277,6 +277,7 @@ public class GUIViewFX extends Application {
         alertStage.getIcons().add(icon);
         alertScene.getStylesheets().add("/css/" + CHARACTER_CARD_DIALOG_CSS);
         alertStage.initModality(Modality.APPLICATION_MODAL);
+        alertStage.setResizable(false); //TODO: check if there are no stage dimension errors like the ones occurred to Giada
         alertStage.setScene(alertScene);
         alertStage.showAndWait();
     }
@@ -327,7 +328,7 @@ public class GUIViewFX extends Application {
     /**
      * method that manages the main stage (the one that shows the board)
      * @param board serialized board notified by the model
-     * @param roundVisualizationStatus true if the bouard needs to be shown for the normal turn; false if it is used for assistantCard purpose
+     * @param roundVisualizationStatus true if the board needs to be shown for the normal turn; false if it is used for assistantCard purpose
      */
     public void sceneShowBoard(SerializedBoardAbstract board, boolean roundVisualizationStatus) {
         BoardFourAdvancedController currentController = (BoardFourAdvancedController) controllerMap.get(BOARD_FOUR_ADVANCED);

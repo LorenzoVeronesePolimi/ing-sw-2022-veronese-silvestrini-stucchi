@@ -12,6 +12,7 @@ import it.polimi.ingsw.Model.Enumerations.CharacterCardEnumeration;
 import it.polimi.ingsw.Model.Enumerations.PlayerColour;
 import it.polimi.ingsw.Model.Enumerations.SPColour;
 import it.polimi.ingsw.Model.Exceptions.*;
+import it.polimi.ingsw.Model.Places.Archipelago;
 import it.polimi.ingsw.Model.Player;
 import it.polimi.ingsw.Observer.ObserverController;
 import it.polimi.ingsw.Persistence.PersistenceHandler;
@@ -843,6 +844,13 @@ public class Controller implements ObserverController<Message>, Serializable {
             // reset use of continuative effects of CharacterCards
             if(isAdvanced()) {
                 boardAdvanced.setTakeProfessorOnEquityFlag(false);
+                boardAdvanced.setTwoExtraPointsFlag(false);
+                boardAdvanced.setColourToExclude(null);
+                boardAdvanced.setFakeMNMovementFlag(false);
+
+                for(Archipelago a : boardAdvanced.getArchiList()) {
+                    a.setTowerNoValueFlag(false);
+                }
             }
             //TODO: remove some card effects (colourtoexclude, towernovalue...)
 

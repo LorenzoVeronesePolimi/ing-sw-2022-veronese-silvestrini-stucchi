@@ -32,6 +32,7 @@ public class CharacterCardFxml {
 
     private Client client;  // Client class
     private SerializedBoardAdvanced board;  // Board
+    private boolean thisCurrentPlayer = false;
 
     private static final Map<CharacterCardEnumeration, String> cardPath = Map.ofEntries(
             Map.entry(CharacterCardEnumeration.EXCHANGE_THREE_STUDENTS, "/images/Characters/ExchangeThreeStudents.jpg"),
@@ -150,7 +151,8 @@ public class CharacterCardFxml {
      * @param cards list of character cards
      * @param scale image scale
      */
-    public void setCharacterCardsVisualization(List<AbstractCharacterCard> cards, double scale){
+    public void setCharacterCardsVisualization(List<AbstractCharacterCard> cards, double scale, boolean thisCurrentPlayer){
+        this.thisCurrentPlayer = thisCurrentPlayer;
         int i = 0;
         for(AbstractCharacterCard c : cards){
             // set cost
@@ -177,7 +179,11 @@ public class CharacterCardFxml {
         if (this.images.size() > 0) {
             for (ImageView i : this.images) {
                 if(i != null) {
-                    this.onMouseClicked(i, this.imageType.get(i), this.guiViewFX, enable);
+                    /* enable is true if the character cards are shown in the Action state of the match, so it is true for every player.
+                        thisCurrentPlayer is true only for the current player, so with the &&, if all players are in the Action state, but only one is
+                        the current player, only he will be able to play the character cards.
+                     */
+                    this.onMouseClicked(i, this.imageType.get(i), this.guiViewFX, (enable && thisCurrentPlayer));
                 }
             }
         }

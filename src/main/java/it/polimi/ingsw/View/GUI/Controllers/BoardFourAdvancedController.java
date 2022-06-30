@@ -306,6 +306,7 @@ public class BoardFourAdvancedController implements GUIController, Initializable
     private List<AssistantCardFxml> assistantCardsFxml;
     private List<CloudFxml> cloudsFxml;
     private CharacterCardFxml characterCardsFxml;
+    private boolean thisCurrentPlayer = false;
 
     /**
      * mandatory method to show personalized information in the scene. the initialization of the scene must be done here, than can be
@@ -407,6 +408,14 @@ public class BoardFourAdvancedController implements GUIController, Initializable
     }
 
     /**
+     * This method is used to obtain the value of thisCurrentplayer in order to know if the player is the current player.
+     * @return true if the player is the current player.
+     */
+    private boolean getThisCurrentPlayer() {
+        return this.thisCurrentPlayer;
+    }
+
+    /**
      * getter of the colour of the student that has been moved
      * @return colour of the student that has been moved
      */
@@ -428,6 +437,8 @@ public class BoardFourAdvancedController implements GUIController, Initializable
      */
     public void setBoard(SerializedBoardAbstract board) {
         this.board = board;
+
+        this.thisCurrentPlayer = this.client.getNickname().equals(board.getCurrentPlayer().getNickname());
     }
 
     /**
@@ -458,6 +469,7 @@ public class BoardFourAdvancedController implements GUIController, Initializable
             a.setBoard(board);
             a.setClient(this.client);
             a.setController(this);
+            a.setArchiClicked(false);
         }
         int i = 0;
         for(Archipelago a : board.getArchipelagos()){
@@ -502,6 +514,7 @@ public class BoardFourAdvancedController implements GUIController, Initializable
             s.setBoard(board);
             s.setClient(this.client);
             s.setController(this);
+            s.setSentMessage(false);
         }
 
         //int onWorkingPlayerIndex = board.getOrderedPlayers().indexOf(board.getCurrentPlayer());
@@ -594,6 +607,7 @@ public class BoardFourAdvancedController implements GUIController, Initializable
             c.setBoard(board);
             c.setClient(this.client);
             c.setController(this);
+            c.setCloudClicked(false);
         }
         if(board.getClouds().size() == 2){
             removeAllNodesFromGrid(this.cloud1);
@@ -621,14 +635,14 @@ public class BoardFourAdvancedController implements GUIController, Initializable
     /**
      * setter of the character card visualization
      */
-    public void setCharacterCardsVisualization(){ //assumes that the baord is advanced
+    public void setCharacterCardsVisualization(){ //assumes that the board is advanced
         this.characterCardsFxml.setBoard((SerializedBoardAdvanced) this.board);
         this.characterCardsFxml.setClient(this.client);
         this.characterCardsFxml.setGuiViewFX(this.guiViewFX);
 
         if(board.getType().equals("advanced")){
             this.characterCardsFxml.setVisible(true);
-            this.characterCardsFxml.setCharacterCardsVisualization(((SerializedBoardAdvanced)board).getExtractedCards(), 1);
+            this.characterCardsFxml.setCharacterCardsVisualization(((SerializedBoardAdvanced)board).getExtractedCards(), 1, getThisCurrentPlayer());
         }
         else{
             this.characterCardsFxml.setVisible(false);

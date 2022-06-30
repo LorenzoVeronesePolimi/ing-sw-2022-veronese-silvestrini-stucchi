@@ -29,6 +29,8 @@ public class AssistantCardChoiceController implements GUIController, Initializab
     private SerializedBoardAbstract serializedBoardAbstract;
     private List<Button> cardButtons = new ArrayList<>();
 
+    private boolean showBoardClicked = false;   // flag to check if the player has clicked showBoard button
+
     @FXML private ImageView imageC1;
     @FXML private ImageView imageC2;
     @FXML private ImageView imageC3;
@@ -81,9 +83,14 @@ public class AssistantCardChoiceController implements GUIController, Initializab
      * @param e event of button pressed.
      */
     private void showBoardForAssistant(ActionEvent e) {
-        Platform.runLater(() -> {
-            this.guiViewFX.sceneShowBoard(this.serializedBoardAbstract, false);
-        });
+        // block the player if he has already clicked in the showBoard button, otherwise show the content of the showBoard.
+        if(!this.showBoardClicked) {
+            this.showBoardClicked = true;
+            Platform.runLater(() -> {
+                this.guiViewFX.sceneShowBoard(this.serializedBoardAbstract, false);
+                this.showBoardClicked = false;
+            });
+        }
     }
 
     /**
@@ -94,6 +101,7 @@ public class AssistantCardChoiceController implements GUIController, Initializab
             c.setController(this);
             c.setClient(this.client);
             c.setBoard(this.serializedBoardAbstract);
+            c.setCardPlayed(false);
         }
     }
 

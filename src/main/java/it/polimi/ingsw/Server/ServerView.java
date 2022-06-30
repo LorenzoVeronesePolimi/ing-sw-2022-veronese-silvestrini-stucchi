@@ -2,6 +2,7 @@ package it.polimi.ingsw.Server;
 
 import it.polimi.ingsw.Controller.Controller;
 import it.polimi.ingsw.Controller.Exceptions.ControllerException;
+import it.polimi.ingsw.Messages.Enumerations.INMessageType;
 import it.polimi.ingsw.Messages.INMessages.*;
 import it.polimi.ingsw.Messages.OUTMessages.*;
 import it.polimi.ingsw.Model.Board.SerializedBoardAbstract;
@@ -73,8 +74,10 @@ public class ServerView implements Observer<SerializedBoardAbstract> {
                 // correct message adding player nickname
                 Message messageToController = this.parseStringToMessage(messageInput);
 
-                // notify the controller
-                notify(messageToController);
+                if(!messageToController.getType().equals(INMessageType.PING)) {
+                    // notify the controller
+                    notify(messageToController);
+                }
             } catch(NoCharacterCardException ex){
                 //TODO: send error message to the client (edit: still needed?)
                 ex.printStackTrace();
