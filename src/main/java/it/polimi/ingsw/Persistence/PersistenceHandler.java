@@ -7,7 +7,7 @@ import java.nio.file.Files;
 
 /**
  * class that implements the advanced functionality of persistence (when a match is interrupted because of a client disconnection,
- * the game status is saved, and if all the players reconnect to the server the match will continue from where it stopped)
+ * the game status is not lost, and if all the players reconnect to the server the match will continue from where it stopped)
  */
 public class PersistenceHandler {
     private static String GAME_SAVED_PATH = "game_saved.bless";
