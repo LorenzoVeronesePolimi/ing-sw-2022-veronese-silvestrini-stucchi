@@ -461,6 +461,10 @@ public class CharacterCardDialogController {
 
 
         this.use_yes.setOnAction(actionEvent -> {
+            if(this.guiViewFX.getMessageSent()) {
+                return;
+            }
+
             if(!this.canIBuyCard(((SchoolAdvanced)this.board.getSchools().get(this.playerIndex)).getNumCoins(), this.card.getCurrentPrice())){
                 guiViewFX.sceneAlert("You have not enough coins!", Alert.AlertType.ERROR);
             }
@@ -493,6 +497,7 @@ public class CharacterCardDialogController {
                             generateOutMessage(outMessage, hallStudentsSelected, 3);
 
                             this.client.asyncWriteToSocket(String.valueOf(outMessage));
+                            this.guiViewFX.setMessageSent(true);
                         }
                     }
                 }
@@ -529,6 +534,10 @@ public class CharacterCardDialogController {
         setRigthChoices(true, true, false, diningStudents);
 
         this.use_yes.setOnAction(actionEvent -> {
+            if(this.guiViewFX.getMessageSent()) {
+                return;
+            }
+
             if(!this.canIBuyCard(((SchoolAdvanced)this.board.getSchools().get(this.playerIndex)).getNumCoins(), this.card.getCurrentPrice())){
                 guiViewFX.sceneAlert("You have not enough coins!", Alert.AlertType.ERROR);
             }
@@ -560,6 +569,7 @@ public class CharacterCardDialogController {
                             generateOutMessage(outMessage, hallStudentsSelected, 2);
                             generateOutMessage(outMessage, diningStudentsSelected, 2);
                             this.client.asyncWriteToSocket(String.valueOf(outMessage));
+                            this.guiViewFX.setMessageSent(true);
                         }
                     }
                 }
@@ -580,12 +590,16 @@ public class CharacterCardDialogController {
         setRigthChoices(false, false, false, null);
 
         this.use_yes.setOnAction(actionEvent -> {
+            if(this.guiViewFX.getMessageSent()) {
+                return;
+            }
+
             if(!this.canIBuyCard(((SchoolAdvanced)this.board.getSchools().get(this.playerIndex)).getNumCoins(), this.card.getCurrentPrice())){
                 guiViewFX.sceneAlert("You have not enough coins!", Alert.AlertType.ERROR);
             }
             else{
                 this.client.asyncWriteToSocket("excludeColourFromCounting " + choice1_left.getValue());
-                //TODO: add lable to indicate colour excluded
+                this.guiViewFX.setMessageSent(true);
             }
         });
     }
@@ -610,11 +624,16 @@ public class CharacterCardDialogController {
         this.setStudentsVisualization(((ExtraStudentInDining)this.card).getStudentsOnCard());
 
         this.use_yes.setOnAction(actionEvent -> {
+            if(this.guiViewFX.getMessageSent()) {
+                return;
+            }
+
             if(!this.canIBuyCard(((SchoolAdvanced)this.board.getSchools().get(this.playerIndex)).getNumCoins(), this.card.getCurrentPrice())){
                 guiViewFX.sceneAlert("You have not enough coins!", Alert.AlertType.ERROR);
             }
             else{
                 this.client.asyncWriteToSocket("extraStudentInDining " + choice1_left.getValue());
+                this.guiViewFX.setMessageSent(true);
             }
 
         });
@@ -632,11 +651,16 @@ public class CharacterCardDialogController {
         oneChoiceVisualization();
 
         this.use_yes.setOnAction(actionEvent -> {
+            if(this.guiViewFX.getMessageSent()) {
+                return;
+            }
+
             if(!this.canIBuyCard(((SchoolAdvanced)this.board.getSchools().get(this.playerIndex)).getNumCoins(), this.card.getCurrentPrice())){
                 guiViewFX.sceneAlert("You have not enough coins!", Alert.AlertType.ERROR);
             }
             else{
                 this.client.asyncWriteToSocket("fakeMNMovement " + choice1_left.getValue());
+                this.guiViewFX.setMessageSent(true);
             }
 
         });
@@ -658,11 +682,16 @@ public class CharacterCardDialogController {
         this.forbid_icon.setVisible(true);
 
         this.use_yes.setOnAction(actionEvent -> {
+            if(this.guiViewFX.getMessageSent()) {
+                return;
+            }
+
             if(!this.canIBuyCard(((SchoolAdvanced)this.board.getSchools().get(this.playerIndex)).getNumCoins(), this.card.getCurrentPrice())){
                 guiViewFX.sceneAlert("You have not enough coins!", Alert.AlertType.ERROR);
             }
             else{
                 this.client.asyncWriteToSocket("forbidIsland " + choice1_left.getValue());
+                this.guiViewFX.setMessageSent(true);
             }
 
         });
@@ -705,11 +734,16 @@ public class CharacterCardDialogController {
         });
 
         this.use_yes.setOnAction(actionEvent -> {
+            if(this.guiViewFX.getMessageSent()) {
+                return;
+            }
+
             if(!this.canIBuyCard(((SchoolAdvanced)this.board.getSchools().get(this.playerIndex)).getNumCoins(), this.card.getCurrentPrice())){
                 guiViewFX.sceneAlert("You have not enough coins!", Alert.AlertType.ERROR);
             }
             else{
                 this.client.asyncWriteToSocket("placeOneStudent " + choice1_left.getValue() + " " + choice1_right.getValue());
+                this.guiViewFX.setMessageSent(true);
             }
 
         });
@@ -727,11 +761,16 @@ public class CharacterCardDialogController {
         setRigthChoices(false, false, false, null);
 
         this.use_yes.setOnAction(actionEvent -> {
+            if(this.guiViewFX.getMessageSent()) {
+                return;
+            }
+
             if(!this.canIBuyCard(((SchoolAdvanced)this.board.getSchools().get(this.playerIndex)).getNumCoins(), this.card.getCurrentPrice())){
                 guiViewFX.sceneAlert("You have not enough coins!", Alert.AlertType.ERROR);
             }
             else{
                 this.client.asyncWriteToSocket("reduceColourInDining " + choice1_left.getValue());
+                this.guiViewFX.setMessageSent(true);
             }
         });
     }
@@ -743,11 +782,16 @@ public class CharacterCardDialogController {
         noChoiceVisualization();
 
         this.use_yes.setOnAction(actionEvent -> {
+            if(this.guiViewFX.getMessageSent()) {
+                return;
+            }
+
             if(!this.canIBuyCard(((SchoolAdvanced)this.board.getSchools().get(this.playerIndex)).getNumCoins(), this.card.getCurrentPrice())){
                 guiViewFX.sceneAlert("You have not enough coins!", Alert.AlertType.ERROR);
             }
             else{
                 this.client.asyncWriteToSocket("takeProfessorOnEquity ");
+                this.guiViewFX.setMessageSent(true);
             }
         });
     }
@@ -759,11 +803,16 @@ public class CharacterCardDialogController {
         noChoiceVisualization();
 
         this.use_yes.setOnAction(actionEvent -> {
+            if(this.guiViewFX.getMessageSent()) {
+                return;
+            }
+
             if(!this.canIBuyCard(((SchoolAdvanced)this.board.getSchools().get(this.playerIndex)).getNumCoins(), this.card.getCurrentPrice())){
                 guiViewFX.sceneAlert("You have not enough coins!", Alert.AlertType.ERROR);
             }
             else {
                 this.client.asyncWriteToSocket("towerNoValue ");
+                this.guiViewFX.setMessageSent(true);
             }
         });
     }
@@ -775,11 +824,16 @@ public class CharacterCardDialogController {
         noChoiceVisualization();
 
         this.use_yes.setOnAction(actionEvent -> {
+            if(this.guiViewFX.getMessageSent()) {
+                return;
+            }
+
             if(!this.canIBuyCard(((SchoolAdvanced)this.board.getSchools().get(this.playerIndex)).getNumCoins(), this.card.getCurrentPrice())){
                 guiViewFX.sceneAlert("You have not enough coins!", Alert.AlertType.ERROR);
             }
             else {
                 this.client.asyncWriteToSocket("twoExtraIslands ");
+                this.guiViewFX.setMessageSent(true);
             }
         });
     }
@@ -791,11 +845,16 @@ public class CharacterCardDialogController {
         noChoiceVisualization();
 
         this.use_yes.setOnAction(actionEvent -> {
+            if(this.guiViewFX.getMessageSent()) {
+                return;
+            }
+
             if(!this.canIBuyCard(((SchoolAdvanced)this.board.getSchools().get(this.playerIndex)).getNumCoins(), this.card.getCurrentPrice())){
                 guiViewFX.sceneAlert("You have not enough coins!", Alert.AlertType.ERROR);
             }
             else{
                 this.client.asyncWriteToSocket("twoExtraPoints ");
+                this.guiViewFX.setMessageSent(true);
             }
         });
     }

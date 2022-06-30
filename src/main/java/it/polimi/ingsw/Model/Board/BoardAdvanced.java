@@ -81,17 +81,17 @@ public class BoardAdvanced extends Observable implements Board, Serializable{
 
         List<AbstractCharacterCard> cards = new ArrayList<>();
 
-        //cards.add(new PlaceOneStudent(this));
-        //cards.add(new TakeProfessorOnEquity(this));
-        //cards.add(new FakeMNMovement(this));
-        //cards.add(new TwoExtraIslands());
-        //cards.add(new ForbidIsland(this));
-        //cards.add(new TowerNoValue(this));
+        cards.add(new PlaceOneStudent(this));
+        cards.add(new TakeProfessorOnEquity(this));
+        cards.add(new FakeMNMovement(this));
+        cards.add(new TwoExtraIslands());
+        cards.add(new ForbidIsland(this));
+        cards.add(new TowerNoValue(this));
         cards.add(new ExchangeThreeStudents(this));
-        //cards.add(new TwoExtraPoints(this));
-        //cards.add(new ExcludeColourFromCounting(this));
+        cards.add(new TwoExtraPoints(this));
+        cards.add(new ExcludeColourFromCounting(this));
         cards.add(new ExchangeTwoHallDining(this));
-        //cards.add(new ExtraStudentInDining(this));
+        cards.add(new ExtraStudentInDining(this));
         cards.add(new ReduceColourInDining(this));
 
         Collections.shuffle(cards, new Random());

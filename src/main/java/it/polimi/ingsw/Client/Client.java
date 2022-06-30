@@ -208,26 +208,24 @@ public class Client {
 
                 }
             } catch (SocketException e) {
-                enablePinger(false);
+                enablePinger(false);    // repeated, but i want to be sure it stops in time
                 System.out.println("[Client, asyncReadFromSocket]: SocketException");
                 checkErrorSource();
-                disconnect();
 
             } catch (IOException e) {
-                enablePinger(false);
+                enablePinger(false); // repeated, but i want to be sure it stops in time
                 System.out.println("[Client, asyncReadFromSocket]: IOException");
                 checkErrorSource();
-                disconnect();
 
             }catch (Exception e) {
-                enablePinger(false);
+                enablePinger(false); // repeated, but i want to be sure it stops in time
                 System.out.println("[Client, asyncReadFromSocket]: Exception");
                 checkErrorSource();
-                disconnect();
 
             } finally {
                 System.out.println("[Client, asyncReadFromSocket]: finally");
 
+                enablePinger(false); // repeated, but i want to be sure it stops in time
                 this.setActive(false);
                 disconnect();
             }

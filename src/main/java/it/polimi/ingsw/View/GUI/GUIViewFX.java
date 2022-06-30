@@ -22,8 +22,6 @@ import javafx.stage.WindowEvent;
 import java.io.IOException;
 import java.util.*;
 
-//TODO: implement method changeScene<particolare> in order to pass to the controller the parameter needed (the ones passed in GUIView
-//TODO: when calling an ask method
 public class GUIViewFX extends Application {
     private Stage stage;
     private Client client;
@@ -34,7 +32,7 @@ public class GUIViewFX extends Application {
     private static final String LOADING = "LoadingPage.fxml";
     private static final String DISCONNECT = "Disconnect.fxml";
     private static final String ASSISTANT_CARD = "AssistantCardChoice.fxml";
-    private static final String BOARD_FOUR_ADVANCED = "BoardGrid.fxml"; //TODO: to be changed
+    private static final String BOARD_FOUR_ADVANCED = "BoardGrid.fxml";
     private static final String CHARACTER_CARD_DIALOG = "CharacterCardDialog.fxml";
     private static final String SHOW_WINNER = "ShowWinner.fxml";
     private static final String INTRO_CSS = "Intro.css";
@@ -45,6 +43,7 @@ public class GUIViewFX extends Application {
     private static final String SHOW_WINNER_CSS = "ShowWinner.css";
     private final HashMap<String, Scene> sceneMap = new HashMap<>();
     private final HashMap<String, GUIController> controllerMap = new HashMap<>();
+    private boolean messageSent = false;
 
     /**
      * default constructor
@@ -169,6 +168,22 @@ public class GUIViewFX extends Application {
     }
 
     /**
+     * getter of message sent
+     * @return the value of message sent (true if message sent, false otherwise)
+     */
+    public boolean getMessageSent() {
+        return this.messageSent;
+    }
+
+    /**
+     * Setter of message sent
+     * @param sent new value of message sent
+     */
+    public void setMessageSent(boolean sent) {
+        this.messageSent = sent;
+    }
+
+    /**
      * setter of the stage title
      * @param title stage title to be set
      */
@@ -287,6 +302,7 @@ public class GUIViewFX extends Application {
      * @param board serialized board notified by the model
      */
     public void manageScene(SerializedBoardAbstract board){
+        this.messageSent = false;
         switch (board.getCurrentState()) {
             case PLANNING2:
                 this.sceneAssistantCard(board);

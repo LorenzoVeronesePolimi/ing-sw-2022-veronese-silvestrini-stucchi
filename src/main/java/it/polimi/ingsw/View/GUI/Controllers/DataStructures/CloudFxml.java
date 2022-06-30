@@ -131,9 +131,10 @@ public class CloudFxml {
     private void onMouseClicked(MouseEvent event) {
         if(this.controller.isCurrentPlayer(this.client.getNickname())) {
             if(this.board.getCurrentState().equals(State.ACTION3)) {
-                if(!this.cloudClicked) {
+                if(!this.cloudClicked && !this.controller.getMessageSent()) {
                     this.cloudClicked = true;
                     this.client.asyncWriteToSocket("studentCloudToSchool " + this.index);
+                    this.controller.setMessageSent(true);
                 }
             }
         }
