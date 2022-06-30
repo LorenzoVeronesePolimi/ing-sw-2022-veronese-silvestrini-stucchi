@@ -131,6 +131,7 @@ public class ExchangeThreeStudentsTest {
             e.printStackTrace();
         }
 
+        Assertions.assertEquals("Exchange three students", boardAdvanced.getNameCardUsed());
         Assertions.assertEquals(0, ((SchoolAdvanced) boardAdvanced.getSchools().get(0)).getNumCoins());
 
         long numBlueAfter = boardAdvanced.getSchools().get(0).getStudentsHall().stream().filter(x -> x.getColour().equals(SPColour.BLUE)).count();

@@ -48,6 +48,9 @@ public class BoardAdvancedTest {
             e.printStackTrace();
         }
 
+        boardAdvanced.setNameCardUsed("test of setter");
+        Assertions.assertEquals("test of setter", boardAdvanced.getNameCardUsed());
+
         boardAdvanced.moveMotherNature(1);
         boardAdvanced.placeMotherNatureInitialBoard();
         Assertions.assertEquals(0, boardAdvanced.whereIsMotherNature());

@@ -78,14 +78,6 @@ public class SerializedBoardAdvanced extends SerializedBoardAbstract implements 
     }
 
     /**
-     * Setter of nameCardUsed
-     * @param name name of the card used
-     */
-    public void setNameCardUsed(String name) {
-        this.nameCardUsed = name;
-    }
-
-    /**
      * getter of nameCardUsed
      * @return the value of nameCardUsed
      */
