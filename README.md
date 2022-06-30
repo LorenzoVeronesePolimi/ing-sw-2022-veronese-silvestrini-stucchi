@@ -1,6 +1,6 @@
 # Prova Finale di Ingegneria del Software - AA 2021-2022
 
-Implementazione del gioco da tavolo Eryantis.
+Implementazione del gioco da tavolo Eriantys.
 
 
 ## Componenti del gruppo
