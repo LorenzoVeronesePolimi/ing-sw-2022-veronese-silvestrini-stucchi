@@ -16,11 +16,11 @@ Nella cartella "deliverables" sono contenuti i diagrammi UML che rappresentano l
 ### Coverage report
 | Package | Classe | Coverage metodi | Coverage righe |
 |:-----------------------|:------------------|:------------------|:------------------------------------:|
-| Controller | Controller | 60/60 (100%) | 670/752 (89%)
+| Controller | Controller | 60/60 (100%) | 690/764 (90%)
 | Controller | ControllerInput | 11/11 (100%) | 27/27 (100%)
 | Controller | ControllerIntegrity | 21/21 (100%) | 75/75 (100%)
 | Controller | ControllerState | 5/5 (100%) | 15/15 (100%)
-| Model |  | 304/305 (99.7%) | 1251/1301 (96%)
+| Model |  | 304/305 (99.7%) | 1271/1323 (96%)
 
 ## Funzionalità Sviluppate
 | Funzionalitá | Implementazione |
