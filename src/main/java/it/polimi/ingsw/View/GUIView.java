@@ -51,7 +51,6 @@ public class GUIView extends ClientView {
         } else {
             this.clientDisconnectionEnd();
         }
-
     }
 
     /**

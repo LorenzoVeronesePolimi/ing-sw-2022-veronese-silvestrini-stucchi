@@ -45,6 +45,15 @@ public class ExchangeThreeStudentsTest {
         Assertions.assertEquals("ExchangeThreeStudents [c. " + 1 + "]", card.toString());
         Assertions.assertNotNull(card.getStudentsOnCard());
 
+        List<Student> studentList = card.getStudentsOnCard();
+        Assertions.assertEquals("[" + studentList.get(0).toString()
+                + ", " + studentList.get(1).toString()
+                + ", " + studentList.get(2).toString()
+                + ", " + studentList.get(3).toString()
+                + ", " + studentList.get(4).toString()
+                + ", " + studentList.get(5).toString()
+                +"]", card.printStudents());
+
         assert card != null;
         Assertions.assertEquals(CharacterCardEnumeration.EXCHANGE_THREE_STUDENTS, card.getType());
 
