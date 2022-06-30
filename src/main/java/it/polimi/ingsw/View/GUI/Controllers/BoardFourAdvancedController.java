@@ -466,13 +466,13 @@ public class BoardFourAdvancedController implements GUIController, Initializable
             s.getCoins().setVisible(false);
         }
         my_image_coin.setVisible(false);
-        my_rectangle_coins.setVisible(false);
+        //my_rectangle_coins.setVisible(false);
         opp1_image_coin.setVisible(false);
-        opp1_rectangle_coins.setVisible(false);
+        //opp1_rectangle_coins.setVisible(false);
         opp2_image_coin.setVisible(false);
-        opp2_rectangle_coins.setVisible(false);
+        //opp2_rectangle_coins.setVisible(false);
         opp3_image_coin.setVisible(false);
-        opp3_rectangle_coins.setVisible(false);
+        //opp3_rectangle_coins.setVisible(false);
         card_1_cost.setVisible(false);
         card_2_cost.setVisible(false);
         card_3_cost.setVisible(false);
