@@ -40,7 +40,7 @@ Nella cartella "deliverables" sono contenuti i diagrammi UML che rappresentano l
 
 ## Jars
 I jar sono stati realizzati con l'ausilio di Maven Shade Plugin, e si trovano [qui](https://github.com/LorenzoVeronesePolimi/ing-sw-2022-veronese-silvestrini-stucchi/tree/master/deliverables/jars).
-Per eseguire i jar, recarsi attraverso un terminale nella cartella dove sono salvati i jar, ed eseguire i comandi:
+Per eseguire i jar, recarsi attraverso un terminale nella cartella dove sono salvati, ed eseguire i comandi:
 ```
 java -jar ServerApp.jar
 ```
