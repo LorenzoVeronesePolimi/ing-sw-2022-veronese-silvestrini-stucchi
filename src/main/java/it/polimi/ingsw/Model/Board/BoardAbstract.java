@@ -475,6 +475,34 @@ public abstract class BoardAbstract extends Observable implements Board, Seriali
      */
     public void tryToConquer(Player currentPlayer) throws
             InvalidTowerNumberException, AnotherTowerException, ExceededMaxTowersException, TowerNotFoundException {
+        int currPosMotherNature = this.whereIsMotherNature();
+
+        boolean parity = false; //true if there is parity: no one conquer
+        int pInfluence; // influence of the player in the actual cycle
+        int maxInfluence = 0; // max influence found
+        Player maxInfluencePlayer = null; // player with max influence found
+        for(Player p : this.players){
+            pInfluence = computeInfluenceOfPlayer(p, this.archipelagos.get(currPosMotherNature));
+            if(pInfluence > maxInfluence){
+                maxInfluence = pInfluence;
+                maxInfluencePlayer = p;
+                parity = false;
+            }
+            else if (pInfluence == maxInfluence){
+                parity = true;
+            }
+        }
+        if(maxInfluencePlayer != null && !parity){ //if someone wins the winner computation, he can conquer
+            this.conquerArchipelago(maxInfluencePlayer, this.archipelagos.get(currPosMotherNature));
+
+            this.mergeArchipelagos();
+        }
+
+        notifyPlayers();
+    }
+    /*OLD RULES
+    public void tryToConquer(Player currentPlayer) throws
+            InvalidTowerNumberException, AnotherTowerException, ExceededMaxTowersException, TowerNotFoundException {
 
         int currPosMotherNature = this.whereIsMotherNature();
         boolean archipelagoConquerable = this.checkIfConquerable(currentPlayer);
@@ -486,7 +514,7 @@ public abstract class BoardAbstract extends Observable implements Board, Seriali
         }
 
         notifyPlayers();
-    }
+    }*/
 
 
     /**
@@ -519,6 +547,31 @@ public abstract class BoardAbstract extends Observable implements Board, Seriali
             return winner == currentPlayer;
         }
     }
+    /*public boolean checkIfConquerable(Player currentPlayer){
+        int currPosMotherNature = this.whereIsMotherNature();
+        Archipelago currentArchipelago = this.archipelagos.get(currPosMotherNature);
+
+        //if the owner of the Archipelago is the current Player, he conquers nothing
+        if(currentArchipelago.getOwner() == currentPlayer){
+            return false;
+        }
+        else if(currentArchipelago.getOwner() == null){ //archipelago never conquered before
+            List<Professor> conquerorProfessors = this.playerSchool.get(currentPlayer).getProfessors();
+            boolean conquerable = false;
+            for(Professor p : conquerorProfessors){
+                //can't conquer an Island without Students coloured without the Colour of a Professor of mine, even if no one has conquered it before
+                if(!conquerable)
+                    conquerable = currentArchipelago.howManyStudents().get(p.getColour()) > 0;
+            }
+            return conquerable;
+        }
+        //the current Player is not the owner: can he conquer the Archipelago?
+        else{
+            //who has higher influence according to rules?
+            Player winner = this.computeWinner(currentArchipelago.getOwner(), currentPlayer, currentArchipelago);
+            return winner == currentPlayer;
+        }
+    }*/
 
 
 

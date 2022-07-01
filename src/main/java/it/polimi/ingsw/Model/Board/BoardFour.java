@@ -1,6 +1,7 @@
 package it.polimi.ingsw.Model.Board;
 
 import it.polimi.ingsw.Model.Bag;
+import it.polimi.ingsw.Model.Enumerations.PlayerColour;
 import it.polimi.ingsw.Model.Exceptions.*;
 import it.polimi.ingsw.Model.Pawns.MotherNature;
 import it.polimi.ingsw.Model.Pawns.Professor;
@@ -112,6 +113,46 @@ public class BoardFour extends BoardAbstract implements Serializable {
 
         this.teammates = toCopy.getTeammates();
     }
+
+
+
+    /*NEW RULES*/
+    @Override
+    public void tryToConquer(Player currentPlayer) throws
+            InvalidTowerNumberException, AnotherTowerException, ExceededMaxTowersException, TowerNotFoundException {
+        int currPosMotherNature = this.whereIsMotherNature();
+
+        int pInfluence; // influence of the player in the actual cycle
+        Player representativeWhite = null;
+        Player representativeBlack = null;
+        int influeceWhite = 0;
+        int influenceBlack = 0;
+        for(Player p : this.players){
+            pInfluence = computeInfluenceOfPlayer(p, this.archipelagos.get(currPosMotherNature));
+            if(p.getColour() == PlayerColour.WHITE){
+                influeceWhite += pInfluence;
+                representativeWhite = p;
+            }
+            else{
+                influenceBlack += pInfluence;
+                representativeBlack = p;
+            }
+        }
+
+        if(influeceWhite > influenceBlack){
+            this.conquerArchipelago(representativeWhite, this.archipelagos.get(currPosMotherNature));
+
+            this.mergeArchipelagos();
+        }
+        else if(influeceWhite < influenceBlack){
+            this.conquerArchipelago(representativeBlack, this.archipelagos.get(currPosMotherNature));
+
+            this.mergeArchipelagos();
+        }
+
+        notifyPlayers();
+    }
+
 
     /**
      * modifies the abstract method, taking into account the teammate aspect

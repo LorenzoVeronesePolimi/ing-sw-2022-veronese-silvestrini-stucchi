@@ -4,6 +4,7 @@ import it.polimi.ingsw.Model.Bag;
 import it.polimi.ingsw.Model.Bank;
 import it.polimi.ingsw.Model.Cards.*;
 import it.polimi.ingsw.Model.Enumerations.CharacterCardEnumeration;
+import it.polimi.ingsw.Model.Enumerations.PlayerColour;
 import it.polimi.ingsw.Model.Enumerations.SPColour;
 import it.polimi.ingsw.Model.Exceptions.*;
 import it.polimi.ingsw.Model.Pawns.Professor;
@@ -436,6 +437,80 @@ public class BoardAdvanced extends Observable implements Board, Serializable{
     public void tryToConquer(Player currentPlayer) throws
             InvalidTowerNumberException, AnotherTowerException, ExceededMaxTowersException, TowerNotFoundException {
         System.out.println("[BoardAdvanced, tryToConquer]: entering conquer ");
+        int currPosMotherNature = this.whereIsMotherNature();
+
+        if (this.board.getArchipelago(currPosMotherNature).getForbidFlag()>0) { // => block conquering
+            this.board.getArchipelago(currPosMotherNature).removeForbidFlag();
+            for(AbstractCharacterCard c : this.extractedCards){ // re-put the icon on the card (which has max 4 icons, min 0)
+                if(c.getType() == CharacterCardEnumeration.FORBID_ISLAND){
+                    ((ForbidIsland)c).addForbidIconsRemained();
+                }
+            }
+            System.out.println("[BoardAdvanced, tryToConquer]: forbid ");
+        }
+
+        else {
+            if (this.board instanceof BoardTwo || this.board instanceof BoardThree) {
+                System.out.println("[BoardAdvanced, tryToConquer]: checking influences ");
+                boolean parity = false; //true if there is parity: no one conquer
+                int pInfluence; // influence of the player in the actual cycle
+                int maxInfluence = 0; // max influence found
+                Player maxInfluencePlayer = null; // player with max influence found
+                for (Player p : this.board.players) {
+                    pInfluence = computeInfluenceOfPlayerAdvanced(p, this.board.archipelagos.get(currPosMotherNature), p == currentPlayer);
+                    System.out.println("[BoardAdvanced, tryToConquer]: influence of " + p.getNickname() + " is " + pInfluence);
+                    if (pInfluence > maxInfluence) {
+                        maxInfluence = pInfluence;
+                        maxInfluencePlayer = p;
+                    } else if (pInfluence == maxInfluence) {
+                        parity = true;
+                    }
+                }
+                if (maxInfluencePlayer != null && !parity) { //if someone wins the winner computation, he can conquer
+                    System.out.println("[BoardAdvanced, tryToConquer]: conquerable by " + maxInfluencePlayer.getNickname());
+                    this.board.conquerArchipelago(maxInfluencePlayer, this.board.archipelagos.get(currPosMotherNature));
+
+                    this.board.mergeArchipelagos();
+                }
+            } else if (this.board instanceof BoardFour) {
+                int pInfluence; // influence of the player in the actual cycle
+                Player representativeWhite = null;
+                Player representativeBlack = null;
+                int influeceWhite = 0;
+                int influenceBlack = 0;
+                for (Player p : this.board.players) {
+                    pInfluence = computeInfluenceOfPlayerAdvanced(p, this.board.archipelagos.get(currPosMotherNature),p == currentPlayer);
+                    if (p.getColour() == PlayerColour.WHITE) {
+                        influeceWhite += pInfluence;
+                        representativeWhite = p;
+                    } else {
+                        influenceBlack += pInfluence;
+                        representativeBlack = p;
+                    }
+                }
+
+                if (influeceWhite > influenceBlack) {
+                    this.board.conquerArchipelago(representativeWhite, this.board.archipelagos.get(currPosMotherNature));
+
+                    this.board.mergeArchipelagos();
+                } else if (influeceWhite < influenceBlack) {
+                    this.board.conquerArchipelago(representativeBlack, this.board.archipelagos.get(currPosMotherNature));
+
+                    this.board.mergeArchipelagos();
+                }
+            }
+        }
+
+        if(!this.fakeMNMovementFlag){ //if conquer is fake, notify will be by the character card
+            System.out.println("[BoardAdvanced, tryToConquer]: normal notify ");
+            notifyPlayers();
+        }
+
+    }
+    /*OLD RULES
+    public void tryToConquer(Player currentPlayer) throws
+            InvalidTowerNumberException, AnotherTowerException, ExceededMaxTowersException, TowerNotFoundException {
+        System.out.println("[BoardAdvanced, tryToConquer]: entering conquer ");
         int currPosMotherNature = this.board.whereIsMotherNature();
         boolean archipelagoConquerable = this.checkIfConquerable(currentPlayer);
         if(archipelagoConquerable){
@@ -450,7 +525,7 @@ public class BoardAdvanced extends Observable implements Board, Serializable{
             System.out.println("[BoardAdvanced, tryToConquer]: normal notify ");
             notifyPlayers();
         }
-    }
+    }*/
 
     /**
      * method that verifies if a player can conquer the archipelago on which is placed mother nature, takes into account also if one of the
@@ -560,7 +635,34 @@ public class BoardAdvanced extends Observable implements Board, Serializable{
      * @return 0
      */
     public int computeInfluenceOfPlayer(Player player, Archipelago archipelago) {
+        return this.board.computeInfluenceOfPlayer(player, archipelago);
+    }
+    /*OLD RULES
+    public int computeInfluenceOfPlayer(Player player, Archipelago archipelago) {
+
         return 0;
+    }
+    */
+
+    public int computeInfluenceOfPlayerAdvanced(Player player, Archipelago archipelago, boolean isCurrentPlayer){
+        int influence = this.computeInfluenceOfPlayer(player, archipelago);
+
+        if(this.colourToExclude != null){ // subtract students of the excluded colour from the count
+            for(Professor p : this.board.getPlayerSchool(player).getProfessors()){
+                if(p.getColour() == this.colourToExclude){
+                    influence -= archipelago.getStudentsData().get(this.colourToExclude);
+                    break;
+                }
+            }
+        }
+        //TODO: towerNoValue
+        if(isCurrentPlayer){ // apply modifications to the score so that I consider advanced functions
+            if(this.twoExtraPointsFlag){
+                influence += 2;
+            }
+        }
+
+        return influence;
     }
 
     /**
