@@ -649,10 +649,10 @@ public class BoardAdvanced extends Observable implements Board, Serializable{
     }
 
     /**
-     * method that must be here to correctly implement the interface, the one with the correct parameters is below
+     * method that must be here to correctly implement the interface
      * @param player of whom I want to compute the influence on an archipelago
      * @param archipelago on which I want to compute the influence of the player
-     * @return 0
+     * @return influence of the player
      */
     public int computeInfluenceOfPlayer(Player player, Archipelago archipelago) {
         return this.board.computeInfluenceOfPlayer(player, archipelago);
@@ -664,6 +664,13 @@ public class BoardAdvanced extends Observable implements Board, Serializable{
     }
     */
 
+    /**
+     * Computes the influence of the player, considering effects of CharacterCards
+     * @param player of whom I want to compute the influence on an archipelago
+     * @param archipelago on which I want to compute the influence of the player
+     * @param isCurrentPlayer true if player is the on who is leading the turn
+     * @return influence of player
+     */
     public int computeInfluenceOfPlayerAdvanced(Player player, Archipelago archipelago, boolean isCurrentPlayer){
         int influence = this.computeInfluenceOfPlayer(player, archipelago);
 
