@@ -334,7 +334,7 @@ public class CLIView extends ClientView {
                removeColour();
             }
 
-            // standars school
+            // standard school
             printSchool(serializedBoardAbstract);
 
         }

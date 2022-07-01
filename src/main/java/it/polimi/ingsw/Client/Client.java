@@ -199,21 +199,21 @@ public class Client {
                 }
             } catch (SocketException e) {
                 enablePinger(false);    // repeated, but I want to be sure it stops in time
-                System.out.println("[Client, asyncReadFromSocket]: SocketException");
+                //System.out.println("[Client, asyncReadFromSocket]: SocketException");
                 checkErrorSource();
 
             } catch (IOException e) {
                 enablePinger(false); // repeated, but I want to be sure it stops in time
-                System.out.println("[Client, asyncReadFromSocket]: IOException");
+                //System.out.println("[Client, asyncReadFromSocket]: IOException");
                 checkErrorSource();
 
             }catch (Exception e) {
                 enablePinger(false); // repeated, but I want to be sure it stops in time
-                System.out.println("[Client, asyncReadFromSocket]: Exception");
+                //System.out.println("[Client, asyncReadFromSocket]: Exception");
                 checkErrorSource();
 
             } finally {
-                System.out.println("[Client, asyncReadFromSocket]: finally");
+                //System.out.println("[Client, asyncReadFromSocket]: finally");
 
                 enablePinger(false); // repeated, but I want to be sure it stops in time
                 this.setActive(false);
@@ -234,7 +234,7 @@ public class Client {
             this.socketOut.writeObject(messageToController);
             this.socketOut.flush();
         } catch(IOException | NullPointerException e){
-            System.out.println("[Client, asyncWriteFromSocket]: asyncWriteException");
+            //System.out.println("[Client, asyncWriteFromSocket]: asyncWriteException");
 
             this.setActive(false);
             this.enablePinger(false);
@@ -299,10 +299,10 @@ public class Client {
             disconnect();
 
         } catch (NoSuchElementException e){
-            System.out.println("[Client, connecting]: Connection closed from the client side");
+            //System.out.println("[Client, connecting]: Connection closed from the client side");
             e.printStackTrace();
         } catch (InterruptedException e) {
-            System.out.println("[Client, connecting]: interruptException");
+            //System.out.println("[Client, connecting]: interruptException");
         } finally {
             this.socketIn.close();
             this.socketOut.close();
