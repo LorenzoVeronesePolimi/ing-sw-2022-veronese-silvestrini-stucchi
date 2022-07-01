@@ -12,7 +12,7 @@ Implementazione del gioco da tavolo Eriantys.
 
 ### UML
 Nella cartella "deliverables" sono contenuti i diagrammi UML che rappresentano la struttura del nostro progetto nelle fasi [iniziali](https://github.com/LorenzoVeronesePolimi/ing-sw-2022-veronese-silvestrini-stucchi/blob/master/deliverables/UML1March/VeroneseSilvestriniStucchiIniziale.svg),
-[intermedie](https://github.com/LorenzoVeronesePolimi/ing-sw-2022-veronese-silvestrini-stucchi/tree/master/deliverables/UML2April), e [finali]().
+[intermedie](https://github.com/LorenzoVeronesePolimi/ing-sw-2022-veronese-silvestrini-stucchi/tree/master/deliverables/UML2April), e [finali](https://github.com/LorenzoVeronesePolimi/ing-sw-2022-veronese-silvestrini-stucchi/tree/master/deliverables/Final).
 ### Coverage report
 | Package | Classe | Coverage metodi | Coverage righe |
 |:-----------------------|:------------------|:------------------|:------------------------------------:|
