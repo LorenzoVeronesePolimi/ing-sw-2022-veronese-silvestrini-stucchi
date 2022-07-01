@@ -44,6 +44,7 @@ public class SchoolFxml {
     private Client client;  // Client class
     private SerializedBoardAbstract board;  // Board
     private BoardFourAdvancedController controller; // BoardFourAdvancedController (passed in the setSchoolsFxmlVisualization method)
+    private String nickOwner;
     private ImageView movedStudent = null; // when a student from the hall il clicked this value is updated
     private List<ImageView> studentImages;
 
@@ -148,8 +149,15 @@ public class SchoolFxml {
         this.controller = controller;
     }
 
-    // called by the controller when a student is placed on an archipelago
+    /**
+     * Setter of nickOwner
+     * @param nickOwner
+     */
+    public void setNickOwner(String nickOwner) {
+        this.nickOwner = nickOwner;
+    }
 
+    // called by the controller when a student is placed on an archipelago
     /**
      * setter of the student that has been moved
      * @param student student that has been moved
@@ -368,7 +376,8 @@ public class SchoolFxml {
             this.movedStudent = null;
             this.controller.setMovedStudent(null);
         }
-        if(this.client.getNickname().equals(this.board.getCurrentPlayer().getNickname())) { // if it's the player turn
+        if(this.client.getNickname().equals(this.board.getCurrentPlayer().getNickname()) &&
+                this.client.getNickname().equals(this.nickOwner)) { // if it's the player turn
             if(this.board.getCurrentState().equals(State.ACTION1)) {
                 if(!this.controller.getMessageSent()) {
                     for (Node n : this.hall.getChildren()) { // if he touched a hall student

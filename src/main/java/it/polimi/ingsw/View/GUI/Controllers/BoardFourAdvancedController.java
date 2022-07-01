@@ -546,6 +546,7 @@ public class BoardFourAdvancedController implements GUIController, Initializable
             this.schoolsFxml.get(i).resetVisualization(); // necessary since otherwise new images would overlap the older one (which would not be present)
             // Nicknames
             this.schoolsFxml.get(i).setNickVisualization(board.getSitPlayers().get(onWorkingPlayerIndex).getNickname(), board.getSitPlayers().get(onWorkingPlayerIndex).getColour());
+            this.schoolsFxml.get(i).setNickOwner(onWorkingSchool.getPlayer().getNickname());
 
             //if(this.client.getNickname().equals(board.getOrderedPlayers().get(onWorkingPlayerIndex).getNickname())){
             if(i == 0){
