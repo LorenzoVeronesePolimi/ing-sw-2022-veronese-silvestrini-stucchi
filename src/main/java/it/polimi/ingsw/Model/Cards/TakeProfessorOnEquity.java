@@ -59,8 +59,6 @@ public class TakeProfessorOnEquity extends AbstractCharacterCard implements Seri
                         boardAdvanced.moveProfessor(currentPlayer, colour);
                     }
                 }
-            } else {
-                boardAdvanced.moveProfessor(currentPlayer, colour);
             }
         }
     }
