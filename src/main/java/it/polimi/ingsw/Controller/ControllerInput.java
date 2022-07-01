@@ -35,7 +35,7 @@ public class ControllerInput implements Serializable {
      * @return true if it's not void, false other-ways
      */
     public boolean checkNickname(String nickname){
-        return !(nickname.equals("")) && !(nickname.contains("*"));
+        return !(nickname.equals("")) && !(nickname.contains("*") && !(nickname.equalsIgnoreCase("nobody")));
     }
 
     /**

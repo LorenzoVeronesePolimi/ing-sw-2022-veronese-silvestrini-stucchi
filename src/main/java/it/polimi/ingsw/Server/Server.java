@@ -24,9 +24,9 @@ public class Server {
     private ServerSocket serverSocket;
     private ExecutorService executor = Executors.newFixedThreadPool(128);   // thread that execurte the SocketClientConnections
     private int connections = 0;    // number of clients connected to the server
-    private int alreadyin =0; //number of players that have already given information about nick & colour
+    private int alreadyin =0; //number of players that have already given information about nick & colour (connected to controller)
     private List<SocketClientConnection> socketConnections = new ArrayList<>();
-    private List<OUTMessage> pendingMessage;    // if a message needs to be sent to a client but it was not ready we store it here.
+    private List<OUTMessage> pendingMessage;    // if a message needs to be sent to a client, but it was not ready we store it here.
 
     private Controller controller;  // controller of the game
 
@@ -124,7 +124,7 @@ public class Server {
 
         while(true){
             try {
-                // server ready to accept connecitons
+                // server ready to accept connections
                 Socket newSocket = serverSocket.accept();
 
                 // controller of the game
@@ -146,15 +146,15 @@ public class Server {
                     socketConnection.setFirstPlayerAction();
                 }
 
+                System.out.println("[Server, run]: connections-> " + connections);
+                System.out.println("[Server, run]: alreadyin-> " + alreadyin);
+                // if there were pending messages one is passed to the new player
+                if(pendingMessage.size() > 0 && connections == alreadyin + 1) {
+                    socketConnection.setPendingMessage(pendingMessage.get(0));
+                }
+
                 // execute the SocketClientConnection
                 executor.submit(socketConnection);
-
-                // if there were pending messages one is passed to the new player
-                if(pendingMessage.size() > 0) {
-                    socketConnection.setPendingMessage(pendingMessage.get(0));
-                    pendingMessage.clear();
-                    alreadyin++;
-                }
             } catch (IOException e) {
                 System.out.println("[Server, run]: Connection Error!");
             }
@@ -169,12 +169,14 @@ public class Server {
      * @param numPlayers number of players connected.
      */
     public void askPlayerInfo(List<PlayerColour> list, int numPlayers) {
-        if (socketConnections.size() > (alreadyin + 1)) {
-            alreadyin++;
+        alreadyin++;
+        if (socketConnections.size() > (alreadyin)) {
             socketConnections.get(alreadyin).send(new MessageAskName(list, numPlayers));
-        } else {
-            pendingMessage.add(new MessageAskName(list, numPlayers));
+            socketConnections.get(alreadyin).setWaitingPending(false);
         }
+        if(pendingMessage.size() > 0) this.pendingMessage.clear();
+        pendingMessage.add(new MessageAskName(list, numPlayers));
+
     }
 
     /**
@@ -216,8 +218,19 @@ public class Server {
         // if a player connected but not in a match (because the match has already begun with other players) tries to close the connection, we don't affect other players
         if((socketConnections.indexOf(c) >= this.controller.getPlayers().size()) && this.controller.getPlayers().size() > 0) {
             c.close();
+            socketConnections.remove(c);
             connections--;
-            alreadyin--;
+            for (int i = alreadyin; i < socketConnections.size(); i++) {
+                System.out.println("[Server, deregister]: check waiting hash " + socketConnections.get(i).hashCode());
+                System.out.println("[Server, deregister]: result " + socketConnections.get(i).isWaitingPending());
+                if (socketConnections.get(i).isWaitingPending()) {
+                    System.out.println("[Server, deregister]: sending");
+                    System.out.println("[Server, deregister]: Messaggio: " + this.pendingMessage.get(0));
+                    socketConnections.get(i).send(this.pendingMessage.get(0));
+                    socketConnections.get(i).setWaitingPending(false);
+                    return;
+                }
+            }
             return;
         }
 

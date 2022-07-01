@@ -79,7 +79,6 @@ public class ServerView implements Observer<SerializedBoardAbstract> {
                     notify(messageToController);
                 }
             } catch(NoCharacterCardException ex){
-                //TODO: send error message to the client (edit: still needed?)
                 ex.printStackTrace();
             } catch (ControllerException e) {
                 this.serverView.manageControllerError();

@@ -428,7 +428,7 @@ public class CLIView extends ClientView {
             if(checkInt(response)) {
                 turnPriority = Integer.parseInt(response);
             }
-        } while ((turnPriority < 1 || turnPriority > 10) && !checkInt(response));
+        } while ((turnPriority < 1 || turnPriority > 10) || !checkInt(response));
         AnsiConsole.systemUninstall();
 
         // turnPriority is enough to identify the card: assign motherNatureMovement automatically
@@ -478,7 +478,7 @@ public class CLIView extends ClientView {
                     client.asyncWriteToSocket(command + " " + colour);
                 } else { //studentToArchipelago
                     String response;
-                    int destArchipelagoIndex = 0;
+                    int destArchipelagoIndex = -1;
 
                     do {
                         System.out.println("> Choose the index of the destination archipelago: ");
@@ -489,7 +489,7 @@ public class CLIView extends ClientView {
                         if(checkInt(response)) {
                             destArchipelagoIndex = Integer.parseInt(response);
                         }
-                    } while ((destArchipelagoIndex < 0 || destArchipelagoIndex > serializedBoardAbstract.getArchipelagos().size()) && !checkInt(response));
+                    } while ((destArchipelagoIndex < 0 || destArchipelagoIndex > serializedBoardAbstract.getArchipelagos().size()) || !checkInt(response));
 
 
                     client.asyncWriteToSocket(command + " " + colour + " " + destArchipelagoIndex);
@@ -905,7 +905,7 @@ public class CLIView extends ClientView {
      */
     private void askFakeMNMovement(SerializedBoardAdvanced serializedBoardAdvanced) {
         String response;
-        int move = 0;
+        int move = -1;
 
         AnsiConsole.systemInstall();
         do{
@@ -917,7 +917,7 @@ public class CLIView extends ClientView {
             if(checkInt(response)) {
                 move = Integer.parseInt(response);
             }
-        } while((move < 0 || move > serializedBoardAdvanced.getArchipelagos().size()) && !checkInt(response) );
+        } while((move < 0 || move > serializedBoardAdvanced.getArchipelagos().size()) || !checkInt(response) );
         AnsiConsole.systemUninstall();
 
         this.client.asyncWriteToSocket("fakeMNMovement " + move);
@@ -929,7 +929,7 @@ public class CLIView extends ClientView {
      */
     private void askForbidIsland(SerializedBoardAdvanced serializedBoardAdvanced) {
         String response;
-        int index = 0;
+        int index = -1;
 
         AnsiConsole.systemInstall();
         do{
@@ -941,7 +941,7 @@ public class CLIView extends ClientView {
             if(checkInt(response)) {
                 index = Integer.parseInt(response);
             }
-        } while((index < 0 || index > serializedBoardAdvanced.getArchipelagos().size()) && !checkInt(response));
+        } while((index < 0 || index > serializedBoardAdvanced.getArchipelagos().size()) || !checkInt(response));
         AnsiConsole.systemUninstall();
 
         this.client.asyncWriteToSocket("forbidIsland " + index);
@@ -957,7 +957,7 @@ public class CLIView extends ClientView {
         possibleColours.add("pink"); possibleColours.add("red"); possibleColours.add("yellow"); possibleColours.add("blue"); possibleColours.add("green");
         String cardStudent;
         String response;
-        int move = 0;
+        int move = -1;
 
         AnsiConsole.systemInstall();
         System.out.println("Students on the card: " + place.printStudents());
@@ -978,7 +978,7 @@ public class CLIView extends ClientView {
             if(checkInt(response)) {
                 move = Integer.parseInt(response);
             }
-        } while((move < 0 || move > serializedBoardAdvanced.getArchipelagos().size()) && !checkInt(response));
+        } while((move < 0 || move > serializedBoardAdvanced.getArchipelagos().size()) || !checkInt(response));
         AnsiConsole.systemUninstall();
 
         this.client.asyncWriteToSocket("placeOneStudent " + cardStudent + " " + move);
@@ -1011,7 +1011,7 @@ public class CLIView extends ClientView {
      */
     private void askMoveMotherNature(SerializedBoardAbstract serializedBoardAbstract){
         String response;
-        int moves = 0;
+        int moves = -1;
         String action = null;
 
         AnsiConsole.systemInstall();
@@ -1039,7 +1039,7 @@ public class CLIView extends ClientView {
                     if (checkInt(response)) {
                         moves = Integer.parseInt(response);
                     }
-                } while ((moves < 0 || moves > 7) && !checkInt(response));
+                } while ((moves < 0 || moves > 7) || !checkInt(response));
 
                 client.asyncWriteToSocket("moveMotherNature " + moves);
             }
@@ -1056,7 +1056,7 @@ public class CLIView extends ClientView {
      */
     private void askCloudChoice(SerializedBoardAbstract serializedBoardAbstract) {
         String response;
-        int cloudIndex = 0;
+        int cloudIndex = -1;
         String action = null;
 
         AnsiConsole.systemInstall();
@@ -1084,7 +1084,7 @@ public class CLIView extends ClientView {
                         if (checkInt(response)) {
                             cloudIndex = Integer.parseInt(response);
                         }
-                    } while ((cloudIndex < 0 || cloudIndex > serializedBoardAbstract.getClouds().size()) && !checkInt(response));
+                    } while ((cloudIndex < 0 || cloudIndex > serializedBoardAbstract.getClouds().size()) || !checkInt(response));
                 } else {
                     for (int i = 0; i < serializedBoardAbstract.getClouds().size(); i++) {
                         if (serializedBoardAbstract.getClouds().get(i).getStudents().size() > 0) {

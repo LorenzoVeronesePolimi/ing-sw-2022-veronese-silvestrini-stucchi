@@ -56,6 +56,7 @@ public class SocketClientConnection extends ClientConnection implements Runnable
 
     private boolean firstPlayer = false;
     private List<OUTMessage> pendingMessage;    // if a message needs to be sent to a player but it was busy before, we store it here.
+    private boolean waitingPending = true;
     private final ServerView serverView;
 
     private final ScheduledExecutorService pinger;
@@ -111,14 +112,18 @@ public class SocketClientConnection extends ClientConnection implements Runnable
 
             if (firstPlayer) {
                 send(serverView.askFirstPlayer());
+                this.waitingPending = false;
             }
             if (pendingMessage.size() > 0) {
+                System.out.println("[SocketClientConnection, update]: pending > 0");
                 this.send(pendingMessage.get(0));
+                this.waitingPending = false;
             }
 
             //server.lobby(this, this.nickname);
             while (isActiveConnection()) {
                 read = (String) in.readObject();
+                //this.waitingPending = false;
                 notify(read);
             }
 
@@ -134,6 +139,22 @@ public class SocketClientConnection extends ClientConnection implements Runnable
             e.printStackTrace();
             enablePinger(false);
         }
+    }
+
+    /**
+     * Getter of waitingPending message
+     * @return the value of waitingPending
+     */
+    public boolean isWaitingPending() {
+        return waitingPending;
+    }
+
+    /**
+     * Setter of waitingPending
+     * @param waitingPending new value
+     */
+    public void setWaitingPending(boolean waitingPending) {
+        this.waitingPending = waitingPending;
     }
 
     /**
@@ -155,6 +176,14 @@ public class SocketClientConnection extends ClientConnection implements Runnable
      */
     public void setPendingMessage(OUTMessage pending) {
         this.pendingMessage.add(pending);
+    }
+
+    /**
+     * Getter of pending message in case of disconnection
+     * @return the pending messages
+     */
+    public List<OUTMessage> getPendingMessage() {
+        return this.pendingMessage;
     }
 
     /**
