@@ -151,13 +151,15 @@ public interface Board {
      */
     void tryToConquer(Player currentPlayer) throws InvalidTowerNumberException, AnotherTowerException, ExceededMaxTowersException, TowerNotFoundException;
 
+    /*
     /**
      * method that verifies if the archipelago where mother nature currently is placed can be conquered by a given player
      * @param currentPlayer player that should conquer the archipelago
      * @return true if the archipelago can be conquered by the current player, else otherwise
      */
-    boolean checkIfConquerable(Player currentPlayer);
+    //boolean checkIfConquerable(Player currentPlayer);
 
+    /*
     /**
      * method that computes who dominates the archipelago, between the previous owner and the challenger player
      * @param owner player that owned the archipelago
@@ -165,7 +167,7 @@ public interface Board {
      * @param archipelago archipelago on which I want to compute the winner
      * @return the player that dominate the archipelago
      */
-    Player computeWinner(Player owner, Player challenger, Archipelago archipelago);
+    //Player computeWinner(Player owner, Player challenger, Archipelago archipelago);
 
     /**
      * method that compute the influence of a given player on a given archipelago

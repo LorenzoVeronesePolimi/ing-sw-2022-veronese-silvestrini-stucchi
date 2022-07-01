@@ -153,12 +153,13 @@ public class BoardFour extends BoardAbstract implements Serializable {
         notifyPlayers();
     }
 
-
+    /*
     /**
      * modifies the abstract method, taking into account the teammate aspect
      * @param currentPlayer player that should conquer the archipelago
      * @return true if the archipelago can be conquered, false otherwise
      */
+    /*
     @Override
     public boolean checkIfConquerable(Player currentPlayer) {
         Archipelago currentArchipelago = this.archipelagos.get(whereIsMotherNature());
@@ -185,8 +186,9 @@ public class BoardFour extends BoardAbstract implements Serializable {
             Player winner = this.computeWinner(currentArchipelago.getOwner(), currentPlayer, currentArchipelago);
             return winner == currentPlayer || winner == teammates.get(currentPlayer);
         }
-    }
+    }*/
 
+    /*
     /**
      * modifies the abstract method, taking into account the teammate aspect
      * @param owner player that owned the archipelago
@@ -194,6 +196,7 @@ public class BoardFour extends BoardAbstract implements Serializable {
      * @param archipelago archipelago on which I want to compute the winner
      * @return challenger if his team has more influence that the current owner, the current owner otherwise
      */
+    /*
     @Override
     public Player computeWinner(Player owner, Player challenger, Archipelago archipelago) {
         int ownerTeamInfluence = this.computeInfluenceOfPlayer(owner, archipelago) + this.computeInfluenceOfPlayer(teammates.get(owner), archipelago);
@@ -204,7 +207,7 @@ public class BoardFour extends BoardAbstract implements Serializable {
         } else {
             return challenger;
         }
-    }
+    }*/
 
     // the Player conquers the Archipelago putting his own Towers and removing the previous ones (if present)
 

@@ -545,6 +545,7 @@ public class BoardAdvanced extends Observable implements Board, Serializable{
      * @param currentPlayer player that should conquer the archipelago
      * @return true if the current Player (who moved MotherNature) will conquer the Archipelago, false otherwise
      */
+    /*
     public boolean checkIfConquerable(Player currentPlayer){
         Archipelago currentArchipelago = this.board.archipelagos.get(this.board.whereIsMotherNature());
         if(this.board instanceof BoardTwo || this.board instanceof BoardThree) {
@@ -606,14 +607,16 @@ public class BoardAdvanced extends Observable implements Board, Serializable{
             }
         }
         return false;
-    }
+    }*/
 
+    /*
     /**
      * method that says if a given archipelago is conquerable, given a list o professors. takes into account the colourToExclude character card
      * @param currentArchipelago
      * @param conquerorProfessors
      * @return true if it's conquerable, false otherwise
      */
+    /*
     private boolean setConquerable(Archipelago currentArchipelago, List<Professor> conquerorProfessors) {
         boolean conquerable = false;
         System.out.println("[BoardAdvanced, setConquerable]: archi " + this.getArchiList().indexOf(currentArchipelago));
@@ -627,7 +630,7 @@ public class BoardAdvanced extends Observable implements Board, Serializable{
         }
         this.colourToExclude = null;
         return conquerable;
-    }
+    }*/
 
     /**
      * method that must be here to correctly implement the interface, the one with the correct parameters is below
@@ -693,6 +696,7 @@ public class BoardAdvanced extends Observable implements Board, Serializable{
         notifyPlayers();
     }
 
+    /*
     /**
      * method that computes which of two players has most influence on an Archipelago
      * @param owner player that owned the archipelago
@@ -703,6 +707,7 @@ public class BoardAdvanced extends Observable implements Board, Serializable{
      *                        character card
      * @return the player who has most influence
      */
+    /*
     protected Player computeWinner(Player owner, Player challenger, Archipelago archipelago, boolean twoExtraPointsFlag, SPColour colourToExclude){
         System.out.println("[BoardAdvanced, computeWinner]: entering compute ");
         if(this.board instanceof BoardTwo || this.board instanceof BoardThree) {
@@ -736,9 +741,9 @@ public class BoardAdvanced extends Observable implements Board, Serializable{
             }
         }
         return null;
-    }
+    }*/
 
-
+    /*
     /**
      * method that computes the influence of a given player on a given archipelago (takes into account if the colourToExclude character card
      * has been used).
@@ -747,6 +752,7 @@ public class BoardAdvanced extends Observable implements Board, Serializable{
      * @param colourToExclude colour that will be excluded from the computation (can be null)
      * @return influence of a Player on an Archipelago
      */
+    /*
     private int computeInfluenceOfPlayer(Player player, Archipelago archipelago, SPColour colourToExclude){
         int influence = 0;
 
@@ -777,7 +783,7 @@ public class BoardAdvanced extends Observable implements Board, Serializable{
             }
         }
         return influence;
-    }
+    }*/
 
     /**
      * method that manages the gain of coins when a student is added to a dining room

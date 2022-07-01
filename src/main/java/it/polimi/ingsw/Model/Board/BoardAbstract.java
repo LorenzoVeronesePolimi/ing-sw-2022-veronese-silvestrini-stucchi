@@ -517,11 +517,13 @@ public abstract class BoardAbstract extends Observable implements Board, Seriali
     }*/
 
 
+    /*
     /**
      * method that verifies if a player can conquer the archipelago on which is placed mother nature
      * @param currentPlayer player that should conquer the archipelago
      * @return true if the current Player (who moved MotherNature) will conquer the Archipelago, false otherwise
      */
+    /*
     public boolean checkIfConquerable(Player currentPlayer){
         int currPosMotherNature = this.whereIsMotherNature();
         Archipelago currentArchipelago = this.archipelagos.get(currPosMotherNature);
@@ -546,7 +548,7 @@ public abstract class BoardAbstract extends Observable implements Board, Seriali
             Player winner = this.computeWinner(currentArchipelago.getOwner(), currentPlayer, currentArchipelago);
             return winner == currentPlayer;
         }
-    }
+    }*/
     /*public boolean checkIfConquerable(Player currentPlayer){
         int currPosMotherNature = this.whereIsMotherNature();
         Archipelago currentArchipelago = this.archipelagos.get(currPosMotherNature);
@@ -574,7 +576,7 @@ public abstract class BoardAbstract extends Observable implements Board, Seriali
     }*/
 
 
-
+    /*
     /**
      * method that computes which of two players has most influence on an Archipelago
      * @param owner player that owned the archipelago
@@ -582,6 +584,7 @@ public abstract class BoardAbstract extends Observable implements Board, Seriali
      * @param archipelago archipelago on which I want to compute the winner
      * @return the player who has most influence
      */
+    /*
     public Player computeWinner(Player owner, Player challenger, Archipelago archipelago){
         int ownerInfluence = this.computeInfluenceOfPlayer(owner, archipelago);
         int challengerInfluence = this.computeInfluenceOfPlayer(challenger, archipelago);
@@ -592,7 +595,7 @@ public abstract class BoardAbstract extends Observable implements Board, Seriali
         else{
             return challenger;
         }
-    }
+    }*/
 
 
     /**
