@@ -458,13 +458,20 @@ public class BoardAdvanced extends Observable implements Board, Serializable{
                 Player maxInfluencePlayer = null; // player with max influence found
                 for (Player p : this.board.players) {
                     pInfluence = computeInfluenceOfPlayerAdvanced(p, this.board.archipelagos.get(currPosMotherNature), p == currentPlayer);
+
+                    if(this.board.getArchipelago(currPosMotherNature).getTowerNoValueFlag() && this.board.getArchipelago(currPosMotherNature).getOwner() == p){
+                        pInfluence -= this.board.getArchipelago(currPosMotherNature).getNumIslands();
+                    }
+
                     System.out.println("[BoardAdvanced, tryToConquer]: influence of " + p.getNickname() + " is " + pInfluence);
                     if (pInfluence > maxInfluence) {
                         maxInfluence = pInfluence;
                         maxInfluencePlayer = p;
+                        parity = false;
                     } else if (pInfluence == maxInfluence) {
                         parity = true;
                     }
+
                 }
                 if (maxInfluencePlayer != null && !parity) { //if someone wins the winner computation, he can conquer
                     System.out.println("[BoardAdvanced, tryToConquer]: conquerable by " + maxInfluencePlayer.getNickname());
@@ -480,6 +487,11 @@ public class BoardAdvanced extends Observable implements Board, Serializable{
                 int influenceBlack = 0;
                 for (Player p : this.board.players) {
                     pInfluence = computeInfluenceOfPlayerAdvanced(p, this.board.archipelagos.get(currPosMotherNature),p == currentPlayer);
+
+                    if(this.board.getArchipelago(currPosMotherNature).getTowerNoValueFlag() && this.board.getArchipelago(currPosMotherNature).getOwner() == p){
+                        pInfluence -= this.board.getArchipelago(currPosMotherNature).getNumIslands();
+                    }
+
                     if (p.getColour() == PlayerColour.WHITE) {
                         influeceWhite += pInfluence;
                         representativeWhite = p;
@@ -655,7 +667,8 @@ public class BoardAdvanced extends Observable implements Board, Serializable{
                 }
             }
         }
-        //TODO: towerNoValue
+
+
         if(isCurrentPlayer){ // apply modifications to the score so that I consider advanced functions
             if(this.twoExtraPointsFlag){
                 influence += 2;
