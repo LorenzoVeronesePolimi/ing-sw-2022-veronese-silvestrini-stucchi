@@ -932,10 +932,7 @@ public class Controller implements ObserverController<Message>, Serializable {
                 boardAdvanced.setTwoExtraPointsFlag(false);
                 boardAdvanced.setColourToExclude(null);
                 boardAdvanced.setFakeMNMovementFlag(false);
-
-                for(Archipelago a : boardAdvanced.getArchiList()) {
-                    a.setTowerNoValueFlag(false);
-                }
+                boardAdvanced.setTowerNoValueFlag(false);
             }
             //TODO: remove some card effects (colourtoexclude, towernovalue...)
 

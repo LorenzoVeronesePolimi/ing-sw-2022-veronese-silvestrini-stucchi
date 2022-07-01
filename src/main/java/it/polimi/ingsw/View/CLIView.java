@@ -12,14 +12,26 @@ import it.polimi.ingsw.Model.Places.Archipelago;
 import it.polimi.ingsw.Model.Places.School.School;
 import org.fusesource.jansi.AnsiConsole;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 import static it.polimi.ingsw.View.CLIColours.*;
 
 public class CLIView extends ClientView {
+
+    private final Map<CharacterCardEnumeration, String> cardEffect = Map.ofEntries(
+            Map.entry(CharacterCardEnumeration.EXCHANGE_THREE_STUDENTS, "You can exchange up to three students between the ones that you have in the hall and the ones that are in placed on this card."),
+            Map.entry(CharacterCardEnumeration.EXCHANGE_TWO_HALL_DINING, "You can exchange up to two students between the ones in your dining room and the ones in your hall."),
+            Map.entry(CharacterCardEnumeration.EXCLUDE_COLOUR_FROM_COUNTING, "Chooses a colour: for that turn, during the influence computation, that colour won't be considered"),
+            Map.entry(CharacterCardEnumeration.EXTRA_STUDENT_IN_DINING, "Choose one student from the four that are on this card: put it in your dining Room, then a student is extracted from the bag and added to this card."),
+            Map.entry(CharacterCardEnumeration.FAKE_MN_MOVEMENT, "Chooses an archipelago: you can try to conquer it as if mother nature has ended her movement on that archipelago. After that, the round continues normally."),
+            Map.entry(CharacterCardEnumeration.FORBID_ISLAND, "Take one No Entry tile from this card and put it on an archipelago. The next time Mother Nature goes to that archipelago, she won't conquer it and the tile will be dropped."),
+            Map.entry(CharacterCardEnumeration.PLACE_ONE_STUDENT, "You can take a student from this card and place it on an archipelago. Then, a new student is extracted from the bag and put on this card."),
+            Map.entry(CharacterCardEnumeration.REDUCE_COLOUR_IN_DINING, "Chose a colour. Each player puts in the bag 3 students (or less, if he has less) from his own dining room."),
+            Map.entry(CharacterCardEnumeration.TAKE_PROFESSOR_ON_EQUITY, "During this turn, you take control of the professors even if you have the same number of students in the school as the current owner of the professor."),
+            Map.entry(CharacterCardEnumeration.TOWER_NO_VALUE, "For this turn, when resolving a conquering on an archipelago, towers do not count towards influence."),
+            Map.entry(CharacterCardEnumeration.TWO_EXTRA_ISLANDS, "You can move Mother Nature up to two additional archipelagos than is indicated in the assistant card you played."),
+            Map.entry(CharacterCardEnumeration.TWO_EXTRA_POINTS, "For this turn, during the influence calculation, you will have two additional point.")
+    );
 
     private String playerNick;
     private String TAB = "    ";
@@ -525,6 +537,12 @@ public class CLIView extends ClientView {
         String card;
 
         AnsiConsole.systemInstall();
+        printCardName(serializedBoardAdvanced.getExtractedCards().get(0).getType());
+        System.out.println(cardEffect.get(serializedBoardAdvanced.getExtractedCards().get(0).getType()));
+        printCardName(serializedBoardAdvanced.getExtractedCards().get(1).getType());
+        System.out.println(cardEffect.get(serializedBoardAdvanced.getExtractedCards().get(1).getType()));
+        printCardName(serializedBoardAdvanced.getExtractedCards().get(2).getType());
+        System.out.println(cardEffect.get(serializedBoardAdvanced.getExtractedCards().get(2).getType()));
         do {
             System.out.println("> Choose a card from the extracted ones or go back [Back]:");
             System.out.print("> ");
@@ -539,6 +557,47 @@ public class CLIView extends ClientView {
         }
         else{
             return card;
+        }
+    }
+
+    private void printCardName(CharacterCardEnumeration type) {
+        switch(type) {
+            case EXCHANGE_THREE_STUDENTS:
+                System.out.println("ExchangeThreeStudents:\n");
+                break;
+            case EXCHANGE_TWO_HALL_DINING:
+                System.out.println("ExchangeTwoHallDining:\n");
+                break;
+            case EXCLUDE_COLOUR_FROM_COUNTING:
+                System.out.println("ExcludeColourFromCounting:\n");
+                break;
+            case EXTRA_STUDENT_IN_DINING:
+                System.out.println("ExtraStudentInDining:\n");
+                break;
+            case PLACE_ONE_STUDENT:
+                System.out.println("PlaceOneStudent:\n");
+                break;
+            case FORBID_ISLAND:
+                System.out.println("ForbidIsland:\n");
+                break;
+            case FAKE_MN_MOVEMENT:
+                System.out.println("FakeMNMovement:\n");
+                break;
+            case TAKE_PROFESSOR_ON_EQUITY:
+                    System.out.println("TakeProfessorOnEquity:\n");
+                break;
+            case TOWER_NO_VALUE:
+                System.out.println("TowerNoValue:\n");
+                break;
+            case TWO_EXTRA_POINTS:
+                System.out.println("TwoExtraPoints:\n");
+                break;
+            case TWO_EXTRA_ISLANDS:
+                System.out.println("TwoExtraIslands:\n");
+                break;
+            case REDUCE_COLOUR_IN_DINING:
+                System.out.println("ReduceColourInDining:\n");
+                break;
         }
     }
 

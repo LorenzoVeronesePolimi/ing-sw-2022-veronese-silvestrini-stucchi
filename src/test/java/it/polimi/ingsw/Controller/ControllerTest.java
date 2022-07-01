@@ -1150,7 +1150,8 @@ public class ControllerTest {
         //-----MessageStudentToArchipelago-----
         // choose a Student which exists
         colourToMove = mapSPColourToString(controller.getBoard().getPlayerSchool(controller.getCurrentPlayer()).getStudentsHall().get(0).getColour());
-
+        System.out.println("colourToMove: " + colourToMove);
+        System.out.println("Students: " + controller.getBoard().getPlayerSchool(controller.getCurrentPlayer()).getStudentsHall());
         MessageStudentToArchipelago mb24 = new MessageStudentToArchipelago(controller.getCurrentPlayer().getNickname(), colourToMove, 10);
         Assertions.assertEquals(controller.getNumStudentsToMoveCurrent(), 1);
         try {

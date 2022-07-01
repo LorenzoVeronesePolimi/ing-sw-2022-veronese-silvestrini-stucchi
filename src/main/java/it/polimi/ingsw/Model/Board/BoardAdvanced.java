@@ -27,6 +27,7 @@ public class BoardAdvanced extends Observable implements Board, Serializable{
     private SPColour colourToExclude = null;
     private boolean fakeMNMovementFlag = false;
     private boolean takeProfessorOnEquityFlag = false;
+    private boolean towerNoValueFlag = false;
     private final List<AbstractCharacterCard> extractedCards; //is final... temporarily removed just for testing card usage
     private final Bank bank;
     private String nameCardUsed = "";
@@ -154,6 +155,10 @@ public class BoardAdvanced extends Observable implements Board, Serializable{
      */
     public void setTakeProfessorOnEquityFlag(boolean takeProfessorOnEquityFlag) {
         this.takeProfessorOnEquityFlag = takeProfessorOnEquityFlag;
+    }
+
+    public void setTowerNoValueFlag(boolean towerNoValueFlag) {
+        this.towerNoValueFlag = towerNoValueFlag;
     }
 
     /**
@@ -459,7 +464,7 @@ public class BoardAdvanced extends Observable implements Board, Serializable{
                 for (Player p : this.board.players) {
                     pInfluence = computeInfluenceOfPlayerAdvanced(p, this.board.archipelagos.get(currPosMotherNature), p == currentPlayer);
 
-                    if(this.board.getArchipelago(currPosMotherNature).getTowerNoValueFlag() && this.board.getArchipelago(currPosMotherNature).getOwner() == p){
+                    if(this.towerNoValueFlag && this.board.getArchipelago(currPosMotherNature).getOwner() == p){
                         pInfluence -= this.board.getArchipelago(currPosMotherNature).getNumIslands();
                     }
 
@@ -488,7 +493,7 @@ public class BoardAdvanced extends Observable implements Board, Serializable{
                 for (Player p : this.board.players) {
                     pInfluence = computeInfluenceOfPlayerAdvanced(p, this.board.archipelagos.get(currPosMotherNature),p == currentPlayer);
 
-                    if(this.board.getArchipelago(currPosMotherNature).getTowerNoValueFlag() && this.board.getArchipelago(currPosMotherNature).getOwner() == p){
+                    if(this.towerNoValueFlag && this.board.getArchipelago(currPosMotherNature).getOwner() == p){
                         pInfluence -= this.board.getArchipelago(currPosMotherNature).getNumIslands();
                     }
 

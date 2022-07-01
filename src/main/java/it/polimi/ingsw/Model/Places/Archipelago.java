@@ -44,7 +44,7 @@ public class Archipelago implements Serializable {
     private Map<SPColour, Integer> studentsData;
 
     private int forbidFlag = 0;
-    private boolean towerNoValueFlag = false;
+    //private boolean towerNoValueFlag = false;
 
     /**
      * The archipelago is created with one island and no owner. The map of the number of students for
@@ -78,7 +78,7 @@ public class Archipelago implements Serializable {
         }
 
         this.forbidFlag = toCopy.forbidFlag;
-        this.towerNoValueFlag = toCopy.towerNoValueFlag;
+        //this.towerNoValueFlag = toCopy.towerNoValueFlag;
     }
 
     public Map<SPColour, Integer> getStudentsData() {
@@ -129,9 +129,9 @@ public class Archipelago implements Serializable {
      * @return the value of the flag that says if on this turn (on this archipelago) the towers must
      * be counted for the computation of dominance.
      */
-    public boolean getTowerNoValueFlag(){
+    /*public boolean getTowerNoValueFlag(){
         return this.towerNoValueFlag;
-    }
+    }*/
 
     /**
      * This method removes a forbid flag from the archipelago.
@@ -145,9 +145,9 @@ public class Archipelago implements Serializable {
      * This method sets the towerNoValueFlag to the value of the parameter.
      * @param towerNoValueFlag value to which towerNoValueFlag must be set.
      */
-    public void setTowerNoValueFlag(boolean towerNoValueFlag) {
+    /*public void setTowerNoValueFlag(boolean towerNoValueFlag) {
         this.towerNoValueFlag = towerNoValueFlag;
-    }
+    }*/
 
     /**
      *

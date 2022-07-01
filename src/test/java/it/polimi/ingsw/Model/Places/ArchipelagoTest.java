@@ -87,35 +87,6 @@ public class ArchipelagoTest {
     }
 
     @Test
-    void getTowerNoValueFlag(){
-        Archipelago tested = new Archipelago();
-        assertFalse(tested.getTowerNoValueFlag());
-
-        Player p1 = new Player("p1", PlayerColour.WHITE);
-        Player p2 = new Player("p2", PlayerColour.BLACK);
-        List<Player> players = new ArrayList<>();
-        players.add(p1);
-        players.add(p2);
-        BoardTwo board = null;
-        try {
-            board = new BoardTwo(players);
-        } catch (StudentNotFoundException | ExceedingAssistantCardNumberException | ExceededMaxStudentsHallException | ExceededMaxStudentsCloudException e) {
-            e.printStackTrace();
-        }
-        BoardAdvanced boardAdvanced = null;
-        try {
-            boardAdvanced = new BoardAdvanced(board);
-        } catch (ExceededMaxStudentsHallException | StudentNotFoundException | TowerNotFoundException | EmptyCaveauException e) {
-            e.printStackTrace();
-        }
-        TowerNoValue card= new TowerNoValue(boardAdvanced);
-        assert board != null;
-        board.moveMotherNature(4);
-        card.useEffect();
-        assert boardAdvanced != null;
-        assertTrue(boardAdvanced.getArchiList().get(4).getTowerNoValueFlag());
-    }
-    @Test
     void setForbidFlag(){
         Archipelago tested = new Archipelago();
         tested.removeForbidFlag();
@@ -123,14 +94,7 @@ public class ArchipelagoTest {
         tested.addForbidFlag();
         Assertions.assertEquals(1, tested.getForbidFlag());
     }
-    @Test
-    void setTowerNoValueFlag(){
-        Archipelago tested = new Archipelago();
-        tested.setTowerNoValueFlag(false);
-        assertFalse(tested.getTowerNoValueFlag());
-        tested.setTowerNoValueFlag(true);
-        assertTrue(tested.getTowerNoValueFlag());
-    }
+
     @Test
     void howManyStudents(){
         Archipelago tested = new Archipelago();

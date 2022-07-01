@@ -23,7 +23,8 @@ public class TowerNoValue extends AbstractCharacterCard implements Serializable 
      * This method activates the effect of the card.
      */
     public void useEffect() {
-        boardAdvanced.getArchiList().get(boardAdvanced.whereIsMotherNature()).setTowerNoValueFlag(true);
+        //boardAdvanced.getArchiList().get(boardAdvanced.whereIsMotherNature()).setTowerNoValueFlag(true);
+        boardAdvanced.setTowerNoValueFlag(true);
     }
 
     @Override

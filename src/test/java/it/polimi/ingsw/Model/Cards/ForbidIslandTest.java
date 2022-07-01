@@ -65,6 +65,7 @@ public class ForbidIslandTest {
         assert boardAdvanced != null;
         boardAdvanced.setExtractedCards(card);
 
+        //remove all students from the hall
         for(int i=0; i<7; i++) {
             try {
                 boardAdvanced.getSchools().get(0).removeStudentHall(boardAdvanced.getSchools().get(0).getStudentsHall().get(0).getColour());
@@ -80,6 +81,7 @@ public class ForbidIslandTest {
         Student s5 = new Student(SPColour.PINK);
         Student s6 = new Student(SPColour.PINK);
 
+        // add new students
         try {
             boardAdvanced.getSchools().get(0).addStudentHall(s1);
             boardAdvanced.getSchools().get(0).addStudentHall(s2);
@@ -90,6 +92,7 @@ public class ForbidIslandTest {
             e.printStackTrace();
         }
 
+        // move some students to diningroom
         try {
             boardAdvanced.moveStudentHallToDiningRoom(p1,SPColour.BLUE);
             boardAdvanced.moveStudentHallToDiningRoom(p1,SPColour.BLUE);
@@ -100,24 +103,29 @@ public class ForbidIslandTest {
             e.printStackTrace();
         }
 
+        // check blue professor and pink professor
         Assertions.assertEquals(boardAdvanced.getPlayerSchool(p1), boardAdvanced.whereIsProfessor(SPColour.BLUE));
         Assertions.assertEquals(boardAdvanced.getPlayerSchool(p2), boardAdvanced.whereIsProfessor(SPColour.PINK));
         Assertions.assertEquals(2,((SchoolAdvanced)boardAdvanced.getPlayerSchool(p1)).getNumCoins());
         Assertions.assertEquals(1,((SchoolAdvanced)boardAdvanced.getPlayerSchool(p2)).getNumCoins());
 
+        // move some students to archipelago 5
         Student s7 = new Student(SPColour.PINK);
         Student s8 = new Student(SPColour.PINK);
         boardAdvanced.getArchiList().get(5).addStudent(s7);
         boardAdvanced.getArchiList().get(5).addStudent(s8);
 
+        // use card Forbid Island
         try {
             boardAdvanced.useForbidIsland(p1, 5, 0);
         } catch (EmptyCaveauException | CoinNotFoundException | ExceededMaxNumCoinException | ExceededNumberForbidFlagException e) {
             e.printStackTrace();
         }
 
+        // check removed coins
         Assertions.assertEquals(0, ((SchoolAdvanced)boardAdvanced.getPlayerSchool(p1)).getNumCoins());
 
+        // move mother nature where is impossible to conquer
         boardAdvanced.moveMotherNature(5);
         try {
             boardAdvanced.tryToConquer(p2);
@@ -130,10 +138,12 @@ public class ForbidIslandTest {
         Student s9 = new Student(SPColour.BLUE);
         Student s10 = new Student(SPColour.BLUE);
         Student s11 = new Student(SPColour.BLUE);
+        Student s12 = new Student(SPColour.BLUE);
 
         boardAdvanced.getArchipelago(5).addStudent(s9);
         boardAdvanced.getArchipelago(5).addStudent(s10);
         boardAdvanced.getArchipelago(5).addStudent(s11);
+        boardAdvanced.getArchipelago(5).addStudent(s12);
 
         try {
             boardAdvanced.tryToConquer(p1);

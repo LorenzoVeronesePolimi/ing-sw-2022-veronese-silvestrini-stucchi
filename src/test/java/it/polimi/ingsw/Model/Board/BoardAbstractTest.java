@@ -297,12 +297,14 @@ class BoardAbstractTest {
         Student _6 = new Student(SPColour.GREEN);
         Student _7 = new Student(SPColour.GREEN);
         Student _8 = new Student(SPColour.GREEN);
+        Student _9 = new Student(SPColour.GREEN);
 
         this.b2.archipelagos.get(7).addStudent(_4);
         this.b2.archipelagos.get(7).addStudent(_5);
         this.b2.archipelagos.get(7).addStudent(_6);
         this.b2.archipelagos.get(7).addStudent(_7);
         this.b2.archipelagos.get(7).addStudent(_8);
+        this.b2.archipelagos.get(7).addStudent(_9);
 
         try {
             this.b2.tryToConquer(this.b2.players.get(1));
