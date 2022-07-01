@@ -85,6 +85,10 @@ public class ExtraStudentInDiningTest {
                 Assertions.assertEquals(1, boardAdvanced.getSchools().get(0).getNumStudentColour(SPColour.PINK));
             } catch (EmptyCaveauException | ExceededMaxNumCoinException | CoinNotFoundException | StudentNotFoundException | ExceededMaxStudentsDiningRoomException e) {
                 e.printStackTrace();
+            } catch (ProfessorNotFoundException e) {
+                throw new RuntimeException(e);
+            } catch (NoProfessorBagException e) {
+                throw new RuntimeException(e);
             }
         }else{
             BoardAdvanced finalBoardAdvanced = boardAdvanced;

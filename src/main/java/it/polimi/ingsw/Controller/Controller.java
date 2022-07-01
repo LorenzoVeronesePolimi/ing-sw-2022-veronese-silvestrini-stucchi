@@ -1086,6 +1086,8 @@ public class Controller implements ObserverController<Message>, Serializable {
                     ExceededMaxNumCoinException |
                     CoinNotFoundException e) {
                 return false;//TODO: test
+            } catch (ProfessorNotFoundException | NoProfessorBagException e) {
+                throw new RuntimeException(e);
             }
         }
 

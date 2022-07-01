@@ -5,6 +5,8 @@ import it.polimi.ingsw.Model.Board.BoardAdvanced;
 import it.polimi.ingsw.Model.Enumerations.CharacterCardEnumeration;
 import it.polimi.ingsw.Model.Enumerations.SPColour;
 import it.polimi.ingsw.Model.Exceptions.ExceededMaxStudentsDiningRoomException;
+import it.polimi.ingsw.Model.Exceptions.NoProfessorBagException;
+import it.polimi.ingsw.Model.Exceptions.ProfessorNotFoundException;
 import it.polimi.ingsw.Model.Exceptions.StudentNotFoundException;
 import it.polimi.ingsw.Model.Pawns.Student;
 import it.polimi.ingsw.Model.Places.School.School;
@@ -55,7 +57,7 @@ public class ExtraStudentInDining extends AbstractCharacterCard implements Seria
      * student of that colour in the dining Room because there are already 10 other students
      * of that same colour
      */
-    public void useEffect(Player currentPlayer, SPColour cardToDining) throws StudentNotFoundException, ExceededMaxStudentsDiningRoomException {
+    public void useEffect(Player currentPlayer, SPColour cardToDining) throws StudentNotFoundException, ExceededMaxStudentsDiningRoomException, ProfessorNotFoundException, NoProfessorBagException {
         School school = boardAdvanced.getPlayerSchool(currentPlayer);
         List<Student> s = students.stream().filter(x -> x.getColour().equals(cardToDining)).collect(Collectors.toList());
         List<Student> student;
@@ -64,6 +66,7 @@ public class ExtraStudentInDining extends AbstractCharacterCard implements Seria
         }else {
             throw new StudentNotFoundException();
         }
+        boardAdvanced.conquerProfessor(currentPlayer, s.get(0).getColour());
         student = bag.extractStudents(1);
         students.add(student.get(0));
     }

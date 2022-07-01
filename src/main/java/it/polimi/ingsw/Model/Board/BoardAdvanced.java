@@ -1130,7 +1130,7 @@ public class BoardAdvanced extends Observable implements Board, Serializable{
      */
     public void useExtraStudentInDining(Player player, SPColour cardToDining, int indexCard) throws
             EmptyCaveauException, ExceededMaxNumCoinException, CoinNotFoundException, StudentNotFoundException,
-            ExceededMaxStudentsDiningRoomException {
+            ExceededMaxStudentsDiningRoomException, ProfessorNotFoundException, NoProfessorBagException {
         System.out.println("[BoardAdvanced, useExtraStudentInDining]: extradin" + this.extractedCards.get(indexCard).getCurrentPrice());
         System.out.println("[BoardAdvanced, useExtraStudentInDining]: type" + this.extractedCards.get(indexCard).getType());
         if(this.makePayment(player, this.extractedCards.get(indexCard))) {
